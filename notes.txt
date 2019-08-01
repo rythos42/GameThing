@@ -1,0 +1,131 @@
+Necessary UX:
+	- don't allow characters to move on top of each other
+	- characters overlap in a weird way when standing near each other
+		- need to implement a better draw order
+
+	- show explicitly when a new round starts
+	- show which side a player is on
+	- force person to do something with a character each turn
+	- hide new turn button if not your turn
+	- hide cards after pressing new turn button
+	- show when your turn is done because you can't do anything else
+		- show when characters out of moves
+		- show when characters can't play cards anymore
+	- note when character is "locked in" and which character can be played, even after you de-select
+	- allow players to look at their shit when it's their turn
+	- after characters die can end in a place where one side has nothing left to move but the other does
+	- stuff at range 0 played on self without needing to tap again
+	- show which player is selected and their stats
+	- show which card is selected
+	- make squares on map visible
+	- selected character to show available movement range
+	- selected card shows available target range
+	- turn bottom characters around
+	- show remaining cards in deck
+	- TauntCondition needs a message for success/fail
+
+Maybe necessary game dev
+	- random starting positions within a specified range
+	- terrain
+	- Possible that some support cards need longer ranges
+	- Possible that decks need more starter attack cards
+	- Possibly need a defense card
+
+Nice to have:
+	- don't allow friendly fire
+	- fix card sizing on tablet
+		- rejig HandOfCards spacing to shrink the cards if they don't fit!
+	- hide start screen buttons if loading shit (or give a loading splash screen and THEN go to game)
+	- maybe don't automatically go to a match if we have one -- might be the user has multiple
+	- show logout button to GPG
+	- clear SignOut obsolete warning
+	- hide "Join as Spaghetti" button
+	- make side assignment random
+	- shouldn't need to de-select a character to select a new one
+	- make characters move on game loop
+	- fix map background
+	- better hand/card UI 
+	- zoom is too quick, needs to be slower
+	- pan is to SLOW, or needs a bounce to it
+	- fix autorotate landscape
+	- Awkward Distraction is awkwardly written
+
+Tech
+	- decent chance that GameHelper/BaseGameActivity aren't doing the right things anymore -- seems to be a mash-up of older sign-in code and newer
+	- lots of events being passed through MainGame to MainActivity -- wonder if there is a better architecture that still keeps the Android pieces separate
+
+Game Dev
+	- evaluate whether single character or whole side is a better turn
+	- make character facing directions (like for Slipped Backstab)
+		- there's no "behind" for this to do anything with
+		- make Slipped Backstab only if behind the character
+	- have characters face the direction they last moved towards
+	- make movement depend on agilty score
+		- make runcondition an agility buff?
+
+
+Started around June 9th
+
+Google Play
+	Certificates
+		"C:\Program Files (x86)\Java\jre1.8.0_171\bin\keytool" -list -v -keystore gamething.keystore
+		"C:\Program Files (x86)\Java\jre1.8.0_171\bin\keytool" -list -v -keystore "%LocalAppData%\Xamarin\Mono for Android\debug.keystore" -alias androiddebugkey -storepass android -keypass android
+		https://developer.android.com/studio/publish/app-signing
+	Better Sign-in
+		https://forums.xamarin.com/discussion/123468/google-sign-in-not-working-in-android
+
+Publishing Xamarin
+	http://developer.xamarin.com/guides/android/deployment,_testing,_and_metrics/publishing_an_application/
+	https://docs.microsoft.com/en-us/xamarin/android/deploy-test/release-prep/index?tabs=windows#archive
+	https://docs.microsoft.com/en-us/xamarin/android/deploy-test/signing/index?tabs=windows#newcert
+	https://docs.microsoft.com/en-us/xamarin/android/deploy-test/signing/keystore-signature?tabs=windows
+	https://docs.microsoft.com/en-us/xamarin/android/deploy-test/publishing/publishing-to-google-play/?tabs=windows
+	https://docs.microsoft.com/en-us/xamarin/android
+	https://developer.xamarin.com/samples/android/all/
+	https://developers.google.com/games/services/console/enabling
+	https://developers.google.com/games/services/console/testpub#enabling_accounts_for_testing
+
+	https://play.google.com/apps/publish/?account=8816930819975285172#ApiAccessPlace
+	https://console.developers.google.com/apis/credentials?project=api-8816930819975285172-503918
+	https://play.google.com/apps/publish/?account=8816930819975285172#GameDetailsPlace:gt=505193462094
+
+	Obsfucating code
+	https://www.preemptive.com/dotfuscator/pro/userguide/en/getting_started_xamarin.html
+
+Multiplayer
+	http://community.monogame.net/t/google-sign-in-in-monogame/10913
+	https://developers.google.com/games/services/android/turnbasedMultiplayer
+	https://developers.google.com/android/reference/com/google/android/gms/games/multiplayer/turnbased/TurnBasedMultiplayer
+	https://github.com/mhughson/mbhxamarintbmpdemo
+	https://github.com/xamarin/GooglePlayServicesComponents/blob/master/samples/com.google.android.gms/play-services-games/BeGenerous/MainActivity.cs
+	https://developers.google.com/games/services/android/troubleshooting
+
+MonoGame Extended Blog
+	http://blog.dylanwilson.net/posts/
+	https://github.com/craftworkgames/MonoGame.Extended/blob/develop/Source/Demos/Platformer/GameMain.cs
+	https://www.patreon.com/craftworkgames
+	http://www.monogameextended.net/posts
+
+Independent Resolution: 
+	http://www.david-amador.com/2010/03/xna-2d-independent-resolution-rendering/
+	http://vodacek.zvb.cz/archiv/608.html
+	http://blog.roboblob.com/2013/07/27/solving-resolution-independent-rendering-and-2d-camera-using-monogame/
+
+More pinchzoom: 
+	https://stackoverflow.com/questions/18889441/implementing-zoom-using-monogame-and-two-fingers-gesture
+	
+Isometric math:
+	http://clintbellanger.net/articles/isometric_math/
+
+Free stuff
+	https://www.gameart2d.com/freebies.html
+	Playing cards: https://opengameart.org/content/vintage-playing-cards
+	https://itch.io/
+	https://github.com/aloisdeniel/awesome-monogame
+	https://opengameart.org/content/isometric-64x64-outside-tileset
+	https://opengameart.org/content/isometric-64x64-medieval-building-tileset
+	https://erikari.itch.io/elements-supremacy-assets
+
+Example
+	https://roguesharp.wordpress.com
+

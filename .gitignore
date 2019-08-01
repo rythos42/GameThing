@@ -1,0 +1,7 @@
+*.keystore
+.vs
+packages
+bin
+obj
+*.csproj.user
+workbook

@@ -1,0 +1,67 @@
+Game:
+	Implement vs another player
+	Also vs AI
+	Characters start with a class
+	Start with 7 static cards+first card from given class
+
+Round:
+	Every character activates
+
+Turn: 
+	Pick a character
+	Draw 4 cards per character
+	Characters may move and play 1 card
+		In any order
+
+some characters will be support, ranged, melee, all different types
+	cards have to allow that support is a good idea, not just killing stuff
+
+Levels earned by playing cards
+Put cards info categories
+Classes unlock by a certain amount of categories played
+
+
+
+Between games:
+	Decks:
+		Change decks
+		8 cards in deck per character
+	Classes:
+		Change character classes
+		Level up:
+			Gain 1 card in your current class
+		Strength
+		Agility
+			Movement
+			Initiative
+		Magic
+		Health
+
+		Classes
+			Strength
+				1. Squire
+				Fighter
+				Barbarian
+				Medic
+				Knight
+
+			Agility
+				1. Pickpocket
+				Bard
+				Dancer
+				Thief
+				Rogue
+				Archer
+				Ranger
+				Sniper
+							   
+			Magic
+				1. Apprentice
+				Chronomancer
+				Necromancer
+				Mage
+				Sorcerer
+				Warlock
+				Cleric
+				Elementalist
+				Summoner

@@ -1,0 +1,77 @@
+﻿using System.Runtime.Serialization;
+using GameThing.Entities.Content;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
+namespace GameThing.Entities.Cards
+{
+	[DataContract]
+	public abstract class Card
+	{
+		private Texture2D sprite;
+		private SpriteFont font;
+		private const int CARD_MARGIN = 20;
+
+		public Card(string title, string description, int range, Character ownerCharacter)
+		{
+			Title = title;
+			Description = description;
+			Range = range;
+			OwnerCharacter = ownerCharacter;
+		}
+
+		public void SetContent(CardContent content)
+		{
+			sprite = content.Sprite;
+			font = content.Font;
+		}
+
+		public abstract void Play(int roundNumber, Character target = null);
+
+		public bool IsWithinRangeDistance(MapPoint checkPoint)
+		{
+			return OwnerCharacter.IsWithinDistanceOf(Range, checkPoint);
+		}
+
+		public void Draw(SpriteBatch spriteBatch, Vector2 position)
+		{
+			spriteBatch.Draw(sprite, position, null, Color.White, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
+
+			var textPosition = new Vector2
+			{
+				X = position.X + CARD_MARGIN,
+				Y = position.Y + CARD_MARGIN
+			};
+			spriteBatch.DrawString(font, Title, textPosition, Color.Black);
+
+			textPosition.Y += font.LineSpacing;
+			var maxLineWidth = Width - 2 * CARD_MARGIN;
+			spriteBatch.DrawString(font, Description.WrapText(font, maxLineWidth), textPosition, Color.Black);
+		}
+
+		public void Discard()
+		{
+			InHand = false;
+			InDiscard = true;
+		}
+
+		public int Width { get { return sprite.Width / 2; } }
+		public int Height { get { return sprite.Height / 2; } }
+		public Character OwnerCharacter { get; set; }
+
+		[DataMember]
+		public bool InHand { get; set; }
+
+		[DataMember]
+		public bool InDiscard { get; set; }
+
+		[DataMember]
+		public string Title { get; set; }
+
+		[DataMember]
+		public string Description { get; set; }
+
+		[DataMember]
+		public int Range { get; set; }
+	}
+}

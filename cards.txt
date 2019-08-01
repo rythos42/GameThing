@@ -1,0 +1,38 @@
+Want to implement a MTG/HS experience.
+Not super simple, maybe not as complex as MTG.
+
+
+Start cards:
+1. Clumsy Stab
+	Deal 100% Str damage at range 1.
+2. Bad Bandage
+	Heal 100% Magic to self.
+3. Awkward Distraction
+	Range 1
+	Condition: Next attack from another character deals 125% Str damage.
+4. Lame Taunt
+	Range 1
+	Condition: 70% chance next attack must attack this character.
+5. Fairie Fire 
+	Does nothing.
+6. Slow Jog
+	Condition: Your next move goes +1 distance.
+7. Weak Cheer
+	Range 1
+	Condition: Give another friendly character +100% Str
+
+
+Squire:
+1. Slightly Trained Stab
+	Range 1
+	Deal 120% Str damage.
+
+Pickpocket:
+1. Slipped Backstab
+	Range 1
+	If behind character, deal 150% Str damage.
+
+Apprentice:
+1. Arcane Missile
+	Ranage 5
+	Deal 100% Magic damage.
