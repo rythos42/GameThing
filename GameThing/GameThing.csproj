@@ -267,8 +267,6 @@
     </AndroidAsset>
     <AndroidAsset Include="Content\fonts\Carlito-Regular.xnb" />
     <None Include="packages.config" />
-    <None Include="Resources\AboutResources.txt" />
-    <None Include="Assets\AboutAssets.txt" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Values\Strings.xml" />

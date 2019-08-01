@@ -105,14 +105,19 @@ namespace GameThing.Entities
 		{
 			RemoveConditions(ConditionEndsOn.StartRound, condition => condition.RoundNumber + condition.Condition.TurnCount == roundNumber);
 
-			RemainingMoves = MaximumMoves;
-			RemainingPlayableCards = 2;
-			ActivatedThisRound = false;
+			ResetTurn();
 		}
 
 		public void EndTurn()
 		{
 			ActivatedThisRound = true;
+		}
+
+		public void ResetTurn()
+		{
+			RemainingMoves = MaximumMoves;
+			RemainingPlayableCards = 2;
+			ActivatedThisRound = false;
 		}
 
 		[DataMember]

@@ -89,7 +89,9 @@ namespace GameThing
 			var classEnumValues = Enum.GetValues(typeof(CharacterClass));
 			var thisCharacterClass = new Random().Next(0, classEnumValues.Length);
 
-			return new Character(side, colour, (CharacterClass) thisCharacterClass, x, y);
+			var character = new Character(side, colour, (CharacterClass) thisCharacterClass, x, y);
+			character.ResetTurn();
+			return character;
 		}
 
 		private void StartScreen_CreateMatch()
