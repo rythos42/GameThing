@@ -128,6 +128,7 @@ namespace GameThing.Screens
 			// Follow camera
 			spriteBatch.Begin(transformMatrix: camera.GetViewMatrix(), samplerState: SamplerState.PointClamp);
 			mapRenderer.Draw(map, camera.GetViewMatrix());
+			data.Characters.Sort(new CharacterDepthComparer());
 			data.Characters.ForEach(character => character.Draw(spriteBatch));
 			spriteBatch.End();
 

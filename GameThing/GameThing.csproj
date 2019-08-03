@@ -225,6 +225,7 @@
     <Compile Include="CharacterSide.cs" />
     <Compile Include="Entities\Cards\Card.cs" />
     <Compile Include="Entities\Character.cs" />
+    <Compile Include="Entities\CharacterDepthComparer.cs" />
     <Compile Include="Entities\Content\CardContent.cs" />
     <Compile Include="Entities\Content\CharacterContent.cs" />
     <Compile Include="Entities\HandOfCards.cs" />

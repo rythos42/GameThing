@@ -1,8 +1,4 @@
 Necessary UX:
-	- don't allow characters to move on top of each other
-	- characters overlap in a weird way when standing near each other
-		- need to implement a better draw order
-
 	- show explicitly when a new round starts
 	- show which side a player is on
 	- force person to do something with a character each turn
@@ -27,6 +23,7 @@ Necessary UX:
 Maybe necessary game dev
 	- random starting positions within a specified range
 	- terrain
+		- probably need to re-do drawing order during this
 	- Possible that some support cards need longer ranges
 	- Possible that decks need more starter attack cards
 	- Possibly need a defense card
@@ -105,6 +102,11 @@ MonoGame Extended Blog
 	https://github.com/craftworkgames/MonoGame.Extended/blob/develop/Source/Demos/Platformer/GameMain.cs
 	https://www.patreon.com/craftworkgames
 	http://www.monogameextended.net/posts
+
+Drawing/Sorting Sprites Isometric
+	https://github.com/craftworkgames/MonoGame.Extended/issues/230
+	https://gamedev.stackexchange.com/questions/103442/how-do-i-determine-the-draw-order-of-isometric-2d-objects-occupying-multiple-til
+	https://gamedev.stackexchange.com/questions/8151/how-do-i-sort-isometric-sprites-into-the-correct-order
 
 Independent Resolution: 
 	http://www.david-amador.com/2010/03/xna-2d-independent-resolution-rendering/
