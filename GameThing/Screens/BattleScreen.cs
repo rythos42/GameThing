@@ -24,9 +24,11 @@ namespace GameThing.Screens
 		private Character selectedCharacter;
 		private HandOfCards handOfCards = new HandOfCards();
 		private Card selectedCard;
-		private Button newTurnButton = new Button("New Turn", 40, 40, 300, 75);
 		private CharacterSide thisPlayerSide;
 		private Character lockedInCharacter = null;
+
+		private Button newTurnButton = new Button("New Turn", 40, 40, 300, 75);
+		private FadingTextPanel statusPanel = new FadingTextPanel(40, 160);
 
 		private CharacterContent characterContent;
 		private CardContent cardContent;
@@ -43,9 +45,16 @@ namespace GameThing.Screens
 			});
 			data = gameData;
 
-			var anyNotActivated = data.Characters.Any(character => !character.ActivatedThisRound);
-			if (!anyNotActivated)
+			var countOfActivatedPlayers = data.Characters.Count(character => character.ActivatedThisRound);
+			if (countOfActivatedPlayers == data.Characters.Count)
 				StartNextRound();
+
+			if (countOfActivatedPlayers <= 2)
+			{
+				// Show NEW ROUND for first two players
+				statusPanel.Text = "NEW ROUND";
+				statusPanel.Show();
+			}
 		}
 
 		public void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
@@ -55,6 +64,8 @@ namespace GameThing.Screens
 			camera = new Camera2D(graphicsDevice);
 			camera.LookAt(new Vector2(0, map.HeightInPixels / 2));  // center the map in the screen
 			newTurnButton.LoadContent(content, graphicsDevice);
+
+			statusPanel.LoadContent(content, graphicsDevice);
 
 			characterContent = new CharacterContent(content);
 			cardContent = new CardContent(content);
@@ -119,6 +130,8 @@ namespace GameThing.Screens
 				if (gesture.GestureType == GestureType.Tap)
 					Tap(gesture);
 			}
+
+			statusPanel.Update(gameTime);
 		}
 
 		public void Draw(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch, Rectangle clientBounds, GameTime gameTime)
@@ -138,6 +151,7 @@ namespace GameThing.Screens
 			if (selectedCharacter != null && selectedCharacter.Side == thisPlayerSide)
 				handOfCards.Draw(spriteBatch, clientBounds, selectedCharacter.CurrentHand);
 			newTurnButton.Draw(spriteBatch);
+			statusPanel.Draw(spriteBatch);
 			spriteBatch.End();
 		}
 

@@ -203,6 +203,8 @@
     <Compile Include="Android\BaseGameUtils\GameHelper.cs" />
     <Compile Include="Android\BaseGameUtils\GameHelperUtils.cs" />
     <Compile Include="Android\BaseGameUtils\IGameHelperListener.cs" />
+    <Compile Include="UI\FadingTextPanel.cs" />
+    <Compile Include="UI\UIComponent.cs" />
     <None Include="Android\BaseGameUtils\README.md" />
     <Compile Include="Android\BaseGameUtils\SignInFailureReason.cs" />
     <Compile Include="ApplicationData.cs" />

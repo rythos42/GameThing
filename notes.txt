@@ -1,5 +1,4 @@
 Necessary UX:
-	- show explicitly when a new round starts
 	- show which side a player is on
 	- force person to do something with a character each turn
 	- hide new turn button if not your turn
@@ -19,6 +18,8 @@ Necessary UX:
 	- turn bottom characters around
 	- show remaining cards in deck
 	- TauntCondition needs a message for success/fail
+	- starting game from GPG throws because game data is null
+	- ability to go back to main screen from game
 
 Maybe necessary game dev
 	- random starting positions within a specified range
