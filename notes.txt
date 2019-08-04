@@ -1,6 +1,4 @@
 Necessary UX:
-	- show which side a player is on
-	- force person to do something with a character each turn
 	- hide new turn button if not your turn
 	- hide cards after pressing new turn button
 	- show when your turn is done because you can't do anything else
@@ -8,7 +6,6 @@ Necessary UX:
 		- show when characters can't play cards anymore
 	- note when character is "locked in" and which character can be played, even after you de-select
 	- allow players to look at their shit when it's their turn
-	- after characters die can end in a place where one side has nothing left to move but the other does
 	- stuff at range 0 played on self without needing to tap again
 	- show which player is selected and their stats
 	- show which card is selected
@@ -17,6 +14,7 @@ Necessary UX:
 	- selected card shows available target range
 	- turn bottom characters around
 	- show remaining cards in deck
+	- show which side a player is on
 	- TauntCondition needs a message for success/fail
 	- starting game from GPG throws because game data is null
 	- ability to go back to main screen from game
@@ -47,6 +45,7 @@ Nice to have:
 	- pan is to SLOW, or needs a bounce to it
 	- fix autorotate landscape
 	- Awkward Distraction is awkwardly written
+	- save the game after each time a character goes, rather than after each player turn (one side with extra characters, game isn't saved between character turns)
 
 Tech
 	- decent chance that GameHelper/BaseGameActivity aren't doing the right things anymore -- seems to be a mash-up of older sign-in code and newer

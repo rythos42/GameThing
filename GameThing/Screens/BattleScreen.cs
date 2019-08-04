@@ -45,16 +45,14 @@ namespace GameThing.Screens
 			});
 			data = gameData;
 
+			// Start next round if all characters activated
 			var countOfActivatedPlayers = data.Characters.Count(character => character.ActivatedThisRound);
 			if (countOfActivatedPlayers == data.Characters.Count)
 				StartNextRound();
 
+			// Show NEW ROUND for first two players
 			if (countOfActivatedPlayers <= 2)
-			{
-				// Show NEW ROUND for first two players
-				statusPanel.Text = "NEW ROUND";
-				statusPanel.Show();
-			}
+				statusPanel.Show("NEW ROUND");
 		}
 
 		public void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
@@ -90,10 +88,22 @@ namespace GameThing.Screens
 
 		private void NextPlayerTurn()
 		{
+			if (lockedInCharacter == null)
+			{
+				statusPanel.Show("You must activate a character this turn.");
+				return;
+			}
+
 			lockedInCharacter?.EndTurn();
 			lockedInCharacter = null;
-			data.ChangePlayingSide();
 
+			if (data.OtherSideHasNoRemainingCharactersAndIHaveSome)
+			{
+				statusPanel.Show("Opponent has no more characters to activate, go again!");
+				return;
+			}
+
+			data.ChangePlayingSide();
 			NextPlayersTurn?.Invoke(data);
 		}
 
@@ -148,9 +158,12 @@ namespace GameThing.Screens
 			// Don't follow camera
 			spriteBatch.Begin();
 			// Draw a characters hand of cards if player is playing that side
-			if (selectedCharacter != null && selectedCharacter.Side == thisPlayerSide)
+			if (selectedCharacter != null && selectedCharacter.Side == thisPlayerSide && thisPlayerSide == data.CurrentSidesTurn)
 				handOfCards.Draw(spriteBatch, clientBounds, selectedCharacter.CurrentHand);
-			newTurnButton.Draw(spriteBatch);
+
+			if (thisPlayerSide == data.CurrentSidesTurn)
+				newTurnButton.Draw(spriteBatch);
+
 			statusPanel.Draw(spriteBatch);
 			spriteBatch.End();
 		}

@@ -31,6 +31,19 @@ namespace GameThing
 			CurrentSidesTurn = CurrentSidesTurn == CharacterSide.Spaghetti ? CharacterSide.Unicorn : CharacterSide.Spaghetti;
 		}
 
+		public bool OtherSideHasNoRemainingCharactersAndIHaveSome
+		{
+			get
+			{
+				var iHaveCharactersToActivate = Characters.Any(character => character.Side == CurrentSidesTurn && !character.ActivatedThisRound);
+				if (!iHaveCharactersToActivate)
+					return false;
+
+				var otherSide = CurrentSidesTurn == CharacterSide.Spaghetti ? CharacterSide.Unicorn : CharacterSide.Spaghetti;
+				return !Characters.Any(character => character.Side == otherSide && !character.ActivatedThisRound);
+			}
+		}
+
 		public string GetParticipantIdForCurrentSide()
 		{
 			return Sides.SingleOrDefault(keyValuePair => keyValuePair.Value == CurrentSidesTurn).Key;

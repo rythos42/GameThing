@@ -24,8 +24,9 @@ namespace GameThing.UI
 		public TimeSpan ShowFor { get; set; } = new TimeSpan(0, 0, 10);
 		public string Text { get; set; }
 
-		public void Show()
+		public void Show(string text)
 		{
+			Text = text;
 			startShowing = true;
 		}
 
