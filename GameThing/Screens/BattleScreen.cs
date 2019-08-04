@@ -28,7 +28,7 @@ namespace GameThing.Screens
 		private Character lockedInCharacter = null;
 
 		private Button newTurnButton = new Button("New Turn", 40, 40, 300, 75);
-		private FadingTextPanel statusPanel = new FadingTextPanel(40, 160);
+		private FadingTextPanel statusPanel = new FadingTextPanel(40, 40) { PlaceFromRight = true };
 
 		private CharacterContent characterContent;
 		private CardContent cardContent;
@@ -46,11 +46,12 @@ namespace GameThing.Screens
 			data = gameData;
 
 			// Start next round if all characters activated
-			var countOfActivatedPlayers = data.Characters.Count(character => character.ActivatedThisRound);
-			if (countOfActivatedPlayers == data.Characters.Count)
+			var anyNotActivated = data.Characters.Any(character => !character.ActivatedThisRound);
+			if (!anyNotActivated)
 				StartNextRound();
 
-			// Show NEW ROUND for first two players
+			// Show NEW ROUND for first two players, have to recalculate after StartNextRound or it won't show NEW ROUND
+			var countOfActivatedPlayers = data.Characters.Count(character => character.ActivatedThisRound);
 			if (countOfActivatedPlayers <= 2)
 				statusPanel.Show("NEW ROUND");
 		}

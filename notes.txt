@@ -1,6 +1,4 @@
 Necessary UX:
-	- hide new turn button if not your turn
-	- hide cards after pressing new turn button
 	- show when your turn is done because you can't do anything else
 		- show when characters out of moves
 		- show when characters can't play cards anymore
@@ -46,6 +44,7 @@ Nice to have:
 	- fix autorotate landscape
 	- Awkward Distraction is awkwardly written
 	- save the game after each time a character goes, rather than after each player turn (one side with extra characters, game isn't saved between character turns)
+	- hide "No more moves from opponent" status panel when ending turn
 
 Tech
 	- decent chance that GameHelper/BaseGameActivity aren't doing the right things anymore -- seems to be a mash-up of older sign-in code and newer

@@ -45,6 +45,8 @@ namespace GameThing.UI
 			panelTexture.SetData(backgroundColour);
 		}
 
+		public bool PlaceFromRight { get; set; }
+
 		public override void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
 		{
 			shadowTexture = new Texture2D(graphicsDevice, 1, 1);
@@ -81,9 +83,20 @@ namespace GameThing.UI
 
 			CreateGradient(width, height, spriteBatch.GraphicsDevice);
 
-			spriteBatch.Draw(shadowTexture, new Rectangle(X + BOX_SHADOW_X, Y + BOX_SHADOW_Y, width, height), Color.White);
-			spriteBatch.Draw(panelTexture, new Rectangle(X, Y, width, height), Color.White);
-			spriteBatch.DrawString(font, Text, new Vector2(X + MARGIN_X, Y + MARGIN_Y), Color.Black);
+			if (PlaceFromRight)
+			{
+				var x = spriteBatch.GraphicsDevice.PresentationParameters.BackBufferWidth - width - MARGIN_X;
+				spriteBatch.Draw(shadowTexture, new Rectangle(x + BOX_SHADOW_X, Y + BOX_SHADOW_Y, width, height), Color.White);
+				spriteBatch.Draw(panelTexture, new Rectangle(x, Y, width, height), Color.White);
+				spriteBatch.DrawString(font, Text, new Vector2(x + MARGIN_X, Y + MARGIN_Y), Color.Black);
+			}
+			else
+			{
+				spriteBatch.Draw(shadowTexture, new Rectangle(X + BOX_SHADOW_X, Y + BOX_SHADOW_Y, width, height), Color.White);
+				spriteBatch.Draw(panelTexture, new Rectangle(X, Y, width, height), Color.White);
+				spriteBatch.DrawString(font, Text, new Vector2(X + MARGIN_X, Y + MARGIN_Y), Color.Black);
+
+			}
 		}
 	}
 }
