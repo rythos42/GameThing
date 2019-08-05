@@ -16,6 +16,7 @@ Necessary UX:
 	- TauntCondition needs a message for success/fail
 	- starting game from GPG throws because game data is null
 	- ability to go back to main screen from game
+	- give players names
 
 Maybe necessary game dev
 	- random starting positions within a specified range

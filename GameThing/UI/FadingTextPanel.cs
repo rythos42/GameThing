@@ -5,11 +5,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GameThing.UI
 {
-	public class FadingTextPanel : UIComponent
+	public class FadingTextPanel : Panel
 	{
 		private SpriteFont font;
-		private Texture2D panelTexture;
-		private Texture2D shadowTexture;
 
 		private bool showing = false;
 		private bool startShowing = false;
@@ -30,33 +28,22 @@ namespace GameThing.UI
 			startShowing = true;
 		}
 
-		public void CreateGradient(int width, int height, GraphicsDevice graphicsDevice)
+		protected override Vector2 MeasureContent()
 		{
-			panelTexture = new Texture2D(graphicsDevice, width, height);
-			var backgroundColour = new Color[height * width];
-			var startingShade = 150;
-
-			for (var i = 0; i < backgroundColour.Length; i++)
-			{
-				var textColour = startingShade + i / (height * 2);
-				backgroundColour[i] = new Color(textColour, textColour, textColour, 0);
-			}
-
-			panelTexture.SetData(backgroundColour);
+			return font.MeasureString(Text);
 		}
-
-		public bool PlaceFromRight { get; set; }
 
 		public override void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
 		{
-			shadowTexture = new Texture2D(graphicsDevice, 1, 1);
-			shadowTexture.SetData(new Color[] { Color.Black });
+			base.LoadContent(content, graphicsDevice);
 
 			font = content.Load<SpriteFont>("fonts/Carlito-Regular");
 		}
 
 		public override void Update(GameTime gameTime)
 		{
+			base.Update(gameTime);
+
 			if (startShowing)
 			{
 				startedShowingAt = gameTime.TotalGameTime;
@@ -77,26 +64,11 @@ namespace GameThing.UI
 
 			base.Draw(spriteBatch);
 
-			var textSize = font.MeasureString(Text);
-			var width = (int) textSize.X + MARGIN_X * 2;
-			var height = (int) textSize.Y + MARGIN_Y * 2;
+			var drawingPosition = GetDrawingPosition(spriteBatch.GraphicsDevice);
+			var x = (int) drawingPosition.X;
+			var y = (int) drawingPosition.Y;
 
-			CreateGradient(width, height, spriteBatch.GraphicsDevice);
-
-			if (PlaceFromRight)
-			{
-				var x = spriteBatch.GraphicsDevice.PresentationParameters.BackBufferWidth - width - MARGIN_X;
-				spriteBatch.Draw(shadowTexture, new Rectangle(x + BOX_SHADOW_X, Y + BOX_SHADOW_Y, width, height), Color.White);
-				spriteBatch.Draw(panelTexture, new Rectangle(x, Y, width, height), Color.White);
-				spriteBatch.DrawString(font, Text, new Vector2(x + MARGIN_X, Y + MARGIN_Y), Color.Black);
-			}
-			else
-			{
-				spriteBatch.Draw(shadowTexture, new Rectangle(X + BOX_SHADOW_X, Y + BOX_SHADOW_Y, width, height), Color.White);
-				spriteBatch.Draw(panelTexture, new Rectangle(X, Y, width, height), Color.White);
-				spriteBatch.DrawString(font, Text, new Vector2(X + MARGIN_X, Y + MARGIN_Y), Color.Black);
-
-			}
+			spriteBatch.DrawString(font, Text, new Vector2(x + MARGIN_X, y + MARGIN_Y), Color.Black);
 		}
 	}
 }
