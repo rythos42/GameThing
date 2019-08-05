@@ -150,9 +150,10 @@ namespace GameThing.Screens
 			graphicsDevice.Clear(Color.CornflowerBlue);
 
 			// Follow camera
-			spriteBatch.Begin(transformMatrix: camera.GetViewMatrix(), samplerState: SamplerState.PointClamp);
+			spriteBatch.Begin(transformMatrix: camera.GetViewMatrix(), samplerState: SamplerState.PointClamp, blendState: BlendState.AlphaBlend);
 			mapRenderer.Draw(map, camera.GetViewMatrix());
 			data.Characters.Sort(new CharacterDepthComparer());
+			data.Characters.SingleOrDefault(character => character == selectedCharacter && character.HasRemainingMoves && character.Side == thisPlayerSide)?.DrawMovementRange(spriteBatch);
 			data.Characters.ForEach(character => character.Draw(spriteBatch));
 			spriteBatch.End();
 

@@ -14,6 +14,7 @@ namespace GameThing.Entities
 	public class Character
 	{
 		private Texture2D sprite;
+		private Texture2D availableMovementTexture;
 		private static Random rng = new Random();
 
 		public Character(CharacterSide side, CharacterColour colour, CharacterClass characterClass, int x, int y)
@@ -27,6 +28,7 @@ namespace GameThing.Entities
 		public void SetContent(CharacterContent content)
 		{
 			sprite = content.GetSpriteFor(this);
+			availableMovementTexture = content.GetAvailableMovementTexture();
 		}
 
 		[DataMember]
@@ -237,6 +239,31 @@ namespace GameThing.Entities
 			drawPosition.X -= sprite.Width / 2;
 
 			spriteBatch.Draw(sprite, drawPosition, Color.White);
+		}
+
+		public void DrawMovementRange(SpriteBatch spriteBatch)
+		{
+			for (var i = -1 * RemainingMoves; i < RemainingMoves + 1; i++)
+			{
+				var mapX = MapPosition.X + i;
+				if (mapX < 0 || mapX > 29)
+					continue;
+
+				var absX = Math.Abs(i);
+
+				for (var j = -1 * RemainingMoves; j < RemainingMoves + 1; j++)
+				{
+					if (absX + Math.Abs(j) > RemainingMoves)
+						continue;
+
+					var mapY = MapPosition.Y + j;
+					if (mapY < 0 || mapY > 29)
+						continue;
+
+					var screenPosition = new MapPoint { X = mapX, Y = mapY }.GetScreenPosition();
+					spriteBatch.Draw(availableMovementTexture, new Rectangle((int) screenPosition.X - MapPoint.TileWidth_Half, (int) screenPosition.Y, 64, 32), Color.White * 0.5f);
+				}
+			}
 		}
 	}
 }

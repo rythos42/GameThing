@@ -8,7 +8,6 @@ Necessary UX:
 	- show which player is selected and their stats
 	- show which card is selected
 	- make squares on map visible
-	- selected character to show available movement range
 	- selected card shows available target range
 	- turn bottom characters around
 	- show remaining cards in deck
@@ -59,6 +58,9 @@ Game Dev
 	- have characters face the direction they last moved towards
 	- make movement depend on agilty score
 		- make runcondition an agility buff?
+
+Outstanding Questions
+	- Why do I have to subtract TileWidth_Half from drawing movement ranges?
 
 
 Started around June 9th
@@ -117,6 +119,7 @@ More pinchzoom:
 	https://stackoverflow.com/questions/18889441/implementing-zoom-using-monogame-and-two-fingers-gesture
 	
 Isometric math:
+	Stole "available_movement.png" from here
 	http://clintbellanger.net/articles/isometric_math/
 
 Free stuff

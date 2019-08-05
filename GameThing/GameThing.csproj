@@ -270,6 +270,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
     <AndroidAsset Include="Content\fonts\Carlito-Regular.xnb" />
+    <AndroidAsset Include="Content\sprites\available_movement.xnb" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

@@ -5,10 +5,10 @@ namespace GameThing
 {
 	public class MapPoint
 	{
-		private const int TileWidth = 64;
-		private const int TileWidth_Half = TileWidth / 2;
-		private const int TileHeight = 32;
-		private const int TileHeight_Half = TileHeight / 2;
+		public const int TileWidth = 64;
+		public const int TileWidth_Half = TileWidth / 2;
+		public const int TileHeight = 32;
+		public const int TileHeight_Half = TileHeight / 2;
 
 		public int X { get; set; }
 		public int Y { get; set; }
