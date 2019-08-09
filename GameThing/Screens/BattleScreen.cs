@@ -66,8 +66,9 @@ namespace GameThing.Screens
 
 			statusPanel.LoadContent(content, graphicsDevice);
 
-			characterContent = new CharacterContent(content);
-			cardContent = new CardContent(content);
+			var commonContent = new CommonContent(content);
+			characterContent = new CharacterContent(content, commonContent);
+			cardContent = new CardContent(content, commonContent);
 		}
 
 		public void StartGame(string myParticipantId)
@@ -154,6 +155,7 @@ namespace GameThing.Screens
 			mapRenderer.Draw(map, camera.GetViewMatrix());
 			data.Characters.Sort(new CharacterDepthComparer());
 			data.Characters.SingleOrDefault(character => character == selectedCharacter && character.HasRemainingMoves && character.Side == thisPlayerSide)?.DrawMovementRange(spriteBatch);
+			selectedCard?.DrawEffectRange(spriteBatch);
 			data.Characters.ForEach(character => character.Draw(spriteBatch));
 			spriteBatch.End();
 

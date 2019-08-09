@@ -7,13 +7,12 @@ namespace GameThing.Entities.Content
 {
 	public class CharacterContent
 	{
-		private readonly ContentManager content;
 		private readonly Dictionary<string, Texture2D> sprites = new Dictionary<string, Texture2D>();
-		private readonly Texture2D availableMovementTexture;
+		private readonly CommonContent common;
 
-		public CharacterContent(ContentManager content)
+		public CharacterContent(ContentManager content, CommonContent common)
 		{
-			this.content = content;
+			this.common = common;
 
 			foreach (CharacterSide side in Enum.GetValues(typeof(CharacterSide)))
 			{
@@ -22,8 +21,6 @@ namespace GameThing.Entities.Content
 					sprites[CreateKey(side, colour)] = content.Load<Texture2D>($"sprites/{side.ToString().ToLower()}_atlas_{colour.ToString().ToLower()}");
 				}
 			}
-
-			availableMovementTexture = content.Load<Texture2D>("sprites/available_movement");
 		}
 
 		public Texture2D GetSpriteFor(Character character)
@@ -36,9 +33,9 @@ namespace GameThing.Entities.Content
 			return $"{side}:{colour}";
 		}
 
-		public Texture2D GetAvailableMovementTexture()
+		public Texture2D AvailableMovementTexture
 		{
-			return availableMovementTexture;
+			get { return common.DistanceOverlay; }
 		}
 	}
 }

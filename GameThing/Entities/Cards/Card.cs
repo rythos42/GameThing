@@ -10,6 +10,7 @@ namespace GameThing.Entities.Cards
 	{
 		private Texture2D sprite;
 		private SpriteFont font;
+		private Texture2D availableRangeTexture;
 		private const int CARD_MARGIN = 20;
 
 		public Card(string title, string description, int range, Character ownerCharacter)
@@ -24,6 +25,7 @@ namespace GameThing.Entities.Cards
 		{
 			sprite = content.Sprite;
 			font = content.Font;
+			availableRangeTexture = content.AvailableRangeTexture;
 		}
 
 		public abstract void Play(int roundNumber, Character target = null);
@@ -47,6 +49,11 @@ namespace GameThing.Entities.Cards
 			textPosition.Y += font.LineSpacing;
 			var maxLineWidth = Width - 2 * CARD_MARGIN;
 			spriteBatch.DrawString(font, Description.WrapText(font, maxLineWidth), textPosition, Color.Black);
+		}
+
+		public void DrawEffectRange(SpriteBatch spriteBatch)
+		{
+			MapHelper.DrawRange(Range, OwnerCharacter.MapPosition, spriteBatch, availableRangeTexture, Color.Aqua);
 		}
 
 		public void Discard()

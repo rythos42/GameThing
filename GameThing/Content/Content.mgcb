@@ -21,18 +21,6 @@
 /processorParam:TextureFormat=Compressed
 /build:fonts/Carlito-Regular.spritefont
 
-#begin sprites/available_movement.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:sprites/available_movement.png
-
 #begin sprites/card.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -44,6 +32,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:sprites/card.png
+
+#begin sprites/distance_overlay.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:sprites/distance_overlay.png
 
 #begin sprites/spaghetti_atlas_blue.png
 /importer:TextureImporter

@@ -203,6 +203,8 @@
     <Compile Include="Android\BaseGameUtils\GameHelper.cs" />
     <Compile Include="Android\BaseGameUtils\GameHelperUtils.cs" />
     <Compile Include="Android\BaseGameUtils\IGameHelperListener.cs" />
+    <Compile Include="Entities\Content\CommonContent.cs" />
+    <Compile Include="MapHelper.cs" />
     <Compile Include="UI\FadingTextPanel.cs" />
     <Compile Include="UI\Panel.cs" />
     <Compile Include="UI\UIComponent.cs" />
@@ -270,7 +272,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AndroidAsset>
     <AndroidAsset Include="Content\fonts\Carlito-Regular.xnb" />
-    <AndroidAsset Include="Content\sprites\available_movement.xnb" />
+    <AndroidAsset Include="Content\sprites\distance_overlay.xnb" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
