@@ -8,7 +8,6 @@ Necessary UX:
 	- show which player is selected and their stats
 	- show which card is selected
 	- make squares on map visible
-	- selected card shows available target range
 	- turn bottom characters around
 	- show remaining cards in deck
 	- show which side a player is on
