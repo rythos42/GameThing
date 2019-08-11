@@ -6,7 +6,6 @@ Necessary UX:
 	- allow players to look at their shit when it's their turn
 	- stuff at range 0 played on self without needing to tap again
 	- show which player is selected and their stats
-	- show which card is selected
 	- make squares on map visible
 	- turn bottom characters around
 	- show remaining cards in deck
@@ -44,10 +43,12 @@ Nice to have:
 	- Awkward Distraction is awkwardly written
 	- save the game after each time a character goes, rather than after each player turn (one side with extra characters, game isn't saved between character turns)
 	- hide "No more moves from opponent" status panel when ending turn
+	- fix selected card shader so it sucks less
 
 Tech
 	- decent chance that GameHelper/BaseGameActivity aren't doing the right things anymore -- seems to be a mash-up of older sign-in code and newer
 	- lots of events being passed through MainGame to MainActivity -- wonder if there is a better architecture that still keeps the Android pieces separate
+	- not calling UnloadContent anywhere
 
 Game Dev
 	- evaluate whether single character or whole side is a better turn
@@ -133,3 +134,6 @@ Free stuff
 Example
 	https://roguesharp.wordpress.com
 
+
+Dedications:
+	https://github.com/UnterrainerInformatik/BloomEffectRenderer 

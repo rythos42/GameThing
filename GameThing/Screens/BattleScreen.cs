@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using GameThing.Entities;
 using GameThing.Entities.Cards;
-using GameThing.Entities.Content;
 using GameThing.Events;
 using GameThing.UI;
 using Microsoft.Xna.Framework;
@@ -30,8 +29,7 @@ namespace GameThing.Screens
 		private Button newTurnButton = new Button("New Turn", 40, 40, 300, 75);
 		private FadingTextPanel statusPanel = new FadingTextPanel(40, 40) { PlaceFromRight = true };
 
-		private CharacterContent characterContent;
-		private CardContent cardContent;
+		private Content content;
 
 		public event NextPlayersTurnEventHandler NextPlayersTurn;
 		public event GameOverEventHandler GameOver;
@@ -40,8 +38,8 @@ namespace GameThing.Screens
 		{
 			gameData.Characters.ForEach(character =>
 			{
-				character.SetContent(characterContent);
-				character.Deck.ForEach(card => card.SetContent(cardContent));
+				character.SetContent(content);
+				character.Deck.ForEach(card => card.SetContent(content));
 			});
 			data = gameData;
 
@@ -66,9 +64,7 @@ namespace GameThing.Screens
 
 			statusPanel.LoadContent(content, graphicsDevice);
 
-			var commonContent = new CommonContent(content);
-			characterContent = new CharacterContent(content, commonContent);
-			cardContent = new CardContent(content, commonContent);
+			this.content = new Content(content);
 		}
 
 		public void StartGame(string myParticipantId)
@@ -154,20 +150,21 @@ namespace GameThing.Screens
 			spriteBatch.Begin(transformMatrix: camera.GetViewMatrix(), samplerState: SamplerState.PointClamp, blendState: BlendState.AlphaBlend);
 			mapRenderer.Draw(map, camera.GetViewMatrix());
 			data.Characters.Sort(new CharacterDepthComparer());
-			data.Characters.SingleOrDefault(character => character == selectedCharacter && character.HasRemainingMoves && character.Side == thisPlayerSide)?.DrawMovementRange(spriteBatch);
-			selectedCard?.DrawEffectRange(spriteBatch);
+			if (selectedCard == null)
+				data.Characters.SingleOrDefault(character => character == selectedCharacter && character.HasRemainingMoves && character.Side == thisPlayerSide)?.DrawMovementRange(spriteBatch);
+			else
+				selectedCard.DrawEffectRange(spriteBatch);
 			data.Characters.ForEach(character => character.Draw(spriteBatch));
 			spriteBatch.End();
 
-			// Don't follow camera
-			spriteBatch.Begin();
 			// Draw a characters hand of cards if player is playing that side
 			if (selectedCharacter != null && selectedCharacter.Side == thisPlayerSide && thisPlayerSide == data.CurrentSidesTurn)
-				handOfCards.Draw(spriteBatch, clientBounds, selectedCharacter.CurrentHand);
+				handOfCards.Draw(spriteBatch, clientBounds, selectedCharacter.CurrentHand, selectedCard);
 
+			// Draw UI
+			spriteBatch.Begin();
 			if (thisPlayerSide == data.CurrentSidesTurn)
 				newTurnButton.Draw(spriteBatch);
-
 			statusPanel.Draw(spriteBatch);
 			spriteBatch.End();
 		}

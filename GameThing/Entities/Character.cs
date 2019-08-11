@@ -4,7 +4,6 @@ using System.Linq;
 using System.Runtime.Serialization;
 using GameThing.Entities.Cards;
 using GameThing.Entities.Cards.Conditions;
-using GameThing.Entities.Content;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -25,10 +24,10 @@ namespace GameThing.Entities
 			Colour = colour;
 		}
 
-		public void SetContent(CharacterContent content)
+		public void SetContent(Content content)
 		{
 			sprite = content.GetSpriteFor(this);
-			availableMovementTexture = content.AvailableMovementTexture;
+			availableMovementTexture = content.DistanceOverlay;
 		}
 
 		[DataMember]
