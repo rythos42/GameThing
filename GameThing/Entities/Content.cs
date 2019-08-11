@@ -14,7 +14,8 @@ namespace GameThing.Entities
 			CardSprite = content.Load<Texture2D>("sprites/card");
 			Font = content.Load<SpriteFont>("fonts/Carlito-Regular");
 			DistanceOverlay = content.Load<Texture2D>("sprites/distance_overlay");
-			GaussianBlur = content.Load<Effect>("effects/gaussian_blur");
+
+			Highlight = content.Load<Effect>("effects/highlight");
 
 			foreach (CharacterSide side in Enum.GetValues(typeof(CharacterSide)))
 			{
@@ -26,7 +27,8 @@ namespace GameThing.Entities
 		}
 
 		public Texture2D DistanceOverlay { get; private set; }
-		public Effect GaussianBlur { get; private set; }
+
+		public Effect Highlight { get; private set; }
 
 		public Texture2D CardSprite { get; private set; }
 		public SpriteFont Font { get; private set; }

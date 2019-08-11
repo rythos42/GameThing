@@ -14,11 +14,11 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin effects/gaussian_blur.fx
+#begin effects/highlight.fx
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
-/build:effects/gaussian_blur.fx
+/build:effects/highlight.fx
 
 #begin fonts/Carlito-Regular.spritefont
 /importer:FontDescriptionImporter

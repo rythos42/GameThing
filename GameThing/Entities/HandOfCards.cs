@@ -75,13 +75,10 @@ namespace GameThing.Entities
 			spriteBatch.Begin();
 			foreach (var cardPosition in cardPositions)
 			{
-				if (cardPosition == selectedCardPosition)
-				{
-					cardPosition.Card.DrawCardText(spriteBatch, cardPosition.Origin);
-					continue;
-				}
+				if (cardPosition != selectedCardPosition)
+					cardPosition.Card.DrawCard(spriteBatch, cardPosition.Origin);
 
-				cardPosition.Card.Draw(spriteBatch, cardPosition.Origin);
+				cardPosition.Card.DrawCardText(spriteBatch, cardPosition.Origin);
 			}
 			spriteBatch.End();
 		}

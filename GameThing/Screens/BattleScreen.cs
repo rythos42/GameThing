@@ -149,13 +149,20 @@ namespace GameThing.Screens
 			// Follow camera
 			spriteBatch.Begin(transformMatrix: camera.GetViewMatrix(), samplerState: SamplerState.PointClamp, blendState: BlendState.AlphaBlend);
 			mapRenderer.Draw(map, camera.GetViewMatrix());
-			data.Characters.Sort(new CharacterDepthComparer());
 			if (selectedCard == null)
 				data.Characters.SingleOrDefault(character => character == selectedCharacter && character.HasRemainingMoves && character.Side == thisPlayerSide)?.DrawMovementRange(spriteBatch);
 			else
 				selectedCard.DrawEffectRange(spriteBatch);
-			data.Characters.ForEach(character => character.Draw(spriteBatch));
+			data.Characters.Sort(new CharacterDepthComparer());
+			foreach (var character in data.Characters)
+			{
+				if (character == selectedCharacter)
+					continue;
+				character.Draw(spriteBatch);
+			}
 			spriteBatch.End();
+
+			selectedCharacter?.DrawSelectedCharacter(spriteBatch, camera.GetViewMatrix());
 
 			// Draw a characters hand of cards if player is playing that side
 			if (selectedCharacter != null && selectedCharacter.Side == thisPlayerSide && thisPlayerSide == data.CurrentSidesTurn)

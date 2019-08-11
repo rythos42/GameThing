@@ -14,6 +14,7 @@ namespace GameThing.Entities
 	{
 		private Texture2D sprite;
 		private Texture2D availableMovementTexture;
+		private Effect selectedCharacterEffect;
 		private static Random rng = new Random();
 
 		public Character(CharacterSide side, CharacterColour colour, CharacterClass characterClass, int x, int y)
@@ -28,6 +29,7 @@ namespace GameThing.Entities
 		{
 			sprite = content.GetSpriteFor(this);
 			availableMovementTexture = content.DistanceOverlay;
+			selectedCharacterEffect = content.Highlight;
 		}
 
 		[DataMember]
@@ -238,6 +240,27 @@ namespace GameThing.Entities
 			drawPosition.X -= sprite.Width / 2;
 
 			spriteBatch.Draw(sprite, drawPosition, Color.White);
+		}
+
+		public void DrawSelectedCharacter(SpriteBatch spriteBatch, Matrix transformMatrix)
+		{
+			selectedCharacterEffect.Parameters["BloomThreshold"].SetValue(0.25f);
+			selectedCharacterEffect.Parameters["BloomIntensity"].SetValue(1.25f);
+			selectedCharacterEffect.Parameters["BaseIntensity"].SetValue(1f);
+			selectedCharacterEffect.Parameters["BloomSaturation"].SetValue(1f);
+			selectedCharacterEffect.Parameters["BaseSaturation"].SetValue(1f);
+			selectedCharacterEffect.Parameters["BaseTextureSampler+BaseTexture"].SetValue(sprite);
+
+			spriteBatch.Begin(
+				transformMatrix: transformMatrix,
+				sortMode: SpriteSortMode.BackToFront,
+				blendState: BlendState.AlphaBlend,
+				samplerState: SamplerState.AnisotropicWrap,
+				effect: selectedCharacterEffect);
+
+			Draw(spriteBatch);
+
+			spriteBatch.End();
 		}
 
 		public void DrawMovementRange(SpriteBatch spriteBatch)

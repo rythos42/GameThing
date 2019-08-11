@@ -271,7 +271,7 @@
     </AndroidAsset>
     <AndroidAsset Include="Content\fonts\Carlito-Regular.xnb" />
     <AndroidAsset Include="Content\sprites\distance_overlay.xnb" />
-    <AndroidAsset Include="Content\effects\gaussian_blur.xnb" />
+    <AndroidAsset Include="Content\effects\highlight.xnb" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -292,7 +292,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\effects\gaussian_blur.fx" />
+    <Content Include="Content\effects\highlight.fx" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

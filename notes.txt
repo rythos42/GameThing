@@ -1,19 +1,18 @@
 Necessary UX:
 	- show when your turn is done because you can't do anything else
-		- show when characters out of moves
-		- show when characters can't play cards anymore
+		- show when character out of moves
+		- show when character can't play cards anymore
 	- note when character is "locked in" and which character can be played, even after you de-select
 	- allow players to look at their shit when it's their turn
 	- stuff at range 0 played on self without needing to tap again
-	- show which player is selected and their stats
-	- make squares on map visible
+	- show selected player stats
+		- remaining cards in character deck
+		- character names
 	- turn bottom characters around
-	- show remaining cards in deck
 	- show which side a player is on
 	- TauntCondition needs a message for success/fail
 	- starting game from GPG throws because game data is null
 	- ability to go back to main screen from game
-	- give players names
 
 Maybe necessary game dev
 	- random starting positions within a specified range
@@ -43,14 +42,14 @@ Nice to have:
 	- Awkward Distraction is awkwardly written
 	- save the game after each time a character goes, rather than after each player turn (one side with extra characters, game isn't saved between character turns)
 	- hide "No more moves from opponent" status panel when ending turn
-	- fix selected card shader so it sucks less
+	- warnings in Monogame Pipeline
 
 Tech
 	- decent chance that GameHelper/BaseGameActivity aren't doing the right things anymore -- seems to be a mash-up of older sign-in code and newer
 	- lots of events being passed through MainGame to MainActivity -- wonder if there is a better architecture that still keeps the Android pieces separate
 	- not calling UnloadContent anywhere
 
-Game Dev
+Game Design
 	- evaluate whether single character or whole side is a better turn
 	- make character facing directions (like for Slipped Backstab)
 		- there's no "behind" for this to do anything with
@@ -130,6 +129,11 @@ Free stuff
 	https://opengameart.org/content/isometric-64x64-outside-tileset
 	https://opengameart.org/content/isometric-64x64-medieval-building-tileset
 	https://erikari.itch.io/elements-supremacy-assets
+
+Shaders
+	http://community.monogame.net/t/applying-shader-on-one-sprite-only/9893/7
+	http://community.monogame.net/t/writing-your-own-2d-pixel-shader-in-monogame-for-absolute-beginners/10883
+	http://community.monogame.net/t/writing-your-own-2d-pixel-shader-in-monogame-for-absolute-beginners/10883
 
 Example
 	https://roguesharp.wordpress.com
