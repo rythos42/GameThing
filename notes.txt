@@ -2,7 +2,6 @@ Necessary UX:
 	- show when your turn is done because you can't do anything else
 		- show when character out of moves
 		- show when character can't play cards anymore
-	- note when character is "locked in" and which character can be played, even after you de-select
 	- allow players to look at their shit when it's their turn
 	- stuff at range 0 played on self without needing to tap again
 	- show selected player stats
@@ -57,10 +56,6 @@ Game Design
 	- have characters face the direction they last moved towards
 	- make movement depend on agilty score
 		- make runcondition an agility buff?
-
-Outstanding Questions
-	- Why do I have to subtract TileWidth_Half from drawing movement ranges?
-
 
 Started around June 9th
 
@@ -123,12 +118,13 @@ Isometric math:
 
 Free stuff
 	https://www.gameart2d.com/freebies.html
-	Playing cards: https://opengameart.org/content/vintage-playing-cards
+	https://opengameart.org/content/vintage-playing-cards						(playing cards)
 	https://itch.io/
 	https://github.com/aloisdeniel/awesome-monogame
 	https://opengameart.org/content/isometric-64x64-outside-tileset
 	https://opengameart.org/content/isometric-64x64-medieval-building-tileset
-	https://erikari.itch.io/elements-supremacy-assets
+	https://erikari.itch.io/elements-supremacy-assets							(sprites)
+	https://opengameart.org/content/concrete-ui-part-2							(lock)
 
 Shaders
 	http://community.monogame.net/t/applying-shader-on-one-sprite-only/9893/7
@@ -141,3 +137,6 @@ Example
 
 Dedications:
 	https://github.com/UnterrainerInformatik/BloomEffectRenderer 
+
+Future Maybe Sprites
+	https://cryptogene.itch.io/2d-isometric-starter-style-plus-kit-svg-vector-files

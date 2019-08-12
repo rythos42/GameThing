@@ -11,9 +11,11 @@ namespace GameThing.Entities
 
 		public Content(ContentManager content)
 		{
-			CardSprite = content.Load<Texture2D>("sprites/card");
 			Font = content.Load<SpriteFont>("fonts/Carlito-Regular");
+
+			Card = content.Load<Texture2D>("sprites/card");
 			DistanceOverlay = content.Load<Texture2D>("sprites/distance_overlay");
+			Lock = content.Load<Texture2D>("sprites/lock");
 
 			Highlight = content.Load<Effect>("effects/highlight");
 
@@ -26,12 +28,13 @@ namespace GameThing.Entities
 			}
 		}
 
+		public SpriteFont Font { get; private set; }
+
 		public Texture2D DistanceOverlay { get; private set; }
+		public Texture2D Card { get; private set; }
+		public Texture2D Lock { get; private set; }
 
 		public Effect Highlight { get; private set; }
-
-		public Texture2D CardSprite { get; private set; }
-		public SpriteFont Font { get; private set; }
 
 		public Texture2D GetSpriteFor(Character character)
 		{

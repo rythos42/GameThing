@@ -272,6 +272,7 @@
     <AndroidAsset Include="Content\fonts\Carlito-Regular.xnb" />
     <AndroidAsset Include="Content\sprites\distance_overlay.xnb" />
     <AndroidAsset Include="Content\effects\highlight.xnb" />
+    <AndroidAsset Include="Content\sprites\lock.xnb" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

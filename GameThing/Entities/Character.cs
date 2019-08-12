@@ -14,6 +14,7 @@ namespace GameThing.Entities
 	{
 		private Texture2D sprite;
 		private Texture2D availableMovementTexture;
+		private Texture2D lockSprite;
 		private Effect selectedCharacterEffect;
 		private static Random rng = new Random();
 
@@ -29,6 +30,7 @@ namespace GameThing.Entities
 		{
 			sprite = content.GetSpriteFor(this);
 			availableMovementTexture = content.DistanceOverlay;
+			lockSprite = content.Lock;
 			selectedCharacterEffect = content.Highlight;
 		}
 
@@ -261,6 +263,15 @@ namespace GameThing.Entities
 			Draw(spriteBatch);
 
 			spriteBatch.End();
+		}
+
+		public void DrawLock(SpriteBatch spriteBatch)
+		{
+			var drawPosition = MapPosition.GetScreenPosition();
+			drawPosition.Y -= sprite.Height - lockSprite.Height / 2;
+			drawPosition.X -= lockSprite.Width / 2;
+
+			spriteBatch.Draw(lockSprite, drawPosition, Color.White);
 		}
 
 		public void DrawMovementRange(SpriteBatch spriteBatch)

@@ -156,8 +156,12 @@ namespace GameThing.Screens
 			data.Characters.Sort(new CharacterDepthComparer());
 			foreach (var character in data.Characters)
 			{
+				if (character == lockedInCharacter)
+					character.DrawLock(spriteBatch);
+
 				if (character == selectedCharacter)
 					continue;
+
 				character.Draw(spriteBatch);
 			}
 			spriteBatch.End();

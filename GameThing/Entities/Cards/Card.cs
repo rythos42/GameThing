@@ -8,8 +8,8 @@ namespace GameThing.Entities.Cards
 	public abstract class Card
 	{
 		private Texture2D sprite;
-		private SpriteFont font;
 		private Texture2D availableRangeTexture;
+		private SpriteFont font;
 		private Effect selectedCardEffect;
 		private const int CARD_MARGIN = 20;
 
@@ -23,9 +23,9 @@ namespace GameThing.Entities.Cards
 
 		public void SetContent(Content content)
 		{
-			sprite = content.CardSprite;
-			font = content.Font;
+			sprite = content.Card;
 			availableRangeTexture = content.DistanceOverlay;
+			font = content.Font;
 			selectedCardEffect = content.Highlight;
 		}
 
