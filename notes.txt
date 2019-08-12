@@ -7,12 +7,9 @@ Necessary UX:
 	- show selected player stats
 		- remaining cards in character deck
 		- character names
-	- turn bottom characters around
 	- show which side a player is on
 	- TauntCondition needs a message for success/fail
-	- starting game from GPG throws because game data is null
-	- ability to go back to main screen from game
-
+	
 Maybe necessary game dev
 	- random starting positions within a specified range
 	- terrain
@@ -53,7 +50,7 @@ Game Design
 	- make character facing directions (like for Slipped Backstab)
 		- there's no "behind" for this to do anything with
 		- make Slipped Backstab only if behind the character
-	- have characters face the direction they last moved towards
+		- have characters face the direction they last moved towards
 	- make movement depend on agilty score
 		- make runcondition an agility buff?
 

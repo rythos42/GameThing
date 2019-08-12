@@ -162,7 +162,17 @@ namespace GameThing
 		protected override void Update(GameTime gameTime)
 		{
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-				Exit();
+			{
+				switch (currentScreen)
+				{
+					case ScreenType.GameOver:
+					case ScreenType.Battle:
+						currentScreen = ScreenType.StartMenu; break;
+					case ScreenType.StartMenu:
+						Exit();
+						break;
+				}
+			}
 
 			switch (currentScreen)
 			{
