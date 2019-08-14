@@ -1,16 +1,8 @@
 Necessary UX:
-	- show when your turn is done because you can't do anything else
-		- show when character out of moves
-		- show when character can't play cards anymore
-	- allow players to look at their shit when it's their turn
-	- stuff at range 0 played on self without needing to tap again
-	- show selected player stats
-		- remaining cards in character deck
-		- character names
-	- show which side a player is on
 	- TauntCondition needs a message for success/fail
+	- weird shading when selecting unicorn side
 	
-Maybe necessary game dev
+Maybe necessary game design
 	- random starting positions within a specified range
 	- terrain
 		- probably need to re-do drawing order during this
@@ -19,6 +11,7 @@ Maybe necessary game dev
 	- Possibly need a defense card
 
 Nice to have:
+	- stuff at range 0 played on self without needing to tap again
 	- don't allow friendly fire
 	- fix card sizing on tablet
 		- rejig HandOfCards spacing to shrink the cards if they don't fit!
@@ -38,12 +31,16 @@ Nice to have:
 	- Awkward Distraction is awkwardly written
 	- save the game after each time a character goes, rather than after each player turn (one side with extra characters, game isn't saved between character turns)
 	- hide "No more moves from opponent" status panel when ending turn
-	- warnings in Monogame Pipeline
+	- center text on buttons again
+	- character names
+	- allow players to look at their shit when it's not their turn
 
 Tech
 	- decent chance that GameHelper/BaseGameActivity aren't doing the right things anymore -- seems to be a mash-up of older sign-in code and newer
 	- lots of events being passed through MainGame to MainActivity -- wonder if there is a better architecture that still keeps the Android pieces separate
 	- not calling UnloadContent anywhere
+	- stop passing ContentManager around, I'm more likely to load most things at startup at this point anyway
+	- warnings in Monogame Pipeline
 
 Game Design
 	- evaluate whether single character or whole side is a better turn

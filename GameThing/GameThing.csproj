@@ -207,6 +207,7 @@
     <Compile Include="MapHelper.cs" />
     <Compile Include="UI\FadingTextPanel.cs" />
     <Compile Include="UI\Panel.cs" />
+    <Compile Include="UI\Text.cs" />
     <Compile Include="UI\UIComponent.cs" />
     <None Include="Android\BaseGameUtils\README.md" />
     <Compile Include="Android\BaseGameUtils\SignInFailureReason.cs" />

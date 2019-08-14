@@ -26,8 +26,19 @@ namespace GameThing.Screens
 		private CharacterSide thisPlayerSide;
 		private Character lockedInCharacter = null;
 
-		private Button newTurnButton = new Button("New Turn", 40, 40, 300, 75);
-		private FadingTextPanel statusPanel = new FadingTextPanel(40, 40) { PlaceFromRight = true };
+		private Button newTurnButton = new Button("New Turn") { UseMinimumButtonSize = false };
+		private FadingTextPanel statusPanel = new FadingTextPanel() { PlaceFromRight = true };
+		private Panel playerSidePanel = new Panel();
+		private Panel selectedPlayerStatsPanel = new Panel();
+		private readonly Text sideText = new Text();
+		private readonly Text healthText = new Text();
+		private readonly Text strengthText = new Text();
+		private readonly Text agilityText = new Text();
+		private readonly Text intelligenceText = new Text();
+		private readonly Text remainingDeckText = new Text();
+		private readonly Text discardDeckText = new Text();
+		private readonly Text remainingMovesText = new Text();
+		private readonly Text remainingPlayableCardsText = new Text();
 
 		private Content content;
 
@@ -54,17 +65,30 @@ namespace GameThing.Screens
 				statusPanel.Show("NEW ROUND");
 		}
 
-		public void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
+		public void LoadContent(Content content, ContentManager contentManager, GraphicsDevice graphicsDevice)
 		{
-			map = content.Load<TiledMap>("tilemaps/Map");
+			map = contentManager.Load<TiledMap>("tilemaps/Map");
 			mapRenderer = new TiledMapRenderer(graphicsDevice);
 			camera = new Camera2D(graphicsDevice);
 			camera.LookAt(new Vector2(0, map.HeightInPixels / 2));  // center the map in the screen
-			newTurnButton.LoadContent(content, graphicsDevice);
 
-			statusPanel.LoadContent(content, graphicsDevice);
+			selectedPlayerStatsPanel.Components.Add(sideText);
+			selectedPlayerStatsPanel.Components.Add(healthText);
+			selectedPlayerStatsPanel.Components.Add(strengthText);
+			selectedPlayerStatsPanel.Components.Add(agilityText);
+			selectedPlayerStatsPanel.Components.Add(intelligenceText);
+			selectedPlayerStatsPanel.Components.Add(remainingDeckText);
+			selectedPlayerStatsPanel.Components.Add(discardDeckText);
+			selectedPlayerStatsPanel.Components.Add(remainingMovesText);
+			selectedPlayerStatsPanel.Components.Add(remainingPlayableCardsText);
 
-			this.content = new Content(content);
+			playerSidePanel.Components.Add(new Text { Value = $"Your side: {thisPlayerSide}" });
+
+			this.content = content;
+			newTurnButton.LoadContent(content, contentManager, graphicsDevice);
+			statusPanel.LoadContent(content, contentManager, graphicsDevice);
+			selectedPlayerStatsPanel.LoadContent(content, contentManager, graphicsDevice);
+			playerSidePanel.LoadContent(content, contentManager, graphicsDevice);
 		}
 
 		public void StartGame(string myParticipantId)
@@ -141,6 +165,8 @@ namespace GameThing.Screens
 			}
 
 			statusPanel.Update(gameTime);
+
+			newTurnButton.IsHighlighted = lockedInCharacter != null && !lockedInCharacter.HasRemainingMoves && !lockedInCharacter.HasRemainingPlayableCards;
 		}
 
 		public void Draw(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch, Rectangle clientBounds, GameTime gameTime)
@@ -176,8 +202,22 @@ namespace GameThing.Screens
 			// Draw UI
 			spriteBatch.Begin();
 			if (thisPlayerSide == data.CurrentSidesTurn)
-				newTurnButton.Draw(spriteBatch);
-			statusPanel.Draw(spriteBatch);
+				newTurnButton.Draw(spriteBatch, 40, 40);
+			statusPanel.Draw(spriteBatch, 40, 40);
+			playerSidePanel.Draw(spriteBatch, 220, 40);
+			if (selectedCharacter != null)
+			{
+				sideText.Value = $"Side: {selectedCharacter.Side}";
+				healthText.Value = $"Health: {selectedCharacter.CurrentHealth}/{selectedCharacter.CurrentMaxHealth}";
+				strengthText.Value = $"Strength: {selectedCharacter.CurrentStrength}/{selectedCharacter.BaseStrength}";
+				agilityText.Value = $"Agility: {selectedCharacter.CurrentAgility}/{selectedCharacter.BaseAgility}";
+				intelligenceText.Value = $"Intelligence: {selectedCharacter.CurrentIntelligence}/{selectedCharacter.BaseIntelligence}";
+				remainingDeckText.Value = $"Cards in Deck: {selectedCharacter.CardsInDeckCount}";
+				discardDeckText.Value = $"Cards in Discard: {selectedCharacter.CardsInDiscardCount}";
+				remainingMovesText.Value = $"Remaining Moves: {selectedCharacter.RemainingMoves}/{selectedCharacter.MaximumMoves}";
+				remainingPlayableCardsText.Value = $"Remaining Plays: {selectedCharacter.RemainingPlayableCards}/{selectedCharacter.MaximumPlayableCards}";
+				selectedPlayerStatsPanel.Draw(spriteBatch, 40, 130);
+			}
 			spriteBatch.End();
 		}
 

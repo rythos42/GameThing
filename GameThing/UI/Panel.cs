@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using GameThing.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,6 +12,7 @@ namespace GameThing.UI
 		private Texture2D shadowTexture;
 
 		public bool PlaceFromRight { get; set; }
+		public List<UIComponent> Components { get; set; } = new List<UIComponent>();
 
 		private void CreatePanelGradient(int width, int height, GraphicsDevice graphicsDevice)
 		{
@@ -27,50 +29,65 @@ namespace GameThing.UI
 			panelTexture.SetData(backgroundColour);
 		}
 
-		protected virtual Vector2 MeasureContent()
+		public override Vector2 MeasureContent()
 		{
-			throw new NotImplementedException();
+			var width = 0;
+			var height = 0;
+			Components.ForEach(component =>
+			{
+				var size = component.MeasureContent();
+				width = MathHelper.Max(width, (int) size.X);
+				height += (int) size.Y + MARGIN;
+			});
+
+			return new Vector2(width, height - MARGIN); // we add one extra margin in the loop above, remove it
 		}
 
-		protected virtual Vector2 GetDrawingPosition(GraphicsDevice graphicsDevice)
+		protected virtual Vector2 GetDrawingPosition(GraphicsDevice graphicsDevice, int x, int y)
 		{
 			if (PlaceFromRight)
 			{
-				var width = MeasureContent().X + MARGIN_X * 2;
-				return new Vector2(graphicsDevice.PresentationParameters.BackBufferWidth - width - MARGIN_X, Y);
+				var width = MeasureContent().X + MARGIN * 2;
+				return new Vector2(graphicsDevice.PresentationParameters.BackBufferWidth - width - MARGIN, y);
 			}
 			else
 			{
-				return new Vector2(X, Y);
+				return new Vector2(x, y);
 			}
 		}
 
-		public override void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
+		public override void LoadContent(Content content, ContentManager contentManager, GraphicsDevice graphicsDevice)
 		{
 			shadowTexture = new Texture2D(graphicsDevice, 1, 1);
 			shadowTexture.SetData(new Color[] { Color.Black });
+
+			Components.ForEach(component => component.LoadContent(content, contentManager, graphicsDevice));
 		}
 
-		public override void Update(GameTime gameTime)
-		{
-		}
-
-		public override void Draw(SpriteBatch spriteBatch)
+		public override void Draw(SpriteBatch spriteBatch, int x, int y)
 		{
 			var contentSize = MeasureContent();
-			var width = (int) contentSize.X + MARGIN_X * 2;
-			var height = (int) contentSize.Y + MARGIN_Y * 2;
+			var width = (int) contentSize.X + PADDING * 2;
+			var height = (int) contentSize.Y + PADDING * 2;
 
 			CreatePanelGradient(width, height, spriteBatch.GraphicsDevice);
 
-			var drawingPosition = GetDrawingPosition(spriteBatch.GraphicsDevice);
-			int x = (int) drawingPosition.X;
-			int y = (int) drawingPosition.Y;
+			var drawingPosition = GetDrawingPosition(spriteBatch.GraphicsDevice, x, y);
+			int drawX = (int) drawingPosition.X;
+			int drawY = (int) drawingPosition.Y;
 
-			spriteBatch.Draw(shadowTexture, new Rectangle(x + BOX_SHADOW_X, y + BOX_SHADOW_Y, width, height), Color.White);
-			spriteBatch.Draw(panelTexture, new Rectangle(x, y, width, height), Color.White);
+			spriteBatch.Draw(shadowTexture, new Rectangle(drawX + BOX_SHADOW_X, drawY + BOX_SHADOW_Y, width, height), Color.White);
+			spriteBatch.Draw(panelTexture, new Rectangle(drawX, drawY, width, height), Color.White);
 
-			base.Draw(spriteBatch);
+			drawX += MARGIN;
+			drawY += MARGIN;
+			Components.ForEach(component =>
+			{
+				component.Draw(spriteBatch, drawX, drawY);
+				drawY += MARGIN + (int) component.MeasureContent().Y;
+			});
+
+			IsVisible = true;
 		}
 	}
 }

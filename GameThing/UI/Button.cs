@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GameThing.Entities;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -7,57 +8,66 @@ namespace GameThing.UI
 	public class Button : UIComponent
 	{
 		private Texture2D buttonTexture;
+		private Texture2D highlightTexture;
 		private Texture2D shadowTexture;
 		private SpriteFont font;
-		private readonly int height;
-		private readonly int width;
 		private readonly string text;
+		private int lastDrawnX;
+		private int lastDrawnY;
+		private int width;
+		private int height;
+		private const int MINIMUM_BUTTON_WIDTH = 300;
 
-		public Button(string text, int x, int y, int width, int height)
+		public Button(string text)
 		{
 			this.text = text;
-			this.width = width;
-			this.height = height;
-			X = x;
-			Y = y;
 		}
 
 		public bool IsAtPoint(Vector2 checkPoint)
 		{
 			return
-				X < checkPoint.X
-				&& X + width > checkPoint.X
-				&& Y < checkPoint.Y
-				&& Y + height > checkPoint.Y;
+				lastDrawnX < checkPoint.X
+				&& lastDrawnX + width > checkPoint.X
+				&& lastDrawnY < checkPoint.Y
+				&& lastDrawnY + height > checkPoint.Y;
 		}
 
-		public override void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
+		public bool IsHighlighted { get; set; }
+		public bool UseMinimumButtonSize { get; set; } = true;
+
+		public override void LoadContent(Content content, ContentManager contentManager, GraphicsDevice graphicsDevice)
 		{
 			buttonTexture = new Texture2D(graphicsDevice, 1, 1);
 			buttonTexture.SetData(new Color[] { Color.Silver });
 
+			highlightTexture = new Texture2D(graphicsDevice, 1, 1);
+			highlightTexture.SetData(new Color[] { Color.OrangeRed });
+
 			shadowTexture = new Texture2D(graphicsDevice, 1, 1);
 			shadowTexture.SetData(new Color[] { Color.Black });
 
-			font = content.Load<SpriteFont>("fonts/Carlito-Regular");
-		}
-
-		public override void Update(GameTime gameTime)
-		{
-		}
-
-		public override void Draw(SpriteBatch spriteBatch)
-		{
-			base.Draw(spriteBatch);
-
+			font = content.Font;
 			var textSize = font.MeasureString(text);
+			var minimumTextWidth = (int) textSize.X + (PADDING * 2);
+			width = UseMinimumButtonSize ? MathHelper.Max(minimumTextWidth, MINIMUM_BUTTON_WIDTH) : minimumTextWidth;
+			height = (int) textSize.Y + (PADDING * 2);
+		}
 
-			var horizontalMargin = (width - textSize.X) / 2;
-			var verticalMargin = (height - textSize.Y) / 2;
+		public override void Draw(SpriteBatch spriteBatch, int x, int y)
+		{
+			lastDrawnX = x;
+			lastDrawnY = y;
 
-			spriteBatch.Draw(shadowTexture, new Rectangle(X + BOX_SHADOW_X, Y + BOX_SHADOW_Y, width, height), Color.White);
-			spriteBatch.Draw(buttonTexture, new Rectangle(X, Y, width, height), Color.White);
-			spriteBatch.DrawString(font, text, new Vector2(X + horizontalMargin, Y + verticalMargin), Color.Black);
+			spriteBatch.Draw(shadowTexture, new Rectangle(x + BOX_SHADOW_X, y + BOX_SHADOW_Y, width, height), Color.White);
+			spriteBatch.Draw(IsHighlighted ? highlightTexture : buttonTexture, new Rectangle(x, y, width, height), Color.White);
+			spriteBatch.DrawString(font, text, new Vector2(x + PADDING, y + PADDING), Color.Black);
+
+			IsVisible = true;
+		}
+
+		public override Vector2 MeasureContent()
+		{
+			return new Vector2(width, height);
 		}
 	}
 }

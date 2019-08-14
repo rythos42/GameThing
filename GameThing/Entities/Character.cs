@@ -121,7 +121,7 @@ namespace GameThing.Entities
 		public void ResetTurn()
 		{
 			RemainingMoves = MaximumMoves;
-			RemainingPlayableCards = 2;
+			RemainingPlayableCards = MaximumPlayableCards;
 			ActivatedThisRound = false;
 		}
 
@@ -133,6 +133,9 @@ namespace GameThing.Entities
 
 		[DataMember]
 		public int RemainingPlayableCards { get; private set; }
+
+		[DataMember]
+		public int MaximumPlayableCards { get; private set; } = 2;
 
 		[DataMember]
 		public bool ActivatedThisRound { get; private set; }
@@ -202,6 +205,22 @@ namespace GameThing.Entities
 			get
 			{
 				return Deck.Where(card => card.InHand);
+			}
+		}
+
+		public int CardsInDeckCount
+		{
+			get
+			{
+				return Deck.Count(card => !card.InHand && !card.InDiscard);
+			}
+		}
+
+		public int CardsInDiscardCount
+		{
+			get
+			{
+				return Deck.Count(card => card.InDiscard);
 			}
 		}
 

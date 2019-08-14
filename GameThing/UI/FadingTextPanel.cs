@@ -1,4 +1,5 @@
 ﻿using System;
+using GameThing.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,32 +13,26 @@ namespace GameThing.UI
 		private bool showing = false;
 		private bool startShowing = false;
 		private TimeSpan startedShowingAt;
+		private Text textUi = new Text();
 
-		public FadingTextPanel(int x, int y)
+		public FadingTextPanel()
 		{
-			X = x;
-			Y = y;
+			Components.Add(textUi);
 		}
 
 		public TimeSpan ShowFor { get; set; } = new TimeSpan(0, 0, 10);
-		public string Text { get; set; }
 
 		public void Show(string text)
 		{
-			Text = text;
+			textUi.Value = text;
 			startShowing = true;
 		}
 
-		protected override Vector2 MeasureContent()
+		public override void LoadContent(Content content, ContentManager contentManager, GraphicsDevice graphicsDevice)
 		{
-			return font.MeasureString(Text);
-		}
+			base.LoadContent(content, contentManager, graphicsDevice);
 
-		public override void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
-		{
-			base.LoadContent(content, graphicsDevice);
-
-			font = content.Load<SpriteFont>("fonts/Carlito-Regular");
+			font = content.Font;
 		}
 
 		public override void Update(GameTime gameTime)
@@ -57,18 +52,12 @@ namespace GameThing.UI
 			}
 		}
 
-		public override void Draw(SpriteBatch spriteBatch)
+		public override void Draw(SpriteBatch spriteBatch, int x, int y)
 		{
 			if (!showing)
 				return;
 
-			base.Draw(spriteBatch);
-
-			var drawingPosition = GetDrawingPosition(spriteBatch.GraphicsDevice);
-			var x = (int) drawingPosition.X;
-			var y = (int) drawingPosition.Y;
-
-			spriteBatch.DrawString(font, Text, new Vector2(x + MARGIN_X, y + MARGIN_Y), Color.Black);
+			base.Draw(spriteBatch, x, y);
 		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GameThing.Entities;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -10,9 +11,9 @@ namespace GameThing.Screens
 
 		public CharacterSide? Winner { get; set; }
 
-		public void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
+		public void LoadContent(Content content, ContentManager contentManager, GraphicsDevice graphicsDevice)
 		{
-			font = content.Load<SpriteFont>("fonts/Carlito-Regular");
+			font = content.Font;
 		}
 
 		public void Draw(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch)

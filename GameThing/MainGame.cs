@@ -27,6 +27,7 @@ namespace GameThing
 		public event GameOverEventHandler GameOver;
 
 		private ApplicationData appData = new ApplicationData();
+		private Content content;
 
 		public MainGame()
 		{
@@ -154,9 +155,11 @@ namespace GameThing
 		{
 			spriteBatch = new SpriteBatch(GraphicsDevice);
 
-			battleScreen.LoadContent(Content, GraphicsDevice);
-			startScreen.LoadContent(Content, GraphicsDevice);
-			gameOverScreen.LoadContent(Content, GraphicsDevice);
+			this.content = new Content(Content);
+
+			battleScreen.LoadContent(content, Content, GraphicsDevice);
+			startScreen.LoadContent(content, Content, GraphicsDevice);
+			gameOverScreen.LoadContent(content, Content, GraphicsDevice);
 		}
 
 		protected override void Update(GameTime gameTime)
