@@ -229,7 +229,9 @@ namespace GameThing.Entities
 
 		public void Move(MapPoint movePoint)
 		{
-			RemainingMoves--;
+			var distance = Math.Abs(MapPosition.X - movePoint.X) + Math.Abs(MapPosition.Y - movePoint.Y);
+
+			RemainingMoves -= distance;
 			MapPosition = movePoint;
 
 			RemoveConditions(ConditionEndsOn.Move);
