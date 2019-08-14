@@ -75,6 +75,7 @@ namespace GameThing.Screens
 		public void StartGame(CharacterSide side)
 		{
 			thisPlayerSide = side;
+			lockedInCharacter = null;
 		}
 
 		private void StartNextRound()
