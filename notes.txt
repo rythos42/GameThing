@@ -1,7 +1,3 @@
-Necessary UX:
-	- TauntCondition needs a message for success/fail
-	- weird shading when selecting unicorn side
-	
 Maybe necessary game design
 	- random starting positions within a specified range
 	- terrain
@@ -11,6 +7,7 @@ Maybe necessary game design
 	- Possibly need a defense card
 
 Nice to have:
+	- TauntCondition needs a message for success/fail
 	- stuff at range 0 played on self without needing to tap again
 	- don't allow friendly fire
 	- fix card sizing on tablet

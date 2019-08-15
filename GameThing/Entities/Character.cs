@@ -272,7 +272,6 @@ namespace GameThing.Entities
 			selectedCharacterEffect.Parameters["BaseIntensity"].SetValue(1f);
 			selectedCharacterEffect.Parameters["BloomSaturation"].SetValue(1f);
 			selectedCharacterEffect.Parameters["BaseSaturation"].SetValue(1f);
-			selectedCharacterEffect.Parameters["BaseTextureSampler+BaseTexture"].SetValue(sprite);
 
 			spriteBatch.Begin(
 				transformMatrix: transformMatrix,

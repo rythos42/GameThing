@@ -9,17 +9,6 @@ SamplerState TextureSampler
     AddressV = Wrap;
 };
 
-Texture2D BaseTexture;
-SamplerState BaseTextureSampler
-{
-	Texture = <BaseTexture>;
-	MinFilter = Linear;
-	MagFilter = Linear;
-	MipFilter = Linear;
-	AddressU = Clamp;
-	AddressV = Clamp;
-};
-
 float BloomIntensity;
 float BaseIntensity;
 float BloomSaturation;
@@ -35,9 +24,8 @@ float4 AdjustSaturation(float4 color, float saturation)
 
 float4 BloomAndCombine(float4 pos : SV_POSITION, float4 color1 : COLOR0, float2 texCoord : TEXCOORD0) : SV_TARGET0
 {
-    float4 c = Texture.Sample(TextureSampler, texCoord);
-	float4 bloom = saturate((c - BloomThreshold) / (1 - BloomThreshold));
-	float4 base = BaseTexture.Sample(BaseTextureSampler, texCoord);
+    float4 base = Texture.Sample(TextureSampler, texCoord);
+	float4 bloom = saturate((base - BloomThreshold) / (1 - BloomThreshold));
     
     bloom = AdjustSaturation(bloom, BloomSaturation) * BloomIntensity;
     base = AdjustSaturation(base, BaseSaturation) * BaseIntensity;

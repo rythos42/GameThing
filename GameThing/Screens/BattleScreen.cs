@@ -169,12 +169,17 @@ namespace GameThing.Screens
 			newTurnButton.IsHighlighted = lockedInCharacter != null && !lockedInCharacter.HasRemainingMoves && !lockedInCharacter.HasRemainingPlayableCards;
 		}
 
+		private void StartCameraBatch(SpriteBatch spriteBatch)
+		{
+			spriteBatch.Begin(transformMatrix: camera.GetViewMatrix(), samplerState: SamplerState.PointClamp, blendState: BlendState.AlphaBlend);
+		}
+
 		public void Draw(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch, Rectangle clientBounds, GameTime gameTime)
 		{
 			graphicsDevice.Clear(Color.CornflowerBlue);
 
 			// Follow camera
-			spriteBatch.Begin(transformMatrix: camera.GetViewMatrix(), samplerState: SamplerState.PointClamp, blendState: BlendState.AlphaBlend);
+			StartCameraBatch(spriteBatch);
 			mapRenderer.Draw(map, camera.GetViewMatrix());
 			if (selectedCard == null)
 				data.Characters.SingleOrDefault(character => character == selectedCharacter && character.HasRemainingMoves && character.Side == thisPlayerSide)?.DrawMovementRange(spriteBatch);
@@ -187,13 +192,17 @@ namespace GameThing.Screens
 					character.DrawLock(spriteBatch);
 
 				if (character == selectedCharacter)
-					continue;
-
-				character.Draw(spriteBatch);
+				{
+					spriteBatch.End();
+					selectedCharacter.DrawSelectedCharacter(spriteBatch, camera.GetViewMatrix());
+					StartCameraBatch(spriteBatch);
+				}
+				else
+				{
+					character.Draw(spriteBatch);
+				}
 			}
 			spriteBatch.End();
-
-			selectedCharacter?.DrawSelectedCharacter(spriteBatch, camera.GetViewMatrix());
 
 			// Draw a characters hand of cards if player is playing that side
 			if (selectedCharacter != null && selectedCharacter.Side == thisPlayerSide && thisPlayerSide == data.CurrentSidesTurn)
@@ -202,9 +211,9 @@ namespace GameThing.Screens
 			// Draw UI
 			spriteBatch.Begin();
 			if (thisPlayerSide == data.CurrentSidesTurn)
-				newTurnButton.Draw(spriteBatch, 40, 40);
-			statusPanel.Draw(spriteBatch, 40, 40);
-			playerSidePanel.Draw(spriteBatch, 220, 40);
+				newTurnButton.Draw(spriteBatch, 40, 20);
+			statusPanel.Draw(spriteBatch, 40, 20);
+			playerSidePanel.Draw(spriteBatch, 220, 20);
 			if (selectedCharacter != null)
 			{
 				sideText.Value = $"Side: {selectedCharacter.Side}";
@@ -216,7 +225,7 @@ namespace GameThing.Screens
 				discardDeckText.Value = $"Cards in Discard: {selectedCharacter.CardsInDiscardCount}";
 				remainingMovesText.Value = $"Remaining Moves: {selectedCharacter.RemainingMoves}/{selectedCharacter.MaximumMoves}";
 				remainingPlayableCardsText.Value = $"Remaining Plays: {selectedCharacter.RemainingPlayableCards}/{selectedCharacter.MaximumPlayableCards}";
-				selectedPlayerStatsPanel.Draw(spriteBatch, 40, 130);
+				selectedPlayerStatsPanel.Draw(spriteBatch, 40, 110);
 			}
 			spriteBatch.End();
 		}
