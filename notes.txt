@@ -1,7 +1,8 @@
 Maybe necessary game design
-	- random starting positions within a specified range
 	- terrain
-		- probably need to re-do drawing order during this
+		- add trees
+			- probably need to re-do drawing order during this
+		- check that characters look right in different positions on the map
 	- Possible that some support cards need longer ranges
 	- Possible that decks need more starter attack cards
 	- Possibly need a defense card
@@ -38,6 +39,8 @@ Tech
 	- not calling UnloadContent anywhere
 	- stop passing ContentManager around, I'm more likely to load most things at startup at this point anyway
 	- warnings in Monogame Pipeline
+	- how to do polygon objects in maps
+	- Nexus 7 shows black box instead of highlighted character
 
 Game Design
 	- evaluate whether single character or whole side is a better turn

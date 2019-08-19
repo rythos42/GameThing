@@ -18,9 +18,8 @@ namespace GameThing.Entities
 		private Effect selectedCharacterEffect;
 		private static Random rng = new Random();
 
-		public Character(CharacterSide side, CharacterColour colour, CharacterClass characterClass, int x, int y)
+		public Character(CharacterSide side, CharacterColour colour, CharacterClass characterClass)
 		{
-			MapPosition = new MapPoint { X = x, Y = y };
 			CharacterClass = characterClass;
 			Side = side;
 			Colour = colour;

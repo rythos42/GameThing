@@ -63,17 +63,17 @@ namespace GameThing
 				MatchId = matchId
 			};
 
-			battleData.Characters.Add(CreateCharacter(CharacterSide.Spaghetti, CharacterColour.Blue, 4, 15)); // was 26
-			battleData.Characters.Add(CreateCharacter(CharacterSide.Spaghetti, CharacterColour.Green, 9, 15));
-			battleData.Characters.Add(CreateCharacter(CharacterSide.Spaghetti, CharacterColour.None, 14, 15));
-			battleData.Characters.Add(CreateCharacter(CharacterSide.Spaghetti, CharacterColour.Red, 19, 15));
-			battleData.Characters.Add(CreateCharacter(CharacterSide.Spaghetti, CharacterColour.White, 24, 15));
+			battleData.Characters.Add(CreateCharacter(CharacterSide.Spaghetti, CharacterColour.Blue));
+			battleData.Characters.Add(CreateCharacter(CharacterSide.Spaghetti, CharacterColour.Green));
+			battleData.Characters.Add(CreateCharacter(CharacterSide.Spaghetti, CharacterColour.None));
+			battleData.Characters.Add(CreateCharacter(CharacterSide.Spaghetti, CharacterColour.Red));
+			battleData.Characters.Add(CreateCharacter(CharacterSide.Spaghetti, CharacterColour.White));
 
-			battleData.Characters.Add(CreateCharacter(CharacterSide.Unicorn, CharacterColour.Blue, 4, 14)); // was 2
-			battleData.Characters.Add(CreateCharacter(CharacterSide.Unicorn, CharacterColour.Green, 9, 14));
-			battleData.Characters.Add(CreateCharacter(CharacterSide.Unicorn, CharacterColour.None, 14, 14));
-			battleData.Characters.Add(CreateCharacter(CharacterSide.Unicorn, CharacterColour.Red, 19, 14));
-			battleData.Characters.Add(CreateCharacter(CharacterSide.Unicorn, CharacterColour.White, 24, 14));
+			battleData.Characters.Add(CreateCharacter(CharacterSide.Unicorn, CharacterColour.Blue));
+			battleData.Characters.Add(CreateCharacter(CharacterSide.Unicorn, CharacterColour.Green));
+			battleData.Characters.Add(CreateCharacter(CharacterSide.Unicorn, CharacterColour.None));
+			battleData.Characters.Add(CreateCharacter(CharacterSide.Unicorn, CharacterColour.Red));
+			battleData.Characters.Add(CreateCharacter(CharacterSide.Unicorn, CharacterColour.White));
 
 			battleData.Characters.ForEach(character => character.InitializeDeck());
 
@@ -85,12 +85,12 @@ namespace GameThing
 			return battleData;
 		}
 
-		private Character CreateCharacter(CharacterSide side, CharacterColour colour, int x, int y)
+		private Character CreateCharacter(CharacterSide side, CharacterColour colour)
 		{
 			var classEnumValues = Enum.GetValues(typeof(CharacterClass));
 			var thisCharacterClass = new Random().Next(0, classEnumValues.Length);
 
-			var character = new Character(side, colour, (CharacterClass) thisCharacterClass, x, y);
+			var character = new Character(side, colour, (CharacterClass) thisCharacterClass);
 			character.ResetTurn();
 			return character;
 		}

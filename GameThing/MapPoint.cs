@@ -43,5 +43,21 @@ namespace GameThing
 		{
 			return X == checkPoint.X && Y == checkPoint.Y;
 		}
+
+		public override bool Equals(object obj)
+		{
+			var otherPoint = obj as MapPoint;
+			if (obj == null) return false;
+
+			return otherPoint.X == X && otherPoint.Y == Y;
+		}
+
+		public override int GetHashCode()
+		{
+			var hashCode = 1861411795;
+			hashCode = hashCode * -1521134295 + X.GetHashCode();
+			hashCode = hashCode * -1521134295 + Y.GetHashCode();
+			return hashCode;
+		}
 	}
 }

@@ -183,6 +183,11 @@
 /processorParam:TextureFormat=Color
 /build:sprites/unicorn_atlas_white.png
 
+#begin tilemaps/ComplexMap.tmx
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
+/build:tilemaps/ComplexMap.tmx
+
 #begin tilemaps/iso-64x64-outside.png
 /importer:TextureImporter
 /processor:TextureProcessor

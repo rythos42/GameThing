@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using GameThing.Entities;
 using GameThing.Entities.Cards;
 using GameThing.Events;
@@ -40,17 +42,26 @@ namespace GameThing.Screens
 		private readonly Text remainingMovesText = new Text();
 		private readonly Text remainingPlayableCardsText = new Text();
 
+		private Rectangle spaghettiDeployment;
+		private Rectangle unicornDeployment;
+
 		private Content content;
+		private Random random = new Random();
 
 		public event NextPlayersTurnEventHandler NextPlayersTurn;
 		public event GameOverEventHandler GameOver;
 
 		public void SetBattleData(BattleData gameData)
 		{
+			var otherPlacements = new List<MapPoint>();
+
 			gameData.Characters.ForEach(character =>
 			{
 				character.SetContent(content);
 				character.Deck.ForEach(card => card.SetContent(content));
+
+				if (character.MapPosition == null)
+					PlaceCharacterOnMap(character, otherPlacements);
 			});
 			data = gameData;
 
@@ -59,15 +70,46 @@ namespace GameThing.Screens
 			if (!anyNotActivated)
 				StartNextRound();
 
-			// Show NEW ROUND for first two players, have to recalculate after StartNextRound or it won't show NEW ROUND
+			// Show NEW ROUND for first two players, have to recalculate count after StartNextRound or it won't show NEW ROUND
 			var countOfActivatedPlayers = data.Characters.Count(character => character.ActivatedThisRound);
 			if (countOfActivatedPlayers <= 2)
 				statusPanel.Show("NEW ROUND");
 		}
 
+		private void PlaceCharacterOnMap(Character character, List<MapPoint> otherPlacements)
+		{
+			MapPoint characterPoint;
+			var deployment = character.Side == CharacterSide.Spaghetti ? spaghettiDeployment : unicornDeployment;
+			bool yes = character.Side == CharacterSide.Spaghetti;
+			do
+			{
+				characterPoint = new MapPoint
+				{
+					X = random.Next(new Range<int>(deployment.X, deployment.X + deployment.Width)) + 1,
+					Y = random.Next(new Range<int>(deployment.Y, deployment.Y + deployment.Height)) + 1
+				};
+			} while (otherPlacements.Contains(characterPoint));
+			otherPlacements.Add(characterPoint);
+			character.MapPosition = characterPoint;
+		}
+
+		private Rectangle GetDeployment(TiledMapObject deployment)
+		{
+			return new Rectangle(
+				(int) Math.Round(deployment.Position.X / 32, 0, MidpointRounding.AwayFromZero),
+				(int) Math.Round(deployment.Position.Y / 32, 0, MidpointRounding.AwayFromZero),
+				(int) Math.Round(deployment.Size.Width / 32, 0, MidpointRounding.AwayFromZero),
+				(int) Math.Round(deployment.Size.Height / 32, 0, MidpointRounding.AwayFromZero));
+		}
+
 		public void LoadContent(Content content, ContentManager contentManager, GraphicsDevice graphicsDevice)
 		{
-			map = contentManager.Load<TiledMap>("tilemaps/Map");
+			//map = contentManager.Load<TiledMap>("tilemaps/Map");
+			map = contentManager.Load<TiledMap>("tilemaps/ComplexMap");
+			var deploymentLayer = map.GetLayer<TiledMapObjectLayer>("Deployment");
+			spaghettiDeployment = GetDeployment(deploymentLayer.Objects.SingleOrDefault(deployment => deployment.Name.Equals("Spaghetti")));
+			unicornDeployment = GetDeployment(deploymentLayer.Objects.SingleOrDefault(deployment => deployment.Name.Equals("Unicorn")));
+
 			mapRenderer = new TiledMapRenderer(graphicsDevice);
 			camera = new Camera2D(graphicsDevice);
 			camera.LookAt(new Vector2(0, map.HeightInPixels / 2));  // center the map in the screen
@@ -169,17 +211,12 @@ namespace GameThing.Screens
 			newTurnButton.IsHighlighted = lockedInCharacter != null && !lockedInCharacter.HasRemainingMoves && !lockedInCharacter.HasRemainingPlayableCards;
 		}
 
-		private void StartCameraBatch(SpriteBatch spriteBatch)
-		{
-			spriteBatch.Begin(transformMatrix: camera.GetViewMatrix(), samplerState: SamplerState.PointClamp, blendState: BlendState.AlphaBlend);
-		}
-
 		public void Draw(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch, Rectangle clientBounds, GameTime gameTime)
 		{
 			graphicsDevice.Clear(Color.CornflowerBlue);
 
 			// Follow camera
-			StartCameraBatch(spriteBatch);
+			spriteBatch.Begin(transformMatrix: camera.GetViewMatrix(), samplerState: SamplerState.PointClamp, blendState: BlendState.AlphaBlend);
 			mapRenderer.Draw(map, camera.GetViewMatrix());
 			if (selectedCard == null)
 				data.Characters.SingleOrDefault(character => character == selectedCharacter && character.HasRemainingMoves && character.Side == thisPlayerSide)?.DrawMovementRange(spriteBatch);
@@ -191,18 +228,11 @@ namespace GameThing.Screens
 				if (character == lockedInCharacter)
 					character.DrawLock(spriteBatch);
 
-				if (character == selectedCharacter)
-				{
-					spriteBatch.End();
-					selectedCharacter.DrawSelectedCharacter(spriteBatch, camera.GetViewMatrix());
-					StartCameraBatch(spriteBatch);
-				}
-				else
-				{
-					character.Draw(spriteBatch);
-				}
+				character.Draw(spriteBatch);
 			}
 			spriteBatch.End();
+
+			selectedCharacter?.DrawSelectedCharacter(spriteBatch, camera.GetViewMatrix());
 
 			// Draw a characters hand of cards if player is playing that side
 			if (selectedCharacter != null && selectedCharacter.Side == thisPlayerSide && thisPlayerSide == data.CurrentSidesTurn)
