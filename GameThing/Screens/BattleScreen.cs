@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
 using MonoGame.Extended;
 using MonoGame.Extended.Tiled;
-using MonoGame.Extended.Tiled.Graphics;
+using MonoGame.Extended.Tiled.Renderers;
 
 namespace GameThing.Screens
 {
@@ -110,8 +110,8 @@ namespace GameThing.Screens
 			spaghettiDeployment = GetDeployment(deploymentLayer.Objects.SingleOrDefault(deployment => deployment.Name.Equals("Spaghetti")));
 			unicornDeployment = GetDeployment(deploymentLayer.Objects.SingleOrDefault(deployment => deployment.Name.Equals("Unicorn")));
 
-			mapRenderer = new TiledMapRenderer(graphicsDevice);
-			camera = new Camera2D(graphicsDevice);
+			mapRenderer = new TiledMapRenderer(graphicsDevice, map);
+			camera = new OrthographicCamera(graphicsDevice);
 			camera.LookAt(new Vector2(0, map.HeightInPixels / 2));  // center the map in the screen
 
 			selectedPlayerStatsPanel.Components.Add(sideText);
@@ -190,7 +190,7 @@ namespace GameThing.Screens
 
 		public void Update(GameTime gameTime)
 		{
-			mapRenderer.Update(map, gameTime);
+			mapRenderer.Update(gameTime);
 
 			var gesture = default(GestureSample);
 

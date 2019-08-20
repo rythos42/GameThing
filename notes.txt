@@ -41,6 +41,7 @@ Tech
 	- warnings in Monogame Pipeline
 	- how to do polygon objects in maps
 	- Nexus 7 shows black box instead of highlighted character
+	- why outside_0.xnb and outside.xnb?
 
 Game Design
 	- evaluate whether single character or whole side is a better turn
@@ -134,3 +135,7 @@ Dedications:
 
 Future Maybe Sprites
 	https://cryptogene.itch.io/2d-isometric-starter-style-plus-kit-svg-vector-files
+
+
+Monogame Pipeline errors:
+	Had to copy Monogame.Extended.dll, MonoGame.Extended.Tiled.dll and Newtonsoft.Json.dll (netstandard2.0) into MonoGame.Extended.Content.Pipeline.3.7.0/lib/netstandard2.0 NuGet to get Pipeline to find importer
