@@ -10,6 +10,11 @@ namespace GameThing
 		public const int TileHeight = 32;
 		public const int TileHeight_Half = TileHeight / 2;
 
+		public const int MAX_MAP_Y = 29;
+		public const int MIN_MAP_Y = 0;
+		public const int MAX_MAP_X = 29;
+		public const int MIN_MAP_X = 0;
+
 		public int X { get; set; }
 		public int Y { get; set; }
 
@@ -42,6 +47,17 @@ namespace GameThing
 		public bool IsAtPoint(MapPoint checkPoint)
 		{
 			return X == checkPoint.X && Y == checkPoint.Y;
+		}
+
+		public bool IsWithinMap
+		{
+			get
+			{
+				return X >= MIN_MAP_X
+					&& X <= MAX_MAP_X
+					&& Y >= MIN_MAP_Y
+					&& Y <= MAX_MAP_Y;
+			}
 		}
 
 		public override bool Equals(object obj)

@@ -11,7 +11,7 @@ namespace GameThing
 			for (var i = -1 * range; i < range + 1; i++)
 			{
 				var mapX = initialPosition.X + i;
-				if (mapX < 0 || mapX > 29)
+				if (mapX < MapPoint.MIN_MAP_X || mapX > MapPoint.MAX_MAP_X)
 					continue;
 
 				var absX = Math.Abs(i);
@@ -22,7 +22,7 @@ namespace GameThing
 						continue;
 
 					var mapY = initialPosition.Y + j;
-					if (mapY < 0 || mapY > 29)
+					if (mapY < MapPoint.MIN_MAP_Y || mapY > MapPoint.MAX_MAP_Y)
 						continue;
 
 					var screenPosition = new MapPoint { X = mapX, Y = mapY }.GetScreenPosition();

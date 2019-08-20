@@ -314,7 +314,7 @@ namespace GameThing.Screens
 				// we have a character selected and a card selected but the card isn't in range of the desired target, or there is no target
 				selectedCard = null;
 			}
-			else if (selectedCharacter.IsWithinMoveDistanceOf(mapPoint) && CanMoveSelectedCharacter && targetCharacter == null)
+			else if (selectedCharacter.IsWithinMoveDistanceOf(mapPoint) && mapPoint.IsWithinMap && CanMoveSelectedCharacter && targetCharacter == null)
 			{
 				// MOVE
 				// we have a character selected, it's my character, it is within move distance of the tap and it has moves remaining
