@@ -85,8 +85,8 @@ namespace GameThing.Screens
 			{
 				characterPoint = new MapPoint
 				{
-					X = random.Next(new Range<int>(deployment.X, deployment.X + deployment.Width)) + 1,
-					Y = random.Next(new Range<int>(deployment.Y, deployment.Y + deployment.Height)) + 1
+					X = random.Next(new Range<int>(deployment.X, deployment.X + deployment.Width)),
+					Y = random.Next(new Range<int>(deployment.Y, deployment.Y + deployment.Height))
 				};
 			} while (otherPlacements.Contains(characterPoint));
 			otherPlacements.Add(characterPoint);
@@ -217,7 +217,7 @@ namespace GameThing.Screens
 
 			// Follow camera
 			spriteBatch.Begin(transformMatrix: camera.GetViewMatrix(), samplerState: SamplerState.PointClamp, blendState: BlendState.AlphaBlend);
-			mapRenderer.Draw(map, camera.GetViewMatrix());
+			mapRenderer.Draw(camera.GetViewMatrix());
 			if (selectedCard == null)
 				data.Characters.SingleOrDefault(character => character == selectedCharacter && character.HasRemainingMoves && character.Side == thisPlayerSide)?.DrawMovementRange(spriteBatch);
 			else

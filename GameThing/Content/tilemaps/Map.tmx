@@ -37,7 +37,7 @@
 11,24,4,13,3,3,14,17,18,24,11,16,1,2,7,14,1,23,1,21,18,4,16,23,21,14,14,5,17,6
 </data>
  </layer>
- <objectgroup id="2" name="Deployment">
+ <objectgroup id="2" name="Deployment" offsetx="0" offsety="-32">
   <object id="1" name="Spaghetti" x="159" y="702" width="640" height="257"/>
   <object id="3" name="Unicorn" x="160" y="0" width="640" height="254"/>
  </objectgroup>
