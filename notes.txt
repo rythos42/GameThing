@@ -1,8 +1,9 @@
 Maybe necessary game design
 	- terrain
-		- add trees
-			- probably need to re-do drawing order during this
-		- check that characters look right in different positions on the map
+		- add code to position character differently on different height layers
+		- render available movement and available range differently for different heights
+	- add trees
+		- probably need to re-do drawing order during this
 	- Possible that some support cards need longer ranges
 	- Possible that decks need more starter attack cards
 	- Possibly need a defense card
@@ -93,6 +94,12 @@ MonoGame Extended Blog
 	https://github.com/craftworkgames/MonoGame.Extended/blob/develop/Source/Demos/Platformer/GameMain.cs
 	https://www.patreon.com/craftworkgames
 	http://www.monogameextended.net/posts
+
+To Read:
+	http://www.lostgarden.com/2007/05/dancs-miraculously-flexible-game.html?m=1
+	http://www.shawnhargreaves.com/blogindex.html
+	http://cowboyprogramming.com/2007/01/05/evolve-your-heirachy/
+	https://codeblog.jonskeet.uk/page/3/
 
 Drawing/Sorting Sprites Isometric
 	https://github.com/craftworkgames/MonoGame.Extended/issues/230
