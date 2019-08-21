@@ -19,7 +19,7 @@ namespace GameThing.Screens
 	{
 		private TiledMap map;
 		private TiledMapRenderer mapRenderer;
-		private Camera2D camera;
+		private Camera<Vector2> camera;
 
 		private BattleData data;
 		private Character selectedCharacter;
