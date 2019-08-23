@@ -22,7 +22,7 @@ float4 AdjustSaturation(float4 color, float saturation)
 	return lerp(grey, color, saturation);
 }
 
-float4 BloomAndCombine(float4 pos : SV_POSITION, float4 color1 : COLOR0, float2 texCoord : TEXCOORD0) : SV_TARGET0
+float4 BloomAndCombine(float2 texCoord : TEXCOORD0) : SV_TARGET0
 {
     float4 base = Texture.Sample(TextureSampler, texCoord);
 	float4 bloom = saturate((base - BloomThreshold) / (1 - BloomThreshold));
@@ -39,10 +39,6 @@ technique Highlight
 {
     pass BloomAndCombine
     {
-        #if SM4
-			PixelShader = compile ps_4_0_level_9_1 BloomAndCombine();
-		#else
-			PixelShader = compile ps_2_0 BloomAndCombine();
-		#endif
+		PixelShader = compile ps_2_0 BloomAndCombine();
     }
 }
