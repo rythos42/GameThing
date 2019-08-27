@@ -1,11 +1,64 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended.Tiled;
 
 namespace GameThing
 {
 	public static class MapHelper
 	{
+		private static TiledMap map;
+		private static int[] layerNumberList;
+
+		public static TiledMap Map
+		{
+			get { return map; }
+			set
+			{
+				map = value;
+				layerNumberList = new int[map.Height * map.Width];
+
+				for (ushort i = 0; i < map.Width; i++)
+				{
+					for (ushort j = 0; j < map.Height; j++)
+					{
+						for (var layerIndex = 0; layerIndex < map.TileLayers.Count; layerIndex++)
+						{
+							var tileLayer = map.TileLayers[layerIndex];
+							TiledMapTile? outTile;
+							if (tileLayer.TryGetTile(i, j, out outTile) && !outTile.Value.IsBlank)
+							{
+								var layerNumber = ((int) tileLayer.Offset.Y / -32) - 1;
+								layerNumberList[i + j * map.Width] = layerNumber;
+								MaxLayer = MathHelper.Max(MaxLayer, layerNumber);
+							}
+						}
+					}
+				}
+			}
+		}
+
+		public static int MaxLayer { get; private set; }
+
+		public static int GetHeightAtMapPoint(int x, int y)
+		{
+			var index = x + y * map.Width;
+			if (index >= layerNumberList.Length)
+				return -1;
+
+			return layerNumberList[index];
+		}
+
+		public static Rectangle GetObjectRectangleInMapPoints(TiledMapObject deployment)
+		{
+			return new Rectangle(
+				(int) Math.Round(deployment.Position.X / 32, 0, MidpointRounding.AwayFromZero),
+				(int) Math.Round(deployment.Position.Y / 32, 0, MidpointRounding.AwayFromZero),
+				(int) Math.Round(deployment.Size.Width / 32, 0, MidpointRounding.AwayFromZero),
+				(int) Math.Round(deployment.Size.Height / 32, 0, MidpointRounding.AwayFromZero));
+		}
+
 		public static void DrawRange(int range, MapPoint initialPosition, SpriteBatch spriteBatch, Texture2D texture, Color color)
 		{
 			for (var i = -1 * range; i < range + 1; i++)
@@ -25,8 +78,16 @@ namespace GameThing
 					if (mapY < MapPoint.MIN_MAP_Y || mapY > MapPoint.MAX_MAP_Y)
 						continue;
 
-					var screenPosition = new MapPoint { X = mapX, Y = mapY }.GetScreenPosition();
-					spriteBatch.Draw(texture, new Rectangle((int) screenPosition.X - MapPoint.TileWidth_Half, (int) screenPosition.Y, 64, 32), color * 0.5f);
+					var mapPosition = new MapPoint { X = mapX, Y = mapY };
+
+					var layerNumber = GetHeightAtMapPoint(mapX, mapY);
+					var noAvailableMovementGroundLayer = Map.GetLayer<TiledMapObjectLayer>($"NoAvailableMovement:{layerNumber}");
+					var draw = noAvailableMovementGroundLayer == null || !noAvailableMovementGroundLayer.Objects.Any(mapObject => mapPosition.IsWithinRectangle(GetObjectRectangleInMapPoints(mapObject)));
+					if (draw)
+					{
+						var screenPosition = mapPosition.GetScreenPosition();
+						spriteBatch.Draw(texture, new Rectangle((int) screenPosition.X - MapPoint.TileWidth_Half, (int) screenPosition.Y, 64, 32), color * 0.5f);
+					}
 				}
 			}
 		}

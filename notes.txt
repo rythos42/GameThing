@@ -1,14 +1,21 @@
-Maybe necessary game design
-	- terrain
-		- add code to position character differently on different height layers
-		- render available movement and available range differently for different heights
-	- add trees
-		- probably need to re-do drawing order during this
-	- Possible that some support cards need longer ranges
-	- Possible that decks need more starter attack cards
-	- Possibly need a defense card
+- use "no available movement" as literally "can't move there", then prevent it
+	- make so can't walk over water
+
+- Possible that some support cards need longer ranges
+- Possible that decks need more starter attack cards
+	- maybe have fighters start with more attacks, mages start with more other, etc
+	- basically swap out more than one card per class
+- Possibly need a defense card
+
 
 Nice to have:
+	- selected character is drawn over top of nearby characters
+		- this might be good in some cases, leave it for now
+	- allow characters to stand on slopes
+		- draw grid on slopes
+	- make ComplexMap have a bridge over the top river
+	- add trees
+		- probably need to re-do drawing order during this
 	- TauntCondition needs a message for success/fail
 	- stuff at range 0 played on self without needing to tap again
 	- don't allow friendly fire
@@ -33,6 +40,7 @@ Nice to have:
 	- center text on buttons again
 	- character names
 	- allow players to look at their shit when it's not their turn
+	- put grid lines on slopes
 
 Tech
 	- decent chance that GameHelper/BaseGameActivity aren't doing the right things anymore -- seems to be a mash-up of older sign-in code and newer
@@ -132,6 +140,11 @@ Shaders
 	http://community.monogame.net/t/applying-shader-on-one-sprite-only/9893/7
 	http://community.monogame.net/t/writing-your-own-2d-pixel-shader-in-monogame-for-absolute-beginners/10883
 	http://community.monogame.net/t/writing-your-own-2d-pixel-shader-in-monogame-for-absolute-beginners/10883
+	http://community.monogame.net/t/solved-monogame-effect-outputting-nothing-after-adding-vertex-shader/8991
+	http://www.catalinzima.com/xna/tutorials/crash-course-in-hlsl/
+	http://rbwhitaker.wikidot.com/toon-shader
+	http://rbwhitaker.wikidot.com/reflection-shader
+
 
 Example
 	https://roguesharp.wordpress.com
@@ -146,3 +159,9 @@ Future Maybe Sprites
 
 Monogame Pipeline errors:
 	Had to copy Monogame.Extended.dll, MonoGame.Extended.Tiled.dll and Newtonsoft.Json.dll (netstandard2.0) into MonoGame.Extended.Content.Pipeline.3.7.0/lib/netstandard2.0 NuGet to get Pipeline to find importer
+	
+Map Creation:
+	- remember that each layer has to be -32 vertical offset * layer number to account for 64x64 tiles in a 64x32 tile layer
+		- ie, the first layer is -32, next is -64
+	- "NoAvailableMovement:{layerNumber}", where layerNumber is the abs(vertical offset / 32)
+	- "Deployment" must have objects "Spaghetti" and "Unicorn"

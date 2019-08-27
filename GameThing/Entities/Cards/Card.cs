@@ -62,7 +62,6 @@ namespace GameThing.Entities.Cards
 			selectedCardEffect.Parameters["BaseIntensity"].SetValue(1f);
 			selectedCardEffect.Parameters["BloomSaturation"].SetValue(1f);
 			selectedCardEffect.Parameters["BaseSaturation"].SetValue(1f);
-			selectedCardEffect.Parameters["BaseTextureSampler+BaseTexture"].SetValue(sprite);
 
 			spriteBatch.Begin(
 				sortMode: SpriteSortMode.BackToFront,

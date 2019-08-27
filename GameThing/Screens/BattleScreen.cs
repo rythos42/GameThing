@@ -93,22 +93,14 @@ namespace GameThing.Screens
 			character.MapPosition = characterPoint;
 		}
 
-		private Rectangle GetDeployment(TiledMapObject deployment)
-		{
-			return new Rectangle(
-				(int) Math.Round(deployment.Position.X / 32, 0, MidpointRounding.AwayFromZero),
-				(int) Math.Round(deployment.Position.Y / 32, 0, MidpointRounding.AwayFromZero),
-				(int) Math.Round(deployment.Size.Width / 32, 0, MidpointRounding.AwayFromZero),
-				(int) Math.Round(deployment.Size.Height / 32, 0, MidpointRounding.AwayFromZero));
-		}
-
 		public void LoadContent(Content content, ContentManager contentManager, GraphicsDevice graphicsDevice)
 		{
 			//map = contentManager.Load<TiledMap>("tilemaps/Map");
 			map = contentManager.Load<TiledMap>("tilemaps/ComplexMap");
 			var deploymentLayer = map.GetLayer<TiledMapObjectLayer>("Deployment");
-			spaghettiDeployment = GetDeployment(deploymentLayer.Objects.SingleOrDefault(deployment => deployment.Name.Equals("Spaghetti")));
-			unicornDeployment = GetDeployment(deploymentLayer.Objects.SingleOrDefault(deployment => deployment.Name.Equals("Unicorn")));
+			spaghettiDeployment = MapHelper.GetObjectRectangleInMapPoints(deploymentLayer.Objects.SingleOrDefault(deployment => deployment.Name.Equals("Spaghetti")));
+			unicornDeployment = MapHelper.GetObjectRectangleInMapPoints(deploymentLayer.Objects.SingleOrDefault(deployment => deployment.Name.Equals("Unicorn")));
+			MapHelper.Map = map;
 
 			mapRenderer = new TiledMapRenderer(graphicsDevice, map);
 			camera = new OrthographicCamera(graphicsDevice);

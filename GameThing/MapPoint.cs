@@ -24,17 +24,23 @@ namespace GameThing
 			// map is [0, 0] top, [0, 29] right, [29, 29] bottom, [29, 0] left
 			return new Vector2(
 				(X - Y) * TileWidth_Half,
-				(X + Y) * TileHeight_Half
+				(X + Y) * TileHeight_Half - (MapHelper.GetHeightAtMapPoint(X, Y) * 32)
 			);
 		}
 
 		public static MapPoint GetFromScreenPosition(Vector2 screenPosition)
 		{
-			return new MapPoint
+			for (var layerNumber = MapHelper.MaxLayer; layerNumber >= 0; layerNumber--)
 			{
-				X = (int) (screenPosition.X / TileWidth_Half + screenPosition.Y / TileHeight_Half) / 2,
-				Y = (int) (screenPosition.Y / TileHeight_Half - screenPosition.X / TileWidth_Half) / 2
-			};
+				var layerOffset = layerNumber * 32;
+				var x = (int) (screenPosition.X / TileWidth_Half + (screenPosition.Y + layerOffset) / TileHeight_Half) / 2;
+				var y = (int) ((screenPosition.Y + layerOffset) / TileHeight_Half - screenPosition.X / TileWidth_Half) / 2;
+
+				if (MapHelper.GetHeightAtMapPoint(x, y) == layerNumber)
+					return new MapPoint { X = x, Y = y };
+			}
+
+			return null;
 		}
 
 		public bool IsWithinDistanceOf(int range, MapPoint checkPoint)
@@ -58,6 +64,14 @@ namespace GameThing
 					&& Y >= MIN_MAP_Y
 					&& Y <= MAX_MAP_Y;
 			}
+		}
+
+		public bool IsWithinRectangle(Rectangle rect)
+		{
+			return X >= rect.X
+				&& X < rect.X + rect.Width
+				&& Y >= rect.Y
+				&& Y < rect.Y + rect.Height;
 		}
 
 		public override bool Equals(object obj)
