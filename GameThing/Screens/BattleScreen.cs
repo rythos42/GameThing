@@ -284,7 +284,7 @@ namespace GameThing.Screens
 				// we don't have a character selected, so select whatever we have under the tap
 				selectedCharacter = targetCharacter;
 			}
-			else if (selectedCard != null && targetCharacter != null && selectedCard.IsWithinRangeDistance(mapPoint) && (lockedInCharacter == selectedCard.OwnerCharacter || lockedInCharacter == null))
+			else if (selectedCard != null && targetCharacter != null && selectedCard.IsWithinRangeDistance(mapPoint) && mapPoint.IsWithinMap && (lockedInCharacter == selectedCard.OwnerCharacter || lockedInCharacter == null))
 			{
 				// PLAY SELECTED CARD
 				// we have a character selected and a card selected, try to target whatever is under the tap

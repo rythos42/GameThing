@@ -58,7 +58,7 @@ namespace GameThing.Entities
 		public decimal IntelligenceMultiplier { get; set; } = 1;
 
 		[DataMember]
-		public decimal CurrentHealth { get; private set; } = 5;
+		public decimal CurrentHealth { get; set; } = 5;
 
 		[DataMember]
 		public CharacterSide Side { get; set; }

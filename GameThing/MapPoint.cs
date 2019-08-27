@@ -40,7 +40,7 @@ namespace GameThing
 					return new MapPoint { X = x, Y = y };
 			}
 
-			return null;
+			return new MapPoint { X = -1, Y = -1 };
 		}
 
 		public bool IsWithinDistanceOf(int range, MapPoint checkPoint)

@@ -1,13 +1,6 @@
 - use "no available movement" as literally "can't move there", then prevent it
 	- make so can't walk over water
 
-- Possible that some support cards need longer ranges
-- Possible that decks need more starter attack cards
-	- maybe have fighters start with more attacks, mages start with more other, etc
-	- basically swap out more than one card per class
-- Possibly need a defense card
-
-
 Nice to have:
 	- selected character is drawn over top of nearby characters
 		- this might be good in some cases, leave it for now
