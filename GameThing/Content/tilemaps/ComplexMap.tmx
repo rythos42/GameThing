@@ -39,7 +39,7 @@
  </layer>
  <objectgroup id="6" name="Deployment" offsetx="0" offsety="-32">
   <object id="6" name="Unicorn" x="224" y="0" width="256" height="256"/>
-  <object id="10" name="Spaghetti" x="128" y="832" width="96" height="128"/>
+  <object id="10" name="Spaghetti" x="192" y="832" width="608" height="128"/>
  </objectgroup>
  <layer id="5" name="Tiles:Ramps and Stuff" width="30" height="30" offsetx="0" offsety="-32">
   <data encoding="csv">

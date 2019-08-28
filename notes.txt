@@ -1,5 +1,6 @@
 - use "no available movement" as literally "can't move there", then prevent it
 	- make so can't walk over water
+- add some basic instructions to start page
 
 Nice to have:
 	- selected character is drawn over top of nearby characters
