@@ -1,5 +1,3 @@
-- add some basic instructions to start page
-
 Nice to have:
 	- selected character is drawn over top of nearby characters
 		- this might be good in some cases, leave it for now
