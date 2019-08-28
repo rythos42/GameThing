@@ -18,13 +18,19 @@ namespace GameThing
 		public int X { get; set; }
 		public int Y { get; set; }
 
+		public MapPoint(int x, int y)
+		{
+			X = x;
+			Y = y;
+		}
+
 		public Vector2 GetScreenPosition()
 		{
 			// http://clintbellanger.net/articles/isometric_math/
 			// map is [0, 0] top, [0, 29] right, [29, 29] bottom, [29, 0] left
 			return new Vector2(
 				(X - Y) * TileWidth_Half,
-				(X + Y) * TileHeight_Half - (MapHelper.GetHeightAtMapPoint(X, Y) * 32)
+				(X + Y) * TileHeight_Half - (Height * 32)
 			);
 		}
 
@@ -33,14 +39,15 @@ namespace GameThing
 			for (var layerNumber = MapHelper.MaxLayer; layerNumber >= 0; layerNumber--)
 			{
 				var layerOffset = layerNumber * 32;
-				var x = (int) (screenPosition.X / TileWidth_Half + (screenPosition.Y + layerOffset) / TileHeight_Half) / 2;
-				var y = (int) ((screenPosition.Y + layerOffset) / TileHeight_Half - screenPosition.X / TileWidth_Half) / 2;
+				var mapPoint = new MapPoint(
+					(int) (screenPosition.X / TileWidth_Half + (screenPosition.Y + layerOffset) / TileHeight_Half) / 2,
+					(int) ((screenPosition.Y + layerOffset) / TileHeight_Half - screenPosition.X / TileWidth_Half) / 2);
 
-				if (MapHelper.GetHeightAtMapPoint(x, y) == layerNumber)
-					return new MapPoint { X = x, Y = y };
+				if (mapPoint.Height == layerNumber)
+					return mapPoint;
 			}
 
-			return new MapPoint { X = -1, Y = -1 };
+			return new MapPoint(-1, -1);
 		}
 
 		public bool IsWithinDistanceOf(int range, MapPoint checkPoint)
@@ -72,6 +79,22 @@ namespace GameThing
 				&& X < rect.X + rect.Width
 				&& Y >= rect.Y
 				&& Y < rect.Y + rect.Height;
+		}
+
+		public bool IsInAvailableMovement
+		{
+			get
+			{
+				return MapHelper.IsInAvailableMovement(this);
+			}
+		}
+
+		public int Height
+		{
+			get
+			{
+				return MapHelper.GetHeightAtMapPoint(X, Y);
+			}
 		}
 
 		public override bool Equals(object obj)

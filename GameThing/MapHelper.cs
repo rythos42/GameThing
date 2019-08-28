@@ -59,6 +59,12 @@ namespace GameThing
 				(int) Math.Round(deployment.Size.Height / 32, 0, MidpointRounding.AwayFromZero));
 		}
 
+		public static bool IsInAvailableMovement(MapPoint mapPosition)
+		{
+			var noAvailableMovementGroundLayer = Map.GetLayer<TiledMapObjectLayer>($"NoAvailableMovement:{mapPosition.Height}");
+			return noAvailableMovementGroundLayer == null || !noAvailableMovementGroundLayer.Objects.Any(mapObject => mapPosition.IsWithinRectangle(GetObjectRectangleInMapPoints(mapObject)));
+		}
+
 		public static void DrawRange(int range, MapPoint initialPosition, SpriteBatch spriteBatch, Texture2D texture, Color color)
 		{
 			for (var i = -1 * range; i < range + 1; i++)
@@ -78,12 +84,8 @@ namespace GameThing
 					if (mapY < MapPoint.MIN_MAP_Y || mapY > MapPoint.MAX_MAP_Y)
 						continue;
 
-					var mapPosition = new MapPoint { X = mapX, Y = mapY };
-
-					var layerNumber = GetHeightAtMapPoint(mapX, mapY);
-					var noAvailableMovementGroundLayer = Map.GetLayer<TiledMapObjectLayer>($"NoAvailableMovement:{layerNumber}");
-					var draw = noAvailableMovementGroundLayer == null || !noAvailableMovementGroundLayer.Objects.Any(mapObject => mapPosition.IsWithinRectangle(GetObjectRectangleInMapPoints(mapObject)));
-					if (draw)
+					var mapPosition = new MapPoint(mapX, mapY);
+					if (mapPosition.IsInAvailableMovement)
 					{
 						var screenPosition = mapPosition.GetScreenPosition();
 						spriteBatch.Draw(texture, new Rectangle((int) screenPosition.X - MapPoint.TileWidth_Half, (int) screenPosition.Y, 64, 32), color * 0.5f);

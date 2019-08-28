@@ -83,11 +83,10 @@ namespace GameThing.Screens
 			bool yes = character.Side == CharacterSide.Spaghetti;
 			do
 			{
-				characterPoint = new MapPoint
-				{
-					X = random.Next(new Range<int>(deployment.X, deployment.X + deployment.Width)),
-					Y = random.Next(new Range<int>(deployment.Y, deployment.Y + deployment.Height))
-				};
+				characterPoint = new MapPoint(
+					random.Next(new Range<int>(deployment.X, deployment.X + deployment.Width)),
+					random.Next(new Range<int>(deployment.Y, deployment.Y + deployment.Height))
+				);
 			} while (otherPlacements.Contains(characterPoint));
 			otherPlacements.Add(characterPoint);
 			character.MapPosition = characterPoint;
@@ -306,7 +305,7 @@ namespace GameThing.Screens
 				// we have a character selected and a card selected but the card isn't in range of the desired target, or there is no target
 				selectedCard = null;
 			}
-			else if (selectedCharacter.IsWithinMoveDistanceOf(mapPoint) && mapPoint.IsWithinMap && CanMoveSelectedCharacter && targetCharacter == null)
+			else if (selectedCharacter.IsWithinMoveDistanceOf(mapPoint) && mapPoint.IsWithinMap && mapPoint.IsInAvailableMovement && CanMoveSelectedCharacter && targetCharacter == null)
 			{
 				// MOVE
 				// we have a character selected, it's my character, it is within move distance of the tap and it has moves remaining
