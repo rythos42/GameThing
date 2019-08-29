@@ -14,6 +14,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "design", "design", "{29C4A8B6-031F-43DC-8AF4-5C3384244074}"
 	ProjectSection(SolutionItems) = preProject
 		cards.txt = cards.txt
+		feedback.txt = feedback.txt
 		game.txt = game.txt
 	EndProjectSection
 EndProject

@@ -23,26 +23,16 @@ namespace GameThing.Android.BaseGameUtils
 		private static readonly int RC_RESOLVE = 9001;              // Request code we use when invoking other Activities to complete the sign-in flow.
 		private static readonly int RC_UNUSED = 9002;               // Request code when invoking Activities whose result we don't care about.
 
-		// Client request flags
-		public static int CLIENT_NONE = 0x00;
 		public static int CLIENT_GAMES = 0x01;
-		public static int CLIENT_PLUS = 0x02;
-		public static int CLIENT_APPSTATE = 0x04;
-		public static int CLIENT_SNAPSHOT = 0x08;
-
-		public static int CLIENT_ALL = CLIENT_GAMES | CLIENT_PLUS
-									   | CLIENT_APPSTATE | CLIENT_SNAPSHOT;
 
 		private static readonly int DEFAULT_MAX_SIGN_IN_ATTEMPTS = 3;
 		private readonly Handler mHandler;
 
-		// What clients were requested? (bit flags)
-		private readonly int mRequestedClients = CLIENT_NONE;
+		private readonly int mRequestedClients;
 		private readonly String GAMEHELPER_SHARED_PREFS = "GAMEHELPER_SHARED_PREFS";
 		private readonly String KEY_SIGN_IN_CANCELLATIONS = "KEY_SIGN_IN_CANCELLATIONS";
 		private Activity mActivity;
 
-		// app context
 		private Context mAppContext;
 		private Api.ApiOptionsNoOptions mAppStateApiOptions;
 
@@ -52,61 +42,24 @@ namespace GameThing.Android.BaseGameUtils
 		private bool mConnectOnStart = true;
 		private bool mConnecting;
 
-		/*
-         * Whether user has specifically requested that the sign-in process begin.
-         * If mUserInitiatedSignIn is false, we're in the automatic sign-in attempt
-         * that we try once the Activity is started -- if true, then the user has
-         * already clicked a "Sign-In" button or something similar
-         */
-
 		// The connection result we got from our last attempt to sign-in.
 		private ConnectionResult mConnectionResult;
 
-		// The error that happened during sign-in.
-
-		// Print debug logs?
 		private bool mDebugLog;
 		private bool mExpectingResolution;
 		private GamesClass.GamesOptions mGamesApiOptions = GamesClass.GamesOptions.InvokeBuilder().Build();
 		private GoogleApiClient mGoogleApiClient;
 		private GoogleApiClient.Builder mGoogleApiClientBuilder;
-
-		/*
-         * If we got an invitation when we connected to the games client, it's here.
-         * Otherwise, it's null.
-         */
-		private IInvitation mInvitation;
-
-		/*
-         * If we got turn-based match when we connected to the games client, it's
-         * here. Otherwise, it's null.
-         */
-
-		// Listener
 		private IGameHelperListener mListener;
 
-		// Should we start the flow to sign the user in automatically on startup? If
-		// so, up to
-		// how many times in the life of the application?
+		// Should we start the flow to sign the user in automatically on startup? If so, up to how many times in the life of the application?
 		private int mMaxAutoSignInAttempts = DEFAULT_MAX_SIGN_IN_ATTEMPTS;
-		//private PlusClass.PlusOptions mPlusApiOptions;
-		//private IList<IGameRequest> mRequests;
 		private bool mSetupDone;
 		private bool mShowErrorDialogs = true;
 		private bool mSignInCancelled;
 		private SignInFailureReason mSignInFailureReason;
 		private ITurnBasedMatch mTurnBasedMatch;
 		private bool mUserInitiatedSignIn;
-
-		/**
-         * Construct a GameHelper object, initially tied to the given Activity.
-         * After constructing this object, call @link{setup} from the onCreate()
-         * method of your Activity.
-         *
-         * @param clientsToUse
-         *            the API clients to use (a combination of the CLIENT_* flags,
-         *            or CLIENT_ALL to mean all clients).
-         */
 
 		public GameHelper(Activity activity, int clientsToUse)
 		{
@@ -122,27 +75,8 @@ namespace GameThing.Android.BaseGameUtils
 
 			if (connectionHint != null)
 			{
-				debugLog("onConnected: connection hint provided. Checking for invite.");
-				var inv = connectionHint.GetParcelable(Multiplayer.ExtraInvitation).JavaCast<IInvitation>();
-				if (inv != null && inv.InvitationId != null)
-				{
-					// retrieve and cache the invitation ID
-					debugLog("onConnected: connection hint has a room invite!");
-					mInvitation = inv;
-					debugLog("Invitation ID: " + mInvitation.InvitationId);
-				}
-
-				// Do we have any requests pending?
-				/*mRequests = GamesClass.Requests.GetGameRequestsFromBundle(connectionHint);
-                if (mRequests.Count != 0)
-                {
-                    // We have requests in onConnected's connectionHint.
-                    debugLog("onConnected: connection hint has " + mRequests.Count + " request(s)");
-                }*/
-
 				debugLog("onConnected: connection hint provided. Checking for TBMP game.");
-				mTurnBasedMatch =
-					connectionHint.GetParcelable(Multiplayer.ExtraTurnBasedMatch).JavaCast<ITurnBasedMatch>();
+				mTurnBasedMatch = connectionHint.GetParcelable(Multiplayer.ExtraTurnBasedMatch).JavaCast<ITurnBasedMatch>();
 			}
 
 			// we're good to go
@@ -220,17 +154,6 @@ namespace GameThing.Android.BaseGameUtils
 			resolveConnectionResult();
 		}
 
-		/**
-         * Sets the maximum number of automatic sign-in attempts to be made on
-         * application startup. This maximum is over the lifetime of the application
-         * (it is stored in a SharedPreferences file). So, for example, if you
-         * specify 2, then it means that the user will be prompted to sign in on app
-         * startup the first time and, if they cancel, a second time the next time
-         * the app starts, and, if they cancel that one, never again. Set to 0 if
-         * you do not want the user to be prompted to sign in on application
-         * startup.
-         */
-
 		public void setMaxAutoSignInAttempts(int max)
 		{
 			mMaxAutoSignInAttempts = max;
@@ -240,7 +163,7 @@ namespace GameThing.Android.BaseGameUtils
 		{
 			if (!mSetupDone)
 			{
-				String error = "GameHelper error: Operation attempted without setup: "
+				var error = "GameHelper error: Operation attempted without setup: "
 							   + operation
 							   + ". The setup() method must be called before attempting any other operation.";
 				logError(error);
@@ -252,7 +175,7 @@ namespace GameThing.Android.BaseGameUtils
 		{
 			if (mGoogleApiClientBuilder != null)
 			{
-				String error = "GameHelper: you cannot call set*ApiOptions after the client "
+				var error = "GameHelper: you cannot call set*ApiOptions after the client "
 							   + "builder has been created. Call it before calling CreateApiClientBuilder() "
 							   + "or setup().";
 				logError(error);
@@ -260,21 +183,11 @@ namespace GameThing.Android.BaseGameUtils
 			}
 		}
 
-		/**
-         * Sets the options to pass when setting up the Games API. Call before
-         * setup().
-         */
-
 		public void setGamesApiOptions(GamesClass.GamesOptions options)
 		{
 			doApiOptionsPreCheck();
 			mGamesApiOptions = options;
 		}
-
-		/**
-         * Sets the options to pass when setting up the AppState API. Call before
-         * setup().
-         */
 
 		public void setAppStateApiOptions(Api.ApiOptionsNoOptions options)
 		{
@@ -282,31 +195,13 @@ namespace GameThing.Android.BaseGameUtils
 			mAppStateApiOptions = options;
 		}
 
-		/**
-         * Sets the options to pass when setting up the Plus API. Call before
-         * setup().
-         */
-		/*
-       public void setPlusApiOptions(PlusClass.PlusOptions options)
-       {
-           doApiOptionsPreCheck();
-           mPlusApiOptions = options;
-       }*/
-
-		/**
-         * Creates a GoogleApiClient.Builder for use with @link{#setup}. Normally,
-         * you do not have to do this; use this method only if you need to make
-         * nonstandard setup (e.g. adding extra scopes for other APIs) on the
-         * GoogleApiClient.Builder before calling @link{#setup}.
-         */
-
 		public GoogleApiClient.Builder CreateApiClientBuilder()
 		{
 			try
 			{
 				if (mSetupDone)
 				{
-					String error = "GameHelper: you called GameHelper.CreateApiClientBuilder() after " +
+					var error = "GameHelper: you called GameHelper.CreateApiClientBuilder() after " +
 								   "calling setup. You can only get a client builder BEFORE performing setup.";
 					logError(error);
 					throw new IllegalStateException(error);
@@ -330,45 +225,6 @@ namespace GameThing.Android.BaseGameUtils
 
 				}
 
-				/*if (0 != (mRequestedClients & CLIENT_PLUS))
-                {
-                    try
-                    {
-                        builder.AddApi(PlusClass.Api);
-                        builder.AddScope(PlusClass.ScopePlusLogin);
-                    }
-                    catch (Exception ex)
-                    {
-                        ex.ToString();
-                    }
-                }*/
-
-				/*if (0 != (mRequestedClients & CLIENT_APPSTATE))
-                {
-                    try
-                    {
-                        builder.AddApi(AppStateManager.Api);
-                        builder.AddScope(AppStateManager.ScopeAppState);
-                    }
-                    catch (Exception ex)
-                    {
-                        ex.ToString();
-                    }
-                }*/
-
-				/*if (0 != (mRequestedClients & CLIENT_SNAPSHOT))
-                {
-                    try
-                    {
-                        builder.AddScope(DriveClass.ScopeAppfolder);
-                        builder.AddApi(DriveClass.Api);
-                    }
-                    catch (Exception ex)
-                    {
-                        ex.ToString();
-                    }
-                }*/
-
 				mGoogleApiClientBuilder = builder;
 				return builder;
 			}
@@ -379,31 +235,17 @@ namespace GameThing.Android.BaseGameUtils
 			return null;
 		}
 
-		/**
-         * Performs setup on this GameHelper object. Call this from the onCreate()
-         * method of your Activity. This will create the clients and do a few other
-         * initialization tasks. Next, call @link{#onStart} from the onStart()
-         * method of your Activity.
-         *
-         * @param listener
-         *            The listener to be notified of sign-in events.
-         */
-
 		public void setup(IGameHelperListener listener)
 		{
 			try
 			{
-				if (listener == null)
-				{
-					throw new Exception("The listener is not of type IGameHelperListener");
-				}
 				if (mSetupDone)
 				{
-					String error = "GameHelper: you cannot call GameHelper.setup() more than once!";
+					var error = "GameHelper: you cannot call GameHelper.setup() more than once!";
 					logError(error);
 					throw new IllegalStateException(error);
 				}
-				mListener = listener;
+				mListener = listener ?? throw new Exception("The listener is not of type IGameHelperListener");
 				debugLog("Setup: requested clients: " + mRequestedClients);
 
 				if (mGoogleApiClientBuilder == null)
@@ -422,11 +264,6 @@ namespace GameThing.Android.BaseGameUtils
 			}
 		}
 
-		/**
-         * Returns the GoogleApiClient object. In order to call this method, you
-         * must have called @link{setup}.
-         */
-
 		public GoogleApiClient getApiClient()
 		{
 			if (mGoogleApiClient == null)
@@ -436,34 +273,20 @@ namespace GameThing.Android.BaseGameUtils
 			return mGoogleApiClient;
 		}
 
-		/** Returns whether or not the user is signed in. */
-
 		public bool isSignedIn()
 		{
 			return mGoogleApiClient != null && mGoogleApiClient.IsConnected;
 		}
-
-		/** Returns whether or not we are currently connecting */
 
 		public bool isConnecting()
 		{
 			return mConnecting;
 		}
 
-		/**
-         * Returns whether or not there was a (non-recoverable) error during the
-         * sign-in process.
-         */
-
 		public bool hasSignInError()
 		{
 			return mSignInFailureReason != null;
 		}
-
-		/**
-         * Returns the error that happened during the sign-in process, null if no
-         * error occurred.
-         */
 
 		public SignInFailureReason getSignInError()
 		{
@@ -477,7 +300,6 @@ namespace GameThing.Android.BaseGameUtils
 		}
 
 		/** Call this method from your Activity's onStart(). */
-
 		public void onStart(Activity act)
 		{
 			try
@@ -517,7 +339,6 @@ namespace GameThing.Android.BaseGameUtils
 		}
 
 		/** Call this method from your Activity's onStop(). */
-
 		public void onStop()
 		{
 			debugLog("onStop");
@@ -538,66 +359,9 @@ namespace GameThing.Android.BaseGameUtils
 			mActivity = null;
 		}
 
-		/**
-         * Returns the invitation ID received through an invitation notification.
-         * This should be called from your GameHelperListener's
-         *
-         * @link{GameHelperListener#OnSignInSucceeded method, to check if there's an
-         *                                            invitation available. In that
-         *                                            case, accept the invitation.
-         * @return The id of the invitation, or null if none was received.
-         */
-
-		public String getInvitationId()
-		{
-			if (!mGoogleApiClient.IsConnected)
-			{
-				Log.Warn(TAG,
-					"Warning: getInvitationId() should only be called when signed in, " +
-					"that is, after getting onSignInSuceeded()");
-			}
-			return mInvitation == null ? null : mInvitation.InvitationId;
-		}
-
-		/**
-         * Returns the invitation received through an invitation notification. This
-         * should be called from your GameHelperListener's
-         *
-         * @link{GameHelperListener#OnSignInSucceeded method, to check if there's an
-         *                                            invitation available. In that
-         *                                            case, accept the invitation.
-         * @return The invitation, or null if none was received.
-         */
-
-		public IInvitation getInvitation()
-		{
-			if (!mGoogleApiClient.IsConnected)
-			{
-				Log.Warn(TAG,
-					"Warning: getInvitation() should only be called when signed in, " +
-					"that is, after getting onSignInSuceeded()");
-			}
-			return mInvitation;
-		}
-
-		public bool hasInvitation()
-		{
-			return mInvitation != null;
-		}
-
 		public bool hasTurnBasedMatch()
 		{
 			return mTurnBasedMatch != null;
-		}
-
-		/*public bool hasRequests()
-        {
-            return mRequests != null;
-        }*/
-
-		public void clearInvitation()
-		{
-			mInvitation = null;
 		}
 
 		public void clearTurnBasedMatch()
@@ -610,20 +374,6 @@ namespace GameThing.Android.BaseGameUtils
 			mTurnBasedMatch = turnBasedMatch;
 		}
 
-		/*public void clearRequests()
-        {
-            mRequests = null;
-        }*/
-
-		/**
-         * Returns the tbmp match received through an invitation notification. This
-         * should be called from your GameHelperListener's
-         *
-         * @link{GameHelperListener#OnSignInSucceeded method, to check if there's a
-         *                                            match available.
-         * @return The match, or null if none was received.
-         */
-
 		public ITurnBasedMatch getTurnBasedMatch()
 		{
 			if (!mGoogleApiClient.IsConnected)
@@ -635,29 +385,6 @@ namespace GameThing.Android.BaseGameUtils
 			return mTurnBasedMatch;
 		}
 
-		/**
-         * Returns the requests received through the onConnected bundle. This should
-         * be called from your GameHelperListener's
-         *
-         * @link{GameHelperListener#OnSignInSucceeded method, to check if there are
-         *                                            incoming requests that must be
-         *                                            handled.
-         * @return The requests, or null if none were received.
-         */
-		/*
-                public IList<IGameRequest> getRequests()
-                {
-                    if (!mGoogleApiClient.IsConnected)
-                    {
-                        Log.Warn(TAG, "Warning: getRequests() should only be called "
-                                      + "when signed in, "
-                                      + "that is, after getting onSignInSuceeded()");
-                    }
-                    return mRequests;
-                }
-                */
-		/** Enables debug logging */
-
 		public void enableDebugLog(bool enabled)
 		{
 			mDebugLog = enabled;
@@ -666,46 +393,6 @@ namespace GameThing.Android.BaseGameUtils
 				debugLog("Debug log enabled.");
 			}
 		}
-
-		/** Sign out and disconnect from the APIs. */
-
-		public void signOut()
-		{
-			if (!mGoogleApiClient.IsConnected)
-			{
-				// nothing to do
-				debugLog("signOut: was already disconnected, ignoring.");
-				return;
-			}
-
-			// for Plus, "signing out" means clearing the default account and
-			// then disconnecting
-			/*if (0 != (mRequestedClients & CLIENT_PLUS))
-            {
-                debugLog("Clearing default account on PlusClient.");
-                PlusClass.AccountApi.ClearDefaultAccount(mGoogleApiClient);
-            }*/
-
-			// For the games client, signing out means calling signOut and
-			// disconnecting
-			if (0 != (mRequestedClients & CLIENT_GAMES))
-			{
-				debugLog("Signing out from the Google API Client.");
-				GamesClass.SignOut(mGoogleApiClient);
-			}
-
-			// Ready to disconnect
-			debugLog("Disconnecting client.");
-			mConnectOnStart = false;
-			mConnecting = false;
-			mGoogleApiClient.Disconnect();
-		}
-
-		/**
-         * Handle activity result. Call this method from your Activity's
-         * onActivityResult callback. If the activity result pertains to the sign-in
-         * process, processes it appropriately.
-         */
 
 		public void onActivityResult(int requestCode, int responseCode, Intent intent)
 		{
@@ -730,8 +417,7 @@ namespace GameThing.Android.BaseGameUtils
 					return;
 				}
 
-				// We're coming back from an activity that was launched to resolve a
-				// connection problem. For example, the sign-in UI.
+				// We're coming back from an activity that was launched to resolve a connection problem. For example, the sign-in UI.
 				if (responseCode == (int) Result.Ok)
 				{
 					// Ready to try to connect again.
@@ -763,8 +449,7 @@ namespace GameThing.Android.BaseGameUtils
 				}
 				else
 				{
-					// Whatever the problem we were trying to solve, it was not
-					// solved. So give up and show an error message.
+					// Whatever the problem we were trying to solve, it was not solved. So give up and show an error message.
 					debugLog("onAR: responseCode=" + GameHelperUtils.activityResponseCodeToString(responseCode) + ", so giving up.");
 					giveUp(new SignInFailureReason(mConnectionResult.ErrorCode, responseCode));
 				}
@@ -799,13 +484,6 @@ namespace GameThing.Android.BaseGameUtils
 			}
 		}
 
-		/**
-         * Starts a user-initiated sign-in flow. This should be called when the user
-         * clicks on a "Sign In" button. As a result, authentication/consent dialogs
-         * may show up. At the end of the process, the GameHelperListener's
-         * OnSignInSucceeded() or OnSignInFailed() methods will be called.
-         */
-
 		public void beginUserInitiatedSignIn()
 		{
 			debugLog("beginUserInitiatedSignIn: resetting attempt count.");
@@ -828,22 +506,18 @@ namespace GameThing.Android.BaseGameUtils
 						+ "OnSignInSucceeded() or OnSignInFailed() callback. Suggestion: disable "
 						+ "the sign-in button on startup and also when it's clicked, and re-enable "
 						+ "when you get the callback.");
-				// ignore call (listener will get a callback when the connection
-				// process finishes)
+				// ignore call (listener will get a callback when the connection process finishes)
 				return;
 			}
 
 			debugLog("Starting USER-INITIATED sign-in flow.");
 
-			// indicate that user is actively trying to sign in (so we know to
-			// resolve
-			// connection problems by showing dialogs)
+			// indicate that user is actively trying to sign in (so we know to resolve connection problems by showing dialogs)
 			mUserInitiatedSignIn = true;
 
 			if (mConnectionResult != null)
 			{
-				// We have a pending connection result from a previous failure, so
-				// start with that.
+				// We have a pending connection result from a previous failure, so start with that.
 				debugLog("beginUserInitiatedSignIn: continuing pending sign-in flow.");
 				mConnecting = true;
 				resolveConnectionResult();
@@ -866,31 +540,9 @@ namespace GameThing.Android.BaseGameUtils
 			}
 			debugLog("Starting connection.");
 			mConnecting = true;
-			mInvitation = null;
 			mTurnBasedMatch = null;
 			mGoogleApiClient.Connect();
 		}
-
-		/**
-         * Disconnects the API client, then connects again.
-         */
-
-		public void reconnectClient()
-		{
-			if (!mGoogleApiClient.IsConnected)
-			{
-				Log.Warn(TAG, "reconnectClient() called when client is not connected.");
-				// interpret it as a request to connect
-				connect();
-			}
-			else
-			{
-				debugLog("Reconnecting client.");
-				mGoogleApiClient.Reconnect();
-			}
-		}
-
-		/** Called when we successfully obtain a connection to a client. */
 
 		private void succeedSignIn()
 		{
@@ -902,17 +554,14 @@ namespace GameThing.Android.BaseGameUtils
 			notifyListener(true);
 		}
 
-		// Return the number of times the user has cancelled the sign-in flow in the
-		// life of the app
+		// Return the number of times the user has cancelled the sign-in flow in the life of the app
 		private int getSignInCancellations()
 		{
 			ISharedPreferences sp = mAppContext.GetSharedPreferences(GAMEHELPER_SHARED_PREFS, FileCreationMode.Private);
 			return sp.GetInt(KEY_SIGN_IN_CANCELLATIONS, 0);
 		}
 
-		// Increments the counter that indicates how many times the user has
-		// cancelled the sign in
-		// flow in the life of the application
+		// Increments the counter that indicates how many times the user has cancelled the sign in flow in the life of the application
 		private int incrementSignInCancellations()
 		{
 			int cancellations = getSignInCancellations();
@@ -923,8 +572,7 @@ namespace GameThing.Android.BaseGameUtils
 			return cancellations + 1;
 		}
 
-		// Reset the counter of how many times the user has cancelled the sign-in
-		// flow.
+		// Reset the counter of how many times the user has cancelled the sign-in flow.
 		private void resetSignInCancellations()
 		{
 			ISharedPreferencesEditor editor =
@@ -932,14 +580,6 @@ namespace GameThing.Android.BaseGameUtils
 			editor.PutInt(KEY_SIGN_IN_CANCELLATIONS, 0);
 			editor.Commit();
 		}
-
-		/** Handles a connection failure. */
-
-		/**
-         * Attempts to resolve a connection failure. This will usually involve
-         * starting a UI flow that lets the user give the appropriate consents
-         * necessary for sign-in to work.
-         */
 
 		private void resolveConnectionResult()
 		{
@@ -960,8 +600,7 @@ namespace GameThing.Android.BaseGameUtils
 					debugLog("Result has resolution. Starting it.");
 					try
 					{
-						// launch appropriate UI flow (which might, for example, be the
-						// sign-in flow)
+						// launch appropriate UI flow (which might, for example, be the sign-in flow)
 						mExpectingResolution = true;
 						mConnectionResult.StartResolutionForResult(mActivity, RC_RESOLVE);
 					}
@@ -975,8 +614,7 @@ namespace GameThing.Android.BaseGameUtils
 				}
 				else
 				{
-					// It's not a problem what we can solve, so give up and show an
-					// error.
+					// It's not a problem what we can solve, so give up and show an error.
 					debugLog("resolveConnectionResult: result has no resolution. Giving up.");
 					giveUp(new SignInFailureReason(mConnectionResult.ErrorCode));
 				}
@@ -999,14 +637,6 @@ namespace GameThing.Android.BaseGameUtils
 				Log.Warn(TAG, "disconnect() called when client was already disconnected.");
 			}
 		}
-
-		/**
-         * Give up on signing in due to an error. Shows the appropriate error
-         * message to the user, using a standard error dialog as appropriate to the
-         * cause of the error. That dialog will indicate to the user how the problem
-         * can be solved (for example, re-enable Google Play Services, upgrade to a
-         * new version, etc).
-         */
 
 		private void giveUp(SignInFailureReason reason)
 		{
@@ -1033,7 +663,6 @@ namespace GameThing.Android.BaseGameUtils
 		}
 
 		/** Called when we are disconnected from the Google API client. */
-
 		public void showFailureDialog()
 		{
 			if (mSignInFailureReason != null)
@@ -1054,7 +683,6 @@ namespace GameThing.Android.BaseGameUtils
 		}
 
 		/** Shows an error dialog that's appropriate for the failure reason. */
-
 		public static void showFailureDialog(Activity activity, int actResp, int errorCode)
 		{
 			if (activity == null)
@@ -1079,10 +707,7 @@ namespace GameThing.Android.BaseGameUtils
 						activity, GameHelperUtils.R_LICENSE_FAILED));
 					break;
 				default:
-					// No meaningful Activity response code, so generate default Google
-					// Play services dialog
 					errorDialog = GoogleApiAvailability.Instance.GetErrorDialog(activity, errorCode, RC_UNUSED);
-					//errorDialog = GooglePlayServicesUtil.GetErrorDialog(errorCode, activity, RC_UNUSED, null);
 					if (errorDialog == null)
 					{
 						// get fallback dialog
@@ -1150,17 +775,6 @@ namespace GameThing.Android.BaseGameUtils
 		private void logError(String message)
 		{
 			Log.Error(TAG, "*** GameHelper ERROR: " + message);
-		}
-
-		// Not recommended for general use. This method forces the
-		// "connect on start" flag
-		// to a given state. This may be useful when using GameHelper in a
-		// non-standard
-		// sign-in flow.
-		public void setConnectOnStart(bool connectOnStart)
-		{
-			debugLog("Forcing mConnectOnStart=" + connectOnStart);
-			mConnectOnStart = connectOnStart;
 		}
 	}
 }

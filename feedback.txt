@@ -1,0 +1,45 @@
+The goal of this MVP is:
+
+	1. That the game is playable and is a game. Really low bar.
+	2. That the game is actually a strategy game.
+	3. That the game's core game loop is fun.
+
+To that end, I'm not worried about the "look", or "theme". I welcome open-ended feedback on the above 3 topics, here are some specific questions I'm interested in:
+
+Playable
+	Does the game provide enough information about what is and isn't possible to do?
+
+Strategy
+	Can you reason about what you should do next, based on available information?
+	Do the existing cards allow you to make a plan and enact it over several turns?
+	How did it feel to play a single character per turn? Did this allow you enough range-of-action to feel strategic?
+	How did it feel to have 4 available cards out of an 8 card deck? Did this allow you enough choices to feel strategic?
+
+Fun
+	Did you find yourself excited about a notification of a new turn?
+	Do the existing cards have enough not make you feel "trapped"?
+	Do the existing cards make you feel powerful?
+	Do the existing cards make you feel like there is a system or mechanic to be explored further? 
+	By the end, did you find the game more of a chore to help out your friend? :)
+
+Fun and Strategy
+	Does this game remind you of another one? 
+		Can you tell me about that? Good or bad or something you'd like to see form it?
+	Do you have ideas for more (or replacement) cards that would be fun or strategic?
+	Do the existing cards "not quite get there"? (ie, SteamWorld: Quest cards are somewhat limited in their strategies, thus "not quite there").
+
+General
+	Any open-ended comments about the game?
+	Do you think this survey was understandable and contained thought-provoking questions? :P
+
+
+I don't know what the future of this prototype is (will I keep working on it?), but I do know what I'd like to do:
+	Characters that grow in power as you play.
+	PVP mode that allows you to store "your team" and play it against others.
+	Gaining more cards per character, and customizing your decks.
+	Figure out the theme, leading to a story.
+	Campaign/story mode
+	More and more varied terrain
+	Music, effects, polish, new graphics, etc, etc.
+
+	

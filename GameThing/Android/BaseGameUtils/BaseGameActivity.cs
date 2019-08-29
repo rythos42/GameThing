@@ -28,50 +28,12 @@ namespace GameThing.Android.BaseGameUtils
      */
 	public abstract class BaseGameActivity : Microsoft.Xna.Framework.AndroidGameActivity
 	{
-		// The game helper object. This class is mainly a wrapper around this object.
 		public static GameHelper mHelper;
-
-		// We expose these constants here because we don't want users of this class
-		// to have to know about GameHelper at all.
-		public static int CLIENT_GAMES = GameHelper.CLIENT_GAMES;
-		public static int CLIENT_APPSTATE = GameHelper.CLIENT_APPSTATE;
-		public static int CLIENT_PLUS = GameHelper.CLIENT_PLUS;
-		public static int CLIENT_ALL = GameHelper.CLIENT_ALL;
-
 		protected bool mDebugLog = true;
-		protected int mRequestedClients = CLIENT_GAMES;
-
-		/** Constructs a BaseGameActivity with default client (GamesClient). */
+		protected int mRequestedClients = GameHelper.CLIENT_GAMES;
 
 		protected BaseGameActivity()
 		{
-		}
-
-		/**
-     * Constructs a BaseGameActivity with the requested clients.
-     * @param requestedClients The requested clients (a combination of CLIENT_GAMES,
-     *         CLIENT_PLUS and CLIENT_APPSTATE).
-     */
-
-		protected BaseGameActivity(int requestedClients)
-		{
-			setRequestedClients(requestedClients);
-		}
-
-		/**
-     * Sets the requested clients. The preferred way to set the requested clients is
-     * via the constructor, but this method is available if for some reason your code
-     * cannot do this in the constructor. This must be called before onCreate or getGameHelper()
-     * in order to have any effect. If called after onCreate()/getGameHelper(), this method
-     * is a no-op.
-     *
-     * @param requestedClients A combination of the flags CLIENT_GAMES, CLIENT_PLUS
-     *         and CLIENT_APPSTATE, or CLIENT_ALL to request all available clients.
-     */
-
-		protected void setRequestedClients(int requestedClients)
-		{
-			mRequestedClients = requestedClients;
 		}
 
 		public GameHelper getGameHelper()
@@ -98,9 +60,7 @@ namespace GameThing.Android.BaseGameUtils
 			{
 				base.OnCreate(b);
 				if (mHelper == null)
-				{
 					getGameHelper();
-				}
 				mHelper.setup(this as IGameHelperListener);
 			}
 			catch (Exception ex)
@@ -149,11 +109,6 @@ namespace GameThing.Android.BaseGameUtils
 			mHelper.beginUserInitiatedSignIn();
 		}
 
-		protected void signOut()
-		{
-			mHelper.signOut();
-		}
-
 		protected void showAlert(String message)
 		{
 			mHelper.makeSimpleDialog(message).Show();
@@ -168,19 +123,7 @@ namespace GameThing.Android.BaseGameUtils
 		{
 			mDebugLog = true;
 			if (mHelper != null)
-			{
 				mHelper.enableDebugLog(enabled);
-			}
-		}
-
-		protected String getInvitationId()
-		{
-			return mHelper.getInvitationId();
-		}
-
-		protected void reconnectClient()
-		{
-			mHelper.reconnectClient();
 		}
 
 		protected bool hasSignInError()
