@@ -30,13 +30,11 @@ Nice to have:
 	- center text on buttons again
 	- character names
 	- allow players to look at their shit when it's not their turn
-	- put grid lines on slopes
+
 
 Tech
 	- decent chance that GameHelper/BaseGameActivity aren't doing the right things anymore -- seems to be a mash-up of older sign-in code and newer
 	- lots of events being passed through MainGame to MainActivity -- wonder if there is a better architecture that still keeps the Android pieces separate
-	- not calling UnloadContent anywhere
-	- stop passing ContentManager around, I'm more likely to load most things at startup at this point anyway
 	- warnings in Monogame Pipeline
 	- how to do polygon objects in maps
 	- Nexus 7 shows black box instead of highlighted character
@@ -52,6 +50,7 @@ Game Design
 		- make runcondition an agility buff?
 
 Started around June 9th
+MVP started August 28
 
 Google Play
 	Certificates

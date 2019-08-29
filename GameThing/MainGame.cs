@@ -155,11 +155,16 @@ namespace GameThing
 		{
 			spriteBatch = new SpriteBatch(GraphicsDevice);
 
-			this.content = new Content(Content);
+			content = new Content(Content);
 
-			battleScreen.LoadContent(content, Content, GraphicsDevice);
-			startScreen.LoadContent(content, Content, GraphicsDevice);
-			gameOverScreen.LoadContent(content, Content, GraphicsDevice);
+			battleScreen.LoadContent(content, GraphicsDevice);
+			startScreen.LoadContent(content, GraphicsDevice);
+			gameOverScreen.LoadContent(content, GraphicsDevice);
+		}
+
+		protected override void UnloadContent()
+		{
+			Content.Unload();
 		}
 
 		protected override void Update(GameTime gameTime)

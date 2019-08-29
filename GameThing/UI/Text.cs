@@ -1,6 +1,5 @@
 ﻿using GameThing.Entities;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GameThing.UI
@@ -16,7 +15,7 @@ namespace GameThing.UI
 			return font.MeasureString(Value);
 		}
 
-		public override void LoadContent(Content content, ContentManager contentManager, GraphicsDevice graphicsDevice)
+		public override void LoadContent(Content content, GraphicsDevice graphicsDevice)
 		{
 			font = content.Font;
 		}

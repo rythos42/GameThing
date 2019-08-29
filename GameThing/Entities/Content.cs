@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended.Tiled;
 
 namespace GameThing.Entities
 {
@@ -9,23 +10,26 @@ namespace GameThing.Entities
 	{
 		private readonly Dictionary<string, Texture2D> characterSprites = new Dictionary<string, Texture2D>();
 
-		public Content(ContentManager content)
+		public Content(ContentManager contentManager)
 		{
-			Font = content.Load<SpriteFont>("fonts/Carlito-Regular");
+			Font = contentManager.Load<SpriteFont>("fonts/Carlito-Regular");
 
-			Card = content.Load<Texture2D>("sprites/card");
-			DistanceOverlay = content.Load<Texture2D>("sprites/distance_overlay");
-			Lock = content.Load<Texture2D>("sprites/lock");
+			Card = contentManager.Load<Texture2D>("sprites/card");
+			DistanceOverlay = contentManager.Load<Texture2D>("sprites/distance_overlay");
+			Lock = contentManager.Load<Texture2D>("sprites/lock");
 
-			Highlight = content.Load<Effect>("effects/highlight");
+			Highlight = contentManager.Load<Effect>("effects/highlight");
 
 			foreach (CharacterSide side in Enum.GetValues(typeof(CharacterSide)))
 			{
 				foreach (CharacterColour colour in Enum.GetValues(typeof(CharacterColour)))
 				{
-					characterSprites[CreateKey(side, colour)] = content.Load<Texture2D>($"sprites/{side.ToString().ToLower()}_atlas_{colour.ToString().ToLower()}");
+					characterSprites[CreateKey(side, colour)] = contentManager.Load<Texture2D>($"sprites/{side.ToString().ToLower()}_atlas_{colour.ToString().ToLower()}");
 				}
 			}
+
+			//Map = contentManager.Load<TiledMap>("tilemaps/Map");
+			Map = contentManager.Load<TiledMap>("tilemaps/ComplexMap");
 		}
 
 		public SpriteFont Font { get; private set; }
@@ -35,6 +39,8 @@ namespace GameThing.Entities
 		public Texture2D Lock { get; private set; }
 
 		public Effect Highlight { get; private set; }
+
+		public TiledMap Map { get; private set; }
 
 		public Texture2D GetSpriteFor(Character character)
 		{

@@ -1,7 +1,6 @@
 ﻿using System;
 using GameThing.Entities;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GameThing.UI
@@ -28,9 +27,9 @@ namespace GameThing.UI
 			startShowing = true;
 		}
 
-		public override void LoadContent(Content content, ContentManager contentManager, GraphicsDevice graphicsDevice)
+		public override void LoadContent(Content content, GraphicsDevice graphicsDevice)
 		{
-			base.LoadContent(content, contentManager, graphicsDevice);
+			base.LoadContent(content, graphicsDevice);
 
 			font = content.Font;
 		}

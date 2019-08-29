@@ -1,6 +1,5 @@
 ﻿using GameThing.Entities;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GameThing.UI
@@ -35,7 +34,7 @@ namespace GameThing.UI
 		public bool IsHighlighted { get; set; }
 		public bool UseMinimumButtonSize { get; set; } = true;
 
-		public override void LoadContent(Content content, ContentManager contentManager, GraphicsDevice graphicsDevice)
+		public override void LoadContent(Content content, GraphicsDevice graphicsDevice)
 		{
 			buttonTexture = new Texture2D(graphicsDevice, 1, 1);
 			buttonTexture.SetData(new Color[] { Color.Silver });

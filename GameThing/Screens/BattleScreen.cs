@@ -6,7 +6,6 @@ using GameThing.Entities.Cards;
 using GameThing.Events;
 using GameThing.UI;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
 using MonoGame.Extended;
@@ -17,7 +16,6 @@ namespace GameThing.Screens
 {
 	public class BattleScreen
 	{
-		private TiledMap map;
 		private TiledMapRenderer mapRenderer;
 		private Camera<Vector2> camera;
 
@@ -92,10 +90,9 @@ namespace GameThing.Screens
 			character.MapPosition = characterPoint;
 		}
 
-		public void LoadContent(Content content, ContentManager contentManager, GraphicsDevice graphicsDevice)
+		public void LoadContent(Content content, GraphicsDevice graphicsDevice)
 		{
-			//map = contentManager.Load<TiledMap>("tilemaps/Map");
-			map = contentManager.Load<TiledMap>("tilemaps/ComplexMap");
+			var map = content.Map;
 			var deploymentLayer = map.GetLayer<TiledMapObjectLayer>("Deployment");
 			spaghettiDeployment = MapHelper.GetObjectRectangleInMapPoints(deploymentLayer.Objects.SingleOrDefault(deployment => deployment.Name.Equals("Spaghetti")));
 			unicornDeployment = MapHelper.GetObjectRectangleInMapPoints(deploymentLayer.Objects.SingleOrDefault(deployment => deployment.Name.Equals("Unicorn")));
@@ -118,10 +115,10 @@ namespace GameThing.Screens
 			playerSidePanel.Components.Add(new Text { Value = $"Your side: {thisPlayerSide}" });
 
 			this.content = content;
-			newTurnButton.LoadContent(content, contentManager, graphicsDevice);
-			statusPanel.LoadContent(content, contentManager, graphicsDevice);
-			selectedPlayerStatsPanel.LoadContent(content, contentManager, graphicsDevice);
-			playerSidePanel.LoadContent(content, contentManager, graphicsDevice);
+			newTurnButton.LoadContent(content, graphicsDevice);
+			statusPanel.LoadContent(content, graphicsDevice);
+			selectedPlayerStatsPanel.LoadContent(content, graphicsDevice);
+			playerSidePanel.LoadContent(content, graphicsDevice);
 		}
 
 		public void StartGame(string myParticipantId)

@@ -1,6 +1,5 @@
 ﻿using GameThing.Entities;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GameThing.Screens
@@ -11,7 +10,7 @@ namespace GameThing.Screens
 
 		public CharacterSide? Winner { get; set; }
 
-		public void LoadContent(Content content, ContentManager contentManager, GraphicsDevice graphicsDevice)
+		public void LoadContent(Content content, GraphicsDevice graphicsDevice)
 		{
 			font = content.Font;
 		}

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using GameThing.Entities;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GameThing.UI
@@ -56,12 +55,12 @@ namespace GameThing.UI
 			}
 		}
 
-		public override void LoadContent(Content content, ContentManager contentManager, GraphicsDevice graphicsDevice)
+		public override void LoadContent(Content content, GraphicsDevice graphicsDevice)
 		{
 			shadowTexture = new Texture2D(graphicsDevice, 1, 1);
 			shadowTexture.SetData(new Color[] { Color.Black });
 
-			Components.ForEach(component => component.LoadContent(content, contentManager, graphicsDevice));
+			Components.ForEach(component => component.LoadContent(content, graphicsDevice));
 		}
 
 		public override void Draw(SpriteBatch spriteBatch, int x, int y)

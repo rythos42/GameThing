@@ -1,6 +1,5 @@
 ﻿using GameThing.Entities;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GameThing.UI
@@ -18,7 +17,7 @@ namespace GameThing.UI
 		{
 		}
 
-		public abstract void LoadContent(Content content, ContentManager contentManager, GraphicsDevice graphicsDevice);
+		public abstract void LoadContent(Content content, GraphicsDevice graphicsDevice);
 		public abstract void Draw(SpriteBatch spriteBatch, int x, int y);
 		public abstract Vector2 MeasureContent();
 	}

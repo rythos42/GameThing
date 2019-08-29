@@ -2,7 +2,6 @@
 using GameThing.Events;
 using GameThing.UI;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
 
@@ -29,12 +28,12 @@ namespace GameThing.Screens
 			this.appData = appData;
 		}
 
-		public void LoadContent(Content content, ContentManager contentManager, GraphicsDevice graphicsDevice)
+		public void LoadContent(Content content, GraphicsDevice graphicsDevice)
 		{
-			startAsSpaghetti.LoadContent(content, contentManager, graphicsDevice);
-			signIn.LoadContent(content, contentManager, graphicsDevice);
-			createMatch.LoadContent(content, contentManager, graphicsDevice);
-			joinMatch.LoadContent(content, contentManager, graphicsDevice);
+			startAsSpaghetti.LoadContent(content, graphicsDevice);
+			signIn.LoadContent(content, graphicsDevice);
+			createMatch.LoadContent(content, graphicsDevice);
+			joinMatch.LoadContent(content, graphicsDevice);
 
 			font = content.Font;
 		}
