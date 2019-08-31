@@ -1,3 +1,8 @@
+play a game against myself
+update on geeksong
+send to friends >.>
+http://geeksong.com/com.geeksong.GameThing-Signed.apk
+
 Nice to have:
 	- selected character is drawn over top of nearby characters
 		- this might be good in some cases, leave it for now
@@ -91,6 +96,11 @@ MonoGame Extended Blog
 	https://github.com/craftworkgames/MonoGame.Extended/blob/develop/Source/Demos/Platformer/GameMain.cs
 	https://www.patreon.com/craftworkgames
 	http://www.monogameextended.net/posts
+
+	Tiled issues:
+		https://github.com/craftworkgames/MonoGame.Extended/issues/525
+		https://github.com/craftworkgames/MonoGame.Extended/issues/469
+		https://github.com/craftworkgames/MonoGame.Extended/issues/230
 
 To Read:
 	http://www.lostgarden.com/2007/05/dancs-miraculously-flexible-game.html?m=1
