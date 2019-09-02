@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using GameThing.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.Tiled;
@@ -40,6 +41,7 @@ namespace GameThing
 		}
 
 		public static int MaxLayer { get; private set; }
+		public static DrawableList Entities { get; set; }
 
 		public static int GetHeightAtMapPoint(int x, int y)
 		{
@@ -65,7 +67,7 @@ namespace GameThing
 			return noAvailableMovementGroundLayer == null || !noAvailableMovementGroundLayer.Objects.Any(mapObject => mapPosition.IsWithinRectangle(GetObjectRectangleInMapPoints(mapObject)));
 		}
 
-		public static void DrawRange(int range, MapPoint initialPosition, SpriteBatch spriteBatch, Texture2D texture, Color color)
+		public static void DrawRange(int range, MapPoint initialPosition, SpriteBatch spriteBatch, Texture2D texture, Color color, bool showUnderCharacters)
 		{
 			for (var i = -1 * range; i < range + 1; i++)
 			{
@@ -85,7 +87,10 @@ namespace GameThing
 						continue;
 
 					var mapPosition = new MapPoint(mapX, mapY);
-					if (mapPosition.IsInAvailableMovement)
+					if (!mapPosition.IsInAvailableMovement)
+						continue;
+
+					if ((showUnderCharacters && !Entities.IsTerrainAtPoint(mapPosition)) || !Entities.IsEntityAtPoint(mapPosition))
 					{
 						var screenPosition = mapPosition.GetScreenPosition();
 						spriteBatch.Draw(texture, new Rectangle((int) screenPosition.X - MapPoint.TileWidth_Half, (int) screenPosition.Y, 64, 32), color * 0.5f);

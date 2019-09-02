@@ -211,6 +211,10 @@
     <Compile Include="Android\BaseGameUtils\IGameHelperListener.cs" />
     <Compile Include="Entities\Cards\Conditions\BuffType.cs" />
     <Compile Include="Entities\Content.cs" />
+    <Compile Include="Entities\Drawable.cs" />
+    <Compile Include="Entities\DrawableList.cs" />
+    <Compile Include="Entities\IDrawable.cs" />
+    <Compile Include="Entities\Terrain.cs" />
     <Compile Include="MapHelper.cs" />
     <Compile Include="UI\FadingTextPanel.cs" />
     <Compile Include="UI\Panel.cs" />
@@ -238,7 +242,6 @@
     <Compile Include="CharacterSide.cs" />
     <Compile Include="Entities\Cards\Card.cs" />
     <Compile Include="Entities\Character.cs" />
-    <Compile Include="Entities\CharacterDepthComparer.cs" />
     <Compile Include="Entities\HandOfCards.cs" />
     <Compile Include="Android\MainActivity.cs" />
     <Compile Include="Events\GameOverEventHandler.cs" />
@@ -283,6 +286,9 @@
     <AndroidAsset Include="Content\sprites\lock.xnb" />
     <AndroidAsset Include="Content\tilemaps\ComplexMap.xnb" />
     <AndroidAsset Include="Content\tilemaps\iso-64x64-outside_0.xnb" />
+    <AndroidAsset Include="Content\sprites\terrain\large_bush.xnb" />
+    <AndroidAsset Include="Content\sprites\terrain\medium_tree.xnb" />
+    <AndroidAsset Include="Content\sprites\terrain\small_tree.xnb" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

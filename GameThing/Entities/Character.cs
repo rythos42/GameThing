@@ -10,9 +10,8 @@ using Microsoft.Xna.Framework.Graphics;
 namespace GameThing.Entities
 {
 	[DataContract]
-	public class Character
+	public class Character : Drawable
 	{
-		private Texture2D sprite;
 		private Texture2D availableMovementTexture;
 		private Texture2D lockSprite;
 		private Effect selectedCharacterEffect;
@@ -27,14 +26,14 @@ namespace GameThing.Entities
 
 		public void SetContent(Content content)
 		{
-			sprite = content.GetSpriteFor(this);
+			Sprite = content.GetSpriteFor(this);
 			availableMovementTexture = content.DistanceOverlay;
 			lockSprite = content.Lock;
 			selectedCharacterEffect = content.Highlight;
 		}
 
 		[DataMember]
-		public MapPoint MapPosition { get; set; }
+		public override MapPoint MapPosition { get; set; }
 
 		[DataMember]
 		public decimal BaseStrength { get; private set; } = 1;
@@ -230,11 +229,6 @@ namespace GameThing.Entities
 			Deck.ForEach(card => card.OwnerCharacter = this);
 		}
 
-		public bool IsAtPoint(MapPoint checkPoint)
-		{
-			return MapPosition.IsAtPoint(checkPoint);
-		}
-
 		public bool IsWithinDistanceOf(int range, MapPoint checkPoint)
 		{
 			return MapPosition.IsWithinDistanceOf(range, checkPoint);
@@ -255,13 +249,15 @@ namespace GameThing.Entities
 			RemoveConditions(ConditionEndsOn.Move);
 		}
 
-		public void Draw(SpriteBatch spriteBatch)
+		public override Texture2D Sprite { get; set; }
+
+		public override void Draw(SpriteBatch spriteBatch)
 		{
 			var drawPosition = MapPosition.GetScreenPosition();
-			drawPosition.Y -= sprite.Height / 1.3f;
-			drawPosition.X -= sprite.Width / 2;
+			drawPosition.Y -= Sprite.Height / 1.3f;
+			drawPosition.X -= Sprite.Width / 2;
 
-			spriteBatch.Draw(sprite, drawPosition, Color.White);
+			spriteBatch.Draw(Sprite, drawPosition, Color.White);
 		}
 
 		public void DrawSelectedCharacter(SpriteBatch spriteBatch, Matrix transformMatrix)
@@ -287,7 +283,7 @@ namespace GameThing.Entities
 		public void DrawLock(SpriteBatch spriteBatch)
 		{
 			var drawPosition = MapPosition.GetScreenPosition();
-			drawPosition.Y -= sprite.Height - lockSprite.Height / 2;
+			drawPosition.Y -= Sprite.Height - lockSprite.Height / 2;
 			drawPosition.X -= lockSprite.Width / 2;
 
 			spriteBatch.Draw(lockSprite, drawPosition, Color.White);
@@ -295,7 +291,7 @@ namespace GameThing.Entities
 
 		public void DrawMovementRange(SpriteBatch spriteBatch)
 		{
-			MapHelper.DrawRange(RemainingMoves, MapPosition, spriteBatch, availableMovementTexture, Color.White);
+			MapHelper.DrawRange(RemainingMoves, MapPosition, spriteBatch, availableMovementTexture, Color.White, showUnderCharacters: false);
 		}
 	}
 }

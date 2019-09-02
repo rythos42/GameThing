@@ -25,6 +25,7 @@ namespace GameThing.Screens
 		private Card selectedCard;
 		private CharacterSide thisPlayerSide;
 		private Character lockedInCharacter = null;
+		private readonly DrawableList entities = new DrawableList();
 
 		private Button newTurnButton = new Button("New Turn") { UseMinimumButtonSize = false };
 		private FadingTextPanel statusPanel = new FadingTextPanel() { PlaceFromRight = true };
@@ -62,6 +63,7 @@ namespace GameThing.Screens
 					PlaceCharacterOnMap(character, otherPlacements);
 			});
 			data = gameData;
+			entities.SetCharacters(gameData.Characters);
 
 			// Start next round if all characters activated
 			var anyNotActivated = data.Characters.Any(character => !character.ActivatedThisRound);
@@ -97,6 +99,21 @@ namespace GameThing.Screens
 			spaghettiDeployment = MapHelper.GetObjectRectangleInMapPoints(deploymentLayer.Objects.SingleOrDefault(deployment => deployment.Name.Equals("Spaghetti")));
 			unicornDeployment = MapHelper.GetObjectRectangleInMapPoints(deploymentLayer.Objects.SingleOrDefault(deployment => deployment.Name.Equals("Unicorn")));
 			MapHelper.Map = map;
+			MapHelper.Entities = entities;
+
+			entities.Add(new Terrain(content.MediumTree, new MapPoint(3, 4)));
+			entities.Add(new Terrain(content.MediumTree, new MapPoint(17, 21)));
+			entities.Add(new Terrain(content.MediumTree, new MapPoint(23, 2)));
+			entities.Add(new Terrain(content.MediumTree, new MapPoint(6, 15)));
+			entities.Add(new Terrain(content.SmallTree, new MapPoint(15, 20)));
+			entities.Add(new Terrain(content.SmallTree, new MapPoint(19, 22)));
+			entities.Add(new Terrain(content.SmallTree, new MapPoint(6, 16)));
+			entities.Add(new Terrain(content.SmallTree, new MapPoint(6, 14)));
+			entities.Add(new Terrain(content.SmallTree, new MapPoint(28, 20)));
+			entities.Add(new Terrain(content.SmallTree, new MapPoint(24, 25)));
+			entities.Add(new Terrain(content.LargeBush, new MapPoint(26, 6)));
+			entities.Add(new Terrain(content.LargeBush, new MapPoint(16, 10)));
+			entities.Add(new Terrain(content.LargeBush, new MapPoint(1, 20)));
 
 			mapRenderer = new TiledMapRenderer(graphicsDevice, map);
 			camera = new OrthographicCamera(graphicsDevice);
@@ -210,13 +227,13 @@ namespace GameThing.Screens
 				data.Characters.SingleOrDefault(character => character == selectedCharacter && character.HasRemainingMoves && character.Side == thisPlayerSide)?.DrawMovementRange(spriteBatch);
 			else
 				selectedCard.DrawEffectRange(spriteBatch);
-			data.Characters.Sort(new CharacterDepthComparer());
-			foreach (var character in data.Characters)
-			{
-				if (character == lockedInCharacter)
-					character.DrawLock(spriteBatch);
 
-				character.Draw(spriteBatch);
+			foreach (var drawable in entities.Drawables)
+			{
+				if (drawable == lockedInCharacter)
+					lockedInCharacter.DrawLock(spriteBatch);
+
+				drawable.Draw(spriteBatch);
 			}
 			spriteBatch.End();
 
@@ -274,6 +291,7 @@ namespace GameThing.Screens
 			var worldPoint = camera.ScreenToWorld(gesture.Position);
 			var mapPoint = MapPoint.GetFromScreenPosition(worldPoint);
 			var targetCharacter = data.Characters.SingleOrDefault(character => character.IsAtPoint(mapPoint));
+			var targetEntity = entities.Drawables.SingleOrDefault(entity => entity.IsAtPoint(mapPoint));
 			if (selectedCharacter == null)
 			{
 				// SELECT CHARACTER
@@ -302,7 +320,7 @@ namespace GameThing.Screens
 				// we have a character selected and a card selected but the card isn't in range of the desired target, or there is no target
 				selectedCard = null;
 			}
-			else if (selectedCharacter.IsWithinMoveDistanceOf(mapPoint) && mapPoint.IsWithinMap && mapPoint.IsInAvailableMovement && CanMoveSelectedCharacter && targetCharacter == null)
+			else if (selectedCharacter.IsWithinMoveDistanceOf(mapPoint) && mapPoint.IsWithinMap && mapPoint.IsInAvailableMovement && CanMoveSelectedCharacter && targetEntity == null)
 			{
 				// MOVE
 				// we have a character selected, it's my character, it is within move distance of the tap and it has moves remaining

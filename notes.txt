@@ -1,16 +1,8 @@
-play a game against myself
-update on geeksong
-send to friends >.>
-http://geeksong.com/com.geeksong.GameThing-Signed.apk
-
 Nice to have:
 	- selected character is drawn over top of nearby characters
 		- this might be good in some cases, leave it for now
 	- allow characters to stand on slopes
 		- draw grid on slopes
-	- make ComplexMap have a bridge over the top river
-	- add trees
-		- probably need to re-do drawing order during this
 	- TauntCondition needs a message for success/fail
 	- stuff at range 0 played on self without needing to tap again
 	- don't allow friendly fire
@@ -21,7 +13,6 @@ Nice to have:
 	- show logout button to GPG
 	- clear SignOut obsolete warning
 	- hide "Join as Spaghetti" button
-	- make side assignment random
 	- shouldn't need to de-select a character to select a new one
 	- make characters move on game loop
 	- fix map background
@@ -36,7 +27,6 @@ Nice to have:
 	- character names
 	- allow players to look at their shit when it's not their turn
 
-
 Tech
 	- decent chance that GameHelper/BaseGameActivity aren't doing the right things anymore -- seems to be a mash-up of older sign-in code and newer
 	- lots of events being passed through MainGame to MainActivity -- wonder if there is a better architecture that still keeps the Android pieces separate
@@ -44,6 +34,7 @@ Tech
 	- how to do polygon objects in maps
 	- Nexus 7 shows black box instead of highlighted character
 	- why outside_0.xnb and outside.xnb?
+	- Entities list vs Character list, why storing the same thing twice?
 
 Game Design
 	- evaluate whether single character or whole side is a better turn
@@ -56,6 +47,9 @@ Game Design
 
 Started around June 9th
 MVP started August 28
+
+MVP2
+	Bushes and trees that block movement
 
 Google Play
 	Certificates

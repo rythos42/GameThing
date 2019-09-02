@@ -17,6 +17,9 @@ namespace GameThing.Entities
 			Card = contentManager.Load<Texture2D>("sprites/card");
 			DistanceOverlay = contentManager.Load<Texture2D>("sprites/distance_overlay");
 			Lock = contentManager.Load<Texture2D>("sprites/lock");
+			LargeBush = contentManager.Load<Texture2D>("sprites/terrain/large_bush");
+			SmallTree = contentManager.Load<Texture2D>("sprites/terrain/small_tree");
+			MediumTree = contentManager.Load<Texture2D>("sprites/terrain/medium_tree");
 
 			Highlight = contentManager.Load<Effect>("effects/highlight");
 
@@ -37,6 +40,10 @@ namespace GameThing.Entities
 		public Texture2D DistanceOverlay { get; private set; }
 		public Texture2D Card { get; private set; }
 		public Texture2D Lock { get; private set; }
+
+		public Texture2D LargeBush { get; private set; }
+		public Texture2D SmallTree { get; private set; }
+		public Texture2D MediumTree { get; private set; }
 
 		public Effect Highlight { get; private set; }
 

@@ -76,7 +76,7 @@ namespace GameThing.Entities.Cards
 
 		public void DrawEffectRange(SpriteBatch spriteBatch)
 		{
-			MapHelper.DrawRange(Range, OwnerCharacter.MapPosition, spriteBatch, availableRangeTexture, Color.Aqua);
+			MapHelper.DrawRange(Range, OwnerCharacter.MapPosition, spriteBatch, availableRangeTexture, Color.Aqua, showUnderCharacters: true);
 		}
 
 		public void Discard()
