@@ -22,9 +22,9 @@ namespace GameThing.Android
 		ScreenOrientation = ScreenOrientation.Landscape, ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.Keyboard | ConfigChanges.KeyboardHidden | ConfigChanges.ScreenSize)]
 	public class MainActivity : BaseGameActivity, IGameHelperListener
 	{
-		private const int RC_SELECT_PLAYERS = 0;
-		private const int RC_MATCH_INBOX = 1;
-		private const int RC_SIGN_IN = 2;
+		private const int requestCode_SelectPlayers = 0;
+		private const int requestCode_MatchInbox = 1;
+		private const int requestCode_SignIn = 2;
 		private TurnBasedMultiplayerClient gameClient;
 		private GoogleSignInClient googleSignInClient;
 		private GoogleSignInAccount googleSignInAccount;
@@ -44,7 +44,7 @@ namespace GameThing.Android
 			Window.AddFlags(WindowManagerFlags.KeepScreenOn);
 			Window.AddFlags(WindowManagerFlags.TurnScreenOn);
 
-			int uiOptions = (int) Window.DecorView.SystemUiVisibility;
+			var uiOptions = (int) Window.DecorView.SystemUiVisibility;
 			uiOptions |= (int) SystemUiFlags.Fullscreen;
 			uiOptions |= (int) SystemUiFlags.HideNavigation;
 			uiOptions |= (int) SystemUiFlags.ImmersiveSticky;
@@ -61,7 +61,7 @@ namespace GameThing.Android
 			SetContentView((View) game.Services.GetService(typeof(View)));
 			game.Run();
 
-			GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DefaultGamesSignIn).Build();
+			var gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DefaultGamesSignIn).Build();
 			googleSignInClient = GoogleSignIn.GetClient(this, gso);
 		}
 
@@ -78,13 +78,13 @@ namespace GameThing.Android
 		private async void Game_JoinMatch()
 		{
 			var intent = await gameClient.GetInboxIntent().AsAsync<Intent>();
-			StartActivityForResult(intent, RC_MATCH_INBOX);
+			StartActivityForResult(intent, requestCode_MatchInbox);
 		}
 
 		private async void Game_CreateMatch()
 		{
 			var intent = await gameClient.GetSelectOpponentsIntent(1, 1).AsAsync<Intent>();
-			StartActivityForResult(intent, RC_SELECT_PLAYERS);
+			StartActivityForResult(intent, requestCode_SelectPlayers);
 		}
 
 		private void Game_NextPlayersTurn(BattleData data)
@@ -94,7 +94,7 @@ namespace GameThing.Android
 
 		private void Game_RequestSignIn()
 		{
-			beginUserInitiatedSignIn();
+			BeginUserInitiatedSignIn();
 
 			RequestSignIn();
 		}
@@ -118,17 +118,17 @@ namespace GameThing.Android
 			if (response == Result.Canceled)
 				return;
 
-			if (request == RC_SELECT_PLAYERS)
+			if (request == requestCode_SelectPlayers)
 				await AddPlayers(data);
-			if (request == RC_MATCH_INBOX)
+			if (request == requestCode_MatchInbox)
 				AcceptInvitation(data);
-			if (request == RC_SIGN_IN)
+			if (request == requestCode_SignIn)
 				await SignInSucceded(data);
 		}
 
 		private void RequestSignIn()
 		{
-			StartActivityForResult(googleSignInClient.SignInIntent, RC_SIGN_IN);
+			StartActivityForResult(googleSignInClient.SignInIntent, requestCode_SignIn);
 		}
 
 		private async Task SignInSucceded(Intent data)
@@ -137,7 +137,7 @@ namespace GameThing.Android
 			gameClient = GamesClass.GetTurnBasedMultiplayerClient(this, googleSignInAccount);
 			game.SetSignedIn(true);
 
-			var match = getTurnBasedMatch();
+			var match = GetTurnBasedMatch();
 			if (match != null)
 				StartOrEndMatch(match);
 		}
@@ -160,7 +160,7 @@ namespace GameThing.Android
 				// Send this data to the cloud so user can't restart match for better cards
 				StartNextTurn(battleData);
 
-				setTurnBasedMatch(match);
+				SetTurnBasedMatch(match);
 				game.StartMatch(GetMyParticipantId(), battleData);
 			}
 			else
@@ -172,7 +172,7 @@ namespace GameThing.Android
 		private void AcceptInvitation(Intent data)
 		{
 			var match = data.GetParcelableExtra(Multiplayer.ExtraTurnBasedMatch).JavaCast<ITurnBasedMatch>();
-			setTurnBasedMatch(match);
+			SetTurnBasedMatch(match);
 
 			StartOrEndMatch(match);
 		}
@@ -189,8 +189,8 @@ namespace GameThing.Android
 
 		private string GetMyParticipantId()
 		{
-			var playerId = GamesClass.Players.GetCurrentPlayerId(getApiClient());
-			return getTurnBasedMatch().GetParticipantId(playerId);
+			var playerId = GamesClass.Players.GetCurrentPlayerId(GetApiClient());
+			return GetTurnBasedMatch().GetParticipantId(playerId);
 		}
 
 		private byte[] SerializeBattleData(BattleData battleData)

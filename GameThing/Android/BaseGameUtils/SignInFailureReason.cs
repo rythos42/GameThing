@@ -1,41 +1,34 @@
-﻿using System;
-
-namespace GameThing.Android.BaseGameUtils
+﻿namespace GameThing.Android.BaseGameUtils
 {
 	public class SignInFailureReason
 	{
-		public static int NO_ACTIVITY_RESULT_CODE = -100;
+		public const int NO_ACTIVITY_RESULT_CODE = -100;
 		private readonly int mServiceErrorCode;
-		public int mActivityResultCode = NO_ACTIVITY_RESULT_CODE;
 
 		public SignInFailureReason(int serviceErrorCode, int activityResultCode)
 		{
 			mServiceErrorCode = serviceErrorCode;
-			mActivityResultCode = activityResultCode;
+			ActivityResultCode = activityResultCode;
 		}
 
 		public SignInFailureReason(int serviceErrorCode) : this(serviceErrorCode, NO_ACTIVITY_RESULT_CODE)
 		{
 		}
 
-		public int getServiceErrorCode()
+		public int GetServiceErrorCode()
 		{
 			return mServiceErrorCode;
 		}
 
-		public int getActivityResultCode()
-		{
-			return mActivityResultCode;
-		}
+		public int ActivityResultCode { get; set; } = NO_ACTIVITY_RESULT_CODE;
 
-		public override String ToString()
+		public override string ToString()
 		{
 			return "SignInFailureReason(serviceErrorCode:"
-				   + GameHelperUtils.errorCodeToString(mServiceErrorCode)
-				   + ((mActivityResultCode == NO_ACTIVITY_RESULT_CODE)
+				   + GameHelperUtils.ErrorCodeToString(mServiceErrorCode)
+				   + ((ActivityResultCode == NO_ACTIVITY_RESULT_CODE)
 					   ? ")"
-					   : (",activityResultCode:"
-						  + GameHelperUtils.activityResponseCodeToString(mActivityResultCode) + ")"));
+					   : (",activityResultCode:" + GameHelperUtils.ActivityResponseCodeToString(ActivityResultCode) + ")"));
 		}
 	}
 }

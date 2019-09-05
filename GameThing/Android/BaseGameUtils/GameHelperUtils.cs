@@ -4,23 +4,21 @@ using System.Text;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
-using Android.Content.Res;
 using Android.Gms.Common;
 using Android.Gms.Games;
 using Android.Util;
 using Java.Security;
-using Signature = Android.Content.PM.Signature;
 
 namespace GameThing.Android.BaseGameUtils
 {
 	public class GameHelperUtils
 	{
-		public static int R_UNKNOWN_ERROR = 0;
-		public static int R_SIGN_IN_FAILED = 1;
-		public static int R_APP_MISCONFIGURED = 2;
-		public static int R_LICENSE_FAILED = 3;
+		public const int R_UNKNOWN_ERROR = 0;
+		public const int R_SIGN_IN_FAILED = 1;
+		public const int R_APP_MISCONFIGURED = 2;
+		public const int R_LICENSE_FAILED = 3;
 
-		private static readonly String[] FALLBACK_STRINGS =
+		private static readonly string[] fallbackStrings =
 		{
 			"*Unknown error.",
 			"*Failed to sign in. Please check your network connection and try again.",
@@ -28,13 +26,13 @@ namespace GameThing.Android.BaseGameUtils
 			"*License check failed."
 		};
 
-		private static readonly int[] RES_IDS =
+		private static readonly int[] resourceIds =
 		{
 			Resource.String.gamehelper_unknown_error, Resource.String.gamehelper_sign_in_failed,
 			Resource.String.gamehelper_app_misconfigured, Resource.String.gamehelper_license_failed
 		};
 
-		public static String activityResponseCodeToString(int respCode)
+		public static string ActivityResponseCodeToString(int respCode)
 		{
 			switch (respCode)
 			{
@@ -57,7 +55,7 @@ namespace GameThing.Android.BaseGameUtils
 			}
 		}
 
-		public static String errorCodeToString(int errorCode)
+		public static string ErrorCodeToString(int errorCode)
 		{
 			switch (errorCode)
 			{
@@ -90,67 +88,59 @@ namespace GameThing.Android.BaseGameUtils
 			}
 		}
 
-		public static void printMisconfiguredDebugInfo(Context ctx)
+		public static void PrintMisconfiguredDebugInfo(Context ctx)
 		{
-			try
+			Log.Warn("GameHelper", "****");
+			Log.Warn("GameHelper", "****");
+			Log.Warn("GameHelper", "**** APP NOT CORRECTLY CONFIGURED TO USE GOOGLE PLAY GAME SERVICES");
+			Log.Warn("GameHelper", "**** This is usually caused by one of these reasons:");
+			Log.Warn("GameHelper", "**** (1) Your package name and certificate fingerprint do not match");
+			Log.Warn("GameHelper", "****     the client ID you registered in Developer Console.");
+			Log.Warn("GameHelper", "**** (2) Your App ID was incorrectly entered.");
+			Log.Warn("GameHelper", "**** (3) Your game settings have not been published and you are ");
+			Log.Warn("GameHelper", "****     trying to log in with an account that is not listed as");
+			Log.Warn("GameHelper", "****     a test account.");
+			Log.Warn("GameHelper", "****");
+			if (ctx == null)
 			{
-				Log.Warn("GameHelper", "****");
-				Log.Warn("GameHelper", "****");
-				Log.Warn("GameHelper", "**** APP NOT CORRECTLY CONFIGURED TO USE GOOGLE PLAY GAME SERVICES");
-				Log.Warn("GameHelper", "**** This is usually caused by one of these reasons:");
-				Log.Warn("GameHelper", "**** (1) Your package name and certificate fingerprint do not match");
-				Log.Warn("GameHelper", "****     the client ID you registered in Developer Console.");
-				Log.Warn("GameHelper", "**** (2) Your App ID was incorrectly entered.");
-				Log.Warn("GameHelper", "**** (3) Your game settings have not been published and you are ");
-				Log.Warn("GameHelper", "****     trying to log in with an account that is not listed as");
-				Log.Warn("GameHelper", "****     a test account.");
-				Log.Warn("GameHelper", "****");
-				if (ctx == null)
-				{
-					Log.Warn("GameHelper", "*** (no Context, so can't print more debug info)");
-					return;
-				}
+				Log.Warn("GameHelper", "*** (no Context, so can't print more debug info)");
+				return;
+			}
 
-				Log.Warn("GameHelper", "**** To help you debug, here is the information about this app");
-				Log.Warn("GameHelper", "**** Package name         : " + ctx.PackageName);
-				Log.Warn("GameHelper", "**** Cert SHA1 fingerprint: " + getSHA1CertFingerprint(ctx));
-				Log.Warn("GameHelper", "**** App ID from          : " + getAppIdFromResource(ctx));
-				Log.Warn("GameHelper", "****");
-				Log.Warn("GameHelper", "**** Check that the above information matches your setup in ");
-				Log.Warn("GameHelper", "**** Developer Console. Also, check that you're logging in with the");
-				Log.Warn("GameHelper", "**** right account (it should be listed in the Testers section if");
-				Log.Warn("GameHelper", "**** your project is not yet published).");
-				Log.Warn("GameHelper", "****");
-				Log.Warn("GameHelper", "**** For more information, refer to the troubleshooting guide:");
-				Log.Warn("GameHelper", "****   http://developers.google.com/games/services/android/troubleshooting");
-			}
-			catch (Exception ex)
-			{
-				ex.ToString();
-			}
+			Log.Warn("GameHelper", "**** To help you debug, here is the information about this app");
+			Log.Warn("GameHelper", "**** Package name         : " + ctx.PackageName);
+			Log.Warn("GameHelper", "**** Cert SHA1 fingerprint: " + GetSHA1CertFingerprint(ctx));
+			Log.Warn("GameHelper", "**** App ID from          : " + GetAppIdFromResource(ctx));
+			Log.Warn("GameHelper", "****");
+			Log.Warn("GameHelper", "**** Check that the above information matches your setup in ");
+			Log.Warn("GameHelper", "**** Developer Console. Also, check that you're logging in with the");
+			Log.Warn("GameHelper", "**** right account (it should be listed in the Testers section if");
+			Log.Warn("GameHelper", "**** your project is not yet published).");
+			Log.Warn("GameHelper", "****");
+			Log.Warn("GameHelper", "**** For more information, refer to the troubleshooting guide:");
+			Log.Warn("GameHelper", "****   http://developers.google.com/games/services/android/troubleshooting");
 		}
 
-		public static String getAppIdFromResource(Context ctx)
+		public static string GetAppIdFromResource(Context ctx)
 		{
 			try
 			{
-				Resources res = ctx.Resources;
-				String pkgName = ctx.PackageName;
-				int res_id = res.GetIdentifier("app_id", "string", pkgName);
+				var res = ctx.Resources;
+				var pkgName = ctx.PackageName;
+				var res_id = res.GetIdentifier("app_id", "string", pkgName);
 				return res.GetString(res_id);
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
-				ex.ToString();
 				return "??? (failed to retrieve APP ID)";
 			}
 		}
 
-		public static String getSHA1CertFingerprint(Context ctx)
+		public static string GetSHA1CertFingerprint(Context ctx)
 		{
 			try
 			{
-				Signature[] sigs =
+				var sigs =
 					ctx.PackageManager.GetPackageInfo(ctx.PackageName, PackageInfoFlags.Signatures).Signatures.ToArray();
 				if (sigs.Length == 0)
 				{
@@ -160,15 +150,15 @@ namespace GameThing.Android.BaseGameUtils
 				{
 					return "ERROR: MULTIPLE SIGNATURES";
 				}
-				byte[] digest = MessageDigest.GetInstance("SHA1").Digest(sigs[0].ToByteArray());
+				var digest = MessageDigest.GetInstance("SHA1").Digest(sigs[0].ToByteArray());
 				var hexString = new StringBuilder();
-				for (int i = 0; i < digest.Length; ++i)
+				for (var i = 0; i < digest.Length; ++i)
 				{
 					if (i > 0)
 					{
 						hexString.Append(":");
 					}
-					byteToString(hexString, digest[i]);
+					ByteToString(hexString, digest[i]);
 				}
 				return hexString.ToString();
 			}
@@ -184,38 +174,30 @@ namespace GameThing.Android.BaseGameUtils
 			}
 		}
 
-		public static void byteToString(StringBuilder sb, byte b)
+		public static void ByteToString(StringBuilder sb, byte b)
 		{
-			try
-			{
-				int unsigned_byte = b < 0 ? b + 256 : b;
-				int hi = unsigned_byte / 16;
-				int lo = unsigned_byte % 16;
-				sb.Append("0123456789ABCDEF".Substring(hi, 1));
-				sb.Append("0123456789ABCDEF".Substring(lo, 1));
-			}
-			catch (Exception ex)
-			{
-				ex.ToString();
-			}
+			var unsigned_byte = b < 0 ? b + 256 : b;
+			var hi = unsigned_byte / 16;
+			var lo = unsigned_byte % 16;
+			sb.Append("0123456789ABCDEF".Substring(hi, 1));
+			sb.Append("0123456789ABCDEF".Substring(lo, 1));
 		}
 
-		public static String getString(Context ctx, int whichString)
+		public static string GetString(Context ctx, int whichString)
 		{
-			whichString = whichString >= 0 && whichString < RES_IDS.Length ? whichString : 0;
-			int resId = RES_IDS[whichString];
+			whichString = whichString >= 0 && whichString < resourceIds.Length ? whichString : 0;
+			var resId = resourceIds[whichString];
 			try
 			{
 				return ctx.GetString(resId);
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
-				ex.ToString();
 				Log.Warn(GameHelper.TAG, "*** GameHelper could not found resource id #" + resId + ". " +
 										 "This probably happened because you included it as a stand-alone JAR. " +
 										 "BaseGameUtils should be compiled as a LIBRARY PROJECT, so that it can access " +
 										 "its resources. Using a fallback string.");
-				return FALLBACK_STRINGS[whichString];
+				return fallbackStrings[whichString];
 			}
 		}
 	}

@@ -43,7 +43,7 @@ dotnet_style_null_propagation = true:suggestion
 
 csharp_style_var_for_built_in_types = true:suggestion
 csharp_style_var_when_type_is_apparent = true:suggestion
-csharp_style_var_elsewhere = false:suggestion	# Changed from VS default -- prefer explicit type instead of var when it isn't clear from the context
+csharp_style_var_elsewhere = true:suggestion
 
 csharp_style_expression_bodied_methods = false:suggestion
 csharp_style_expression_bodied_constructors = false:suggestion
