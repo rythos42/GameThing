@@ -3,6 +3,7 @@ using Android.App;
 using Android.Content;
 using Android.Gms.Common;
 using Android.Gms.Common.Apis;
+using Android.Gms.Drive;
 using Android.Gms.Games;
 using Android.Gms.Games.MultiPlayer;
 using Android.Gms.Games.MultiPlayer.TurnBased;
@@ -23,10 +24,7 @@ namespace GameThing.Android.BaseGameUtils
 		private const int requestCode_Resolve = 9001;              // Request code we use when invoking other Activities to complete the sign-in flow.
 		private const int requestCode_Unused = 9002;               // Request code when invoking Activities whose result we don't care about.
 
-		public static int CLIENT_GAMES = 0x01;
-
 		private readonly Handler mHandler;
-		private readonly int mRequestedClients;
 		private const String gameHelperSharedPrefs = "GAMEHELPER_SHARED_PREFS";
 		private const String keySignInCancellations = "KEY_SIGN_IN_CANCELLATIONS";
 		private Activity mActivity;
@@ -34,11 +32,9 @@ namespace GameThing.Android.BaseGameUtils
 		private bool mConnectOnStart = true;
 		private bool mConnecting;
 		private ConnectionResult mConnectionResult;
-		private bool mDebugLog;
+		private readonly bool mDebugLog = true;
 		private bool mExpectingResolution;
-		private readonly GamesClass.GamesOptions mGamesApiOptions = GamesClass.GamesOptions.InvokeBuilder().Build();
 		private GoogleApiClient mGoogleApiClient;
-		private GoogleApiClient.Builder mGoogleApiClientBuilder;
 		private IGameHelperListener mListener;
 		private readonly int mMaxAutoSignInAttempts = 3;
 		private bool mSetupDone;
@@ -48,12 +44,12 @@ namespace GameThing.Android.BaseGameUtils
 		private ITurnBasedMatch mTurnBasedMatch;
 		private bool mUserInitiatedSignIn;
 
-		public GameHelper(Activity activity, int clientsToUse)
+		public GameHelper(Activity activity)
 		{
 			mActivity = activity;
 			mAppContext = activity.ApplicationContext;
-			mRequestedClients = clientsToUse;
 			mHandler = new Handler();
+			Setup(activity as IGameHelperListener);
 		}
 
 		public void OnConnected(Bundle connectionHint)
@@ -153,43 +149,7 @@ namespace GameThing.Android.BaseGameUtils
 			}
 		}
 
-		private GoogleApiClient.Builder CreateApiClientBuilder()
-		{
-			try
-			{
-				if (mSetupDone)
-				{
-					var error = "GameHelper: you called GameHelper.CreateApiClientBuilder() after calling setup. You can only get a client builder BEFORE performing setup.";
-					LogError(error);
-					throw new IllegalStateException(error);
-				}
-
-				var builder = new GoogleApiClient.Builder(mActivity, this, this);
-
-				if (0 != (mRequestedClients & CLIENT_GAMES))
-				{
-					try
-					{
-						builder.AddApi(GamesClass.API, mGamesApiOptions);
-					}
-					catch (Exception ex)
-					{
-						ex.ToString();
-						builder.AddApi(GamesClass.API);
-					}
-					builder.AddScope(GamesClass.ScopeGames);
-				}
-
-				mGoogleApiClientBuilder = builder;
-				return builder;
-			}
-			catch (Exception)
-			{
-				return null;
-			}
-		}
-
-		public void Setup(IGameHelperListener listener)
+		private void Setup(IGameHelperListener listener)
 		{
 			if (mSetupDone)
 			{
@@ -198,13 +158,13 @@ namespace GameThing.Android.BaseGameUtils
 				throw new IllegalStateException(error);
 			}
 			mListener = listener ?? throw new Exception("The listener is not of type IGameHelperListener");
-			DebugLog("Setup: requested clients: " + mRequestedClients);
+			mGoogleApiClient = new GoogleApiClient.Builder(mActivity, this, this)
+					.AddApi(GamesClass.API)
+					.AddScope(GamesClass.ScopeGames)
+					.AddApi(DriveClass.API)
+					.AddScope(DriveClass.ScopeAppfolder)
+					.Build();
 
-			if (mGoogleApiClientBuilder == null)
-				mGoogleApiClientBuilder = CreateApiClientBuilder();
-
-			mGoogleApiClient = mGoogleApiClientBuilder.Build();
-			mGoogleApiClientBuilder = null;
 			mSetupDone = true;
 		}
 
@@ -283,13 +243,6 @@ namespace GameThing.Android.BaseGameUtils
 			if (!mGoogleApiClient.IsConnected)
 				Log.Warn(TAG, "Warning: getTurnBasedMatch() should only be called when signed in, that is, after getting onSignInSuceeded()");
 			return mTurnBasedMatch;
-		}
-
-		public void EnableDebugLog(bool enabled)
-		{
-			mDebugLog = enabled;
-			if (enabled)
-				DebugLog("Debug log enabled.");
 		}
 
 		public void OnActivityResult(int requestCode, int responseCode, Intent intent)

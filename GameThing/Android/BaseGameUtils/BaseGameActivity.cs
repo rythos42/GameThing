@@ -10,8 +10,6 @@ namespace GameThing.Android.BaseGameUtils
 	public abstract class BaseGameActivity : Microsoft.Xna.Framework.AndroidGameActivity
 	{
 		protected static GameHelper Helper;
-		private readonly bool mDebugLog = true;
-		private readonly int mRequestedClients = GameHelper.CLIENT_GAMES;
 
 		protected BaseGameActivity()
 		{
@@ -21,11 +19,7 @@ namespace GameThing.Android.BaseGameUtils
 		{
 			base.OnCreate(b);
 			if (Helper == null)
-			{
-				Helper = new GameHelper(this, mRequestedClients);
-				Helper.EnableDebugLog(mDebugLog);
-			}
-			Helper.Setup(this as IGameHelperListener);
+				Helper = new GameHelper(this);
 		}
 
 		protected override void OnStart()
