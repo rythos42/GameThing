@@ -3,7 +3,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using GameThing.Entities;
 
-namespace GameThing
+namespace GameThing.Data
 {
 	[DataContract]
 	public class BattleData

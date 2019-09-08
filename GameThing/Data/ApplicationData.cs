@@ -1,4 +1,4 @@
-﻿namespace GameThing
+﻿namespace GameThing.Data
 {
 	public class ApplicationData
 	{

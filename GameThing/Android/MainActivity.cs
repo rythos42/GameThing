@@ -1,7 +1,4 @@
-﻿using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
@@ -15,7 +12,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using GameThing.Android.BaseGameUtils;
-using Newtonsoft.Json;
+using GameThing.Data;
 
 namespace GameThing.Android
 {
@@ -31,13 +28,6 @@ namespace GameThing.Android
 		private GoogleSignInAccount googleSignInAccount;
 		private MainGame game;
 
-		private readonly JsonSerializerSettings jsonSettings = new JsonSerializerSettings
-		{
-			NullValueHandling = NullValueHandling.Ignore,
-			DefaultValueHandling = DefaultValueHandling.Ignore,
-			Formatting = Formatting.None,
-			TypeNameHandling = TypeNameHandling.Objects
-		};
 
 		protected override void OnCreate(Bundle bundle)
 		{
@@ -105,7 +95,7 @@ namespace GameThing.Android
 			if (data.MatchId == null)
 				return;
 
-			var gameData = SerializeBattleData(data);
+			var gameData = Convert.Serialize(data);
 			var results = data
 				.Sides
 				.Select(keyValuePair => new ParticipantResult(
@@ -122,7 +112,7 @@ namespace GameThing.Android
 			if (data.MatchId == null)
 				return;
 
-			var gameData = SerializeBattleData(data);
+			var gameData = Convert.Serialize(data);
 			var participantId = data.GetParticipantIdForCurrentSide();
 			gameClient.TakeTurn(data.MatchId, gameData, participantId);
 		}
@@ -181,7 +171,7 @@ namespace GameThing.Android
 			}
 			else
 			{
-				game.StartMatch(GetMyParticipantId(), DeserializeBattleData(gameData));
+				game.StartMatch(GetMyParticipantId(), Convert.Deserialize<BattleData>(gameData));
 			}
 		}
 
@@ -195,7 +185,7 @@ namespace GameThing.Android
 
 		private void StartOrEndMatch(ITurnBasedMatch match)
 		{
-			var battleData = DeserializeBattleData(match.GetData());
+			var battleData = Convert.Deserialize<BattleData>(match.GetData());
 
 			if (match.Status == TurnBasedMatch.MatchStatusComplete)
 				game.ShowGameOver(battleData);
@@ -207,36 +197,6 @@ namespace GameThing.Android
 		{
 			var playerId = GamesClass.Players.GetCurrentPlayerId(getApiClient());
 			return getTurnBasedMatch().GetParticipantId(playerId);
-		}
-
-		private byte[] SerializeBattleData(BattleData battleData)
-		{
-			var battleJson = JsonConvert.SerializeObject(battleData, jsonSettings);
-
-			var gameData = Encoding.UTF8.GetBytes(battleJson);
-			using (var outputMemoryStream = new MemoryStream())
-			using (var deflateStream = new DeflateStream(outputMemoryStream, CompressionMode.Compress))
-			using (var inputMemoryStream = new MemoryStream(gameData))
-			{
-				inputMemoryStream.CopyTo(deflateStream);
-				deflateStream.Close();
-				return outputMemoryStream.ToArray();
-			}
-		}
-
-		private BattleData DeserializeBattleData(byte[] battleBytes)
-		{
-			using (var inputMemoryStream = new MemoryStream(battleBytes))
-			using (var deflateStream = new DeflateStream(inputMemoryStream, CompressionMode.Decompress))
-			using (var outputMemoryStream = new MemoryStream())
-			{
-				deflateStream.CopyTo(outputMemoryStream);
-				outputMemoryStream.Close();
-
-				var gameData = outputMemoryStream.ToArray();
-				var battleJson = Encoding.UTF8.GetString(gameData);
-				return JsonConvert.DeserializeObject<BattleData>(battleJson, jsonSettings);
-			}
 		}
 	}
 }

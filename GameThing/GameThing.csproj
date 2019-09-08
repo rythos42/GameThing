@@ -213,8 +213,12 @@
     <Compile Include="Android\BaseGameUtils\GameHelper.cs" />
     <Compile Include="Android\BaseGameUtils\GameHelperUtils.cs" />
     <Compile Include="Android\BaseGameUtils\IGameHelperListener.cs" />
+    <Compile Include="Data\ApplicationData.cs" />
+    <Compile Include="Data\BattleData.cs" />
     <Compile Include="Events\StartGameAsTesterEventHandler.cs" />
     <Compile Include="GameLogEntry.cs" />
+    <Compile Include="Data\Convert.cs" />
+    <Compile Include="Data\TeamData.cs" />
     <Compile Include="UI\GameLogEntryRow.cs" />
     <Compile Include="Entities\Cards\Category.cs" />
     <Compile Include="UI\UIComponentTappedEventHandler.cs" />
@@ -231,8 +235,6 @@
     <Compile Include="UI\UIComponent.cs" />
     <None Include="Android\BaseGameUtils\README.md" />
     <Compile Include="Android\BaseGameUtils\SignInFailureReason.cs" />
-    <Compile Include="ApplicationData.cs" />
-    <Compile Include="BattleData.cs" />
     <Compile Include="CardManager.cs" />
     <Compile Include="Entities\Cards\Conditions\AppliedCondition.cs" />
     <Compile Include="Entities\Cards\Conditions\BuffCondition.cs" />
