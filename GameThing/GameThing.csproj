@@ -209,6 +209,8 @@
     <Compile Include="Android\BaseGameUtils\GameHelper.cs" />
     <Compile Include="Android\BaseGameUtils\GameHelperUtils.cs" />
     <Compile Include="Android\BaseGameUtils\IGameHelperListener.cs" />
+    <Compile Include="Data\Convert.cs" />
+    <Compile Include="Data\TeamData.cs" />
     <Compile Include="Entities\Cards\Conditions\BuffType.cs" />
     <Compile Include="Entities\Content.cs" />
     <Compile Include="Entities\Drawable.cs" />
