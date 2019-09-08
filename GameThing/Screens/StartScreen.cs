@@ -1,4 +1,5 @@
-﻿using GameThing.Entities;
+﻿using GameThing.Data;
+using GameThing.Entities;
 using GameThing.Events;
 using GameThing.UI;
 using Microsoft.Xna.Framework;

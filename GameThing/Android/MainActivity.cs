@@ -14,6 +14,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using GameThing.Android.BaseGameUtils;
+using GameThing.Data;
 using Newtonsoft.Json;
 
 namespace GameThing.Android

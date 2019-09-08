@@ -222,8 +222,8 @@
     <Compile Include="UI\UIComponent.cs" />
     <None Include="Android\BaseGameUtils\README.md" />
     <Compile Include="Android\BaseGameUtils\SignInFailureReason.cs" />
-    <Compile Include="ApplicationData.cs" />
-    <Compile Include="BattleData.cs" />
+    <Compile Include="Data\ApplicationData.cs" />
+    <Compile Include="Data\BattleData.cs" />
     <Compile Include="CardManager.cs" />
     <Compile Include="Entities\Cards\ConditionCard.cs" />
     <Compile Include="Entities\Cards\Conditions\AppliedCondition.cs" />
