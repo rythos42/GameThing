@@ -1,3 +1,12 @@
+Manage Team
+	- load from google saved games
+	- have "save data" separate from "battle data"
+	- need to have a team created before you can join or create a match
+	- don't allow changing team when it's in a game
+		- or, allow it but don't change the team inside the game
+	- edit character decks
+	- need many more cards
+
 Nice to have:
 	- selected character is drawn over top of nearby characters
 		- this might be good in some cases, leave it for now
@@ -158,3 +167,14 @@ Map Creation:
 		- ie, the first layer is -32, next is -64
 	- "NoAvailableMovement:{layerNumber}", where layerNumber is the abs(vertical offset / 32)
 	- "Deployment" must have objects "Spaghetti" and "Unicorn"
+
+To Play:
+	Tell me your Gmail account e-mail (I have to add your name to my list of testers)
+	Set your Android device to Developer Mode
+		https://developer.android.com/studio/debug/dev-options
+	Download my APK 
+		https://drive.google.com/file/d/1n9SkH2JXqxD1sGsrNK80gpIvFkAw5LUg/view?usp=sharing
+	Install it and open it.
+	(it will get you to download and install Google Play Games)
+	press "Create Match", and create a match with "rythos42" (me)
+	Maybe you try it against someone else you know and like? :)

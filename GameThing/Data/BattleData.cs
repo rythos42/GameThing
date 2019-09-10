@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Runtime.Serialization;
 using GameThing.Entities;
+using Newtonsoft.Json;
 
 namespace GameThing.Data
 {
@@ -47,6 +48,44 @@ namespace GameThing.Data
 		public string GetParticipantIdForCurrentSide()
 		{
 			return Sides.SingleOrDefault(keyValuePair => keyValuePair.Value == CurrentSidesTurn).Key;
+		}
+
+		public bool HasBothSidesAdded
+		{
+			get { return Sides.Count == 2; }
+		}
+
+		public bool HasMySideAdded(string participantId)
+		{
+			return Sides.ContainsKey(participantId);
+		}
+
+		public void InitializeCharacters(string participantId, TeamData teamData)
+		{
+			teamData.Characters.ForEach(character =>
+			{
+				var cloneCharacter = Clone(character);
+				cloneCharacter.Side = CurrentSidesTurn;
+				cloneCharacter.InitializeDeckForBattle();
+				cloneCharacter.ResetTurn();
+				Characters.Add(cloneCharacter);
+			});
+
+			Sides.Add(participantId, CurrentSidesTurn);
+		}
+
+		private Character Clone(Character character)
+		{
+			var jsonSettings = new JsonSerializerSettings
+			{
+				NullValueHandling = NullValueHandling.Ignore,
+				DefaultValueHandling = DefaultValueHandling.Ignore,
+				Formatting = Formatting.None,
+				TypeNameHandling = TypeNameHandling.Objects
+			};
+
+			var serialized = JsonConvert.SerializeObject(character, jsonSettings);
+			return JsonConvert.DeserializeObject<Character>(serialized, jsonSettings);
 		}
 	}
 }

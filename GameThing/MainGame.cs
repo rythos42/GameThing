@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using GameThing.Data;
+﻿using GameThing.Data;
 using GameThing.Entities;
 using GameThing.Events;
 using GameThing.Screens;
@@ -43,7 +41,7 @@ namespace GameThing
 			};
 			Content.RootDirectory = "Content";
 
-			startScreen.Started += StartScreen_StartedAsTester;
+			startScreen.StartAsTester += StartScreen_StartedAsTester;
 			startScreen.CreateMatch += StartScreen_CreateMatch;
 			startScreen.JoinMatch += StartScreen_JoinMatch;
 			startScreen.RequestSignIn += StartScreen_RequestSignIn;
@@ -51,49 +49,20 @@ namespace GameThing
 			battleScreen.NextPlayersTurn += BattleScreen_NextPlayersTurn;
 		}
 
+		public TeamData TeamData { get; set; }
+
 		public void SetSignedIn(bool signedIn)
 		{
 			appData.SignedIn = true;
 		}
 
-		public BattleData InitializeGameData(string matchId, IList<string> participantIds)
+		public BattleData InitializeBattleData(string matchId)
 		{
-			var battleData = new BattleData
+			return new BattleData
 			{
 				CurrentSidesTurn = CharacterSide.Spaghetti,
 				MatchId = matchId
 			};
-
-			battleData.Characters.Add(CreateCharacter(CharacterSide.Spaghetti, CharacterColour.Blue));
-			battleData.Characters.Add(CreateCharacter(CharacterSide.Spaghetti, CharacterColour.Green));
-			battleData.Characters.Add(CreateCharacter(CharacterSide.Spaghetti, CharacterColour.None));
-			battleData.Characters.Add(CreateCharacter(CharacterSide.Spaghetti, CharacterColour.Red));
-			battleData.Characters.Add(CreateCharacter(CharacterSide.Spaghetti, CharacterColour.White));
-
-			battleData.Characters.Add(CreateCharacter(CharacterSide.Unicorn, CharacterColour.Blue));
-			battleData.Characters.Add(CreateCharacter(CharacterSide.Unicorn, CharacterColour.Green));
-			battleData.Characters.Add(CreateCharacter(CharacterSide.Unicorn, CharacterColour.None));
-			battleData.Characters.Add(CreateCharacter(CharacterSide.Unicorn, CharacterColour.Red));
-			battleData.Characters.Add(CreateCharacter(CharacterSide.Unicorn, CharacterColour.White));
-
-			battleData.Characters.ForEach(character => character.InitializeDeck());
-
-			for (int i = 0; i < participantIds.Count; i++)
-			{
-				battleData.Sides[participantIds[i]] = (CharacterSide) i;
-			}
-
-			return battleData;
-		}
-
-		private Character CreateCharacter(CharacterSide side, CharacterColour colour)
-		{
-			var classEnumValues = Enum.GetValues(typeof(CharacterClass));
-			var thisCharacterClass = new Random().Next(0, classEnumValues.Length);
-
-			var character = new Character(side, colour, (CharacterClass) thisCharacterClass);
-			character.ResetTurn();
-			return character;
 		}
 
 		private void StartScreen_CreateMatch()
@@ -106,13 +75,14 @@ namespace GameThing
 			JoinMatch?.Invoke();
 		}
 
-		private void StartScreen_StartedAsTester(CharacterSide side)
+		private void StartScreen_StartedAsTester()
 		{
-			var battleData = InitializeGameData("test", new List<string>());
+			var battleData = InitializeBattleData("test");
+			battleData.InitializeCharacters("participantId", TeamData);
 
 			currentScreen = ScreenType.Battle;
 			battleScreen.SetBattleData(battleData);
-			battleScreen.StartGame(side);
+			battleScreen.StartGame(CharacterSide.Spaghetti);
 		}
 
 		private void StartScreen_RequestSignIn()

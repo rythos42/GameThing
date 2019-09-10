@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -7,9 +8,11 @@ using Android.Gms.Extensions;
 using Android.Gms.Games;
 using Android.Gms.Games.MultiPlayer;
 using Android.Gms.Games.MultiPlayer.TurnBased;
+using Android.Gms.Games.Snapshot;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
+using Android.Widget;
 using GameThing.Android.BaseGameUtils;
 using GameThing.Data;
 
@@ -22,11 +25,13 @@ namespace GameThing.Android
 		private const int requestCode_SelectPlayers = 0;
 		private const int requestCode_MatchInbox = 1;
 		private const int requestCode_SignIn = 2;
+
 		private TurnBasedMultiplayerClient gameClient;
+		private SnapshotsClient savedGamesClient;
+
 		private GoogleSignInClient googleSignInClient;
 		private GoogleSignInAccount googleSignInAccount;
 		private MainGame game;
-
 
 		protected override void OnCreate(Bundle bundle)
 		{
@@ -79,7 +84,7 @@ namespace GameThing.Android
 
 		private void Game_NextPlayersTurn(BattleData data)
 		{
-			StartNextTurn(data);
+			SendDataToNextPlayer(data);
 		}
 
 		private void Game_RequestSignIn()
@@ -94,13 +99,6 @@ namespace GameThing.Android
 			gameClient.FinishMatch(data.MatchId);
 		}
 
-		private void StartNextTurn(BattleData data)
-		{
-			var gameData = Convert.Serialize(data);
-			var participantId = data.GetParticipantIdForCurrentSide();
-			gameClient.TakeTurn(data.MatchId, gameData, participantId);
-		}
-
 		protected override async void OnActivityResult(int request, Result response, Intent data)
 		{
 			base.OnActivityResult(request, response, data);
@@ -111,7 +109,7 @@ namespace GameThing.Android
 			if (request == requestCode_SelectPlayers)
 				await AddPlayers(data);
 			if (request == requestCode_MatchInbox)
-				AcceptInvitation(data);
+				StartFromGooglePlayGames(data);
 			if (request == requestCode_SignIn)
 				await SignInSucceded(data);
 		}
@@ -127,9 +125,23 @@ namespace GameThing.Android
 			gameClient = GamesClass.GetTurnBasedMultiplayerClient(this, googleSignInAccount);
 			game.SetSignedIn(true);
 
+			await LoadTeamFromGoogleDrive();
+
 			var match = GetTurnBasedMatch();
 			if (match != null)
-				StartOrEndMatch(match);
+			{
+				var battleData = Convert.Deserialize<BattleData>(match.GetData());
+				StartOrEndMatch(match, battleData);
+			}
+		}
+
+		private async Task LoadTeamFromGoogleDrive()
+		{
+			savedGamesClient = GamesClass.GetSnapshotsClient(this, googleSignInAccount);
+			var savedGameOrConflict = await savedGamesClient.Open("GameThingTeam.json", true, SnapshotsClient.ResolutionPolicyMostRecentlyModified).AsAsync<SnapshotsClient.DataOrConflict>();
+			var snapshot = savedGameOrConflict.Data as ISnapshot;
+			var teamDataBytes = snapshot.SnapshotContents.ReadFully();
+			game.TeamData = teamDataBytes.Length != 0 ? Convert.Deserialize<TeamData>(teamDataBytes) : TeamData.CreateDefaultTeam();
 		}
 
 		private async Task AddPlayers(Intent data)
@@ -140,37 +152,54 @@ namespace GameThing.Android
 				.AddInvitedPlayer(invitees[0])
 				.Build();
 
-			var match = await gameClient.CreateMatch(config).AsAsync<TurnBasedMatchEntity>();
-			var gameData = match.GetData();
-			if (gameData == null)
+			var match = await gameClient.CreateMatch(config) as TurnBasedMatchEntity;
+			SetTurnBasedMatch(match);
+
+			if (match.GetData() == null)
 			{
 				// This is the first turn, need to initialize game data.
-				var battleData = game.InitializeGameData(match.MatchId, match.ParticipantIds);
+				var battleData = game.InitializeBattleData(match.MatchId);
+				var myParticipantId = GetMyParticipantId();
+				battleData.InitializeCharacters(myParticipantId, game.TeamData);
+				battleData.ChangePlayingSide();
 
-				// Send this data to the cloud so user can't restart match for better cards
-				StartNextTurn(battleData);
+				var nextPlayerParticipantId = match.ParticipantIds.SingleOrDefault(participantId => participantId != myParticipantId);
+				SendDataToNextPlayer(battleData, nextPlayerParticipantId);
 
-				SetTurnBasedMatch(match);
-				game.StartMatch(GetMyParticipantId(), battleData);
-			}
-			else
-			{
-				game.StartMatch(GetMyParticipantId(), Convert.Deserialize<BattleData>(gameData));
+				Toast.MakeText(Application.Context, $"Your friend has been invited to play!", ToastLength.Long).Show();
 			}
 		}
 
-		private void AcceptInvitation(Intent data)
+		private void SendDataToNextPlayer(BattleData data, string participantId = null)
+		{
+			var gameData = Convert.Serialize(data);
+			participantId = participantId ?? data.GetParticipantIdForCurrentSide();
+			gameClient.TakeTurn(data.MatchId, gameData, participantId);
+		}
+
+		private void StartFromGooglePlayGames(Intent data)
 		{
 			var match = data.GetParcelableExtra(Multiplayer.ExtraTurnBasedMatch).JavaCast<ITurnBasedMatch>();
 			SetTurnBasedMatch(match);
 
-			StartOrEndMatch(match);
+			var battleData = Convert.Deserialize<BattleData>(match.GetData());
+			var participantId = GetMyParticipantId();
+
+			if (!battleData.HasBothSidesAdded)
+			{
+				if (battleData.HasMySideAdded(participantId))
+				{
+					Toast.MakeText(Application.Context, "Your opponent hasn't joined yet.", ToastLength.Long).Show();
+					return;
+				}
+				battleData.InitializeCharacters(participantId, game.TeamData);
+			}
+
+			StartOrEndMatch(match, battleData);
 		}
 
-		private void StartOrEndMatch(ITurnBasedMatch match)
+		private void StartOrEndMatch(ITurnBasedMatch match, BattleData battleData)
 		{
-			var battleData = Convert.Deserialize<BattleData>(match.GetData());
-
 			if (match.Status == TurnBasedMatch.MatchStatusComplete)
 				game.ShowGameOver(battleData);
 			else

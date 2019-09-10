@@ -17,10 +17,10 @@ namespace GameThing.Entities
 		private Effect selectedCharacterEffect;
 		private static Random rng = new Random();
 
-		public Character(CharacterSide side, CharacterColour colour, CharacterClass characterClass)
+		public Character(Guid id, CharacterColour colour, CharacterClass characterClass)
 		{
+			Id = id;
 			CharacterClass = characterClass;
-			Side = side;
 			Colour = colour;
 		}
 
@@ -31,6 +31,9 @@ namespace GameThing.Entities
 			lockSprite = content.Lock;
 			selectedCharacterEffect = content.Highlight;
 		}
+
+		[DataMember]
+		public Guid Id { get; set; }
 
 		[DataMember]
 		public override MapPoint MapPosition { get; set; }
@@ -144,9 +147,13 @@ namespace GameThing.Entities
 		public bool HasRemainingPlayableCards { get { return RemainingPlayableCards > 0; } }
 		public bool HasRemainingMoves { get { return RemainingMoves > 0; } }
 
-		public void InitializeDeck()
+		public void InitializeDefaultDeck()
 		{
 			Deck = new CardManager().CreateDefaultDeck(this);
+		}
+
+		public void InitializeDeckForBattle()
+		{
 			Shuffle(Deck);
 			DrawOneCard();
 			DrawOneCard();

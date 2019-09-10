@@ -10,7 +10,7 @@ namespace GameThing.Screens
 {
 	public class StartScreen
 	{
-		private readonly Button startAsSpaghetti = new Button("Start as Spaghetti");
+		private readonly Button startAsTester = new Button("Test");
 		private readonly Button signIn = new Button("Sign In");
 		private readonly Button createMatch = new Button("Create Match");
 		private readonly Button joinMatch = new Button("Join Match");
@@ -20,9 +20,8 @@ namespace GameThing.Screens
 
 		public event MatchEventHandler CreateMatch;
 		public event MatchEventHandler JoinMatch;
-		public event StartGameEventHandler Started;
+		public event StartGameAsTesterEventHandler StartAsTester;
 		public event RequestSignInEventHandler RequestSignIn;
-		public delegate void StartGameEventHandler(CharacterSide side);
 
 		public StartScreen(ApplicationData appData)
 		{
@@ -31,7 +30,7 @@ namespace GameThing.Screens
 
 		public void LoadContent(Content content, GraphicsDevice graphicsDevice)
 		{
-			startAsSpaghetti.LoadContent(content, graphicsDevice);
+			startAsTester.LoadContent(content, graphicsDevice);
 			signIn.LoadContent(content, graphicsDevice);
 			createMatch.LoadContent(content, graphicsDevice);
 			joinMatch.LoadContent(content, graphicsDevice);
@@ -54,8 +53,8 @@ namespace GameThing.Screens
 
 		private void Tap(GestureSample gesture)
 		{
-			if (startAsSpaghetti.IsVisible && startAsSpaghetti.IsAtPoint(gesture.Position))
-				Started?.Invoke(CharacterSide.Spaghetti);
+			if (startAsTester.IsVisible && startAsTester.IsAtPoint(gesture.Position))
+				StartAsTester?.Invoke();
 
 			if (createMatch.IsVisible && createMatch.IsAtPoint(gesture.Position))
 				CreateMatch?.Invoke();
@@ -73,7 +72,7 @@ namespace GameThing.Screens
 
 			spriteBatch.Begin();
 
-			startAsSpaghetti.Draw(spriteBatch, 40, 40);
+			startAsTester.Draw(spriteBatch, 40, 40);
 
 			if (!appData.SignedIn)
 			{
