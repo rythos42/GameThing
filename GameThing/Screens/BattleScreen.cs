@@ -141,8 +141,7 @@ namespace GameThing.Screens
 
 		public void StartGame(string myParticipantId)
 		{
-			thisPlayerSide = data.Sides[myParticipantId];
-			playerSideText.Value = $"Your side: {thisPlayerSide}";
+			StartGame(data.Sides[myParticipantId]);
 		}
 
 		public void StartGame(CharacterSide side)
@@ -150,6 +149,8 @@ namespace GameThing.Screens
 			thisPlayerSide = side;
 			playerSideText.Value = $"Your side: {thisPlayerSide}";
 			lockedInCharacter = null;
+			selectedCharacter = null;
+			selectedCard = null;
 		}
 
 		private void StartNextRound()
