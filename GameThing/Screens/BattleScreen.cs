@@ -22,17 +22,17 @@ namespace GameThing.Screens
 
 		private BattleData data;
 		private Character selectedCharacter;
-		private HandOfCards handOfCards = new HandOfCards();
+		private readonly HandOfCards handOfCards = new HandOfCards();
 		private Card selectedCard;
 		private CharacterSide thisPlayerSide;
 		private Character lockedInCharacter = null;
 		private readonly DrawableList entities = new DrawableList();
 
-		private Button newTurnButton = new Button("New Turn") { UseMinimumButtonSize = false };
-		private FadingTextPanel statusPanel = new FadingTextPanel() { PlaceFromRight = true };
-		private Panel playerSidePanel = new Panel();
+		private readonly Button newTurnButton = new Button("New Turn") { UseMinimumButtonSize = false };
+		private readonly FadingTextPanel statusPanel = new FadingTextPanel() { PlaceFromRight = true };
+		private readonly Panel playerSidePanel = new Panel();
 		private readonly Text playerSideText = new Text();
-		private Panel selectedPlayerStatsPanel = new Panel();
+		private readonly Panel selectedPlayerStatsPanel = new Panel();
 		private readonly Text sideText = new Text();
 		private readonly Text healthText = new Text();
 		private readonly Text strengthText = new Text();
@@ -47,7 +47,7 @@ namespace GameThing.Screens
 		private Rectangle unicornDeployment;
 
 		private Content content;
-		private Random random = new Random();
+		private readonly Random random = new Random();
 
 		public event NextPlayersTurnEventHandler NextPlayersTurn;
 		public event GameOverEventHandler GameOver;
@@ -82,7 +82,6 @@ namespace GameThing.Screens
 		{
 			MapPoint characterPoint;
 			var deployment = character.Side == CharacterSide.Spaghetti ? spaghettiDeployment : unicornDeployment;
-			bool yes = character.Side == CharacterSide.Spaghetti;
 			do
 			{
 				characterPoint = new MapPoint(
@@ -201,11 +200,9 @@ namespace GameThing.Screens
 		{
 			mapRenderer.Update(gameTime);
 
-			var gesture = default(GestureSample);
-
 			while (TouchPanel.IsGestureAvailable)
 			{
-				gesture = TouchPanel.ReadGesture();
+				var gesture = TouchPanel.ReadGesture();
 
 				if (gesture.GestureType == GestureType.FreeDrag)
 					Pan(gesture);
@@ -220,7 +217,7 @@ namespace GameThing.Screens
 			newTurnButton.IsHighlighted = lockedInCharacter != null && !lockedInCharacter.HasRemainingMoves && !lockedInCharacter.HasRemainingPlayableCards;
 		}
 
-		public void Draw(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch, Rectangle clientBounds, GameTime gameTime)
+		public void Draw(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch, Rectangle clientBounds)
 		{
 			graphicsDevice.Clear(Color.CornflowerBlue);
 
@@ -341,24 +338,12 @@ namespace GameThing.Screens
 			}
 		}
 
-		private bool CanMoveSelectedCharacter
-		{
-			get
-			{
-				return selectedCharacter.Side == thisPlayerSide
+		private bool CanMoveSelectedCharacter => selectedCharacter.Side == thisPlayerSide
 					&& selectedCharacter.HasRemainingMoves
 					&& !selectedCharacter.ActivatedThisRound
 					&& (lockedInCharacter == selectedCharacter || lockedInCharacter == null);
-			}
-		}
 
-		private bool CanSelectCardFromSelectedCharacter
-		{
-			get
-			{
-				return selectedCharacter.HasRemainingPlayableCards && !selectedCharacter.ActivatedThisRound;
-			}
-		}
+		private bool CanSelectCardFromSelectedCharacter => selectedCharacter.HasRemainingPlayableCards && !selectedCharacter.ActivatedThisRound;
 
 		private void Pan(GestureSample gesture)
 		{
@@ -371,15 +356,15 @@ namespace GameThing.Screens
 		{
 			if (gesture.GestureType == GestureType.Pinch)
 			{
-				Vector2 a = gesture.Position;
-				Vector2 b = gesture.Position2;
-				float dist = Vector2.Distance(a, b);
+				var a = gesture.Position;
+				var b = gesture.Position2;
+				var dist = Vector2.Distance(a, b);
 
-				Vector2 aOld = gesture.Position - gesture.Delta;
-				Vector2 bOld = gesture.Position2 - gesture.Delta2;
-				float distOld = Vector2.Distance(aOld, bOld);
+				var aOld = gesture.Position - gesture.Delta;
+				var bOld = gesture.Position2 - gesture.Delta2;
+				var distOld = Vector2.Distance(aOld, bOld);
 
-				float scale = (distOld - dist) * -0.05f;
+				var scale = (distOld - dist) * -0.05f;
 				if (camera.Zoom + scale > 5 || camera.Zoom + scale < 1)
 					return;
 

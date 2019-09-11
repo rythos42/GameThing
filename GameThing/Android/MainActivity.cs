@@ -56,8 +56,10 @@ namespace GameThing.Android
 			SetContentView((View) game.Services.GetService(typeof(View)));
 			game.Run();
 
-			var gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DefaultGamesSignIn).Build();
-			googleSignInClient = GoogleSignIn.GetClient(this, gso);
+			using (var builder = new GoogleSignInOptions.Builder(GoogleSignInOptions.DefaultGamesSignIn))
+			{
+				googleSignInClient = GoogleSignIn.GetClient(this, builder.Build());
+			}
 		}
 
 		public void OnSignInFailed()

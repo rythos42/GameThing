@@ -11,7 +11,9 @@ namespace GameThing
 {
 	public class MainGame : Game
 	{
+#pragma warning disable IDE0052 // Remove unread private members
 		private readonly GraphicsDeviceManager graphics;
+#pragma warning restore IDE0052 // Remove unread private members
 		private SpriteBatch spriteBatch;
 
 		private ScreenType currentScreen = ScreenType.StartMenu;
@@ -25,7 +27,7 @@ namespace GameThing
 		public event RequestSignInEventHandler RequestSignIn;
 		public event GameOverEventHandler GameOver;
 
-		private ApplicationData appData = new ApplicationData();
+		private readonly ApplicationData appData = new ApplicationData();
 		private Content content;
 
 		public MainGame()
@@ -53,7 +55,7 @@ namespace GameThing
 
 		public void SetSignedIn(bool signedIn)
 		{
-			appData.SignedIn = true;
+			appData.SignedIn = signedIn;
 		}
 
 		public BattleData InitializeBattleData(string matchId)
@@ -171,7 +173,7 @@ namespace GameThing
 			switch (currentScreen)
 			{
 				case ScreenType.Battle:
-					battleScreen.Draw(GraphicsDevice, spriteBatch, Window.ClientBounds, gameTime);
+					battleScreen.Draw(GraphicsDevice, spriteBatch, Window.ClientBounds);
 					break;
 				case ScreenType.StartMenu:
 					startScreen.Draw(GraphicsDevice, spriteBatch);

@@ -15,7 +15,7 @@ namespace GameThing.Entities
 		private Texture2D availableMovementTexture;
 		private Texture2D lockSprite;
 		private Effect selectedCharacterEffect;
-		private static Random rng = new Random();
+		private static readonly Random rng = new Random();
 
 		public Character(Guid id, CharacterColour colour, CharacterClass characterClass)
 		{
@@ -74,9 +74,9 @@ namespace GameThing.Entities
 		[DataMember]
 		public Character NextCardMustTarget { get; set; }
 
-		public decimal CurrentStrength { get { return BaseStrength * StrengthMultiplier; } }
-		public decimal CurrentAgility { get { return BaseAgility * AgilityMultiplier; } }
-		public decimal CurrentIntelligence { get { return BaseIntelligence * IntelligenceMultiplier; } }
+		public decimal CurrentStrength => BaseStrength * StrengthMultiplier;
+		public decimal CurrentAgility => BaseAgility * AgilityMultiplier;
+		public decimal CurrentIntelligence => BaseIntelligence * IntelligenceMultiplier;
 
 		public void ApplyDamage(decimal damageAmount)
 		{
@@ -144,8 +144,8 @@ namespace GameThing.Entities
 		[DataMember]
 		public List<Card> Deck { get; private set; } = new List<Card>();
 
-		public bool HasRemainingPlayableCards { get { return RemainingPlayableCards > 0; } }
-		public bool HasRemainingMoves { get { return RemainingMoves > 0; } }
+		public bool HasRemainingPlayableCards => RemainingPlayableCards > 0;
+		public bool HasRemainingMoves => RemainingMoves > 0;
 
 		public void InitializeDefaultDeck()
 		{
@@ -176,7 +176,7 @@ namespace GameThing.Entities
 			{
 				n--;
 				var k = rng.Next(n + 1);
-				Card value = list[k];
+				var value = list[k];
 				list[k] = list[n];
 				list[n] = value;
 			}
@@ -205,29 +205,11 @@ namespace GameThing.Entities
 			}
 		}
 
-		public IEnumerable<Card> CurrentHand
-		{
-			get
-			{
-				return Deck.Where(card => card.InHand);
-			}
-		}
+		public IEnumerable<Card> CurrentHand => Deck.Where(card => card.InHand);
 
-		public int CardsInDeckCount
-		{
-			get
-			{
-				return Deck.Count(card => !card.InHand && !card.InDiscard);
-			}
-		}
+		public int CardsInDeckCount => Deck.Count(card => !card.InHand && !card.InDiscard);
 
-		public int CardsInDiscardCount
-		{
-			get
-			{
-				return Deck.Count(card => card.InDiscard);
-			}
-		}
+		public int CardsInDiscardCount => Deck.Count(card => card.InDiscard);
 
 		[OnDeserialized]
 		internal void OnDeserialized(StreamingContext context)
@@ -290,7 +272,7 @@ namespace GameThing.Entities
 		public void DrawLock(SpriteBatch spriteBatch)
 		{
 			var drawPosition = MapPosition.GetScreenPosition();
-			drawPosition.Y -= Sprite.Height - lockSprite.Height / 2;
+			drawPosition.Y -= Sprite.Height - (lockSprite.Height / 2);
 			drawPosition.X -= lockSprite.Width / 2;
 
 			spriteBatch.Draw(lockSprite, drawPosition, Color.White);

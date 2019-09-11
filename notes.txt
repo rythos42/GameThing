@@ -1,9 +1,7 @@
 Manage Team
-	- load from google saved games
-	- have "save data" separate from "battle data"
-	- need to have a team created before you can join or create a match
-	- don't allow changing team when it's in a game
-		- or, allow it but don't change the team inside the game
+	- allow character progression
+	- merge team back into saved data at end 
+		- may not be as simple as overwriting, if player has played multiple games
 	- edit character decks
 	- need many more cards
 

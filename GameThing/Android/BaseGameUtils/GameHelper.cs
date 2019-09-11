@@ -88,8 +88,7 @@ namespace GameThing.Android.BaseGameUtils
 			DebugLog("   - details: " + mConnectionResult);
 
 			var cancellations = GetSignInCancellations();
-			var shouldResolve = false;
-
+			bool shouldResolve;
 			if (mUserInitiatedSignIn)
 			{
 				DebugLog("onConnectionFailed: WILL resolve because user initiated sign-in.");
@@ -158,12 +157,16 @@ namespace GameThing.Android.BaseGameUtils
 				throw new IllegalStateException(error);
 			}
 			mListener = listener ?? throw new Exception("The listener is not of type IGameHelperListener");
-			mGoogleApiClient = new GoogleApiClient.Builder(mActivity, this, this)
-					.AddApi(GamesClass.API)
-					.AddScope(GamesClass.ScopeGames)
-					.AddApi(DriveClass.API)
-					.AddScope(DriveClass.ScopeAppfolder)
-					.Build();
+
+			using (var builder = new GoogleApiClient.Builder(mActivity, this, this))
+			{
+				mGoogleApiClient = builder
+									.AddApi(GamesClass.API)
+									.AddScope(GamesClass.ScopeGames)
+									.AddApi(DriveClass.API)
+									.AddScope(DriveClass.ScopeAppfolder)
+									.Build();
+			}
 
 			mSetupDone = true;
 		}
@@ -245,7 +248,9 @@ namespace GameThing.Android.BaseGameUtils
 			return mTurnBasedMatch;
 		}
 
+#pragma warning disable IDE0060 // Remove unused parameter
 		public void OnActivityResult(int requestCode, int responseCode, Intent intent)
+#pragma warning restore IDE0060 // Remove unused parameter
 		{
 			DebugLog("onActivityResult: req="
 					 + (requestCode == requestCode_Resolve ? "RC_RESOLVE" : Java.Lang.String.ValueOf(requestCode)) +
@@ -499,8 +504,7 @@ namespace GameThing.Android.BaseGameUtils
 				Log.Error("GameHelper", "*** No Activity. Can't show failure dialog!");
 				return;
 			}
-			Dialog errorDialog = null;
-
+			Dialog errorDialog;
 			switch (actResp)
 			{
 				case GamesActivityResultCodes.ResultAppMisconfigured:
@@ -533,10 +537,12 @@ namespace GameThing.Android.BaseGameUtils
 
 		private static Dialog MakeSimpleDialog(Activity activity, String text)
 		{
-			return
-				new AlertDialog.Builder(activity).SetMessage(text)
-					.SetNeutralButton(global::Android.Resource.String.Ok, null as EventHandler<DialogClickEventArgs>)
-					.Create();
+			using (var builder = new AlertDialog.Builder(activity))
+			{
+				return builder.SetMessage(text)
+						.SetNeutralButton(global::Android.Resource.String.Ok, null as EventHandler<DialogClickEventArgs>)
+						.Create();
+			}
 		}
 
 		private void DebugLog(String message)

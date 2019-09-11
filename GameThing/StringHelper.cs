@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GameThing
@@ -13,9 +12,9 @@ namespace GameThing
 			var lineWidth = 0f;
 			var spaceWidth = font.MeasureString(" ").X;
 
-			foreach (string word in words)
+			foreach (var word in words)
 			{
-				Vector2 size = font.MeasureString(word);
+				var size = font.MeasureString(word);
 
 				if (lineWidth + size.X < maxLineWidth)
 				{
