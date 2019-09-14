@@ -1,11 +1,10 @@
 Manage Team
-	- button to clear existing team and start again
-		- check that Awkward Distraction buff checks that SourceCharacter isn't null
 	- allow character progression
 		- playing a card adds points to the category bucket for that card
 	- merge team back into saved data at end 
 		- may not be as simple as overwriting, if player has played multiple games
 	- edit character decks
+	- delete team
 	- need many more cards
 
 Nice to have:
