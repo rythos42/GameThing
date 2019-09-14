@@ -215,7 +215,13 @@ namespace GameThing.Entities
 		internal void OnDeserialized(StreamingContext context)
 		{
 			// We don't serialize the OwnerCharacter for cards as it's wasteful, need to set after we build the Character and Deck
-			Deck.ForEach(card => card.OwnerCharacter = this);
+			Deck.ForEach(card =>
+			{
+				card.OwnerCharacter = this;
+
+				if (card.Condition != null)
+					card.Condition.SourceCharacter = this;
+			});
 		}
 
 		public bool IsWithinDistanceOf(int range, MapPoint checkPoint)
