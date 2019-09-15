@@ -142,6 +142,9 @@ namespace GameThing.Entities
 		public bool ActivatedThisRound { get; private set; }
 
 		[DataMember]
+		public Dictionary<Category, int> CategoryLevels { get; } = new Dictionary<Category, int>();
+
+		[DataMember]
 		public List<Card> Deck { get; private set; } = new List<Card>();
 
 		public bool HasRemainingPlayableCards => RemainingPlayableCards > 0;
@@ -167,6 +170,14 @@ namespace GameThing.Entities
 			card.Play(roundNumber, targetCharacter);
 			card.Discard();
 			DrawOneCard();
+
+			card.Categories.ForEach(cardCategory =>
+			{
+				if (CategoryLevels.ContainsKey(cardCategory))
+					CategoryLevels[cardCategory]++;
+				else
+					CategoryLevels.Add(cardCategory, 1);
+			});
 		}
 
 		private void Shuffle(List<Card> list)

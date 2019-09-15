@@ -29,6 +29,7 @@ namespace GameThing.Screens
 		private readonly DrawableList entities = new DrawableList();
 
 		private readonly Button newTurnButton = new Button("New Turn") { UseMinimumButtonSize = false };
+		private readonly Button winGameNowButton = new Button("Win Game") { UseMinimumButtonSize = false };
 		private readonly FadingTextPanel statusPanel = new FadingTextPanel() { PlaceFromRight = true };
 		private readonly Panel playerSidePanel = new Panel();
 		private readonly Text playerSideText = new Text();
@@ -51,6 +52,8 @@ namespace GameThing.Screens
 
 		public event NextPlayersTurnEventHandler NextPlayersTurn;
 		public event GameOverEventHandler GameOver;
+
+		public bool IsTestMode { get; set; }
 
 		public void SetBattleData(BattleData gameData)
 		{
@@ -134,6 +137,7 @@ namespace GameThing.Screens
 
 			this.content = content;
 			newTurnButton.LoadContent(content, graphicsDevice);
+			winGameNowButton.LoadContent(content, graphicsDevice);
 			statusPanel.LoadContent(content, graphicsDevice);
 			selectedPlayerStatsPanel.LoadContent(content, graphicsDevice);
 			playerSidePanel.LoadContent(content, graphicsDevice);
@@ -251,6 +255,8 @@ namespace GameThing.Screens
 				newTurnButton.Draw(spriteBatch, 40, 20);
 			statusPanel.Draw(spriteBatch, 40, 20);
 			playerSidePanel.Draw(spriteBatch, 220, 20);
+			if (IsTestMode)
+				winGameNowButton.Draw(spriteBatch, 530, 20);
 			if (selectedCharacter != null)
 			{
 				sideText.Value = $"Side: {selectedCharacter.Side}";
@@ -277,6 +283,12 @@ namespace GameThing.Screens
 			if (newTurnButton.IsAtPoint(gesture.Position))
 			{
 				NextPlayerTurn();
+				return;
+			}
+
+			if (winGameNowButton.IsAtPoint(gesture.Position) && IsTestMode)
+			{
+				GameOver?.Invoke(data);
 				return;
 			}
 

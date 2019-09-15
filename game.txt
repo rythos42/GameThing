@@ -16,10 +16,14 @@ Turn:
 some characters will be support, ranged, melee, all different types
 	cards have to allow that support is a good idea, not just killing stuff
 
-Levels earned by playing cards
-Put cards info categories
-Classes unlock by a certain amount of categories played
-
+Levels
+	- When you play a card, add 1 point for the character to each category that card contains.
+	- Classes are unlocked at a certain number of points in a particular category
+		- Gain levels in a class by a certain number of points in categories.
+		- Ensure each class has a set of categories that work for it.
+		- Have classes both for depth and breadth of categories
+	- The cards you have available to you are determined by your level in each class.
+		- Each level gives 1 additional card. (or 2 of the same).
 
 
 Between games:

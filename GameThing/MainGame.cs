@@ -83,6 +83,7 @@ namespace GameThing
 			battleData.InitializeCharacters("participantId", TeamData);
 
 			currentScreen = ScreenType.Battle;
+			battleScreen.IsTestMode = true;
 			battleScreen.SetBattleData(battleData);
 			battleScreen.StartGame(CharacterSide.Spaghetti);
 		}
@@ -105,6 +106,7 @@ namespace GameThing
 		public void StartMatch(string myParticipantId, BattleData gameData)
 		{
 			currentScreen = ScreenType.Battle;
+			battleScreen.IsTestMode = false;
 			battleScreen.SetBattleData(gameData);
 			battleScreen.StartGame(myParticipantId);
 		}

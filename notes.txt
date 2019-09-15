@@ -1,15 +1,13 @@
 Manage Team
-	- allow character progression
-		- playing a card adds points to the category bucket for that card
 	- merge team back into saved data at end 
 		- may not be as simple as overwriting, if player has played multiple games
 	- edit character decks
 	- delete team
 	- need many more cards
 
+- consider giving Shane my old phone...I could really use his "fuck the game" mindset.
+
 Nice to have:
-	- selected character is drawn over top of nearby characters
-		- this might be good in some cases, leave it for now
 	- allow characters to stand on slopes
 		- draw grid on slopes
 	- TauntCondition needs a message for success/fail
@@ -20,7 +18,6 @@ Nice to have:
 	- hide start screen buttons if loading shit (or give a loading splash screen and THEN go to game)
 	- maybe don't automatically go to a match if we have one -- might be the user has multiple
 	- show logout button to GPG
-	- clear SignOut obsolete warning
 	- hide "Join as Spaghetti" button
 	- shouldn't need to de-select a character to select a new one
 	- make characters move on game loop
@@ -55,7 +52,7 @@ Game Design
 		- make runcondition an agility buff?
 
 Started around June 9th
-MVP started August 28
+MVP started August 28, version code 2, version 1.0
 
 MVP2
 	Bushes and trees that block movement
