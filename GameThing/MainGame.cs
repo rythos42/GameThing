@@ -95,6 +95,9 @@ namespace GameThing
 
 		private void BattleScreen_GameOver(BattleData data)
 		{
+			TeamData.MergeBattleData(data);
+
+			GameOver?.Invoke(data.MatchId, TeamData);
 			ShowGameOver(data);
 		}
 
@@ -113,8 +116,6 @@ namespace GameThing
 
 		public void ShowGameOver(BattleData data)
 		{
-			GameOver?.Invoke(data);
-
 			gameOverScreen.Winner = data.Winner;
 			currentScreen = ScreenType.GameOver;
 		}

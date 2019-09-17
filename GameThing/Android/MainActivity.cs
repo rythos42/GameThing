@@ -28,6 +28,7 @@ namespace GameThing.Android
 
 		private TurnBasedMultiplayerClient gameClient;
 		private SnapshotsClient savedGamesClient;
+		private ISnapshot teamSnapshot;
 
 		private GoogleSignInClient googleSignInClient;
 		private GoogleSignInAccount googleSignInAccount;
@@ -96,9 +97,22 @@ namespace GameThing.Android
 			RequestSignIn();
 		}
 
-		private void Game_GameOver(BattleData data)
+		private void Game_GameOver(string matchId, TeamData teamData)
 		{
-			gameClient.FinishMatch(data.MatchId);
+			gameClient.FinishMatch(matchId);
+
+			teamSnapshot.SnapshotContents.WriteBytes(Convert.Serialize(teamData));
+			using (var builder = new SnapshotMetadataChangeBuilder())
+			{
+				var metadataChange = builder
+					.SetDescription("")
+					.SetPlayedTimeMillis(0)
+					.SetProgressValue(0)
+					.Build();
+
+				savedGamesClient.CommitAndClose(teamSnapshot, metadataChange);
+				LoadTeamFromGoogleDrive();
+			}
 		}
 
 		protected override async void OnActivityResult(int request, Result response, Intent data)
@@ -126,6 +140,7 @@ namespace GameThing.Android
 			googleSignInAccount = await GoogleSignIn.GetSignedInAccountFromIntent(data).AsAsync<GoogleSignInAccount>();
 			gameClient = GamesClass.GetTurnBasedMultiplayerClient(this, googleSignInAccount);
 			game.SetSignedIn(true);
+			savedGamesClient = GamesClass.GetSnapshotsClient(this, googleSignInAccount);
 
 			await LoadTeamFromGoogleDrive();
 
@@ -139,10 +154,10 @@ namespace GameThing.Android
 
 		private async Task LoadTeamFromGoogleDrive()
 		{
-			savedGamesClient = GamesClass.GetSnapshotsClient(this, googleSignInAccount);
 			var savedGameOrConflict = await savedGamesClient.Open("GameThingTeam.json", true, SnapshotsClient.ResolutionPolicyMostRecentlyModified).AsAsync<SnapshotsClient.DataOrConflict>();
-			var snapshot = savedGameOrConflict.Data as ISnapshot;
-			var teamDataBytes = snapshot.SnapshotContents.ReadFully();
+			teamSnapshot = savedGameOrConflict.Data as ISnapshot;
+			var teamDataBytes = teamSnapshot.SnapshotContents.ReadFully();
+
 			game.TeamData = teamDataBytes.Length != 0 ? Convert.Deserialize<TeamData>(teamDataBytes) : TeamData.CreateDefaultTeam();
 		}
 

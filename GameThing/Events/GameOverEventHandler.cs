@@ -2,5 +2,5 @@
 
 namespace GameThing.Events
 {
-	public delegate void GameOverEventHandler(BattleData data);
+	public delegate void GameOverEventHandler(string matchId, TeamData data);
 }

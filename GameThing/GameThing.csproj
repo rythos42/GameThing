@@ -219,6 +219,7 @@
     <Compile Include="Entities\DrawableList.cs" />
     <Compile Include="Entities\IDrawable.cs" />
     <Compile Include="Entities\Terrain.cs" />
+    <Compile Include="Events\GameOverEventHandler.cs" />
     <Compile Include="Events\StartGameAsTesterEventHandler.cs" />
     <Compile Include="MapHelper.cs" />
     <Compile Include="UI\FadingTextPanel.cs" />
@@ -246,7 +247,7 @@
     <Compile Include="Entities\Character.cs" />
     <Compile Include="Entities\HandOfCards.cs" />
     <Compile Include="Android\MainActivity.cs" />
-    <Compile Include="Events\GameOverEventHandler.cs" />
+    <Compile Include="Events\BattleGameOverEventHandler.cs" />
     <Compile Include="MainGame.cs" />
     <Compile Include="MapPoint.cs" />
     <Compile Include="Events\NextPlayersTurnEventHandler.cs" />

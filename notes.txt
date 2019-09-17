@@ -1,11 +1,14 @@
+- consider giving Shane my old phone...I could really use his "fuck the game" mindset.
+
 Manage Team
-	- merge team back into saved data at end 
-		- may not be as simple as overwriting, if player has played multiple games
+	- implement character levels
 	- edit character decks
 	- delete team
-	- need many more cards
+	- change character class
+		- character class gives 2 cards to selection which are class only
+	- view character category levels
+- need many more cards
 
-- consider giving Shane my old phone...I could really use his "fuck the game" mindset.
 
 Nice to have:
 	- allow characters to stand on slopes
@@ -41,6 +44,11 @@ Tech
 	- Nexus 7 shows black box instead of highlighted character
 	- why outside_0.xnb and outside.xnb?
 	- Entities list vs Character list, why storing the same thing twice?
+	- May need a different classes for Characters
+		- on-device storage
+		- pass between games
+		- on-device in-game
+	- set description, played time and progress value for SnapshotChangeMetadata
 
 Game Design
 	- evaluate whether single character or whole side is a better turn

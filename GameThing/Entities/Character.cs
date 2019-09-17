@@ -145,6 +145,9 @@ namespace GameThing.Entities
 		public Dictionary<Category, int> CategoryLevels { get; } = new Dictionary<Category, int>();
 
 		[DataMember]
+		public Dictionary<Category, int> AdditionalCategoryLevels { get; } = new Dictionary<Category, int>();
+
+		[DataMember]
 		public List<Card> Deck { get; private set; } = new List<Card>();
 
 		public bool HasRemainingPlayableCards => RemainingPlayableCards > 0;
@@ -173,10 +176,10 @@ namespace GameThing.Entities
 
 			card.Categories.ForEach(cardCategory =>
 			{
-				if (CategoryLevels.ContainsKey(cardCategory))
-					CategoryLevels[cardCategory]++;
+				if (AdditionalCategoryLevels.ContainsKey(cardCategory))
+					AdditionalCategoryLevels[cardCategory]++;
 				else
-					CategoryLevels.Add(cardCategory, 1);
+					AdditionalCategoryLevels.Add(cardCategory, 1);
 			});
 		}
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 using GameThing.Entities;
 
@@ -30,6 +31,28 @@ namespace GameThing.Data
 			var character = new Character(Guid.NewGuid(), colour, (CharacterClass) thisCharacterClass);
 			character.InitializeDefaultDeck();
 			return character;
+		}
+
+		private Character GetById(Guid id)
+		{
+			return Characters.SingleOrDefault(character => character.Id == id);
+		}
+
+		public void MergeBattleData(BattleData battleData)
+		{
+			foreach (var battleCharacter in battleData.Characters)
+			{
+				foreach (var battleCategory in battleCharacter.AdditionalCategoryLevels.Keys)
+				{
+					var teamCharacter = GetById(battleCharacter.Id);
+					var additionalCategoryLevelFromBattle = battleCharacter.AdditionalCategoryLevels[battleCategory];
+
+					if (teamCharacter.CategoryLevels.ContainsKey(battleCategory))
+						teamCharacter.CategoryLevels[battleCategory] += additionalCategoryLevelFromBattle;
+					else
+						teamCharacter.CategoryLevels.Add(battleCategory, additionalCategoryLevelFromBattle);
+				}
+			}
 		}
 	}
 }

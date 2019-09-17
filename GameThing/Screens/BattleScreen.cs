@@ -51,7 +51,7 @@ namespace GameThing.Screens
 		private readonly Random random = new Random();
 
 		public event NextPlayersTurnEventHandler NextPlayersTurn;
-		public event GameOverEventHandler GameOver;
+		public event BattleGameOverEventHandler GameOver;
 
 		public bool IsTestMode { get; set; }
 
