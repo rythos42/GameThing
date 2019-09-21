@@ -43,6 +43,9 @@ namespace GameThing
 					(int) (screenPosition.X / TileWidth_Half + (screenPosition.Y + layerOffset) / TileHeight_Half) / 2,
 					(int) ((screenPosition.Y + layerOffset) / TileHeight_Half - screenPosition.X / TileWidth_Half) / 2);
 
+				if (mapPoint.X < MIN_MAP_X || mapPoint.Y < MIN_MAP_Y)
+					continue;
+
 				if (mapPoint.Height == layerNumber)
 					return mapPoint;
 			}

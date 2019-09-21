@@ -29,6 +29,7 @@ namespace GameThing.Screens
 		private Button newTurnButton = new Button("New Turn") { UseMinimumButtonSize = false };
 		private FadingTextPanel statusPanel = new FadingTextPanel() { PlaceFromRight = true };
 		private Panel playerSidePanel = new Panel();
+		private Text playerSideText = new Text();
 		private Panel selectedPlayerStatsPanel = new Panel();
 		private readonly Text sideText = new Text();
 		private readonly Text healthText = new Text();
@@ -112,7 +113,7 @@ namespace GameThing.Screens
 			selectedPlayerStatsPanel.Components.Add(remainingMovesText);
 			selectedPlayerStatsPanel.Components.Add(remainingPlayableCardsText);
 
-			playerSidePanel.Components.Add(new Text { Value = $"Your side: {thisPlayerSide}" });
+			playerSidePanel.Components.Add(playerSideText);
 
 			this.content = content;
 			newTurnButton.LoadContent(content, graphicsDevice);
@@ -123,13 +124,16 @@ namespace GameThing.Screens
 
 		public void StartGame(string myParticipantId)
 		{
-			thisPlayerSide = data.Sides[myParticipantId];
+			StartGame(data.Sides[myParticipantId]);
 		}
 
 		public void StartGame(CharacterSide side)
 		{
 			thisPlayerSide = side;
+			playerSideText.Value = $"Your side: {thisPlayerSide}";
 			lockedInCharacter = null;
+			selectedCharacter = null;
+			selectedCard = null;
 		}
 
 		private void StartNextRound()

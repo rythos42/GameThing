@@ -111,6 +111,7 @@ namespace GameThing
 			var battleData = InitializeGameData("test", new List<string>());
 
 			currentScreen = ScreenType.Battle;
+			battleData.CurrentSidesTurn = side;
 			battleScreen.SetBattleData(battleData);
 			battleScreen.StartGame(side);
 		}
