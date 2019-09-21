@@ -215,6 +215,7 @@
     <Compile Include="Android\BaseGameUtils\IGameHelperListener.cs" />
     <Compile Include="Entities\Cards\Conditions\BuffType.cs" />
     <Compile Include="Entities\Content.cs" />
+    <Compile Include="Events\BattleContentLoadedEventHandler.cs" />
     <Compile Include="MapHelper.cs" />
     <Compile Include="UI\FadingTextPanel.cs" />
     <Compile Include="UI\Panel.cs" />
