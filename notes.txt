@@ -144,6 +144,8 @@ Tech
 		- pass between games
 		- on-device in-game
 	- set description, played time and progress value for SnapshotChangeMetadata
+	- consider loosening proguard.cfg -- it's keeping all of com.google.android.gms, but last error only needed com.google.android.gms.auth.api.signin.internal.SignInHubActivity
+		- check \obj\Release\90\proguard\proguard_project_references.cfg for ideas of how it works
 
 Game Design
 	- evaluate whether single character or whole side is a better turn
@@ -159,6 +161,10 @@ MVP started August 28, version code 2, version 1.0
 
 MVP2
 	Bushes and trees that block movement
+
+
+Deploying:
+	1. Test that `release` build runs. Proguard/etc can mess some things up.
 
 Google Play
 	Certificates
@@ -182,6 +188,9 @@ Publishing Xamarin
 	https://play.google.com/apps/publish/?account=8816930819975285172#ApiAccessPlace
 	https://console.developers.google.com/apis/credentials?project=api-8816930819975285172-503918
 	https://play.google.com/apps/publish/?account=8816930819975285172#GameDetailsPlace:gt=505193462094
+
+	Proguard
+	https://docs.microsoft.com/en-us/xamarin/android/deploy-test/release-prep/proguard?tabs=windows
 
 	Obsfucating code
 	https://www.preemptive.com/dotfuscator/pro/userguide/en/getting_started_xamarin.html

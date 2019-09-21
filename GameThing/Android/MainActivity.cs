@@ -156,9 +156,15 @@ namespace GameThing.Android
 		{
 			var savedGameOrConflict = await savedGamesClient.Open("GameThingTeam.json", true, SnapshotsClient.ResolutionPolicyMostRecentlyModified).AsAsync<SnapshotsClient.DataOrConflict>();
 			teamSnapshot = savedGameOrConflict.Data as ISnapshot;
-			var teamDataBytes = teamSnapshot.SnapshotContents.ReadFully();
-
-			game.TeamData = teamDataBytes.Length != 0 ? Convert.Deserialize<TeamData>(teamDataBytes) : TeamData.CreateDefaultTeam();
+			if (teamSnapshot == null)
+			{
+				game.TeamData = TeamData.CreateDefaultTeam();
+			}
+			else
+			{
+				var teamDataBytes = teamSnapshot.SnapshotContents.ReadFully();
+				game.TeamData = teamDataBytes.Length != 0 ? Convert.Deserialize<TeamData>(teamDataBytes) : TeamData.CreateDefaultTeam();
+			}
 		}
 
 		private async Task AddPlayers(Intent data)
