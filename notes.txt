@@ -1,6 +1,8 @@
 - consider giving Shane my old phone...I could really use his "fuck the game" mindset.
 - game needs an Armour stat
 - show categories of cards
+- sort out Google Play API V3, deprecated December 1st
+	https://android-developers.googleblog.com/2019/03/changes-to-google-play-developer-api.html
 
 Building a basic class hierarchy
 	- Need more categories for some of these "higher level" things
@@ -191,6 +193,8 @@ Publishing Xamarin
 
 	Proguard
 	https://docs.microsoft.com/en-us/xamarin/android/deploy-test/release-prep/proguard?tabs=windows
+	https://docs.microsoft.com/en-us/xamarin/android/deploy-test/linker
+	https://docs.microsoft.com/en-us/xamarin/cross-platform/deploy-test/linker
 
 	Obsfucating code
 	https://www.preemptive.com/dotfuscator/pro/userguide/en/getting_started_xamarin.html
