@@ -22,50 +22,14 @@ Levels
 		- Gain levels in a class by a certain number of points in categories.
 		- Ensure each class has a set of categories that work for it.
 		- Have classes both for depth and breadth of categories
+		- Classes provide passive ability based on level of current selected class
 	- The cards you have available to you are determined by your level in each class.
 		- Each level gives 1 additional card. (or 2 of the same).
-
+	- Each level in a class gives you some amount of basic stats
 
 Between games:
-	Decks:
+	Decks
 		Change decks
 		8 cards in deck per character
-	Classes:
-		Change character classes
-		Level up:
-			Gain 1 card in your current class
-		Strength
-		Agility
-			Movement
-			Initiative
-		Magic
-		Health
-
-		Classes
-			Strength
-				1. Squire
-				Fighter
-				Barbarian
-				Medic
-				Knight
-
-			Agility
-				1. Pickpocket
-				Bard
-				Dancer
-				Thief
-				Rogue
-				Archer
-				Ranger
-				Sniper
-							   
-			Magic
-				1. Apprentice
-				Chronomancer
-				Necromancer
-				Mage
-				Sorcerer
-				Warlock
-				Cleric
-				Elementalist
-				Summoner
+	Classes
+		Change class
