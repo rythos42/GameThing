@@ -213,6 +213,7 @@
     <Compile Include="Android\BaseGameUtils\GameHelper.cs" />
     <Compile Include="Android\BaseGameUtils\GameHelperUtils.cs" />
     <Compile Include="Android\BaseGameUtils\IGameHelperListener.cs" />
+    <None Include="Content\effects\shade.fx" />
     <Compile Include="Entities\Cards\Conditions\BuffType.cs" />
     <Compile Include="Entities\Content.cs" />
     <Compile Include="Events\BattleContentLoadedEventHandler.cs" />
@@ -288,6 +289,7 @@
     <AndroidAsset Include="Content\sprites\lock.xnb" />
     <AndroidAsset Include="Content\tilemaps\ComplexMap.xnb" />
     <AndroidAsset Include="Content\tilemaps\iso-64x64-outside_0.xnb" />
+    <AndroidAsset Include="Content\effects\shade.xnb" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

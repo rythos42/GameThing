@@ -18,19 +18,20 @@ namespace GameThing.Screens
 	{
 		private TiledMapRenderer mapRenderer;
 		private Camera<Vector2> camera;
+		private RenderTarget2D renderTarget;
 
 		private BattleData data;
 		private Character selectedCharacter;
-		private HandOfCards handOfCards = new HandOfCards();
+		private readonly HandOfCards handOfCards = new HandOfCards();
 		private Card selectedCard;
 		private CharacterSide thisPlayerSide;
 		private Character lockedInCharacter = null;
 
-		private Button newTurnButton = new Button("New Turn") { UseMinimumButtonSize = false };
-		private FadingTextPanel statusPanel = new FadingTextPanel() { PlaceFromRight = true };
-		private Panel playerSidePanel = new Panel();
-		private Text playerSideText = new Text();
-		private Panel selectedPlayerStatsPanel = new Panel();
+		private readonly Button newTurnButton = new Button("New Turn") { UseMinimumButtonSize = false };
+		private readonly FadingTextPanel statusPanel = new FadingTextPanel() { PlaceFromRight = true };
+		private readonly Panel playerSidePanel = new Panel();
+		private readonly Text playerSideText = new Text();
+		private readonly Panel selectedPlayerStatsPanel = new Panel();
 		private readonly Text sideText = new Text();
 		private readonly Text healthText = new Text();
 		private readonly Text strengthText = new Text();
@@ -45,7 +46,7 @@ namespace GameThing.Screens
 		private Rectangle unicornDeployment;
 
 		private Content content;
-		private Random random = new Random();
+		private readonly Random random = new Random();
 
 		public event NextPlayersTurnEventHandler NextPlayersTurn;
 		public event GameOverEventHandler GameOver;
@@ -116,10 +117,13 @@ namespace GameThing.Screens
 			playerSidePanel.Components.Add(playerSideText);
 
 			this.content = content;
+			handOfCards.Content = content;
 			newTurnButton.LoadContent(content, graphicsDevice);
 			statusPanel.LoadContent(content, graphicsDevice);
 			selectedPlayerStatsPanel.LoadContent(content, graphicsDevice);
 			playerSidePanel.LoadContent(content, graphicsDevice);
+
+			renderTarget = new RenderTarget2D(graphicsDevice, graphicsDevice.Viewport.Width, graphicsDevice.Viewport.Height, false, SurfaceFormat.Color, DepthFormat.None);
 		}
 
 		public void StartGame(string myParticipantId)
@@ -205,26 +209,63 @@ namespace GameThing.Screens
 
 		public void Draw(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch, Rectangle clientBounds, GameTime gameTime)
 		{
+			graphicsDevice.SetRenderTarget(renderTarget);
 			graphicsDevice.Clear(Color.CornflowerBlue);
 
-			// Follow camera
-			spriteBatch.Begin(transformMatrix: camera.GetViewMatrix(), samplerState: SamplerState.PointClamp, blendState: BlendState.AlphaBlend);
+			spriteBatch.Begin(
+				transformMatrix: camera.GetViewMatrix(),
+				samplerState: SamplerState.PointClamp,
+				blendState: BlendState.AlphaBlend,
+				sortMode: SpriteSortMode.Immediate);
 			mapRenderer.Draw(camera.GetViewMatrix());
+			spriteBatch.End();
+
+			spriteBatch.Begin(
+				transformMatrix: camera.GetViewMatrix(),
+				samplerState: SamplerState.PointClamp,
+				blendState: BlendState.AlphaBlend,
+				sortMode: SpriteSortMode.Texture);
 			if (selectedCard == null)
 				data.Characters.SingleOrDefault(character => character == selectedCharacter && character.HasRemainingMoves && character.Side == thisPlayerSide)?.DrawMovementRange(spriteBatch);
 			else
 				selectedCard.DrawEffectRange(spriteBatch);
+			spriteBatch.End();
+
+			Effect currentEffect = null;
+			bool startedSpriteBatch = false;
+			Func<Character, Effect> effectForCharacter = character =>
+			{
+				if (character == selectedCharacter)
+					return content.Highlight;
+				if (character.ActivatedThisRound)
+					return content.Shade;
+				return null;
+			};
+
 			data.Characters.Sort(new CharacterDepthComparer());
 			foreach (var character in data.Characters)
 			{
+				var characterEffect = effectForCharacter(character);
+				if (!startedSpriteBatch || currentEffect != characterEffect)
+				{
+					if (startedSpriteBatch)
+						spriteBatch.End();
+
+					spriteBatch.Begin(
+						transformMatrix: camera.GetViewMatrix(),
+						samplerState: SamplerState.PointClamp,
+						blendState: BlendState.AlphaBlend,
+						effect: characterEffect);
+					currentEffect = characterEffect;
+					startedSpriteBatch = true;
+				}
+
 				if (character == lockedInCharacter)
 					character.DrawLock(spriteBatch);
 
 				character.Draw(spriteBatch);
 			}
 			spriteBatch.End();
-
-			selectedCharacter?.DrawSelectedCharacter(spriteBatch, camera.GetViewMatrix());
 
 			// Draw a characters hand of cards if player is playing that side
 			if (selectedCharacter != null && selectedCharacter.Side == thisPlayerSide && thisPlayerSide == data.CurrentSidesTurn)
@@ -249,6 +290,11 @@ namespace GameThing.Screens
 				remainingPlayableCardsText.Value = $"Remaining Plays: {selectedCharacter.RemainingPlayableCards}/{selectedCharacter.MaximumPlayableCards}";
 				selectedPlayerStatsPanel.Draw(spriteBatch, 40, 110);
 			}
+			spriteBatch.End();
+
+			graphicsDevice.SetRenderTarget(null);
+			spriteBatch.Begin();
+			spriteBatch.Draw(renderTarget, Vector2.Zero, Color.White);
 			spriteBatch.End();
 		}
 

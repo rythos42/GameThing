@@ -20,6 +20,12 @@
 /processorParam:DebugMode=Auto
 /build:effects/highlight.fx
 
+#begin effects/shade.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:effects/shade.fx
+
 #begin fonts/Carlito-Regular.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

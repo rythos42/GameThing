@@ -27,7 +27,7 @@ namespace GameThing
 		public event GameOverEventHandler GameOver;
 		private event BattleContentLoadedEventHandler BattleContentLoaded;
 
-		private ApplicationData appData = new ApplicationData();
+		private readonly ApplicationData appData = new ApplicationData();
 		private Content content;
 
 		public MainGame()

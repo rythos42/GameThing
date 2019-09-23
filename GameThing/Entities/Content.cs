@@ -19,6 +19,7 @@ namespace GameThing.Entities
 			Lock = contentManager.Load<Texture2D>("sprites/lock");
 
 			Highlight = contentManager.Load<Effect>("effects/highlight");
+			Shade = contentManager.Load<Effect>("effects/shade");
 
 			foreach (CharacterSide side in Enum.GetValues(typeof(CharacterSide)))
 			{
@@ -39,6 +40,7 @@ namespace GameThing.Entities
 		public Texture2D Lock { get; private set; }
 
 		public Effect Highlight { get; private set; }
+		public Effect Shade { get; private set; }
 
 		public TiledMap Map { get; private set; }
 
