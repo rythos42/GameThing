@@ -36,3 +36,89 @@ Apprentice:
 1. Arcane Missile
 	Ranage 5
 	Deal 100% Magic damage.
+
+
+	
+		Block next attack
+		Teleport but only play 1 card
+		Draw additional card
+		Draw a card and give one additional play
+		Discard hand and draw new
+		Give character armour
+		Deal damage and gain health
+		deal damage and gain armour
+		Deal damage within range
+		Increase str/agil/int within range
+		taunt within range
+		summon creatures
+			explode for damage
+			auto attack
+			attack immediately
+			if killed, split into smaller creatures
+			power equal to hand size
+			swarm
+		play card, draw another card and play another
+		when you play 2 cards from the same category in a row, gain buff to an affinity stat (like reckless->strength)
+		play additional card this turn and one fewer next turn
+		play additional card this turn, choose a character to play one fewer on it's next turn
+		When you take damage gain % of it back
+		replay all cards you played this game
+		heal all health to all players (ALL)
+		deal damage to all players (ALL)
+		bring back dead player
+		draw card and copy it
+		draw card from specific category
+		regain all playable cards this turn
+		heal within range
+		gain armour within range
+		remove 1 playable card from player (not 2)
+		remove movement from player
+		give player big + to stats, then remove with penalty
+		play cards randomly
+		deal damage randomly within range
+		player discards a card (doesn't redraw until end of turn)
+		draw additional card for X turns
+		choose healing or damage
+		for X turns can only take 1 damage at a time
+		draw 2 cards, play immediately if it belongs to a certain category
+		discover a card
+		set health to % of total
+		remove condition
+		remove all conditions
+		paired cards: big power if played in a row
+		draw card from discard pile
+		no duplicates in deck: get something
+		add random cards to hand
+		take 2 turns (characters) in a row
+		prevent character from going until very end of turn
+		force character to go next
+		when one character takes damage, gain health
+		when one character takes damage, deal damage to (melee?) attacker
+		repeat all cards from certain category played already
+		can't be targeted by cards of certain category
+		attack and buff players within range
+		restore health and draw cards
+		players within range discard cards
+		next card played twice
+		when attacked, deal damage within range
+		deal damage to 2 characters in melee range
+		deal damage to all characters in melee range
+		if holding a card of a certain category, gain something
+		gain health for X turns
+		gain armour for X turns
+		play random card from deck
+		gain strength/agil/int for X turns
+		if played card of category last turn, gain something
+		X turns, deal damage to all characters in range, can't attack or move
+		X turns, heal to all characters in range, can't attack or move
+		if killed, res at low health
+		deal small damage to multiple targets
+		take card from character
+		copy opponents hand
+		whenever yoi play a card, gain a particularly powerful card
+		end of turn deal smaller damage to all characters in range for X turns
+
+		https://www.hearthpwn.com/cards?page=5
+
+
+		whenever character kills a player, immediately regain all movement and playable cards
