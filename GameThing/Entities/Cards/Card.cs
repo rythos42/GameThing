@@ -12,7 +12,6 @@ namespace GameThing.Entities.Cards
 		private Texture2D sprite;
 		private Texture2D availableRangeTexture;
 		private SpriteFont font;
-		private Effect selectedCardEffect;
 		private const int cardMargin = 20;
 
 		public void SetContent(Content content)
@@ -20,7 +19,6 @@ namespace GameThing.Entities.Cards
 			sprite = content.Card;
 			availableRangeTexture = content.DistanceOverlay;
 			font = content.Font;
-			selectedCardEffect = content.Highlight;
 		}
 
 		public void Play(int roundNumber, Character target = null)
@@ -81,25 +79,6 @@ namespace GameThing.Entities.Cards
 			textPosition.Y += font.LineSpacing;
 			var maxLineWidth = Width - (2 * cardMargin);
 			spriteBatch.DrawString(font, Description.WrapText(font, maxLineWidth), textPosition, Color.Black);
-		}
-
-		public void DrawSelectedCardBlurShader(SpriteBatch spriteBatch, Vector2 position)
-		{
-			selectedCardEffect.Parameters["BloomThreshold"].SetValue(0.25f);
-			selectedCardEffect.Parameters["BloomIntensity"].SetValue(1.25f);
-			selectedCardEffect.Parameters["BaseIntensity"].SetValue(1f);
-			selectedCardEffect.Parameters["BloomSaturation"].SetValue(1f);
-			selectedCardEffect.Parameters["BaseSaturation"].SetValue(1f);
-
-			spriteBatch.Begin(
-				sortMode: SpriteSortMode.BackToFront,
-				blendState: BlendState.AlphaBlend,
-				samplerState: SamplerState.AnisotropicWrap,
-				effect: selectedCardEffect);
-
-			DrawCard(spriteBatch, position);
-
-			spriteBatch.End();
 		}
 
 		public void DrawEffectRange(SpriteBatch spriteBatch)

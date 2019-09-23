@@ -9,7 +9,9 @@ namespace GameThing.Entities
 {
 	public class HandOfCards
 	{
-		private List<CardPosition> cardPositions = new List<CardPosition>();
+		private readonly List<CardPosition> cardPositions = new List<CardPosition>();
+
+		public Content Content { get; set; }
 
 		private class CardPosition
 		{
@@ -70,7 +72,13 @@ namespace GameThing.Entities
 			}
 
 			if (selectedCardPosition != null)
-				selectedCardPosition.Card.DrawSelectedCardBlurShader(spriteBatch, selectedCardPosition.Origin);
+			{
+				spriteBatch.Begin(effect: Content.Highlight);
+
+				selectedCardPosition.Card.DrawCard(spriteBatch, selectedCardPosition.Origin);
+
+				spriteBatch.End();
+			}
 
 			spriteBatch.Begin();
 			foreach (var cardPosition in cardPositions)

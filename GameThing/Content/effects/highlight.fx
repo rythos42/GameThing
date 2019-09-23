@@ -9,11 +9,11 @@ SamplerState TextureSampler
     AddressV = Wrap;
 };
 
-float BloomIntensity;
-float BaseIntensity;
-float BloomSaturation;
-float BaseSaturation;
-float BloomThreshold;
+static const float BloomThreshold = 0.25;
+static const float BloomIntensity = 1.25;
+static const float BaseIntensity = 1;
+static const float BloomSaturation = 1;
+static const float BaseSaturation = 1;
 
 float4 AdjustSaturation(float4 color, float saturation)
 {
@@ -31,8 +31,8 @@ float4 BloomAndCombine(float2 texCoord : TEXCOORD0) : SV_TARGET0
     base = AdjustSaturation(base, BaseSaturation) * BaseIntensity;
     
     base *= (1 - saturate(bloom));
-    
-    return base + bloom;
+
+	return base + bloom;
 }
 
 technique Highlight

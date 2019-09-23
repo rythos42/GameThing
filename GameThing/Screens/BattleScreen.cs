@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Input.Touch;
 using MonoGame.Extended;
 using MonoGame.Extended.Tiled;
 using MonoGame.Extended.Tiled.Renderers;
+using IDrawable = GameThing.Entities.IDrawable;
 
 namespace GameThing.Screens
 {
@@ -19,6 +20,7 @@ namespace GameThing.Screens
 	{
 		private TiledMapRenderer mapRenderer;
 		private Camera<Vector2> camera;
+		private RenderTarget2D renderTarget;
 
 		private BattleData data;
 		private Character selectedCharacter;
@@ -136,11 +138,14 @@ namespace GameThing.Screens
 			playerSidePanel.Components.Add(playerSideText);
 
 			this.content = content;
+			handOfCards.Content = content;
 			newTurnButton.LoadContent(content, graphicsDevice);
 			winGameNowButton.LoadContent(content, graphicsDevice);
 			statusPanel.LoadContent(content, graphicsDevice);
 			selectedPlayerStatsPanel.LoadContent(content, graphicsDevice);
 			playerSidePanel.LoadContent(content, graphicsDevice);
+
+			renderTarget = new RenderTarget2D(graphicsDevice, graphicsDevice.Viewport.Width, graphicsDevice.Viewport.Height, false, SurfaceFormat.Color, DepthFormat.None);
 		}
 
 		public void StartGame(string myParticipantId)
@@ -224,26 +229,65 @@ namespace GameThing.Screens
 
 		public void Draw(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch, Rectangle clientBounds)
 		{
+			graphicsDevice.SetRenderTarget(renderTarget);
 			graphicsDevice.Clear(Color.CornflowerBlue);
 
-			// Follow camera
-			spriteBatch.Begin(transformMatrix: camera.GetViewMatrix(), samplerState: SamplerState.PointClamp, blendState: BlendState.AlphaBlend);
+			spriteBatch.Begin(
+				transformMatrix: camera.GetViewMatrix(),
+				samplerState: SamplerState.PointClamp,
+				blendState: BlendState.AlphaBlend,
+				sortMode: SpriteSortMode.Immediate);
 			mapRenderer.Draw(camera.GetViewMatrix());
+			spriteBatch.End();
+
+			spriteBatch.Begin(
+				transformMatrix: camera.GetViewMatrix(),
+				samplerState: SamplerState.PointClamp,
+				blendState: BlendState.AlphaBlend,
+				sortMode: SpriteSortMode.Texture);
 			if (selectedCard == null)
 				data.Characters.SingleOrDefault(character => character == selectedCharacter && character.HasRemainingMoves && character.Side == thisPlayerSide)?.DrawMovementRange(spriteBatch);
 			else
 				selectedCard.DrawEffectRange(spriteBatch);
+			spriteBatch.End();
+
+			Effect currentEffect = null;
+			bool startedSpriteBatch = false;
+			Func<IDrawable, Effect> effectForDrawable = drawable =>
+			{
+				var character = drawable as Character;
+				if (character == null)
+					return null;
+				if (character == selectedCharacter)
+					return content.Highlight;
+				if (character.ActivatedThisRound)
+					return content.Shade;
+				return null;
+			};
 
 			foreach (var drawable in entities.Drawables)
 			{
+				var characterEffect = effectForDrawable(drawable);
+				if (!startedSpriteBatch || currentEffect != characterEffect)
+				{
+					if (startedSpriteBatch)
+						spriteBatch.End();
+
+					spriteBatch.Begin(
+						transformMatrix: camera.GetViewMatrix(),
+						samplerState: SamplerState.PointClamp,
+						blendState: BlendState.AlphaBlend,
+						effect: characterEffect);
+					currentEffect = characterEffect;
+					startedSpriteBatch = true;
+				}
+
 				if (drawable == lockedInCharacter)
 					lockedInCharacter.DrawLock(spriteBatch);
 
 				drawable.Draw(spriteBatch);
 			}
 			spriteBatch.End();
-
-			selectedCharacter?.DrawSelectedCharacter(spriteBatch, camera.GetViewMatrix());
 
 			// Draw a characters hand of cards if player is playing that side
 			if (selectedCharacter != null && selectedCharacter.Side == thisPlayerSide && thisPlayerSide == data.CurrentSidesTurn)
@@ -270,6 +314,11 @@ namespace GameThing.Screens
 				remainingPlayableCardsText.Value = $"Remaining Plays: {selectedCharacter.RemainingPlayableCards}/{selectedCharacter.MaximumPlayableCards}";
 				selectedPlayerStatsPanel.Draw(spriteBatch, 40, 110);
 			}
+			spriteBatch.End();
+
+			graphicsDevice.SetRenderTarget(null);
+			spriteBatch.Begin();
+			spriteBatch.Draw(renderTarget, Vector2.Zero, Color.White);
 			spriteBatch.End();
 		}
 

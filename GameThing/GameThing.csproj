@@ -223,6 +223,7 @@
     <Compile Include="Entities\DrawableList.cs" />
     <Compile Include="Entities\IDrawable.cs" />
     <Compile Include="Entities\Terrain.cs" />
+    <Compile Include="Events\BattleContentLoadedEventHandler.cs" />
     <Compile Include="Events\GameOverEventHandler.cs" />
     <Compile Include="Events\StartGameAsTesterEventHandler.cs" />
     <Compile Include="MapHelper.cs" />
@@ -290,6 +291,7 @@
     <AndroidAsset Include="Content\fonts\Carlito-Regular.xnb" />
     <AndroidAsset Include="Content\sprites\distance_overlay.xnb" />
     <AndroidAsset Include="Content\effects\highlight.xnb" />
+    <AndroidAsset Include="Content\effects\shade.xnb" />
     <AndroidAsset Include="Content\sprites\lock.xnb" />
     <AndroidAsset Include="Content\tilemaps\ComplexMap.xnb" />
     <AndroidAsset Include="Content\tilemaps\iso-64x64-outside_0.xnb" />
@@ -318,6 +320,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\effects\highlight.fx" />
+    <None Include="Content\effects\shade.fx" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

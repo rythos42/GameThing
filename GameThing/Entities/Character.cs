@@ -14,7 +14,6 @@ namespace GameThing.Entities
 	{
 		private Texture2D availableMovementTexture;
 		private Texture2D lockSprite;
-		private Effect selectedCharacterEffect;
 		private static readonly Random rng = new Random();
 
 		public Character(Guid id, CharacterColour colour, CharacterClass characterClass)
@@ -29,7 +28,6 @@ namespace GameThing.Entities
 			Sprite = content.GetSpriteFor(this);
 			availableMovementTexture = content.DistanceOverlay;
 			lockSprite = content.Lock;
-			selectedCharacterEffect = content.Highlight;
 		}
 
 		[DataMember]
@@ -267,26 +265,6 @@ namespace GameThing.Entities
 			drawPosition.X -= Sprite.Width / 2;
 
 			spriteBatch.Draw(Sprite, drawPosition, Color.White);
-		}
-
-		public void DrawSelectedCharacter(SpriteBatch spriteBatch, Matrix transformMatrix)
-		{
-			selectedCharacterEffect.Parameters["BloomThreshold"].SetValue(0.25f);
-			selectedCharacterEffect.Parameters["BloomIntensity"].SetValue(1.25f);
-			selectedCharacterEffect.Parameters["BaseIntensity"].SetValue(1f);
-			selectedCharacterEffect.Parameters["BloomSaturation"].SetValue(1f);
-			selectedCharacterEffect.Parameters["BaseSaturation"].SetValue(1f);
-
-			spriteBatch.Begin(
-				transformMatrix: transformMatrix,
-				sortMode: SpriteSortMode.BackToFront,
-				blendState: BlendState.AlphaBlend,
-				samplerState: SamplerState.AnisotropicWrap,
-				effect: selectedCharacterEffect);
-
-			Draw(spriteBatch);
-
-			spriteBatch.End();
 		}
 
 		public void DrawLock(SpriteBatch spriteBatch)

@@ -26,6 +26,7 @@ namespace GameThing
 		public event NextPlayersTurnEventHandler NextPlayersTurn;
 		public event RequestSignInEventHandler RequestSignIn;
 		public event GameOverEventHandler GameOver;
+		private event BattleContentLoadedEventHandler BattleContentLoaded;
 
 		private readonly ApplicationData appData = new ApplicationData();
 		private Content content;
@@ -82,10 +83,12 @@ namespace GameThing
 			var battleData = InitializeBattleData("test");
 			battleData.InitializeCharacters("participantId", TeamData);
 
+			var side = CharacterSide.Spaghetti;
 			currentScreen = ScreenType.Battle;
+			battleData.CurrentSidesTurn = side;
 			battleScreen.IsTestMode = true;
 			battleScreen.SetBattleData(battleData);
-			battleScreen.StartGame(CharacterSide.Spaghetti);
+			battleScreen.StartGame(side);
 		}
 
 		private void StartScreen_RequestSignIn()
@@ -108,10 +111,23 @@ namespace GameThing
 
 		public void StartMatch(string myParticipantId, BattleData gameData)
 		{
-			currentScreen = ScreenType.Battle;
-			battleScreen.IsTestMode = false;
-			battleScreen.SetBattleData(gameData);
-			battleScreen.StartGame(myParticipantId);
+			BattleContentLoadedEventHandler startMatch = null;
+			startMatch = () =>
+			{
+				currentScreen = ScreenType.Battle;
+				battleScreen.IsTestMode = false;
+				battleScreen.SetBattleData(gameData);
+				battleScreen.StartGame(myParticipantId);
+
+				// remove self from event
+				BattleContentLoaded -= startMatch;
+			};
+
+			// If we haven't loaded content yet, set an event to start the match after we do so.
+			if (content == null)
+				BattleContentLoaded += startMatch;
+			else
+				startMatch();
 		}
 
 		public void ShowGameOver(BattleData data)
@@ -134,6 +150,8 @@ namespace GameThing
 			content = new Content(Content);
 
 			battleScreen.LoadContent(content, GraphicsDevice);
+			BattleContentLoaded?.Invoke();
+
 			startScreen.LoadContent(content, GraphicsDevice);
 			gameOverScreen.LoadContent(content, GraphicsDevice);
 		}
