@@ -66,20 +66,20 @@ namespace GameThing.UI
 		public override void Draw(SpriteBatch spriteBatch, int x, int y)
 		{
 			var contentSize = MeasureContent();
-			var width = (int) contentSize.X + PADDING * 2;
-			var height = (int) contentSize.Y + PADDING * 2;
+			Width = (int) contentSize.X + PADDING * 2;
+			Height = (int) contentSize.Y + PADDING * 2;
 
-			CreatePanelGradient(width, height, spriteBatch.GraphicsDevice);
+			CreatePanelGradient(Width, Height, spriteBatch.GraphicsDevice);
 
 			var drawingPosition = GetDrawingPosition(spriteBatch.GraphicsDevice, x, y);
-			int drawX = (int) drawingPosition.X;
-			int drawY = (int) drawingPosition.Y;
+			X = (int) drawingPosition.X;
+			Y = (int) drawingPosition.Y;
 
-			spriteBatch.Draw(shadowTexture, new Rectangle(drawX + BOX_SHADOW_X, drawY + BOX_SHADOW_Y, width, height), Color.White);
-			spriteBatch.Draw(panelTexture, new Rectangle(drawX, drawY, width, height), Color.White);
+			spriteBatch.Draw(shadowTexture, new Rectangle(X + BOX_SHADOW_X, Y + BOX_SHADOW_Y, Width, Height), Color.White);
+			spriteBatch.Draw(panelTexture, new Rectangle(X, Y, Width, Height), Color.White);
 
-			drawX += MARGIN;
-			drawY += MARGIN;
+			var drawX = X + MARGIN;
+			var drawY = Y + MARGIN;
 			Components.ForEach(component =>
 			{
 				component.Draw(spriteBatch, drawX, drawY);

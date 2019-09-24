@@ -7,34 +7,62 @@ using Microsoft.Xna.Framework.Input.Touch;
 
 namespace GameThing.Screens
 {
-	public class StartScreen
+	public class StartScreen : UIEventContainer
 	{
-		private readonly Button startAsSpaghetti = new Button("Start as Spaghetti");
-		private readonly Button signIn = new Button("Sign In");
-		private readonly Button createMatch = new Button("Create Match");
-		private readonly Button joinMatch = new Button("Join Match");
+		private readonly Button startAsSpaghetti;
+		private readonly Button signIn;
+		private readonly Button createMatch;
+		private readonly Button joinMatch;
 		private SpriteFont font;
 
-		private ApplicationData appData;
+		private readonly ApplicationData appData;
 
 		public event MatchEventHandler CreateMatch;
 		public event MatchEventHandler JoinMatch;
-		public event StartGameEventHandler Started;
+		public event StartGameEventHandler StartAsTester;
 		public event RequestSignInEventHandler RequestSignIn;
 		public delegate void StartGameEventHandler(CharacterSide side);
 
 		public StartScreen(ApplicationData appData)
 		{
 			this.appData = appData;
+
+			startAsSpaghetti = new Button("Start as Spaghetti") { Tapped = startAsSpaghetti_Tapped };
+			Components.Add(startAsSpaghetti);
+
+			signIn = new Button("Sign In") { Tapped = signIn_Tapped };
+			Components.Add(signIn);
+
+			createMatch = new Button("Create Match") { Tapped = createMatch_Tapped };
+			Components.Add(createMatch);
+
+			joinMatch = new Button("Join Match") { Tapped = joinMatch_Tapped };
+			Components.Add(joinMatch);
 		}
 
-		public void LoadContent(Content content, GraphicsDevice graphicsDevice)
+		public void startAsSpaghetti_Tapped(GestureSample gesture)
 		{
-			startAsSpaghetti.LoadContent(content, graphicsDevice);
-			signIn.LoadContent(content, graphicsDevice);
-			createMatch.LoadContent(content, graphicsDevice);
-			joinMatch.LoadContent(content, graphicsDevice);
+			StartAsTester?.Invoke(CharacterSide.Spaghetti);
+		}
 
+		public void signIn_Tapped(GestureSample gesture)
+		{
+			RequestSignIn?.Invoke();
+		}
+
+		public void createMatch_Tapped(GestureSample gesture)
+		{
+			CreateMatch?.Invoke();
+		}
+
+		public void joinMatch_Tapped(GestureSample gesture)
+		{
+			JoinMatch?.Invoke();
+		}
+
+		public override void LoadContent(Content content, GraphicsDevice graphicsDevice)
+		{
+			base.LoadContent(content, graphicsDevice);
 			font = content.Font;
 		}
 
@@ -47,23 +75,8 @@ namespace GameThing.Screens
 				gesture = TouchPanel.ReadGesture();
 
 				if (gesture.GestureType == GestureType.Tap)
-					Tap(gesture);
+					InvokeContainerTap(gesture);
 			}
-		}
-
-		private void Tap(GestureSample gesture)
-		{
-			if (startAsSpaghetti.IsVisible && startAsSpaghetti.IsAtPoint(gesture.Position))
-				Started?.Invoke(CharacterSide.Spaghetti);
-
-			if (createMatch.IsVisible && createMatch.IsAtPoint(gesture.Position))
-				CreateMatch?.Invoke();
-
-			if (joinMatch.IsVisible && joinMatch.IsAtPoint(gesture.Position))
-				JoinMatch?.Invoke();
-
-			if (signIn.IsVisible && signIn.IsAtPoint(gesture.Position))
-				RequestSignIn?.Invoke();
 		}
 
 		public void Draw(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch)

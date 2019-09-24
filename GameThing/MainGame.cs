@@ -43,7 +43,7 @@ namespace GameThing
 			};
 			Content.RootDirectory = "Content";
 
-			startScreen.Started += StartScreen_StartedAsTester;
+			startScreen.StartAsTester += StartScreen_StartedAsTester;
 			startScreen.CreateMatch += StartScreen_CreateMatch;
 			startScreen.JoinMatch += StartScreen_JoinMatch;
 			startScreen.RequestSignIn += StartScreen_RequestSignIn;
