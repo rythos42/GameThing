@@ -9,7 +9,7 @@ namespace GameThing.Screens
 {
 	public class StartScreen : UIEventContainer
 	{
-		private readonly Button startAsSpaghetti;
+		private readonly Button startAsTester;
 		private readonly Button signIn;
 		private readonly Button createMatch;
 		private readonly Button joinMatch;
@@ -19,16 +19,15 @@ namespace GameThing.Screens
 
 		public event MatchEventHandler CreateMatch;
 		public event MatchEventHandler JoinMatch;
-		public event StartGameEventHandler StartAsTester;
+		public event StartGameAsTesterEventHandler StartAsTester;
 		public event RequestSignInEventHandler RequestSignIn;
-		public delegate void StartGameEventHandler(CharacterSide side);
 
 		public StartScreen(ApplicationData appData)
 		{
 			this.appData = appData;
 
-			startAsSpaghetti = new Button("Start as Spaghetti") { Tapped = startAsSpaghetti_Tapped };
-			Components.Add(startAsSpaghetti);
+			startAsTester = new Button("Test") { Tapped = startAsTester_Tapped };
+			Components.Add(startAsTester);
 
 			signIn = new Button("Sign In") { Tapped = signIn_Tapped };
 			Components.Add(signIn);
@@ -40,9 +39,9 @@ namespace GameThing.Screens
 			Components.Add(joinMatch);
 		}
 
-		public void startAsSpaghetti_Tapped(GestureSample gesture)
+		public void startAsTester_Tapped(GestureSample gesture)
 		{
-			StartAsTester?.Invoke(CharacterSide.Spaghetti);
+			StartAsTester?.Invoke();
 		}
 
 		public void signIn_Tapped(GestureSample gesture)
@@ -85,7 +84,7 @@ namespace GameThing.Screens
 
 			spriteBatch.Begin();
 
-			startAsSpaghetti.Draw(spriteBatch, 40, 40);
+			startAsTester.Draw(spriteBatch, 40, 40);
 
 			if (!appData.SignedIn)
 			{

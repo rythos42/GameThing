@@ -213,6 +213,7 @@
     <Compile Include="Android\BaseGameUtils\GameHelper.cs" />
     <Compile Include="Android\BaseGameUtils\GameHelperUtils.cs" />
     <Compile Include="Android\BaseGameUtils\IGameHelperListener.cs" />
+    <Compile Include="Events\StartGameAsTesterEventHandler.cs" />
     <Compile Include="UI\UIComponentTappedEventHandler.cs" />
     <Compile Include="UI\UIEventContainer.cs" />
     <None Include="Content\effects\shade.fx" />

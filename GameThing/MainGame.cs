@@ -106,10 +106,11 @@ namespace GameThing
 			JoinMatch?.Invoke();
 		}
 
-		private void StartScreen_StartedAsTester(CharacterSide side)
+		private void StartScreen_StartedAsTester()
 		{
 			var battleData = InitializeGameData("test", new List<string>());
 
+			var side = CharacterSide.Spaghetti;
 			currentScreen = ScreenType.Battle;
 			battleData.CurrentSidesTurn = side;
 			battleScreen.SetBattleData(battleData);
