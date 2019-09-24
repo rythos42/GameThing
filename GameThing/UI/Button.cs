@@ -11,24 +11,11 @@ namespace GameThing.UI
 		private Texture2D shadowTexture;
 		private SpriteFont font;
 		private readonly string text;
-		private int lastDrawnX;
-		private int lastDrawnY;
-		private int width;
-		private int height;
 		private const int MINIMUM_BUTTON_WIDTH = 300;
 
 		public Button(string text)
 		{
 			this.text = text;
-		}
-
-		public bool IsAtPoint(Vector2 checkPoint)
-		{
-			return
-				lastDrawnX < checkPoint.X
-				&& lastDrawnX + width > checkPoint.X
-				&& lastDrawnY < checkPoint.Y
-				&& lastDrawnY + height > checkPoint.Y;
 		}
 
 		public bool IsHighlighted { get; set; }
@@ -48,17 +35,17 @@ namespace GameThing.UI
 			font = content.Font;
 			var textSize = font.MeasureString(text);
 			var minimumTextWidth = (int) textSize.X + (PADDING * 2);
-			width = UseMinimumButtonSize ? MathHelper.Max(minimumTextWidth, MINIMUM_BUTTON_WIDTH) : minimumTextWidth;
-			height = (int) textSize.Y + (PADDING * 2);
+			Width = UseMinimumButtonSize ? MathHelper.Max(minimumTextWidth, MINIMUM_BUTTON_WIDTH) : minimumTextWidth;
+			Height = (int) textSize.Y + (PADDING * 2);
 		}
 
 		public override void Draw(SpriteBatch spriteBatch, int x, int y)
 		{
-			lastDrawnX = x;
-			lastDrawnY = y;
+			X = x;
+			Y = y;
 
-			spriteBatch.Draw(shadowTexture, new Rectangle(x + BOX_SHADOW_X, y + BOX_SHADOW_Y, width, height), Color.White);
-			spriteBatch.Draw(IsHighlighted ? highlightTexture : buttonTexture, new Rectangle(x, y, width, height), Color.White);
+			spriteBatch.Draw(shadowTexture, new Rectangle(x + BOX_SHADOW_X, y + BOX_SHADOW_Y, Width, Height), Color.White);
+			spriteBatch.Draw(IsHighlighted ? highlightTexture : buttonTexture, new Rectangle(x, y, Width, Height), Color.White);
 			spriteBatch.DrawString(font, text, new Vector2(x + PADDING, y + PADDING), Color.Black);
 
 			IsVisible = true;
@@ -66,7 +53,7 @@ namespace GameThing.UI
 
 		public override Vector2 MeasureContent()
 		{
-			return new Vector2(width, height);
+			return new Vector2(Width, Height);
 		}
 	}
 }

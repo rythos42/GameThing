@@ -31,6 +31,8 @@ Todo:
 		- damage maybe, but want it to fit inside existing framework as much as possible
 	- game needs an Armour stat
 	- undo button
+	- exception if you press "Test" before team loaded from google drive
+	- some weird exception after "Win Game" button pressed, then press back. Likely due to saving.
 
 
 Nice to have:

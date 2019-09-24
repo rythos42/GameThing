@@ -231,6 +231,8 @@
     <Compile Include="UI\Panel.cs" />
     <Compile Include="UI\Text.cs" />
     <Compile Include="UI\UIComponent.cs" />
+    <Compile Include="UI\UIComponentTappedEventHandler.cs" />
+    <Compile Include="UI\UIEventContainer.cs" />
     <None Include="Android\BaseGameUtils\README.md" />
     <Compile Include="Android\BaseGameUtils\SignInFailureReason.cs" />
     <Compile Include="Data\ApplicationData.cs" />

@@ -97,21 +97,24 @@ namespace GameThing.Android
 			RequestSignIn();
 		}
 
-		private void Game_GameOver(string matchId, TeamData teamData)
+		private async void Game_GameOver(string matchId, TeamData teamData)
 		{
-			gameClient.FinishMatch(matchId);
+			await gameClient.FinishMatch(matchId);
 
-			teamSnapshot.SnapshotContents.WriteBytes(Convert.Serialize(teamData));
-			using (var builder = new SnapshotMetadataChangeBuilder())
+			if (teamSnapshot != null)
 			{
-				var metadataChange = builder
-					.SetDescription("")
-					.SetPlayedTimeMillis(0)
-					.SetProgressValue(0)
-					.Build();
+				teamSnapshot.SnapshotContents.WriteBytes(Convert.Serialize(teamData));
+				using (var builder = new SnapshotMetadataChangeBuilder())
+				{
+					var metadataChange = builder
+						.SetDescription("")
+						.SetPlayedTimeMillis(0)
+						.SetProgressValue(0)
+						.Build();
 
-				savedGamesClient.CommitAndClose(teamSnapshot, metadataChange);
-				LoadTeamFromGoogleDrive();
+					await savedGamesClient.CommitAndClose(teamSnapshot, metadataChange);
+					await LoadTeamFromGoogleDrive();
+				}
 			}
 		}
 

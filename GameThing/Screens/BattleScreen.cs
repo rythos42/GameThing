@@ -16,7 +16,7 @@ using IDrawable = GameThing.Entities.IDrawable;
 
 namespace GameThing.Screens
 {
-	public class BattleScreen
+	public class BattleScreen : UIEventContainer
 	{
 		private TiledMapRenderer mapRenderer;
 		private Camera<Vector2> camera;
@@ -30,8 +30,8 @@ namespace GameThing.Screens
 		private Character lockedInCharacter = null;
 		private readonly DrawableList entities = new DrawableList();
 
-		private readonly Button newTurnButton = new Button("New Turn") { UseMinimumButtonSize = false };
-		private readonly Button winGameNowButton = new Button("Win Game") { UseMinimumButtonSize = false };
+		private readonly Button newTurnButton;
+		private readonly Button winGameNowButton;
 		private readonly FadingTextPanel statusPanel = new FadingTextPanel() { PlaceFromRight = true };
 		private readonly Panel playerSidePanel = new Panel();
 		private readonly Text playerSideText = new Text();
@@ -56,6 +56,15 @@ namespace GameThing.Screens
 		public event BattleGameOverEventHandler GameOver;
 
 		public bool IsTestMode { get; set; }
+
+		public BattleScreen()
+		{
+			newTurnButton = new Button("New Turn") { UseMinimumButtonSize = false, Tapped = newTurnButton_Tapped };
+			Components.Add(newTurnButton);
+
+			winGameNowButton = new Button("Win Game") { UseMinimumButtonSize = false, Tapped = winGameNowButton_Tapped };
+			Components.Add(winGameNowButton);
+		}
 
 		public void SetBattleData(BattleData gameData)
 		{
@@ -98,8 +107,10 @@ namespace GameThing.Screens
 			character.MapPosition = characterPoint;
 		}
 
-		public void LoadContent(Content content, GraphicsDevice graphicsDevice)
+		public override void LoadContent(Content content, GraphicsDevice graphicsDevice)
 		{
+			base.LoadContent(content, graphicsDevice);
+
 			var map = content.Map;
 			var deploymentLayer = map.GetLayer<TiledMapObjectLayer>("Deployment");
 			spaghettiDeployment = MapHelper.GetObjectRectangleInMapPoints(deploymentLayer.Objects.SingleOrDefault(deployment => deployment.Name.Equals("Spaghetti")));
@@ -139,7 +150,6 @@ namespace GameThing.Screens
 
 			this.content = content;
 			handOfCards.Content = content;
-			newTurnButton.LoadContent(content, graphicsDevice);
 			winGameNowButton.LoadContent(content, graphicsDevice);
 			statusPanel.LoadContent(content, graphicsDevice);
 			selectedPlayerStatsPanel.LoadContent(content, graphicsDevice);
@@ -219,7 +229,10 @@ namespace GameThing.Screens
 				if (gesture.GestureType == GestureType.Pinch)
 					Zoom(gesture);
 				if (gesture.GestureType == GestureType.Tap)
+				{
+					InvokeContainerTap(gesture);
 					Tap(gesture);
+				}
 			}
 
 			statusPanel.Update(gameTime);
@@ -322,24 +335,21 @@ namespace GameThing.Screens
 			spriteBatch.End();
 		}
 
+		public void newTurnButton_Tapped(GestureSample gesture)
+		{
+			NextPlayerTurn();
+		}
+
+		public void winGameNowButton_Tapped(GestureSample gesture)
+		{
+			GameOver?.Invoke(data);
+		}
+
 		private void Tap(GestureSample gesture)
 		{
 			// Can't tap if it isn't your turn.
 			if (data.CurrentSidesTurn != thisPlayerSide)
 				return;
-
-			// New Turn Button
-			if (newTurnButton.IsAtPoint(gesture.Position))
-			{
-				NextPlayerTurn();
-				return;
-			}
-
-			if (winGameNowButton.IsAtPoint(gesture.Position) && IsTestMode)
-			{
-				GameOver?.Invoke(data);
-				return;
-			}
 
 			// try to get a card under the tap first 
 			var selectedCardIndex = handOfCards.GetCardIndexAtPosition(gesture.Position);

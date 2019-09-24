@@ -22,6 +22,9 @@ namespace GameThing.UI
 
 		public override void Draw(SpriteBatch spriteBatch, int x, int y)
 		{
+			X = x;
+			Y = y;
+
 			spriteBatch.DrawString(font, Value, new Vector2(x, y), Color.Black);
 			IsVisible = true;
 		}
