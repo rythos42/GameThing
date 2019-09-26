@@ -3,6 +3,8 @@
 	https://android-developers.googleblog.com/2019/03/changes-to-google-play-developer-api.html
 	
 MVP fixes:
+	- make team class count equal
+	- rematch via Join Game crashes
 	- Audit:
 		- character move
 		- character card play
