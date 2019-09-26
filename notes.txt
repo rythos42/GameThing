@@ -3,14 +3,36 @@
 	https://android-developers.googleblog.com/2019/03/changes-to-google-play-developer-api.html
 	
 MVP fixes:
-	- increase health to 10
+	- make team class count equal
+	- rematch via Join Game crashes
+	- Audit:
+		- character move
+		- character card play
+	        - name of character playing
+			- effect of card 
+			- target of card
+		- needs to be scrollable
+	- get new Card structure from main branch
+		- remember the sub-class thing on the JSON setting thing
+	- Reloading match gives "Winner: No one"
+	- Remove Lame Distraction and replace with something else
+	- "100% Int damage" unclear -- thought it was "damage to your Int"
+	- Double tap to move
+	- Need to show conditions on players
+	- Don't make player do math (100% Int should be "1 damage (100% of Int)")
+	- Show player class on player stat panel
 
-	Make character stats panel a slide-in/out panel.
-	When character not selected, there is a log of activities.
-		Needs to be scrollable.
-	
+				else
+			{
+				gameLogPanel.Draw(spriteBatch, 40, 110);
+				gameLogPanel.Components.Clear();
+				data.GameLog.ForEach(gameLogEntry => gameLogPanel.Components.Add(new Text { Value = gameLogEntry.TextDescription, Font = content.Font }));
+			}
 
 
+
+NEXT
+		
 Building a basic class hierarchy
 	- Need more categories for some of the "higher level" things
 	- some of the brainstormed cards could be entire expansion blocks worth of ideas, separate them out.
@@ -36,6 +58,8 @@ Todo:
 
 
 Nice to have:
+	- rename test mode to hot seat
+	- notification when card can't be played, and why
 	- allow characters to stand on slopes
 		- draw grid on slopes
 	- TauntCondition needs a message for success/fail
@@ -76,7 +100,8 @@ Tech
 	- set description, played time and progress value for SnapshotChangeMetadata
 	- consider loosening proguard.cfg -- it's keeping all of com.google.android.gms, but last error only needed com.google.android.gms.auth.api.signin.internal.SignInHubActivity
 		- check \obj\Release\90\proguard\proguard_project_references.cfg for ideas of how it works
-
+	- send card IDs instead of the whole card around
+	        
 Game Design
 	- evaluate whether single character or whole side is a better turn
 	- make character facing directions (like for Slipped Backstab)

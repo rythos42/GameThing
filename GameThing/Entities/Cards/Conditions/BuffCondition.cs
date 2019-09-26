@@ -9,7 +9,7 @@ namespace GameThing.Entities.Cards.Conditions
 		private readonly Func<decimal, decimal, decimal> applyBuff;
 		private readonly Func<decimal, decimal, decimal> removeBuff;
 
-		public BuffCondition(AbilityScore abilityScore, decimal buffAmount, int turnCount, BuffType type)
+		public BuffCondition(int id, AbilityScore abilityScore, decimal buffAmount, int turnCount, BuffType type) : base(id)
 		{
 			AbilityScore = abilityScore;
 			BuffAmount = buffAmount;

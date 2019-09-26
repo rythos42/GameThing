@@ -46,7 +46,10 @@ namespace GameThing.Entities
 		public decimal BaseIntelligence { get; private set; } = 1;
 
 		[DataMember]
-		public decimal CurrentMaxHealth { get; private set; } = 5;
+		public decimal CurrentHealth { get; set; } = 7;
+
+		[DataMember]
+		public decimal CurrentMaxHealth { get; private set; } = 7;
 
 		[DataMember]
 		public decimal StrengthMultiplier { get; set; } = 1;
@@ -57,8 +60,6 @@ namespace GameThing.Entities
 		[DataMember]
 		public decimal IntelligenceMultiplier { get; set; } = 1;
 
-		[DataMember]
-		public decimal CurrentHealth { get; set; } = 5;
 
 		[DataMember]
 		public CharacterSide Side { get; set; }
@@ -165,10 +166,13 @@ namespace GameThing.Entities
 			DrawOneCard();
 		}
 
-		public void PlayCard(Card card, Character targetCharacter, int roundNumber)
+		public bool PlayCard(Card card, Character targetCharacter, int roundNumber)
 		{
+			// Try to play the card, cancelling if it returns false
+			if (!card.Play(roundNumber, targetCharacter))
+				return false;
+
 			RemainingPlayableCards--;
-			card.Play(roundNumber, targetCharacter);
 			card.Discard();
 			DrawOneCard();
 
@@ -179,6 +183,8 @@ namespace GameThing.Entities
 				else
 					AdditionalCategoryLevels.Add(cardCategory, 1);
 			});
+			
+			return true;
 		}
 
 		private void Shuffle(List<Card> list)

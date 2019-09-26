@@ -5,7 +5,7 @@ namespace GameThing.Entities.Cards.Conditions
 	[DataContract]
 	public class RunCondition : Condition
 	{
-		public RunCondition(int additionalMove)
+		public RunCondition(int id, int additionalMove) : base(id)
 		{
 			AdditionalMove = additionalMove;
 			EndsOn = ConditionEndsOn.Move;

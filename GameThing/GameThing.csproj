@@ -215,6 +215,8 @@
     <Compile Include="Android\BaseGameUtils\IGameHelperListener.cs" />
     <Compile Include="Data\Convert.cs" />
     <Compile Include="Data\TeamData.cs" />
+    <Compile Include="Events\StartGameAsTesterEventHandler.cs" />
+    <Compile Include="GameLogEntry.cs" />
     <Compile Include="Entities\Cards\Category.cs" />
     <Compile Include="Entities\Cards\Conditions\BuffType.cs" />
     <Compile Include="Entities\Cards\Type.cs" />
@@ -225,7 +227,6 @@
     <Compile Include="Entities\Terrain.cs" />
     <Compile Include="Events\BattleContentLoadedEventHandler.cs" />
     <Compile Include="Events\GameOverEventHandler.cs" />
-    <Compile Include="Events\StartGameAsTesterEventHandler.cs" />
     <Compile Include="MapHelper.cs" />
     <Compile Include="UI\FadingTextPanel.cs" />
     <Compile Include="UI\Panel.cs" />

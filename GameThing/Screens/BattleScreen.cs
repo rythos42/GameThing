@@ -55,8 +55,6 @@ namespace GameThing.Screens
 		public event NextPlayersTurnEventHandler NextPlayersTurn;
 		public event BattleGameOverEventHandler GameOver;
 
-		public bool IsTestMode { get; set; }
-
 		public BattleScreen()
 		{
 			newTurnButton = new Button("New Turn") { UseMinimumButtonSize = false, Tapped = newTurnButton_Tapped };
@@ -65,6 +63,7 @@ namespace GameThing.Screens
 			winGameNowButton = new Button("Win Game") { UseMinimumButtonSize = false, Tapped = winGameNowButton_Tapped };
 			Components.Add(winGameNowButton);
 		}
+		public bool IsTestMode { get; set; }
 
 		public void SetBattleData(BattleData gameData)
 		{
@@ -198,6 +197,10 @@ namespace GameThing.Screens
 
 			data.ChangePlayingSide();
 			NextPlayersTurn?.Invoke(data);
+
+			// swap device player side if we're in test mode
+			if (IsTestMode)
+				thisPlayerSide = data.CurrentSidesTurn;
 		}
 
 		private void CheckForWin()
@@ -376,16 +379,27 @@ namespace GameThing.Screens
 				// PLAY SELECTED CARD
 				// we have a character selected and a card selected, try to target whatever is under the tap
 				if (selectedCharacter.NextCardMustTarget == null || selectedCharacter.NextCardMustTarget == targetCharacter)
-					selectedCharacter.PlayCard(selectedCard, targetCharacter, data.RoundNumber);
-
-				if (targetCharacter.CurrentHealth < 1)
 				{
-					data.Characters.Remove(targetCharacter);
-					CheckForWin();
-				}
+					var success = selectedCharacter.PlayCard(selectedCard, targetCharacter, data.RoundNumber);
+					if (success)
+					{
+						if (targetCharacter.CurrentHealth < 1)
+						{
+							data.Characters.Remove(targetCharacter);
+							CheckForWin();
+						}
 
-				lockedInCharacter = selectedCard.OwnerCharacter;
-				selectedCard = null;
+						data.GameLog.Add(new GameLogEntry
+						{
+							SourceCharacter = selectedCharacter,
+							TargetCharacter = targetCharacter,
+							CardId = selectedCard.Id
+						});
+
+						lockedInCharacter = selectedCard.OwnerCharacter;
+						selectedCard = null;
+					}
+				}
 			}
 			else if (selectedCard != null)
 			{
@@ -399,6 +413,11 @@ namespace GameThing.Screens
 				// we have a character selected, it's my character, it is within move distance of the tap and it has moves remaining
 				selectedCharacter.Move(mapPoint);
 				lockedInCharacter = selectedCharacter;
+				data.GameLog.Add(new GameLogEntry
+				{
+					SourceCharacter = selectedCharacter,
+					MovedTo = mapPoint
+				});
 			}
 			else
 			{

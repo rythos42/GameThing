@@ -27,6 +27,9 @@ namespace GameThing.Data
 		[DataMember]
 		public CharacterSide? Winner { get; set; } = null;
 
+		[DataMember]
+		public List<GameLogEntry> GameLog { get; set; } = new List<GameLogEntry>();
+
 		public void ChangePlayingSide()
 		{
 			CurrentSidesTurn = CurrentSidesTurn == CharacterSide.Spaghetti ? CharacterSide.Unicorn : CharacterSide.Spaghetti;

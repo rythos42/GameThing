@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 using GameThing.Entities.Cards.Conditions;
 using Microsoft.Xna.Framework;
@@ -14,6 +15,11 @@ namespace GameThing.Entities.Cards
 		private SpriteFont font;
 		private const int cardMargin = 20;
 
+		public Card(int id)
+		{
+			Id = id;
+		}
+
 		public void SetContent(Content content)
 		{
 			sprite = content.Card;
@@ -21,7 +27,7 @@ namespace GameThing.Entities.Cards
 			font = content.Font;
 		}
 
-		public void Play(int roundNumber, Character target = null)
+		public bool Play(int roundNumber, Character target = null)
 		{
 			if (CardType == Type.Damage)
 			{
@@ -52,9 +58,14 @@ namespace GameThing.Entities.Cards
 			}
 			else if (CardType == Type.Condition)
 			{
+				// if the condition is on the target already, cancel the card play
+				if (target.Conditions.Any(applied => applied.Condition.Id == Condition.Id))
+					return false;
+
 				target.Conditions.Add(new AppliedCondition(Condition, roundNumber));
 				Condition.ApplyImmediately(target);
 			}
+			return true;
 		}
 
 		public bool IsWithinRangeDistance(MapPoint checkPoint)
@@ -104,6 +115,9 @@ namespace GameThing.Entities.Cards
 
 		[DataMember]
 		public bool InDiscard { get; set; }
+
+		[DataMember]
+		public int Id { get; set; }
 
 		[DataMember]
 		public string Title { get; set; }
