@@ -56,6 +56,7 @@ namespace GameThing.Screens
 			newTurnButton = new Button("New Turn") { UseMinimumButtonSize = false, Tapped = newTurnButton_Tapped };
 			Components.Add(newTurnButton);
 		}
+		public bool IsTestMode { get; set; }
 
 		public void SetBattleData(BattleData gameData)
 		{
@@ -173,6 +174,10 @@ namespace GameThing.Screens
 
 			data.ChangePlayingSide();
 			NextPlayersTurn?.Invoke(data);
+
+			// swap device player side if we're in test mode
+			if (IsTestMode)
+				thisPlayerSide = data.CurrentSidesTurn;
 		}
 
 		private void CheckForWin()

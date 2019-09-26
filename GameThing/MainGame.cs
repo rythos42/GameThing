@@ -113,6 +113,7 @@ namespace GameThing
 			var side = CharacterSide.Spaghetti;
 			currentScreen = ScreenType.Battle;
 			battleData.CurrentSidesTurn = side;
+			battleScreen.IsTestMode = true;
 			battleScreen.SetBattleData(battleData);
 			battleScreen.StartGame(side);
 		}
