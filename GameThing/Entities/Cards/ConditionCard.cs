@@ -6,8 +6,8 @@ namespace GameThing.Entities.Cards
 	[DataContract]
 	public class ConditionCard : Card
 	{
-		public ConditionCard(string title, string description, int range, Character ownerCharacter, Condition condition)
-			: base(title, description, range, ownerCharacter)
+		public ConditionCard(int id, string title, string description, int range, Character ownerCharacter, Condition condition)
+			: base(id, title, description, range, ownerCharacter)
 		{
 			Condition = condition;
 			condition.SourceCharacter = ownerCharacter;

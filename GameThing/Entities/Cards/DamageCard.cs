@@ -7,13 +7,14 @@ namespace GameThing.Entities.Cards
 	public class DamageCard : Card
 	{
 		public DamageCard(
+			int id,
 			string title,
 			string description,
 			int range,
 			Character ownerCharacter,
 			AbilityScore abilityScore,
 			decimal damagePercent)
-			: base(title, description, range, ownerCharacter)
+			: base(id, title, description, range, ownerCharacter)
 		{
 			AbilityScore = abilityScore;
 			DamagePercent = damagePercent;

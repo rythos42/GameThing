@@ -12,8 +12,9 @@ namespace GameThing.Entities.Cards
 		private SpriteFont font;
 		private const int CARD_MARGIN = 20;
 
-		public Card(string title, string description, int range, Character ownerCharacter)
+		public Card(int id, string title, string description, int range, Character ownerCharacter)
 		{
+			Id = id;
 			Title = title;
 			Description = description;
 			Range = range;
@@ -73,6 +74,9 @@ namespace GameThing.Entities.Cards
 
 		[DataMember]
 		public bool InDiscard { get; set; }
+
+		[DataMember]
+		public int Id { get; set; }
 
 		[DataMember]
 		public string Title { get; set; }

@@ -11,27 +11,27 @@ namespace GameThing
 		{
 			var deck = new List<Card>
 			{
-				new DamageCard("Clumsy Stab", "Deal 100% Str damage at range 1.", 1, character, AbilityScore.Strength, 1),
-				new HealCard("Bad Bandage", "Heal 100% Int to self.", 0, character, AbilityScore.Intelligence, 1),
-				new ConditionCard("Awkward Distraction", "Apply a condition at range 1: If the next attack is from another character, it gains +200% Str.", 1, character, new DistractCondition(AbilityScore.Strength, 3)),
-				new ConditionCard("Lame Taunt", "Apply a condition at range 5: 70% chance next card must target this character.", 5, character, new TauntCondition(0.7m)),
-				new ConditionCard("Slow Jog", "Apply a condition to yourself: Your next move gains +1 distance.", 0, character, new RunCondition(1)),
-				new ConditionCard("Weak Cheer", "Apply a condition at range 3: Give another character +100% Str for 3 turns.", 3, character, new BuffCondition(AbilityScore.Strength, 2, 3, BuffType.Percent))
+				new DamageCard(1, "Clumsy Stab", "Deal 100% Str damage at range 1.", 1, character, AbilityScore.Strength, 1),
+				new HealCard(2, "Bad Bandage", "Heal 100% Int to self.", 0, character, AbilityScore.Intelligence, 1),
+				new ConditionCard(3, "Awkward Distraction", "Apply a condition at range 1: If the next attack is from another character, it gains +200% Str.", 1, character, new DistractCondition(AbilityScore.Strength, 3)),
+				new ConditionCard(4, "Lame Taunt", "Apply a condition at range 5: 70% chance next card must target this character.", 5, character, new TauntCondition(0.7m)),
+				new ConditionCard(5, "Slow Jog", "Apply a condition to yourself: Your next move gains +1 distance.", 0, character, new RunCondition(1)),
+				new ConditionCard(6, "Weak Cheer", "Apply a condition at range 3: Give another character +100% Str for 3 turns.", 3, character, new BuffCondition(AbilityScore.Strength, 2, 3, BuffType.Percent))
 			};
 
 			switch (character.CharacterClass)
 			{
 				case CharacterClass.Squire:
-					deck.Add(new DamageCard("Slightly Trained Stab", "Deal 120% Str damage at range 1.", 1, character, AbilityScore.Strength, 1.2m));
-					deck.Add(new ConditionCard("Prepared Stance", "Apply a condition to yourself: Gain +3 Health for 5 turns.", 0, character, new BuffCondition(AbilityScore.Health, 3, 5, BuffType.Linear)));
+					deck.Add(new DamageCard(7, "Slightly Trained Stab", "Deal 120% Str damage at range 1.", 1, character, AbilityScore.Strength, 1.2m));
+					deck.Add(new ConditionCard(8, "Prepared Stance", "Apply a condition to yourself: Gain +3 Health for 5 turns.", 0, character, new BuffCondition(AbilityScore.Health, 3, 5, BuffType.Linear)));
 					break;
 				case CharacterClass.Pickpocket:
-					deck.Add(new DamageCard("Decent Slice", "Deal 120% Agi damage at range 1.", 1, character, AbilityScore.Agility, 1.2m));
-					deck.Add(new DamageCard("Slipped Backstab", "Deal 150% Agi damage at range 1.", 1, character, AbilityScore.Agility, 1.5m));
+					deck.Add(new DamageCard(9, "Decent Slice", "Deal 120% Agi damage at range 1.", 1, character, AbilityScore.Agility, 1.2m));
+					deck.Add(new DamageCard(10, "Slipped Backstab", "Deal 150% Agi damage at range 1.", 1, character, AbilityScore.Agility, 1.5m));
 					break;
 				case CharacterClass.Apprentice:
-					deck.Add(new DamageCard("Fairie Fire", "Does nothing. You need to train magic to use it!", 0, character, AbilityScore.Intelligence, 0));
-					deck.Add(new DamageCard("Arcane Missile", "Deal 100% Int damage at range 5.", 5, character, AbilityScore.Intelligence, 1));
+					deck.Add(new DamageCard(11, "Fairie Fire", "Does nothing. You need to train magic to use it!", 0, character, AbilityScore.Intelligence, 0));
+					deck.Add(new DamageCard(12, "Arcane Missile", "Deal 100% Int damage at range 5.", 5, character, AbilityScore.Intelligence, 1));
 					break;
 			}
 			return deck;

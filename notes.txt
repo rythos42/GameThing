@@ -1,16 +1,66 @@
-play a game against myself
-update on geeksong
-send to friends >.>
-http://geeksong.com/com.geeksong.GameThing-Signed.apk
+- consider giving Shane my old phone...I could really use his "fuck the game" mindset.
+- sort out Google Play API V3, deprecated December 1st
+	https://android-developers.googleblog.com/2019/03/changes-to-google-play-developer-api.html
+	
+MVP fixes:
+	- increase health to 10
+	- Audit:
+		- character move
+		- character card play
+	        - name of character playing
+			- effect of card 
+			- target of card
+		- needs to be scrollable
+	- get new Card structure from main branch
+		- remember the sub-class thing on the JSON setting thing
+	- Reloading match gives "Winner: No one"
+	- Remove Lame Distraction and replace with something else
+	- "100% Int damage" unclear -- thought it was "damage to your Int"
+	- Double tap to move
+	- Don't allow conditions to stack
+		- Prevent playing the card if the condition exists already
+	- Need to show conditions on players
+	- Don't make player do math (100% Int should be "1 damage (100% of Int)")
+	- Show player class on player stat panel
+
+				else
+			{
+				gameLogPanel.Draw(spriteBatch, 40, 110);
+				gameLogPanel.Components.Clear();
+				data.GameLog.ForEach(gameLogEntry => gameLogPanel.Components.Add(new Text { Value = gameLogEntry.TextDescription, Font = content.Font }));
+			}
+
+
+
+NEXT
+		
+Building a basic class hierarchy
+	- Need more categories for some of the "higher level" things
+	- some of the brainstormed cards could be entire expansion blocks worth of ideas, separate them out.
+
+Manage Team
+	- implement character levels
+	- edit character decks
+	- delete team
+	- change character class
+	- view character category levels
+	- show categories of cards
+	- need many more cards
+
+Todo:
+	- need some amount of randomness
+		- not "to hit", I hate that
+		- armour is possible
+		- damage maybe, but want it to fit inside existing framework as much as possible
+	- game needs an Armour stat
+	- undo button
+	- exception if you press "Test" before team loaded from google drive
+	- some weird exception after "Win Game" button pressed, then press back. Likely due to saving.
+
 
 Nice to have:
-	- selected character is drawn over top of nearby characters
-		- this might be good in some cases, leave it for now
 	- allow characters to stand on slopes
 		- draw grid on slopes
-	- make ComplexMap have a bridge over the top river
-	- add trees
-		- probably need to re-do drawing order during this
 	- TauntCondition needs a message for success/fail
 	- stuff at range 0 played on self without needing to tap again
 	- don't allow friendly fire
@@ -19,9 +69,7 @@ Nice to have:
 	- hide start screen buttons if loading shit (or give a loading splash screen and THEN go to game)
 	- maybe don't automatically go to a match if we have one -- might be the user has multiple
 	- show logout button to GPG
-	- clear SignOut obsolete warning
 	- hide "Join as Spaghetti" button
-	- make side assignment random
 	- shouldn't need to de-select a character to select a new one
 	- make characters move on game loop
 	- fix map background
@@ -36,7 +84,6 @@ Nice to have:
 	- character names
 	- allow players to look at their shit when it's not their turn
 
-
 Tech
 	- decent chance that GameHelper/BaseGameActivity aren't doing the right things anymore -- seems to be a mash-up of older sign-in code and newer
 	- lots of events being passed through MainGame to MainActivity -- wonder if there is a better architecture that still keeps the Android pieces separate
@@ -44,7 +91,16 @@ Tech
 	- how to do polygon objects in maps
 	- Nexus 7 shows black box instead of highlighted character
 	- why outside_0.xnb and outside.xnb?
-
+	- Entities list vs Character list, why storing the same thing twice?
+	- May need a different classes for Characters
+		- on-device storage
+		- pass between games
+		- on-device in-game
+	- set description, played time and progress value for SnapshotChangeMetadata
+	- consider loosening proguard.cfg -- it's keeping all of com.google.android.gms, but last error only needed com.google.android.gms.auth.api.signin.internal.SignInHubActivity
+		- check \obj\Release\90\proguard\proguard_project_references.cfg for ideas of how it works
+	- send card IDs instead of the whole card around
+	        
 Game Design
 	- evaluate whether single character or whole side is a better turn
 	- make character facing directions (like for Slipped Backstab)
@@ -54,8 +110,9 @@ Game Design
 	- make movement depend on agilty score
 		- make runcondition an agility buff?
 
-Started around June 9th
-MVP started August 28
+
+Deploying:
+	1. Test that `release` build runs. Proguard/etc can mess some things up.
 
 Google Play
 	Certificates
@@ -79,6 +136,11 @@ Publishing Xamarin
 	https://play.google.com/apps/publish/?account=8816930819975285172#ApiAccessPlace
 	https://console.developers.google.com/apis/credentials?project=api-8816930819975285172-503918
 	https://play.google.com/apps/publish/?account=8816930819975285172#GameDetailsPlace:gt=505193462094
+
+	Proguard
+	https://docs.microsoft.com/en-us/xamarin/android/deploy-test/release-prep/proguard?tabs=windows
+	https://docs.microsoft.com/en-us/xamarin/android/deploy-test/linker
+	https://docs.microsoft.com/en-us/xamarin/cross-platform/deploy-test/linker
 
 	Obsfucating code
 	https://www.preemptive.com/dotfuscator/pro/userguide/en/getting_started_xamarin.html
@@ -112,6 +174,14 @@ Drawing/Sorting Sprites Isometric
 	https://github.com/craftworkgames/MonoGame.Extended/issues/230
 	https://gamedev.stackexchange.com/questions/103442/how-do-i-determine-the-draw-order-of-isometric-2d-objects-occupying-multiple-til
 	https://gamedev.stackexchange.com/questions/8151/how-do-i-sort-isometric-sprites-into-the-correct-order
+
+	Depth Buffer
+		https://stackoverflow.com/questions/3388294/opengl-question-about-the-usage-of-gldepthmask/3390094#3390094
+		https://blogs.msdn.microsoft.com/etayrien/2006/12/07/alpha-blending-part-1/
+		https://stackoverflow.com/questions/14703230/depth-buffer-and-alpha-problems-in-xna
+		http://www.shawnhargreaves.com/blog/antialiasing-alpha-cutouts.html
+	Possible Other Solution
+		https://gamedev.stackexchange.com/questions/51202/how-do-you-display-non-cutout-transparent-2d-textures-with-a-depth-buffer-open?rq=1
 
 Independent Resolution: 
 	http://www.david-amador.com/2010/03/xna-2d-independent-resolution-rendering/
@@ -164,3 +234,14 @@ Map Creation:
 		- ie, the first layer is -32, next is -64
 	- "NoAvailableMovement:{layerNumber}", where layerNumber is the abs(vertical offset / 32)
 	- "Deployment" must have objects "Spaghetti" and "Unicorn"
+
+To Play:
+	Tell me your Gmail account e-mail (I have to add your name to my list of testers)
+	Set your Android device to Developer Mode
+		https://developer.android.com/studio/debug/dev-options
+	Download my APK 
+		https://drive.google.com/file/d/1n9SkH2JXqxD1sGsrNK80gpIvFkAw5LUg/view?usp=sharing
+	Install it and open it.
+	(it will get you to download and install Google Play Games)
+	press "Create Match", and create a match with "rythos42" (me)
+	Maybe you try it against someone else you know and like? :)

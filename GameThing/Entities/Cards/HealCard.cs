@@ -6,13 +6,14 @@ namespace GameThing.Entities.Cards
 	public class HealCard : Card
 	{
 		public HealCard(
+			int id,
 			string title,
 			string description,
 			int range,
 			Character ownerCharacter,
 			AbilityScore abilityScore,
 			int healPercent)
-			: base(title, description, range, ownerCharacter)
+			: base(id, title, description, range, ownerCharacter)
 		{
 			AbilityScore = abilityScore;
 			HealPercent = healPercent;

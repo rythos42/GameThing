@@ -351,6 +351,13 @@ namespace GameThing.Screens
 					CheckForWin();
 				}
 
+				data.GameLog.Add(new GameLogEntry
+				{
+					SourceCharacter = selectedCharacter,
+					TargetCharacter = targetCharacter,
+					CardId = selectedCard.Id
+				});
+
 				lockedInCharacter = selectedCard.OwnerCharacter;
 				selectedCard = null;
 			}
@@ -366,6 +373,11 @@ namespace GameThing.Screens
 				// we have a character selected, it's my character, it is within move distance of the tap and it has moves remaining
 				selectedCharacter.Move(mapPoint);
 				lockedInCharacter = selectedCharacter;
+				data.GameLog.Add(new GameLogEntry
+				{
+					SourceCharacter = selectedCharacter,
+					MovedTo = mapPoint
+				});
 			}
 			else
 			{
