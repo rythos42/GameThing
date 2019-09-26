@@ -44,7 +44,10 @@ namespace GameThing.Entities
 		public decimal BaseIntelligence { get; private set; } = 1;
 
 		[DataMember]
-		public decimal CurrentMaxHealth { get; private set; } = 5;
+		public decimal CurrentHealth { get; set; } = 7;
+
+		[DataMember]
+		public decimal CurrentMaxHealth { get; private set; } = 7;
 
 		[DataMember]
 		public decimal StrengthMultiplier { get; set; } = 1;
@@ -55,8 +58,6 @@ namespace GameThing.Entities
 		[DataMember]
 		public decimal IntelligenceMultiplier { get; set; } = 1;
 
-		[DataMember]
-		public decimal CurrentHealth { get; set; } = 5;
 
 		[DataMember]
 		public CharacterSide Side { get; set; }
