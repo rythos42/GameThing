@@ -348,23 +348,27 @@ namespace GameThing.Screens
 				// PLAY SELECTED CARD
 				// we have a character selected and a card selected, try to target whatever is under the tap
 				if (selectedCharacter.NextCardMustTarget == null || selectedCharacter.NextCardMustTarget == targetCharacter)
-					selectedCharacter.PlayCard(selectedCard, targetCharacter, data.RoundNumber);
-
-				if (targetCharacter.CurrentHealth < 1)
 				{
-					data.Characters.Remove(targetCharacter);
-					CheckForWin();
+					var success = selectedCharacter.PlayCard(selectedCard, targetCharacter, data.RoundNumber);
+					if (success)
+					{
+						if (targetCharacter.CurrentHealth < 1)
+						{
+							data.Characters.Remove(targetCharacter);
+							CheckForWin();
+						}
+
+						data.GameLog.Add(new GameLogEntry
+						{
+							SourceCharacter = selectedCharacter,
+							TargetCharacter = targetCharacter,
+							CardId = selectedCard.Id
+						});
+
+						lockedInCharacter = selectedCard.OwnerCharacter;
+						selectedCard = null;
+					}
 				}
-
-				data.GameLog.Add(new GameLogEntry
-				{
-					SourceCharacter = selectedCharacter,
-					TargetCharacter = targetCharacter,
-					CardId = selectedCard.Id
-				});
-
-				lockedInCharacter = selectedCard.OwnerCharacter;
-				selectedCard = null;
 			}
 			else if (selectedCard != null)
 			{

@@ -154,12 +154,16 @@ namespace GameThing.Entities
 			DrawOneCard();
 		}
 
-		public void PlayCard(Card card, Character targetCharacter, int roundNumber)
+		public bool PlayCard(Card card, Character targetCharacter, int roundNumber)
 		{
+			// Try to play the card, cancelling if it returns false
+			if (!card.Play(roundNumber, targetCharacter))
+				return false;
+
 			RemainingPlayableCards--;
-			card.Play(roundNumber, targetCharacter);
 			card.Discard();
 			DrawOneCard();
+			return true;
 		}
 
 		private void Shuffle(List<Card> list)

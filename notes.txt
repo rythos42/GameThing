@@ -3,7 +3,6 @@
 	https://android-developers.googleblog.com/2019/03/changes-to-google-play-developer-api.html
 	
 MVP fixes:
-	- increase health to 10
 	- Audit:
 		- character move
 		- character card play
@@ -17,8 +16,6 @@ MVP fixes:
 	- Remove Lame Distraction and replace with something else
 	- "100% Int damage" unclear -- thought it was "damage to your Int"
 	- Double tap to move
-	- Don't allow conditions to stack
-		- Prevent playing the card if the condition exists already
 	- Need to show conditions on players
 	- Don't make player do math (100% Int should be "1 damage (100% of Int)")
 	- Show player class on player stat panel
@@ -59,6 +56,8 @@ Todo:
 
 
 Nice to have:
+	- rename test mode to hot seat
+	- notification when card can't be played, and why
 	- allow characters to stand on slopes
 		- draw grid on slopes
 	- TauntCondition needs a message for success/fail

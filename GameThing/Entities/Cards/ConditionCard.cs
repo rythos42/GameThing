@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Linq;
+using System.Runtime.Serialization;
 using GameThing.Entities.Cards.Conditions;
 
 namespace GameThing.Entities.Cards
@@ -13,10 +14,16 @@ namespace GameThing.Entities.Cards
 			condition.SourceCharacter = ownerCharacter;
 		}
 
-		public override void Play(int roundNumber, Character target = null)
+		public override bool Play(int roundNumber, Character target = null)
 		{
+			// if the condition is on the target already, cancel the card play
+			if (target.Conditions.Any(applied => applied.Condition.Id == Condition.Id))
+				return false;
+
 			target.Conditions.Add(new AppliedCondition(Condition, roundNumber));
 			Condition.ApplyImmediately(target);
+
+			return true;
 		}
 
 		[DataMember]

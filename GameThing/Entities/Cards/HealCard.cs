@@ -25,7 +25,7 @@ namespace GameThing.Entities.Cards
 		[DataMember]
 		public AbilityScore AbilityScore { get; private set; }
 
-		public override void Play(int roundNumber, Character target = null)
+		public override bool Play(int roundNumber, Character target = null)
 		{
 			decimal healing = 0;
 			switch (AbilityScore)
@@ -35,6 +35,8 @@ namespace GameThing.Entities.Cards
 				case AbilityScore.Intelligence: healing = OwnerCharacter.CurrentIntelligence * HealPercent; break;
 			}
 			target.ApplyHealing(healing);
+
+			return true;
 		}
 	}
 }

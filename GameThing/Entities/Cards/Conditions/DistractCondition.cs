@@ -5,7 +5,7 @@ namespace GameThing.Entities.Cards.Conditions
 	[DataContract]
 	public class DistractCondition : Condition
 	{
-		public DistractCondition(AbilityScore abilityScore, decimal buffPercent)
+		public DistractCondition(int id, AbilityScore abilityScore, decimal buffPercent) : base(id)
 		{
 			AbilityScore = abilityScore;
 			BuffPercent = buffPercent;

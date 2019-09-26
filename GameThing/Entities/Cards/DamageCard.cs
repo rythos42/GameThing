@@ -26,7 +26,7 @@ namespace GameThing.Entities.Cards
 		[DataMember]
 		public AbilityScore AbilityScore { get; private set; }
 
-		public override void Play(int roundNumber, Character target = null)
+		public override bool Play(int roundNumber, Character target = null)
 		{
 			decimal damage = 0;
 
@@ -41,6 +41,8 @@ namespace GameThing.Entities.Cards
 			target.ApplyDamage(damage);
 
 			target.RemoveConditions(ConditionEndsOn.AfterAttack);
+
+			return true;
 		}
 	}
 }

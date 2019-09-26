@@ -28,7 +28,7 @@ namespace GameThing.Entities.Cards
 			font = content.Font;
 		}
 
-		public abstract void Play(int roundNumber, Character target = null);
+		public abstract bool Play(int roundNumber, Character target = null);
 
 		public bool IsWithinRangeDistance(MapPoint checkPoint)
 		{
