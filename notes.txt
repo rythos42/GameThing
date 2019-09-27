@@ -3,6 +3,8 @@
 	https://android-developers.googleblog.com/2019/03/changes-to-google-play-developer-api.html
 	
 MVP fixes:
+	- Double tap to cast
+
 	- make team class count equal
 	- rematch via Join Game crashes
 	- Audit:
@@ -12,12 +14,8 @@ MVP fixes:
 			- effect of card 
 			- target of card
 		- needs to be scrollable
-	- get new Card structure from main branch
-		- remember the sub-class thing on the JSON setting thing
 	- Reloading match gives "Winner: No one"
-	- Remove Lame Distraction and replace with something else
 	- "100% Int damage" unclear -- thought it was "damage to your Int"
-	- Double tap to move
 	- Need to show conditions on players
 	- Don't make player do math (100% Int should be "1 damage (100% of Int)")
 	- Show player class on player stat panel
@@ -103,6 +101,7 @@ Tech
 	- send card IDs instead of the whole card around
 	        
 Game Design
+	- Remove Lame Distraction and replace with something else, it sucks
 	- evaluate whether single character or whole side is a better turn
 	- make character facing directions (like for Slipped Backstab)
 		- there's no "behind" for this to do anything with

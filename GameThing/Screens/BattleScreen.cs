@@ -26,6 +26,8 @@ namespace GameThing.Screens
 		private Card selectedCard;
 		private CharacterSide thisPlayerSide;
 		private Character lockedInCharacter = null;
+		private MapPoint movingPoint;
+		private MapPoint targetingPoint;
 
 		private readonly Button newTurnButton;
 		private readonly FadingTextPanel statusPanel = new FadingTextPanel() { PlaceFromRight = true };
@@ -240,10 +242,19 @@ namespace GameThing.Screens
 				samplerState: SamplerState.PointClamp,
 				blendState: BlendState.AlphaBlend,
 				sortMode: SpriteSortMode.Texture);
-			if (selectedCard == null)
+			if (selectedCharacter != null && selectedCard == null && movingPoint == null)
+			{
 				data.Characters.SingleOrDefault(character => character == selectedCharacter && character.HasRemainingMoves && character.Side == thisPlayerSide)?.DrawMovementRange(spriteBatch);
-			else
+			}
+			else if (selectedCard != null)
+			{
 				selectedCard.DrawEffectRange(spriteBatch);
+			}
+			else if (movingPoint != null)
+			{
+				var movingPointScreen = movingPoint.GetScreenPosition();
+				spriteBatch.Draw(content.DistanceOverlay, new Rectangle((int) movingPointScreen.X - MapPoint.TileWidth_Half, (int) movingPointScreen.Y, 64, 32), Color.DarkBlue * 0.5f);
+			}
 			spriteBatch.End();
 
 			Effect currentEffect = null;
@@ -376,12 +387,18 @@ namespace GameThing.Screens
 				// we have a character selected and a card selected but the card isn't in range of the desired target, or there is no target
 				selectedCard = null;
 			}
-			else if (selectedCharacter.IsWithinMoveDistanceOf(mapPoint) && mapPoint.IsWithinMap && mapPoint.IsInAvailableMovement && CanMoveSelectedCharacter && targetCharacter == null)
+			else if (selectedCharacter.IsWithinMoveDistanceOf(mapPoint) && mapPoint.IsWithinMap && mapPoint.IsInAvailableMovement && CanMoveSelectedCharacter && targetCharacter == null && (movingPoint == null || !movingPoint.Equals(mapPoint)))
 			{
-				// MOVE
+				// TRYING TO MOVE
 				// we have a character selected, it's my character, it is within move distance of the tap and it has moves remaining
+				movingPoint = mapPoint;
+			}
+			else if (movingPoint?.Equals(mapPoint) == true)
+			{
+				// ACTUALLY MOVING
 				selectedCharacter.Move(mapPoint);
 				lockedInCharacter = selectedCharacter;
+				movingPoint = null;
 				data.GameLog.Add(new GameLogEntry
 				{
 					SourceCharacter = selectedCharacter,
@@ -394,9 +411,11 @@ namespace GameThing.Screens
 				// we have a character selected, but didn't tap anything else useful so unselect it
 				selectedCharacter = null;
 				selectedCard = null;
+				movingPoint = null;
 				handOfCards.ClearCardPositions();
 			}
 		}
+
 
 		private bool CanMoveSelectedCharacter
 		{
