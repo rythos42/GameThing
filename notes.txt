@@ -15,7 +15,6 @@ MVP fixes:
 	- "100% Int damage" unclear -- thought it was "damage to your Int"
 	- Need to show conditions on players
 	- Don't make player do math (100% Int should be "1 damage (100% of Int)")
-	- Show player class on player stat panel
 
 				else
 			{
@@ -23,8 +22,6 @@ MVP fixes:
 				gameLogPanel.Components.Clear();
 				data.GameLog.ForEach(gameLogEntry => gameLogPanel.Components.Add(new Text { Value = gameLogEntry.TextDescription, Font = content.Font }));
 			}
-
-
 
 NEXT
 		

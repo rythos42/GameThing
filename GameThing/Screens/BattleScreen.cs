@@ -36,6 +36,7 @@ namespace GameThing.Screens
 		private readonly Text playerSideText = new Text();
 		private readonly Panel selectedPlayerStatsPanel = new Panel();
 		private readonly Text sideText = new Text();
+		private readonly Text playerClassText = new Text();
 		private readonly Text healthText = new Text();
 		private readonly Text strengthText = new Text();
 		private readonly Text agilityText = new Text();
@@ -119,6 +120,7 @@ namespace GameThing.Screens
 			camera = new OrthographicCamera(graphicsDevice);
 			camera.LookAt(new Vector2(0, map.HeightInPixels / 2));  // center the map in the screen
 
+			selectedPlayerStatsPanel.Components.Add(playerClassText);
 			selectedPlayerStatsPanel.Components.Add(sideText);
 			selectedPlayerStatsPanel.Components.Add(healthText);
 			selectedPlayerStatsPanel.Components.Add(strengthText);
@@ -316,6 +318,7 @@ namespace GameThing.Screens
 				winGameNowButton.Draw(spriteBatch, 530, 20);
 			if (selectedCharacter != null)
 			{
+				playerClassText.Value = $"Class: {selectedCharacter.CharacterClass}";
 				sideText.Value = $"Side: {selectedCharacter.Side}";
 				healthText.Value = $"Health: {selectedCharacter.CurrentHealth}/{selectedCharacter.CurrentMaxHealth}";
 				strengthText.Value = $"Strength: {selectedCharacter.CurrentStrength}/{selectedCharacter.BaseStrength}";
