@@ -3,8 +3,6 @@
 	https://android-developers.googleblog.com/2019/03/changes-to-google-play-developer-api.html
 	
 MVP fixes:
-	- Double tap to cast
-
 	- make team class count equal
 	- rematch via Join Game crashes
 	- Audit:

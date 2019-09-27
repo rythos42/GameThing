@@ -246,14 +246,19 @@ namespace GameThing.Screens
 			{
 				data.Characters.SingleOrDefault(character => character == selectedCharacter && character.HasRemainingMoves && character.Side == thisPlayerSide)?.DrawMovementRange(spriteBatch);
 			}
-			else if (selectedCard != null)
+			else if (selectedCard != null && targetingPoint == null)
 			{
 				selectedCard.DrawEffectRange(spriteBatch);
 			}
 			else if (movingPoint != null)
 			{
 				var movingPointScreen = movingPoint.GetScreenPosition();
-				spriteBatch.Draw(content.DistanceOverlay, new Rectangle((int) movingPointScreen.X - MapPoint.TileWidth_Half, (int) movingPointScreen.Y, 64, 32), Color.DarkBlue * 0.5f);
+				spriteBatch.Draw(content.DistanceOverlay, new Rectangle((int) movingPointScreen.X - MapPoint.TileWidth_Half, (int) movingPointScreen.Y, 64, 32), Color.DarkGreen * 0.5f);
+			}
+			else if (targetingPoint != null)
+			{
+				var targetingPointScreen = targetingPoint.GetScreenPosition();
+				spriteBatch.Draw(content.DistanceOverlay, new Rectangle((int) targetingPointScreen.X - MapPoint.TileWidth_Half, (int) targetingPointScreen.Y, 64, 32), Color.DarkBlue * 0.5f);
 			}
 			spriteBatch.End();
 
@@ -354,9 +359,14 @@ namespace GameThing.Screens
 				// we don't have a character selected, so select whatever we have under the tap
 				selectedCharacter = targetCharacter;
 			}
-			else if (selectedCard != null && targetCharacter != null && selectedCard.IsWithinRangeDistance(mapPoint) && mapPoint.IsWithinMap && (lockedInCharacter == selectedCard.OwnerCharacter || lockedInCharacter == null))
+			else if (selectedCard != null && targetCharacter != null && selectedCard.IsWithinRangeDistance(mapPoint) && mapPoint.IsWithinMap && (lockedInCharacter == selectedCard.OwnerCharacter || lockedInCharacter == null) && targetingPoint == null)
 			{
-				// PLAY SELECTED CARD
+				// TRYING TO TARGET A CARD
+				targetingPoint = mapPoint;
+			}
+			else if (targetingPoint?.Equals(mapPoint) == true)
+			{
+				// ACTUALLY PLAY SELECTED CARD
 				// we have a character selected and a card selected, try to target whatever is under the tap
 				if (selectedCharacter.NextCardMustTarget == null || selectedCharacter.NextCardMustTarget == targetCharacter)
 				{
@@ -378,6 +388,7 @@ namespace GameThing.Screens
 
 						lockedInCharacter = selectedCard.OwnerCharacter;
 						selectedCard = null;
+						targetingPoint = null;
 					}
 				}
 			}
@@ -386,8 +397,9 @@ namespace GameThing.Screens
 				// DESELECTED CARD
 				// we have a character selected and a card selected but the card isn't in range of the desired target, or there is no target
 				selectedCard = null;
+				targetingPoint = null;
 			}
-			else if (selectedCharacter.IsWithinMoveDistanceOf(mapPoint) && mapPoint.IsWithinMap && mapPoint.IsInAvailableMovement && CanMoveSelectedCharacter && targetCharacter == null && (movingPoint == null || !movingPoint.Equals(mapPoint)))
+			else if (selectedCharacter.IsWithinMoveDistanceOf(mapPoint) && mapPoint.IsWithinMap && mapPoint.IsInAvailableMovement && CanMoveSelectedCharacter && targetCharacter == null && movingPoint == null)
 			{
 				// TRYING TO MOVE
 				// we have a character selected, it's my character, it is within move distance of the tap and it has moves remaining
@@ -412,6 +424,7 @@ namespace GameThing.Screens
 				selectedCharacter = null;
 				selectedCard = null;
 				movingPoint = null;
+				targetingPoint = null;
 				handOfCards.ClearCardPositions();
 			}
 		}
