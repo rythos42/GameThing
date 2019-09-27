@@ -108,11 +108,13 @@ namespace GameThing
 
 		private void StartScreen_StartedAsTester()
 		{
-			var battleData = InitializeGameData("test", new List<string>());
+			var battleData = InitializeGameData(null, new List<string>());
 
 			var side = CharacterSide.Spaghetti;
 			currentScreen = ScreenType.Battle;
 			battleData.CurrentSidesTurn = side;
+			battleData.Sides["p1"] = CharacterSide.Spaghetti;
+			battleData.Sides["p2"] = CharacterSide.Unicorn;
 			battleScreen.IsTestMode = true;
 			battleScreen.SetBattleData(battleData);
 			battleScreen.StartGame(side);
@@ -157,7 +159,7 @@ namespace GameThing
 		{
 			GameOver?.Invoke(data);
 
-			gameOverScreen.Winner = data.Winner;
+			gameOverScreen.Winner = data.WinnerSide;
 			currentScreen = ScreenType.GameOver;
 		}
 

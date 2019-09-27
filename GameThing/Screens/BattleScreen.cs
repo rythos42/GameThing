@@ -30,6 +30,7 @@ namespace GameThing.Screens
 		private MapPoint targetingPoint;
 
 		private readonly Button newTurnButton;
+		private readonly Button winGameNowButton;
 		private readonly FadingTextPanel statusPanel = new FadingTextPanel() { PlaceFromRight = true };
 		private readonly Panel playerSidePanel = new Panel();
 		private readonly Text playerSideText = new Text();
@@ -57,6 +58,9 @@ namespace GameThing.Screens
 		{
 			newTurnButton = new Button("New Turn") { UseMinimumButtonSize = false, Tapped = newTurnButton_Tapped };
 			Components.Add(newTurnButton);
+
+			winGameNowButton = new Button("Win Game") { UseMinimumButtonSize = false, Tapped = winGameButton_Tapped };
+			Components.Add(winGameNowButton);
 		}
 		public bool IsTestMode { get; set; }
 
@@ -190,9 +194,9 @@ namespace GameThing.Screens
 			if (!anySpaghetti || !anyUnicorn)
 			{
 				if (!anySpaghetti && anyUnicorn)
-					data.Winner = CharacterSide.Unicorn;
+					data.SetWinnerSide(CharacterSide.Unicorn);
 				else if (anySpaghetti && !anyUnicorn)
-					data.Winner = CharacterSide.Spaghetti;
+					data.SetWinnerSide(CharacterSide.Spaghetti);
 
 				GameOver?.Invoke(data);
 			}
@@ -308,6 +312,8 @@ namespace GameThing.Screens
 				newTurnButton.Draw(spriteBatch, 40, 20);
 			statusPanel.Draw(spriteBatch, 40, 20);
 			playerSidePanel.Draw(spriteBatch, 220, 20);
+			if (IsTestMode)
+				winGameNowButton.Draw(spriteBatch, 530, 20);
 			if (selectedCharacter != null)
 			{
 				sideText.Value = $"Side: {selectedCharacter.Side}";
@@ -332,6 +338,12 @@ namespace GameThing.Screens
 		public void newTurnButton_Tapped(GestureSample gesture)
 		{
 			NextPlayerTurn();
+		}
+
+		public void winGameButton_Tapped(GestureSample gesture)
+		{
+			data.SetWinnerSide(thisPlayerSide);
+			GameOver?.Invoke(data);
 		}
 
 		private void Tap(GestureSample gesture)

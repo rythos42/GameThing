@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Android.App;
@@ -101,11 +102,26 @@ namespace GameThing.Android
 
 		private void Game_GameOver(BattleData data)
 		{
-			gameClient.FinishMatch(data.MatchId);
+			if (data.MatchId == null)
+				return;
+
+			var gameData = SerializeBattleData(data);
+			var results = data
+				.Sides
+				.Select(keyValuePair => new ParticipantResult(
+					keyValuePair.Key,
+					data.WinnerParticipantId == keyValuePair.Key ? ParticipantResult.MatchResultWin : ParticipantResult.MatchResultLoss,
+					data.WinnerParticipantId == keyValuePair.Key ? 1 : 2))
+				.ToList();
+
+			gameClient.FinishMatch(data.MatchId, gameData, results);
 		}
 
 		private void StartNextTurn(BattleData data)
 		{
+			if (data.MatchId == null)
+				return;
+
 			var gameData = SerializeBattleData(data);
 			var participantId = data.GetParticipantIdForCurrentSide();
 			gameClient.TakeTurn(data.MatchId, gameData, participantId);

@@ -12,7 +12,6 @@ MVP fixes:
 			- effect of card 
 			- target of card
 		- needs to be scrollable
-	- Reloading match gives "Winner: No one"
 	- "100% Int damage" unclear -- thought it was "damage to your Int"
 	- Need to show conditions on players
 	- Don't make player do math (100% Int should be "1 damage (100% of Int)")
