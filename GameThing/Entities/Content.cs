@@ -16,7 +16,11 @@ namespace GameThing.Entities
 
 			Card = contentManager.Load<Texture2D>("sprites/card");
 			DistanceOverlay = contentManager.Load<Texture2D>("sprites/distance_overlay");
-			Lock = contentManager.Load<Texture2D>("sprites/lock");
+			Lock = contentManager.Load<Texture2D>("sprites/icons/lock");
+			SpaghettiHatIcon = contentManager.Load<Texture2D>("sprites/icons/spaghetti_atlas_hat");
+			UnicornHatIcon = contentManager.Load<Texture2D>("sprites/icons/unicorn_atlas_hat");
+			MoveIcon = contentManager.Load<Texture2D>("sprites/icons/move");
+			CardIcon = contentManager.Load<Texture2D>("sprites/icons/card");
 
 			Highlight = contentManager.Load<Effect>("effects/highlight");
 			Shade = contentManager.Load<Effect>("effects/shade");
@@ -38,6 +42,10 @@ namespace GameThing.Entities
 		public Texture2D DistanceOverlay { get; private set; }
 		public Texture2D Card { get; private set; }
 		public Texture2D Lock { get; private set; }
+		public Texture2D SpaghettiHatIcon { get; private set; }
+		public Texture2D UnicornHatIcon { get; private set; }
+		public Texture2D MoveIcon { get; private set; }
+		public Texture2D CardIcon { get; private set; }
 
 		public Effect Highlight { get; private set; }
 		public Effect Shade { get; private set; }

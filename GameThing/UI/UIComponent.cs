@@ -8,8 +8,8 @@ namespace GameThing.UI
 	{
 		protected const int BOX_SHADOW_X = 5;
 		protected const int BOX_SHADOW_Y = 5;
-		protected const int MARGIN = 16;
-		protected const int PADDING = 16;
+		public const int MARGIN = 16;
+		public const int PADDING = 16;
 
 		public UIComponentTappedEventHandler Tapped;
 

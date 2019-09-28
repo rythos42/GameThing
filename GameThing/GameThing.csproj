@@ -215,6 +215,7 @@
     <Compile Include="Android\BaseGameUtils\IGameHelperListener.cs" />
     <Compile Include="Events\StartGameAsTesterEventHandler.cs" />
     <Compile Include="GameLogEntry.cs" />
+    <Compile Include="UI\GameLogEntryRow.cs" />
     <Compile Include="UI\UIComponentTappedEventHandler.cs" />
     <Compile Include="UI\UIEventContainer.cs" />
     <None Include="Content\effects\shade.fx" />
@@ -290,10 +291,14 @@
     <AndroidAsset Include="Content\fonts\Carlito-Regular.xnb" />
     <AndroidAsset Include="Content\sprites\distance_overlay.xnb" />
     <AndroidAsset Include="Content\effects\highlight.xnb" />
-    <AndroidAsset Include="Content\sprites\lock.xnb" />
     <AndroidAsset Include="Content\tilemaps\ComplexMap.xnb" />
     <AndroidAsset Include="Content\tilemaps\iso-64x64-outside_0.xnb" />
     <AndroidAsset Include="Content\effects\shade.xnb" />
+    <AndroidAsset Include="Content\sprites\icons\card.xnb" />
+    <AndroidAsset Include="Content\sprites\icons\lock.xnb" />
+    <AndroidAsset Include="Content\sprites\icons\move.xnb" />
+    <AndroidAsset Include="Content\sprites\icons\spaghetti_atlas_hat.xnb" />
+    <AndroidAsset Include="Content\sprites\icons\unicorn_atlas_hat.xnb" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
