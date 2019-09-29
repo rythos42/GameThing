@@ -13,21 +13,6 @@ namespace GameThing.UI
 		public bool PlaceFromRight { get; set; }
 		public List<UIComponent> Components { get; set; } = new List<UIComponent>();
 
-		private void CreatePanelGradient(int width, int height, GraphicsDevice graphicsDevice)
-		{
-			panelTexture = new Texture2D(graphicsDevice, width, height);
-			var backgroundColour = new Color[height * width];
-			var startingShade = 150;
-
-			for (var i = 0; i < backgroundColour.Length; i++)
-			{
-				var textColour = startingShade + i / (height * 2);
-				backgroundColour[i] = new Color(textColour, textColour, textColour, 0);
-			}
-
-			panelTexture.SetData(backgroundColour);
-		}
-
 		public override Vector2 MeasureContent()
 		{
 			var width = 0;
@@ -42,7 +27,7 @@ namespace GameThing.UI
 			return new Vector2(width, height - MARGIN); // we add one extra margin in the loop above, remove it
 		}
 
-		protected virtual Vector2 GetDrawingPosition(GraphicsDevice graphicsDevice, int x, int y)
+		protected virtual Vector2 GetDrawingPosition(GraphicsDevice graphicsDevice, float x, float y)
 		{
 			if (PlaceFromRight)
 			{
@@ -60,23 +45,24 @@ namespace GameThing.UI
 			shadowTexture = new Texture2D(graphicsDevice, 1, 1);
 			shadowTexture.SetData(new Color[] { Color.Black });
 
+			panelTexture = new Texture2D(graphicsDevice, 1, 1);
+			panelTexture.SetData(new Color[] { Color.Linen });
+
 			Components.ForEach(component => component.LoadContent(content, graphicsDevice));
 		}
 
-		public override void Draw(SpriteBatch spriteBatch, int x, int y)
+		public override void Draw(SpriteBatch spriteBatch, float x, float y)
 		{
 			var contentSize = MeasureContent();
 			Width = (int) contentSize.X + PADDING * 2;
 			Height = (int) contentSize.Y + PADDING * 2;
 
-			CreatePanelGradient(Width, Height, spriteBatch.GraphicsDevice);
-
 			var drawingPosition = GetDrawingPosition(spriteBatch.GraphicsDevice, x, y);
 			X = (int) drawingPosition.X;
 			Y = (int) drawingPosition.Y;
 
-			spriteBatch.Draw(shadowTexture, new Rectangle(X + BOX_SHADOW_X, Y + BOX_SHADOW_Y, Width, Height), Color.White);
-			spriteBatch.Draw(panelTexture, new Rectangle(X, Y, Width, Height), Color.White);
+			spriteBatch.Draw(shadowTexture, new Rectangle((int) X + BOX_SHADOW_X, (int) Y + BOX_SHADOW_Y, Width, Height), Color.White);
+			spriteBatch.Draw(panelTexture, new Rectangle((int) X, (int) Y, Width, Height), Color.White);
 
 			var drawX = X + MARGIN;
 			var drawY = Y + MARGIN;

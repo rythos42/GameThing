@@ -215,9 +215,12 @@
     <Compile Include="Android\BaseGameUtils\IGameHelperListener.cs" />
     <Compile Include="Data\Convert.cs" />
     <Compile Include="Data\TeamData.cs" />
+    <Compile Include="Data\ApplicationData.cs" />
+    <Compile Include="Data\BattleData.cs" />
     <Compile Include="Events\StartGameAsTesterEventHandler.cs" />
     <Compile Include="GameLogEntry.cs" />
     <Compile Include="Entities\Cards\Category.cs" />
+    <Compile Include="UI\GameLogEntryRow.cs" />
     <Compile Include="Entities\Cards\Conditions\BuffType.cs" />
     <Compile Include="Entities\Cards\Type.cs" />
     <Compile Include="Entities\Content.cs" />
@@ -236,8 +239,6 @@
     <Compile Include="UI\UIEventContainer.cs" />
     <None Include="Android\BaseGameUtils\README.md" />
     <Compile Include="Android\BaseGameUtils\SignInFailureReason.cs" />
-    <Compile Include="Data\ApplicationData.cs" />
-    <Compile Include="Data\BattleData.cs" />
     <Compile Include="CardManager.cs" />
     <Compile Include="Entities\Cards\Conditions\AppliedCondition.cs" />
     <Compile Include="Entities\Cards\Conditions\BuffCondition.cs" />
@@ -295,12 +296,16 @@
     <AndroidAsset Include="Content\sprites\distance_overlay.xnb" />
     <AndroidAsset Include="Content\effects\highlight.xnb" />
     <AndroidAsset Include="Content\effects\shade.xnb" />
-    <AndroidAsset Include="Content\sprites\lock.xnb" />
     <AndroidAsset Include="Content\tilemaps\ComplexMap.xnb" />
     <AndroidAsset Include="Content\tilemaps\iso-64x64-outside_0.xnb" />
     <AndroidAsset Include="Content\sprites\terrain\large_bush.xnb" />
     <AndroidAsset Include="Content\sprites\terrain\medium_tree.xnb" />
     <AndroidAsset Include="Content\sprites\terrain\small_tree.xnb" />
+    <AndroidAsset Include="Content\sprites\icons\card.xnb" />
+    <AndroidAsset Include="Content\sprites\icons\lock.xnb" />
+    <AndroidAsset Include="Content\sprites\icons\move.xnb" />
+    <AndroidAsset Include="Content\sprites\icons\spaghetti_atlas_hat.xnb" />
+    <AndroidAsset Include="Content\sprites\icons\unicorn_atlas_hat.xnb" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

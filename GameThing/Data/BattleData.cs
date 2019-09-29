@@ -25,10 +25,23 @@ namespace GameThing.Data
 		public string MatchId { get; set; }
 
 		[DataMember]
-		public CharacterSide? Winner { get; set; } = null;
+		public string WinnerParticipantId { get; set; } = null;
 
 		[DataMember]
 		public List<GameLogEntry> GameLog { get; set; } = new List<GameLogEntry>();
+
+		public CharacterSide? WinnerSide
+		{
+			get
+			{
+				return Sides.ContainsKey(WinnerParticipantId) ? Sides[WinnerParticipantId] : (CharacterSide?) null;
+			}
+		}
+
+		public void SetWinnerSide(CharacterSide side)
+		{
+			WinnerParticipantId = Sides.SingleOrDefault(keyValuePair => keyValuePair.Value == side).Key;
+		}
 
 		public void ChangePlayingSide()
 		{

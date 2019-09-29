@@ -16,10 +16,14 @@ namespace GameThing.Entities
 
 			Card = contentManager.Load<Texture2D>("sprites/card");
 			DistanceOverlay = contentManager.Load<Texture2D>("sprites/distance_overlay");
-			Lock = contentManager.Load<Texture2D>("sprites/lock");
+			Lock = contentManager.Load<Texture2D>("sprites/icons/lock");
 			LargeBush = contentManager.Load<Texture2D>("sprites/terrain/large_bush");
 			SmallTree = contentManager.Load<Texture2D>("sprites/terrain/small_tree");
 			MediumTree = contentManager.Load<Texture2D>("sprites/terrain/medium_tree");
+			SpaghettiHatIcon = contentManager.Load<Texture2D>("sprites/icons/spaghetti_atlas_hat");
+			UnicornHatIcon = contentManager.Load<Texture2D>("sprites/icons/unicorn_atlas_hat");
+			MoveIcon = contentManager.Load<Texture2D>("sprites/icons/move");
+			CardIcon = contentManager.Load<Texture2D>("sprites/icons/card");
 
 			Highlight = contentManager.Load<Effect>("effects/highlight");
 			Shade = contentManager.Load<Effect>("effects/shade");
@@ -45,6 +49,11 @@ namespace GameThing.Entities
 		public Texture2D LargeBush { get; private set; }
 		public Texture2D SmallTree { get; private set; }
 		public Texture2D MediumTree { get; private set; }
+		
+		public Texture2D SpaghettiHatIcon { get; private set; }
+		public Texture2D UnicornHatIcon { get; private set; }
+		public Texture2D MoveIcon { get; private set; }
+		public Texture2D CardIcon { get; private set; }
 
 		public Effect Highlight { get; private set; }
 		public Effect Shade { get; private set; }

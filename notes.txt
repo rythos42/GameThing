@@ -2,42 +2,27 @@
 - sort out Google Play API V3, deprecated December 1st
 	https://android-developers.googleblog.com/2019/03/changes-to-google-play-developer-api.html
 	
-MVP fixes:
-	- make team class count equal
+Todo (vMVP):
 	- rematch via Join Game crashes
-	- Audit:
-		- character move
-		- character card play
-	        - name of character playing
-			- effect of card 
-			- target of card
-		- needs to be scrollable
-	- get new Card structure from main branch
-		- remember the sub-class thing on the JSON setting thing
-	- Reloading match gives "Winner: No one"
-	- Remove Lame Distraction and replace with something else
 	- "100% Int damage" unclear -- thought it was "damage to your Int"
-	- Double tap to move
 	- Need to show conditions on players
 	- Don't make player do math (100% Int should be "1 damage (100% of Int)")
-	- Show player class on player stat panel
-
-				else
-			{
-				gameLogPanel.Draw(spriteBatch, 40, 110);
-				gameLogPanel.Components.Clear();
-				data.GameLog.ForEach(gameLogEntry => gameLogPanel.Components.Add(new Text { Value = gameLogEntry.TextDescription, Font = content.Font }));
-			}
-
-
-
-NEXT
 		
-Building a basic class hierarchy
+Todo (vNext):
+	- need some amount of randomness
+		- not "to hit", I hate that
+		- armour is possible
+		- damage maybe, but want it to fit inside existing framework as much as possible
+	- game needs an Armour stat
+	- exception if you press "Test" before team loaded from google drive
+	- some weird exception after "Win Game" button pressed, then press back. Likely due to saving.
+	- remove Lame Distraction and replace, it's a bad card
+
+	Building a basic class hierarchy
 	- Need more categories for some of the "higher level" things
 	- some of the brainstormed cards could be entire expansion blocks worth of ideas, separate them out.
 
-Manage Team
+	Manage Team
 	- implement character levels
 	- edit character decks
 	- delete team
@@ -46,23 +31,13 @@ Manage Team
 	- show categories of cards
 	- need many more cards
 
-Todo:
-	- need some amount of randomness
-		- not "to hit", I hate that
-		- armour is possible
-		- damage maybe, but want it to fit inside existing framework as much as possible
-	- game needs an Armour stat
-	- undo button
-	- exception if you press "Test" before team loaded from google drive
-	- some weird exception after "Win Game" button pressed, then press back. Likely due to saving.
-
 
 Nice to have:
+	- can't "hot seat" because it doesn't end the round after all characters have gone
 	- rename test mode to hot seat
 	- notification when card can't be played, and why
 	- allow characters to stand on slopes
 		- draw grid on slopes
-	- TauntCondition needs a message for success/fail
 	- stuff at range 0 played on self without needing to tap again
 	- don't allow friendly fire
 	- fix card sizing on tablet
@@ -84,6 +59,7 @@ Nice to have:
 	- center text on buttons again
 	- character names
 	- allow players to look at their shit when it's not their turn
+	- scroll through game log entries?
 
 Tech
 	- decent chance that GameHelper/BaseGameActivity aren't doing the right things anymore -- seems to be a mash-up of older sign-in code and newer
@@ -101,6 +77,9 @@ Tech
 	- consider loosening proguard.cfg -- it's keeping all of com.google.android.gms, but last error only needed com.google.android.gms.auth.api.signin.internal.SignInHubActivity
 		- check \obj\Release\90\proguard\proguard_project_references.cfg for ideas of how it works
 	- send card IDs instead of the whole card around
+	- move character sprites to a sub folder
+	- combine UIEventContainer and Panel - both keeping track of list of Components
+		- make BattleScreen a UIContainer and run events through it for Update/Gestures/etc
 	        
 Game Design
 	- evaluate whether single character or whole side is a better turn
@@ -154,11 +133,12 @@ Multiplayer
 	https://github.com/xamarin/GooglePlayServicesComponents/blob/master/samples/com.google.android.gms/play-services-games/BeGenerous/MainActivity.cs
 	https://developers.google.com/games/services/android/troubleshooting
 
-MonoGame Extended Blog
+MonoGame/XNA
 	http://blog.dylanwilson.net/posts/
 	https://github.com/craftworkgames/MonoGame.Extended/blob/develop/Source/Demos/Platformer/GameMain.cs
 	https://www.patreon.com/craftworkgames
 	http://www.monogameextended.net/posts
+	http://www.foszor.com/blog/xna-color-chart/
 
 	Tiled issues:
 		https://github.com/craftworkgames/MonoGame.Extended/issues/525
@@ -235,14 +215,3 @@ Map Creation:
 		- ie, the first layer is -32, next is -64
 	- "NoAvailableMovement:{layerNumber}", where layerNumber is the abs(vertical offset / 32)
 	- "Deployment" must have objects "Spaghetti" and "Unicorn"
-
-To Play:
-	Tell me your Gmail account e-mail (I have to add your name to my list of testers)
-	Set your Android device to Developer Mode
-		https://developer.android.com/studio/debug/dev-options
-	Download my APK 
-		https://drive.google.com/file/d/1n9SkH2JXqxD1sGsrNK80gpIvFkAw5LUg/view?usp=sharing
-	Install it and open it.
-	(it will get you to download and install Google Play Games)
-	press "Create Match", and create a match with "rythos42" (me)
-	Maybe you try it against someone else you know and like? :)

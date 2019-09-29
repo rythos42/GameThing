@@ -12,6 +12,9 @@ namespace GameThing.UI
 
 		public override Vector2 MeasureContent()
 		{
+			if (Value == null)
+				return Vector2.Zero;
+
 			return font.MeasureString(Value);
 		}
 
@@ -20,10 +23,13 @@ namespace GameThing.UI
 			font = content.Font;
 		}
 
-		public override void Draw(SpriteBatch spriteBatch, int x, int y)
+		public override void Draw(SpriteBatch spriteBatch, float x, float y)
 		{
 			X = x;
 			Y = y;
+
+			if (Value == null)
+				return;
 
 			spriteBatch.DrawString(font, Value, new Vector2(x, y), Color.Black);
 			IsVisible = true;

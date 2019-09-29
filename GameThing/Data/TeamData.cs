@@ -12,24 +12,21 @@ namespace GameThing.Data
 		[DataMember]
 		public List<Character> Characters { get; set; } = new List<Character>();
 
-		public static TeamData CreateDefaultTeam()
+		public static TeamData CreateDefaultTeam(CardManager cardManager)
 		{
 			var teamData = new TeamData();
-			teamData.Characters.Add(CreateCharacter(CharacterColour.Blue));
-			teamData.Characters.Add(CreateCharacter(CharacterColour.Green));
-			teamData.Characters.Add(CreateCharacter(CharacterColour.None));
-			teamData.Characters.Add(CreateCharacter(CharacterColour.Red));
-			teamData.Characters.Add(CreateCharacter(CharacterColour.White));
+			teamData.Characters.Add(CreateCharacter(CharacterColour.Blue, CharacterClass.Squire, cardManager));
+			teamData.Characters.Add(CreateCharacter(CharacterColour.Green, CharacterClass.Squire, cardManager));
+			teamData.Characters.Add(CreateCharacter(CharacterColour.None, CharacterClass.Apprentice, cardManager));
+			teamData.Characters.Add(CreateCharacter(CharacterColour.Red, CharacterClass.Apprentice, cardManager));
+			teamData.Characters.Add(CreateCharacter(CharacterColour.White, CharacterClass.Pickpocket, cardManager));
 			return teamData;
 		}
 
-		private static Character CreateCharacter(CharacterColour colour)
+		private static Character CreateCharacter(CharacterColour colour, CharacterClass cClass, CardManager cardManager)
 		{
-			var classEnumValues = Enum.GetValues(typeof(CharacterClass));
-			var thisCharacterClass = new Random().Next(0, classEnumValues.Length);
-
-			var character = new Character(Guid.NewGuid(), colour, (CharacterClass) thisCharacterClass);
-			character.InitializeDefaultDeck();
+			var character = new Character(Guid.NewGuid(), colour, cClass);
+			character.InitializeDefaultDeck(cardManager);
 			return character;
 		}
 

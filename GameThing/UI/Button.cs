@@ -39,13 +39,13 @@ namespace GameThing.UI
 			Height = (int) textSize.Y + (PADDING * 2);
 		}
 
-		public override void Draw(SpriteBatch spriteBatch, int x, int y)
+		public override void Draw(SpriteBatch spriteBatch, float x, float y)
 		{
 			X = x;
 			Y = y;
 
-			spriteBatch.Draw(shadowTexture, new Rectangle(x + BOX_SHADOW_X, y + BOX_SHADOW_Y, Width, Height), Color.White);
-			spriteBatch.Draw(IsHighlighted ? highlightTexture : buttonTexture, new Rectangle(x, y, Width, Height), Color.White);
+			spriteBatch.Draw(shadowTexture, new Rectangle((int) x + BOX_SHADOW_X, (int) y + BOX_SHADOW_Y, Width, Height), Color.White);
+			spriteBatch.Draw(IsHighlighted ? highlightTexture : buttonTexture, new Rectangle((int) x, (int) y, Width, Height), Color.White);
 			spriteBatch.DrawString(font, text, new Vector2(x + PADDING, y + PADDING), Color.Black);
 
 			IsVisible = true;

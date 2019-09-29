@@ -29,14 +29,27 @@ namespace GameThing.Screens
 		private CharacterSide thisPlayerSide;
 		private Character lockedInCharacter = null;
 		private readonly DrawableList entities = new DrawableList();
+		private MapPoint movingPoint;
+		private MapPoint targetingPoint;
+		private readonly CardManager cardManager;
 
 		private readonly Button newTurnButton;
 		private readonly Button winGameNowButton;
 		private readonly FadingTextPanel statusPanel = new FadingTextPanel() { PlaceFromRight = true };
 		private readonly Panel playerSidePanel = new Panel();
 		private readonly Text playerSideText = new Text();
+
+		private readonly Panel gameLogPanel = new Panel();
+		private bool showGameLogEntryPanel;
+		private Vector2 holdGestureLocation;
+		private readonly Panel heldGameLogEntryPanel = new Panel();
+		private readonly Text heldGameLogSource = new Text();
+		private readonly Text heldGameLogTarget = new Text();
+		private readonly Text heldGameLogActionText = new Text();
+
 		private readonly Panel selectedPlayerStatsPanel = new Panel();
 		private readonly Text sideText = new Text();
+		private readonly Text playerClassText = new Text();
 		private readonly Text healthText = new Text();
 		private readonly Text strengthText = new Text();
 		private readonly Text agilityText = new Text();
@@ -55,13 +68,15 @@ namespace GameThing.Screens
 		public event NextPlayersTurnEventHandler NextPlayersTurn;
 		public event BattleGameOverEventHandler GameOver;
 
-		public BattleScreen()
+		public BattleScreen(CardManager cardManager)
 		{
 			newTurnButton = new Button("New Turn") { UseMinimumButtonSize = false, Tapped = newTurnButton_Tapped };
 			Components.Add(newTurnButton);
 
 			winGameNowButton = new Button("Win Game") { UseMinimumButtonSize = false, Tapped = winGameNowButton_Tapped };
 			Components.Add(winGameNowButton);
+
+			this.cardManager = cardManager;
 		}
 		public bool IsTestMode { get; set; }
 
@@ -80,6 +95,8 @@ namespace GameThing.Screens
 			data = gameData;
 			entities.SetCharacters(gameData.Characters);
 
+			SetGameLogEntryRows();
+
 			// Start next round if all characters activated
 			var anyNotActivated = data.Characters.Any(character => !character.ActivatedThisRound);
 			if (!anyNotActivated)
@@ -89,6 +106,13 @@ namespace GameThing.Screens
 			var countOfActivatedPlayers = data.Characters.Count(character => character.ActivatedThisRound);
 			if (countOfActivatedPlayers <= 2)
 				statusPanel.Show("NEW ROUND");
+		}
+
+		private void SetGameLogEntryRows()
+		{
+			// Set game log entries from data into the UI in reverse order
+			for (int i = data.GameLog.Count - 1, j = 0; i >= 0 && j < gameLogPanel.Components.Count; i--, j++)
+				((GameLogEntryRow) gameLogPanel.Components[j]).GameLogEntry = data.GameLog[i];
 		}
 
 		private void PlaceCharacterOnMap(Character character, List<MapPoint> otherPlacements)
@@ -135,6 +159,7 @@ namespace GameThing.Screens
 			camera = new OrthographicCamera(graphicsDevice);
 			camera.LookAt(new Vector2(0, map.HeightInPixels / 2));  // center the map in the screen
 
+			selectedPlayerStatsPanel.Components.Add(playerClassText);
 			selectedPlayerStatsPanel.Components.Add(sideText);
 			selectedPlayerStatsPanel.Components.Add(healthText);
 			selectedPlayerStatsPanel.Components.Add(strengthText);
@@ -147,12 +172,21 @@ namespace GameThing.Screens
 
 			playerSidePanel.Components.Add(playerSideText);
 
+			for (int i = 0; i < 10; i++)
+				gameLogPanel.Components.Add(new GameLogEntryRow());
+
+			heldGameLogEntryPanel.Components.Add(heldGameLogSource);
+			heldGameLogEntryPanel.Components.Add(heldGameLogTarget);
+			heldGameLogEntryPanel.Components.Add(heldGameLogActionText);
+
 			this.content = content;
 			handOfCards.Content = content;
 			winGameNowButton.LoadContent(content, graphicsDevice);
 			statusPanel.LoadContent(content, graphicsDevice);
 			selectedPlayerStatsPanel.LoadContent(content, graphicsDevice);
 			playerSidePanel.LoadContent(content, graphicsDevice);
+			gameLogPanel.LoadContent(content, graphicsDevice);
+			heldGameLogEntryPanel.LoadContent(content, graphicsDevice);
 
 			renderTarget = new RenderTarget2D(graphicsDevice, graphicsDevice.Viewport.Width, graphicsDevice.Viewport.Height, false, SurfaceFormat.Color, DepthFormat.None);
 		}
@@ -211,9 +245,9 @@ namespace GameThing.Screens
 			if (!anySpaghetti || !anyUnicorn)
 			{
 				if (!anySpaghetti && anyUnicorn)
-					data.Winner = CharacterSide.Unicorn;
+					data.SetWinnerSide(CharacterSide.Unicorn);
 				else if (anySpaghetti && !anyUnicorn)
-					data.Winner = CharacterSide.Spaghetti;
+					data.SetWinnerSide(CharacterSide.Spaghetti);
 
 				GameOver?.Invoke(data);
 			}
@@ -226,6 +260,7 @@ namespace GameThing.Screens
 			while (TouchPanel.IsGestureAvailable)
 			{
 				var gesture = TouchPanel.ReadGesture();
+				showGameLogEntryPanel = false;
 
 				if (gesture.GestureType == GestureType.FreeDrag)
 					Pan(gesture);
@@ -236,6 +271,8 @@ namespace GameThing.Screens
 					InvokeContainerTap(gesture);
 					Tap(gesture);
 				}
+				if (gesture.GestureType == GestureType.Hold)
+					Hold(gesture);
 			}
 
 			statusPanel.Update(gameTime);
@@ -261,10 +298,26 @@ namespace GameThing.Screens
 				samplerState: SamplerState.PointClamp,
 				blendState: BlendState.AlphaBlend,
 				sortMode: SpriteSortMode.Texture);
-			if (selectedCard == null)
+			if (selectedCharacter != null && selectedCard == null && movingPoint == null)
+			{
 				data.Characters.SingleOrDefault(character => character == selectedCharacter && character.HasRemainingMoves && character.Side == thisPlayerSide)?.DrawMovementRange(spriteBatch);
-			else
+			}
+			else if (selectedCard != null && targetingPoint == null)
+			{
 				selectedCard.DrawEffectRange(spriteBatch);
+			}
+			else if (movingPoint != null)
+			{
+				var movingPointScreen = movingPoint.GetScreenPosition();
+				var distanceOverlay = content.DistanceOverlay;
+				spriteBatch.Draw(distanceOverlay, new Rectangle((int) movingPointScreen.X - MapPoint.TileWidth_Half, (int) movingPointScreen.Y, distanceOverlay.Width, distanceOverlay.Height), Color.DarkGreen * 0.5f);
+			}
+			else if (targetingPoint != null)
+			{
+				var targetingPointScreen = targetingPoint.GetScreenPosition();
+				var distanceOverlay = content.DistanceOverlay;
+				spriteBatch.Draw(distanceOverlay, new Rectangle((int) targetingPointScreen.X - MapPoint.TileWidth_Half, (int) targetingPointScreen.Y, distanceOverlay.Width, distanceOverlay.Height), Color.DarkBlue * 0.5f);
+			}
 			spriteBatch.End();
 
 			Effect currentEffect = null;
@@ -312,13 +365,17 @@ namespace GameThing.Screens
 			// Draw UI
 			spriteBatch.Begin();
 			if (thisPlayerSide == data.CurrentSidesTurn)
-				newTurnButton.Draw(spriteBatch, 40, 20);
-			statusPanel.Draw(spriteBatch, 40, 20);
-			playerSidePanel.Draw(spriteBatch, 220, 20);
+				newTurnButton.Draw(spriteBatch, UIComponent.MARGIN, UIComponent.MARGIN);
+			statusPanel.Draw(spriteBatch, UIComponent.MARGIN, UIComponent.MARGIN);
+			playerSidePanel.Draw(spriteBatch, newTurnButton.Width + 2 * UIComponent.MARGIN, UIComponent.MARGIN);
 			if (IsTestMode)
-				winGameNowButton.Draw(spriteBatch, 530, 20);
+				winGameNowButton.Draw(spriteBatch, newTurnButton.Width + playerSidePanel.Width + 3 * UIComponent.MARGIN, UIComponent.MARGIN);
+
+			gameLogPanel.Draw(spriteBatch, UIComponent.MARGIN, newTurnButton.Height + 2 * UIComponent.MARGIN);
+
 			if (selectedCharacter != null)
 			{
+				playerClassText.Value = $"Class: {selectedCharacter.CharacterClass}";
 				sideText.Value = $"Side: {selectedCharacter.Side}";
 				healthText.Value = $"Health: {selectedCharacter.CurrentHealth}/{selectedCharacter.CurrentMaxHealth}";
 				strengthText.Value = $"Strength: {selectedCharacter.CurrentStrength}/{selectedCharacter.BaseStrength}";
@@ -328,8 +385,12 @@ namespace GameThing.Screens
 				discardDeckText.Value = $"Cards in Discard: {selectedCharacter.CardsInDiscardCount}";
 				remainingMovesText.Value = $"Remaining Moves: {selectedCharacter.RemainingMoves}/{selectedCharacter.MaximumMoves}";
 				remainingPlayableCardsText.Value = $"Remaining Plays: {selectedCharacter.RemainingPlayableCards}/{selectedCharacter.MaximumPlayableCards}";
-				selectedPlayerStatsPanel.Draw(spriteBatch, 40, 110);
+				selectedPlayerStatsPanel.Draw(spriteBatch, gameLogPanel.Width + 2 * UIComponent.MARGIN, newTurnButton.Height + 2 * UIComponent.MARGIN);
 			}
+
+			if (showGameLogEntryPanel)
+				heldGameLogEntryPanel.Draw(spriteBatch, holdGestureLocation);
+
 			spriteBatch.End();
 
 			graphicsDevice.SetRenderTarget(null);
@@ -345,6 +406,7 @@ namespace GameThing.Screens
 
 		public void winGameNowButton_Tapped(GestureSample gesture)
 		{
+			data.SetWinnerSide(thisPlayerSide);
 			GameOver?.Invoke(data);
 		}
 
@@ -374,9 +436,14 @@ namespace GameThing.Screens
 				// we don't have a character selected, so select whatever we have under the tap
 				selectedCharacter = targetCharacter;
 			}
-			else if (selectedCard != null && targetCharacter != null && selectedCard.IsWithinRangeDistance(mapPoint) && mapPoint.IsWithinMap && (lockedInCharacter == selectedCard.OwnerCharacter || lockedInCharacter == null))
+			else if (selectedCard != null && targetCharacter != null && selectedCard.IsWithinRangeDistance(mapPoint) && mapPoint.IsWithinMap && (lockedInCharacter == selectedCard.OwnerCharacter || lockedInCharacter == null) && targetingPoint == null)
 			{
-				// PLAY SELECTED CARD
+				// TRYING TO TARGET A CARD
+				targetingPoint = mapPoint;
+			}
+			else if (targetingPoint?.Equals(mapPoint) == true)
+			{
+				// ACTUALLY PLAY SELECTED CARD
 				// we have a character selected and a card selected, try to target whatever is under the tap
 				if (selectedCharacter.NextCardMustTarget == null || selectedCharacter.NextCardMustTarget == targetCharacter)
 				{
@@ -389,7 +456,7 @@ namespace GameThing.Screens
 							CheckForWin();
 						}
 
-						data.GameLog.Add(new GameLogEntry
+						AddNewGameLogEntry(new GameLogEntry
 						{
 							SourceCharacter = selectedCharacter,
 							TargetCharacter = targetCharacter,
@@ -398,6 +465,7 @@ namespace GameThing.Screens
 
 						lockedInCharacter = selectedCard.OwnerCharacter;
 						selectedCard = null;
+						targetingPoint = null;
 					}
 				}
 			}
@@ -406,14 +474,21 @@ namespace GameThing.Screens
 				// DESELECTED CARD
 				// we have a character selected and a card selected but the card isn't in range of the desired target, or there is no target
 				selectedCard = null;
+				targetingPoint = null;
 			}
-			else if (selectedCharacter.IsWithinMoveDistanceOf(mapPoint) && mapPoint.IsWithinMap && mapPoint.IsInAvailableMovement && CanMoveSelectedCharacter && targetEntity == null)
+			else if (selectedCharacter.IsWithinMoveDistanceOf(mapPoint) && mapPoint.IsWithinMap && mapPoint.IsInAvailableMovement && CanMoveSelectedCharacter && targetEntity == null && movingPoint == null)
 			{
-				// MOVE
+				// TRYING TO MOVE
 				// we have a character selected, it's my character, it is within move distance of the tap and it has moves remaining
+				movingPoint = mapPoint;
+			}
+			else if (movingPoint?.Equals(mapPoint) == true)
+			{
+				// ACTUALLY MOVING
 				selectedCharacter.Move(mapPoint);
 				lockedInCharacter = selectedCharacter;
-				data.GameLog.Add(new GameLogEntry
+				movingPoint = null;
+				AddNewGameLogEntry(new GameLogEntry
 				{
 					SourceCharacter = selectedCharacter,
 					MovedTo = mapPoint
@@ -425,8 +500,16 @@ namespace GameThing.Screens
 				// we have a character selected, but didn't tap anything else useful so unselect it
 				selectedCharacter = null;
 				selectedCard = null;
+				movingPoint = null;
+				targetingPoint = null;
 				handOfCards.ClearCardPositions();
 			}
+		}
+
+		private void AddNewGameLogEntry(GameLogEntry entry)
+		{
+			data.GameLog.Add(entry);
+			SetGameLogEntryRows();
 		}
 
 		private bool CanMoveSelectedCharacter => selectedCharacter.Side == thisPlayerSide
@@ -460,6 +543,29 @@ namespace GameThing.Screens
 					return;
 
 				camera.Zoom += scale;
+			}
+		}
+
+		private void Hold(GestureSample gesture)
+		{
+			var heldLogEntryRow = gameLogPanel.Components.FirstOrDefault(component => component.IsAtPoint(gesture.Position)) as GameLogEntryRow;
+			if (heldLogEntryRow == null)
+				return;
+
+			showGameLogEntryPanel = true;
+			holdGestureLocation = gesture.Position;
+			var entry = heldLogEntryRow.GameLogEntry;
+			heldGameLogSource.Value = $"Source: {entry.SourceCharacterColour} on {entry.SourceCharacterSide}";
+
+			if (entry.MovedTo != null)
+			{
+				heldGameLogTarget.Value = null;
+				heldGameLogActionText.Value = $"Moved to ({entry.MovedTo.X}, {entry.MovedTo.Y})";
+			}
+			else
+			{
+				heldGameLogTarget.Value = $"Target:  {entry.TargetCharacterColour} on {entry.TargetCharacterSide}";
+				heldGameLogActionText.Value = cardManager.GetCard(entry.CardId).Description;
 			}
 		}
 	}

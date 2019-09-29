@@ -97,9 +97,21 @@ namespace GameThing.Android
 			RequestSignIn();
 		}
 
-		private async void Game_GameOver(string matchId, TeamData teamData)
+		private async void Game_GameOver(BattleData battleData, TeamData teamData)
 		{
-			await gameClient.FinishMatch(matchId);
+			if (battleData.MatchId == null)
+				return;
+
+			var gameData = Convert.Serialize(battleData);
+			var results = battleData
+				.Sides
+				.Select(keyValuePair => new ParticipantResult(
+					keyValuePair.Key,
+					battleData.WinnerParticipantId == keyValuePair.Key ? ParticipantResult.MatchResultWin : ParticipantResult.MatchResultLoss,
+					battleData.WinnerParticipantId == keyValuePair.Key ? 1 : 2))
+				.ToList();
+
+			await gameClient.FinishMatch(battleData.MatchId, gameData, results);
 
 			if (teamSnapshot != null)
 			{
@@ -161,12 +173,12 @@ namespace GameThing.Android
 			teamSnapshot = savedGameOrConflict.Data as ISnapshot;
 			if (teamSnapshot == null)
 			{
-				game.TeamData = TeamData.CreateDefaultTeam();
+				game.TeamData = TeamData.CreateDefaultTeam(game.CardManager);
 			}
 			else
 			{
 				var teamDataBytes = teamSnapshot.SnapshotContents.ReadFully();
-				game.TeamData = teamDataBytes.Length != 0 ? Convert.Deserialize<TeamData>(teamDataBytes) : TeamData.CreateDefaultTeam();
+				game.TeamData = teamDataBytes.Length != 0 ? Convert.Deserialize<TeamData>(teamDataBytes) : TeamData.CreateDefaultTeam(game.CardManager);
 			}
 		}
 
@@ -198,6 +210,9 @@ namespace GameThing.Android
 
 		private void SendDataToNextPlayer(BattleData data, string participantId = null)
 		{
+			if (data.MatchId == null)
+				return;
+
 			var gameData = Convert.Serialize(data);
 			participantId = participantId ?? data.GetParticipantIdForCurrentSide();
 			gameClient.TakeTurn(data.MatchId, gameData, participantId);

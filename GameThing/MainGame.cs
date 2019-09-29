@@ -17,7 +17,7 @@ namespace GameThing
 		private SpriteBatch spriteBatch;
 
 		private ScreenType currentScreen = ScreenType.StartMenu;
-		private readonly BattleScreen battleScreen = new BattleScreen();
+		private readonly BattleScreen battleScreen;
 		private readonly StartScreen startScreen;
 		private readonly GameOverScreen gameOverScreen = new GameOverScreen();
 
@@ -34,6 +34,7 @@ namespace GameThing
 		public MainGame()
 		{
 			startScreen = new StartScreen(appData);
+			battleScreen = new BattleScreen(CardManager);
 
 			graphics = new GraphicsDeviceManager(this)
 			{
@@ -53,6 +54,7 @@ namespace GameThing
 		}
 
 		public TeamData TeamData { get; set; }
+		public CardManager CardManager { get; private set; } = new CardManager();
 
 		public void SetSignedIn(bool signedIn)
 		{
@@ -80,8 +82,10 @@ namespace GameThing
 
 		private void StartScreen_StartedAsTester()
 		{
-			var battleData = InitializeBattleData("test");
-			battleData.InitializeCharacters("participantId", TeamData);
+			var battleData = InitializeBattleData(null);
+			battleData.InitializeCharacters("p1", TeamData);
+			battleData.ChangePlayingSide();
+			battleData.InitializeCharacters("p2", TeamData);
 
 			var side = CharacterSide.Spaghetti;
 			currentScreen = ScreenType.Battle;
@@ -100,7 +104,7 @@ namespace GameThing
 		{
 			TeamData.MergeBattleData(data);
 
-			GameOver?.Invoke(data.MatchId, TeamData);
+			GameOver?.Invoke(data, TeamData);
 			ShowGameOver(data);
 		}
 
@@ -132,13 +136,13 @@ namespace GameThing
 
 		public void ShowGameOver(BattleData data)
 		{
-			gameOverScreen.Winner = data.Winner;
+			gameOverScreen.Winner = data.WinnerSide;
 			currentScreen = ScreenType.GameOver;
 		}
 
 		protected override void Initialize()
 		{
-			TouchPanel.EnabledGestures = GestureType.FreeDrag | GestureType.Pinch | GestureType.Tap;
+			TouchPanel.EnabledGestures = GestureType.FreeDrag | GestureType.Pinch | GestureType.Tap | GestureType.Hold;
 
 			base.Initialize();
 		}

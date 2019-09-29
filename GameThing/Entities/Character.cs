@@ -9,282 +9,282 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GameThing.Entities
 {
-	[DataContract]
-	public class Character : Drawable
-	{
-		private Texture2D availableMovementTexture;
-		private Texture2D lockSprite;
-		private static readonly Random rng = new Random();
+    [DataContract]
+    public class Character : Drawable
+    {
+        private Texture2D availableMovementTexture;
+        private Texture2D lockSprite;
+        private static readonly Random rng = new Random();
 
-		public Character(Guid id, CharacterColour colour, CharacterClass characterClass)
-		{
-			Id = id;
-			CharacterClass = characterClass;
-			Colour = colour;
-		}
+        public Character(Guid id, CharacterColour colour, CharacterClass characterClass)
+        {
+            Id = id;
+            CharacterClass = characterClass;
+            Colour = colour;
+        }
 
-		public void SetContent(Content content)
-		{
-			Sprite = content.GetSpriteFor(this);
-			availableMovementTexture = content.DistanceOverlay;
-			lockSprite = content.Lock;
-		}
+        public void SetContent(Content content)
+        {
+            Sprite = content.GetSpriteFor(this);
+            availableMovementTexture = content.DistanceOverlay;
+            lockSprite = content.Lock;
+        }
 
-		[DataMember]
-		public Guid Id { get; set; }
+        [DataMember]
+        public Guid Id { get; set; }
 
-		[DataMember]
-		public override MapPoint MapPosition { get; set; }
+        [DataMember]
+        public override MapPoint MapPosition { get; set; }
 
-		[DataMember]
-		public decimal BaseStrength { get; private set; } = 1;
+        [DataMember]
+        public decimal BaseStrength { get; private set; } = 1;
 
-		[DataMember]
-		public decimal BaseAgility { get; private set; } = 1;
+        [DataMember]
+        public decimal BaseAgility { get; private set; } = 1;
 
-		[DataMember]
-		public decimal BaseIntelligence { get; private set; } = 1;
+        [DataMember]
+        public decimal BaseIntelligence { get; private set; } = 1;
 
-		[DataMember]
-		public decimal CurrentHealth { get; set; } = 7;
+        [DataMember]
+        public decimal CurrentHealth { get; set; } = 7;
 
-		[DataMember]
-		public decimal CurrentMaxHealth { get; private set; } = 7;
+        [DataMember]
+        public decimal CurrentMaxHealth { get; private set; } = 7;
 
-		[DataMember]
-		public decimal StrengthMultiplier { get; set; } = 1;
+        [DataMember]
+        public decimal StrengthMultiplier { get; set; } = 1;
 
-		[DataMember]
-		public decimal AgilityMultiplier { get; set; } = 1;
+        [DataMember]
+        public decimal AgilityMultiplier { get; set; } = 1;
 
-		[DataMember]
-		public decimal IntelligenceMultiplier { get; set; } = 1;
+        [DataMember]
+        public decimal IntelligenceMultiplier { get; set; } = 1;
 
 
-		[DataMember]
-		public CharacterSide Side { get; set; }
+        [DataMember]
+        public CharacterSide Side { get; set; }
 
-		[DataMember]
-		public CharacterClass CharacterClass { get; set; }
+        [DataMember]
+        public CharacterClass CharacterClass { get; set; }
 
-		[DataMember]
-		public CharacterColour Colour { get; set; }
+        [DataMember]
+        public CharacterColour Colour { get; set; }
 
-		[DataMember]
-		public Character NextCardMustTarget { get; set; }
+        [DataMember]
+        public Character NextCardMustTarget { get; set; }
 
-		public decimal CurrentStrength => BaseStrength * StrengthMultiplier;
-		public decimal CurrentAgility => BaseAgility * AgilityMultiplier;
-		public decimal CurrentIntelligence => BaseIntelligence * IntelligenceMultiplier;
+        public decimal CurrentStrength => BaseStrength * StrengthMultiplier;
+        public decimal CurrentAgility => BaseAgility * AgilityMultiplier;
+        public decimal CurrentIntelligence => BaseIntelligence * IntelligenceMultiplier;
 
-		public void ApplyDamage(decimal damageAmount)
-		{
-			CurrentHealth -= damageAmount;
-		}
+        public void ApplyDamage(decimal damageAmount)
+        {
+            CurrentHealth -= damageAmount;
+        }
 
-		public void ApplyHealing(decimal damageAmount)
-		{
-			CurrentHealth += damageAmount;
-			if (CurrentHealth > CurrentMaxHealth)
-				CurrentHealth = CurrentMaxHealth;
-		}
+        public void ApplyHealing(decimal damageAmount)
+        {
+            CurrentHealth += damageAmount;
+            if (CurrentHealth > CurrentMaxHealth)
+                CurrentHealth = CurrentMaxHealth;
+        }
 
-		[DataMember]
-		public List<AppliedCondition> Conditions { get; } = new List<AppliedCondition>();
+        [DataMember]
+        public List<AppliedCondition> Conditions { get; } = new List<AppliedCondition>();
 
-		public void RemoveConditions(ConditionEndsOn endsOn, Predicate<AppliedCondition> appliesTo = null)
-		{
-			for (var i = Conditions.Count - 1; i >= 0; i--)
-			{
-				var condition = Conditions[i];
+        public void RemoveConditions(ConditionEndsOn endsOn, Predicate<AppliedCondition> appliesTo = null)
+        {
+            for (var i = Conditions.Count - 1; i >= 0; i--)
+            {
+                var condition = Conditions[i];
 
-				if (condition.Condition.EndsOn == endsOn && (appliesTo?.Invoke(condition) ?? true) == true)
-				{
-					condition.Condition.Remove(this);
-					Conditions.Remove(condition);
-				}
-			}
-		}
+                if (condition.Condition.EndsOn == endsOn && (appliesTo?.Invoke(condition) ?? true) == true)
+                {
+                    condition.Condition.Remove(this);
+                    Conditions.Remove(condition);
+                }
+            }
+        }
 
-		public void StartNewRound(int roundNumber)
-		{
-			RemoveConditions(ConditionEndsOn.StartRound, condition => condition.RoundNumber + condition.Condition.TurnCount == roundNumber);
+        public void StartNewRound(int roundNumber)
+        {
+            RemoveConditions(ConditionEndsOn.StartRound, condition => condition.RoundNumber + condition.Condition.TurnCount == roundNumber);
 
-			ResetTurn();
-		}
+            ResetTurn();
+        }
 
-		public void EndTurn()
-		{
-			ActivatedThisRound = true;
-		}
+        public void EndTurn()
+        {
+            ActivatedThisRound = true;
+        }
 
-		public void ResetTurn()
-		{
-			RemainingMoves = MaximumMoves;
-			RemainingPlayableCards = MaximumPlayableCards;
-			ActivatedThisRound = false;
-		}
+        public void ResetTurn()
+        {
+            RemainingMoves = MaximumMoves;
+            RemainingPlayableCards = MaximumPlayableCards;
+            ActivatedThisRound = false;
+        }
 
-		[DataMember]
-		public int MaximumMoves { get; set; } = 5;
+        [DataMember]
+        public int MaximumMoves { get; set; } = 5;
 
-		[DataMember]
-		public int RemainingMoves { get; set; }
+        [DataMember]
+        public int RemainingMoves { get; set; }
 
-		[DataMember]
-		public int RemainingPlayableCards { get; private set; }
+        [DataMember]
+        public int RemainingPlayableCards { get; private set; }
 
-		[DataMember]
-		public int MaximumPlayableCards { get; private set; } = 2;
+        [DataMember]
+        public int MaximumPlayableCards { get; private set; } = 2;
 
-		[DataMember]
-		public bool ActivatedThisRound { get; private set; }
+        [DataMember]
+        public bool ActivatedThisRound { get; private set; }
 
-		[DataMember]
-		public Dictionary<Category, int> CategoryLevels { get; } = new Dictionary<Category, int>();
+        [DataMember]
+        public Dictionary<Category, int> CategoryLevels { get; } = new Dictionary<Category, int>();
 
-		[DataMember]
-		public Dictionary<Category, int> AdditionalCategoryLevels { get; } = new Dictionary<Category, int>();
+        [DataMember]
+        public Dictionary<Category, int> AdditionalCategoryLevels { get; } = new Dictionary<Category, int>();
 
-		[DataMember]
-		public List<Card> Deck { get; private set; } = new List<Card>();
+        [DataMember]
+        public List<Card> Deck { get; private set; } = new List<Card>();
 
-		public bool HasRemainingPlayableCards => RemainingPlayableCards > 0;
-		public bool HasRemainingMoves => RemainingMoves > 0;
+        public bool HasRemainingPlayableCards => RemainingPlayableCards > 0;
+        public bool HasRemainingMoves => RemainingMoves > 0;
 
-		public void InitializeDefaultDeck()
-		{
-			Deck = new CardManager().CreateDefaultDeck(this);
-		}
+        public void InitializeDefaultDeck(CardManager cardManager)
+        {
+            Deck = cardManager.CreateDefaultDeck(this);
+        }
 
-		public void InitializeDeckForBattle()
-		{
-			Shuffle(Deck);
-			DrawOneCard();
-			DrawOneCard();
-			DrawOneCard();
-			DrawOneCard();
-		}
+        public void InitializeDeckForBattle()
+        {
+            Shuffle(Deck);
+            DrawOneCard();
+            DrawOneCard();
+            DrawOneCard();
+            DrawOneCard();
+        }
 
-		public bool PlayCard(Card card, Character targetCharacter, int roundNumber)
-		{
-			// Try to play the card, cancelling if it returns false
-			if (!card.Play(roundNumber, targetCharacter))
-				return false;
+        public bool PlayCard(Card card, Character targetCharacter, int roundNumber)
+        {
+            // Try to play the card, cancelling if it returns false
+            if (!card.Play(roundNumber, targetCharacter))
+                return false;
 
-			RemainingPlayableCards--;
-			card.Discard();
-			DrawOneCard();
+            RemainingPlayableCards--;
+            card.Discard();
+            DrawOneCard();
 
-			card.Categories.ForEach(cardCategory =>
-			{
-				if (AdditionalCategoryLevels.ContainsKey(cardCategory))
-					AdditionalCategoryLevels[cardCategory]++;
-				else
-					AdditionalCategoryLevels.Add(cardCategory, 1);
-			});
-			
-			return true;
-		}
+            card.Categories.ForEach(cardCategory =>
+            {
+                if (AdditionalCategoryLevels.ContainsKey(cardCategory))
+                    AdditionalCategoryLevels[cardCategory]++;
+                else
+                    AdditionalCategoryLevels.Add(cardCategory, 1);
+            });
 
-		private void Shuffle(List<Card> list)
-		{
-			var n = list.Count;
-			while (n > 1)
-			{
-				n--;
-				var k = rng.Next(n + 1);
-				var value = list[k];
-				list[k] = list[n];
-				list[n] = value;
-			}
-		}
+            return true;
+        }
 
-		public void DrawOneCard()
-		{
-			var nextCard = Deck.FirstOrDefault(card => !card.InHand && !card.InDiscard);
-			if (nextCard != null)
-			{
-				nextCard.InHand = true;
-			}
-			else
-			{
-				Deck.ForEach(card => card.InDiscard = false);
+        private void Shuffle(List<Card> list)
+        {
+            var n = list.Count;
+            while (n > 1)
+            {
+                n--;
+                var k = rng.Next(n + 1);
+                var value = list[k];
+                list[k] = list[n];
+                list[n] = value;
+            }
+        }
 
-				var currentDeck = Deck.Where(card => !card.InHand).ToList();
-				Shuffle(currentDeck);
-				var currentHand = CurrentHand.ToList();
+        public void DrawOneCard()
+        {
+            var nextCard = Deck.FirstOrDefault(card => !card.InHand && !card.InDiscard);
+            if (nextCard != null)
+            {
+                nextCard.InHand = true;
+            }
+            else
+            {
+                Deck.ForEach(card => card.InDiscard = false);
 
-				Deck.Clear();
-				Deck.AddRange(currentHand);
-				Deck.AddRange(currentDeck);
+                var currentDeck = Deck.Where(card => !card.InHand).ToList();
+                Shuffle(currentDeck);
+                var currentHand = CurrentHand.ToList();
 
-				DrawOneCard();
-			}
-		}
+                Deck.Clear();
+                Deck.AddRange(currentHand);
+                Deck.AddRange(currentDeck);
 
-		public IEnumerable<Card> CurrentHand => Deck.Where(card => card.InHand);
+                DrawOneCard();
+            }
+        }
 
-		public int CardsInDeckCount => Deck.Count(card => !card.InHand && !card.InDiscard);
+        public IEnumerable<Card> CurrentHand => Deck.Where(card => card.InHand);
 
-		public int CardsInDiscardCount => Deck.Count(card => card.InDiscard);
+        public int CardsInDeckCount => Deck.Count(card => !card.InHand && !card.InDiscard);
 
-		[OnDeserialized]
-		internal void OnDeserialized(StreamingContext context)
-		{
-			// We don't serialize the OwnerCharacter for cards as it's wasteful, need to set after we build the Character and Deck
-			Deck.ForEach(card =>
-			{
-				card.OwnerCharacter = this;
+        public int CardsInDiscardCount => Deck.Count(card => card.InDiscard);
 
-				if (card.Condition != null)
-					card.Condition.SourceCharacter = this;
-			});
-		}
+        [OnDeserialized]
+        internal void OnDeserialized(StreamingContext context)
+        {
+            // We don't serialize the OwnerCharacter for cards as it's wasteful, need to set after we build the Character and Deck
+            Deck.ForEach(card =>
+            {
+                card.OwnerCharacter = this;
 
-		public bool IsWithinDistanceOf(int range, MapPoint checkPoint)
-		{
-			return MapPosition.IsWithinDistanceOf(range, checkPoint);
-		}
+                if (card.Condition != null)
+                    card.Condition.SourceCharacter = this;
+            });
+        }
 
-		public bool IsWithinMoveDistanceOf(MapPoint checkPoint)
-		{
-			return IsWithinDistanceOf(RemainingMoves, checkPoint);
-		}
+        public bool IsWithinDistanceOf(int range, MapPoint checkPoint)
+        {
+            return MapPosition.IsWithinDistanceOf(range, checkPoint);
+        }
 
-		public void Move(MapPoint movePoint)
-		{
-			var distance = Math.Abs(MapPosition.X - movePoint.X) + Math.Abs(MapPosition.Y - movePoint.Y);
+        public bool IsWithinMoveDistanceOf(MapPoint checkPoint)
+        {
+            return IsWithinDistanceOf(RemainingMoves, checkPoint);
+        }
 
-			RemainingMoves -= distance;
-			MapPosition = movePoint;
+        public void Move(MapPoint movePoint)
+        {
+            var distance = Math.Abs(MapPosition.X - movePoint.X) + Math.Abs(MapPosition.Y - movePoint.Y);
 
-			RemoveConditions(ConditionEndsOn.Move);
-		}
+            RemainingMoves -= distance;
+            MapPosition = movePoint;
 
-		public override Texture2D Sprite { get; set; }
+            RemoveConditions(ConditionEndsOn.Move);
+        }
 
-		public override void Draw(SpriteBatch spriteBatch)
-		{
-			var drawPosition = MapPosition.GetScreenPosition();
-			drawPosition.Y -= Sprite.Height / 1.3f;
-			drawPosition.X -= Sprite.Width / 2;
+        public override Texture2D Sprite { get; set; }
 
-			spriteBatch.Draw(Sprite, drawPosition, Color.White);
-		}
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            var drawPosition = MapPosition.GetScreenPosition();
+            drawPosition.Y -= Sprite.Height / 1.3f;
+            drawPosition.X -= Sprite.Width / 2;
 
-		public void DrawLock(SpriteBatch spriteBatch)
-		{
-			var drawPosition = MapPosition.GetScreenPosition();
-			drawPosition.Y -= Sprite.Height - (lockSprite.Height / 2);
-			drawPosition.X -= lockSprite.Width / 2;
+            spriteBatch.Draw(Sprite, drawPosition, Color.White);
+        }
 
-			spriteBatch.Draw(lockSprite, drawPosition, Color.White);
-		}
+        public void DrawLock(SpriteBatch spriteBatch)
+        {
+            var drawPosition = MapPosition.GetScreenPosition();
+            drawPosition.Y -= Sprite.Height - (lockSprite.Height / 2);
+            drawPosition.X -= lockSprite.Width / 2;
 
-		public void DrawMovementRange(SpriteBatch spriteBatch)
-		{
-			MapHelper.DrawRange(RemainingMoves, MapPosition, spriteBatch, availableMovementTexture, Color.White, showUnderCharacters: false);
-		}
-	}
+            spriteBatch.Draw(lockSprite, drawPosition, Color.White);
+        }
+
+        public void DrawMovementRange(SpriteBatch spriteBatch)
+        {
+            MapHelper.DrawRange(RemainingMoves, MapPosition, spriteBatch, availableMovementTexture, Color.White, showUnderCharacters: false);
+        }
+    }
 }
