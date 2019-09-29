@@ -519,7 +519,7 @@ namespace GameThing.Screens
 		{
 			get
 			{
-				return selectedCharacter.HasRemainingPlayableCards && !selectedCharacter.ActivatedThisRound;
+				return selectedCharacter != null && selectedCharacter.HasRemainingPlayableCards && !selectedCharacter.ActivatedThisRound;
 			}
 		}
 
