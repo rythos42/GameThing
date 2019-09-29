@@ -16,8 +16,8 @@ namespace GameThing.UI
 		public bool IsVisible { get; protected set; }
 		public int Width { get; protected set; }
 		public int Height { get; protected set; }
-		public int X { get; protected set; }
-		public int Y { get; protected set; }
+		public float X { get; protected set; }
+		public float Y { get; protected set; }
 
 		public virtual void Update(GameTime gameTime)
 		{
@@ -32,8 +32,13 @@ namespace GameThing.UI
 				&& Y + Height > checkPoint.Y;
 		}
 
+		public void Draw(SpriteBatch spriteBatch, Vector2 location)
+		{
+			Draw(spriteBatch, location.X, location.Y);
+		}
+
 		public abstract void LoadContent(Content content, GraphicsDevice graphicsDevice);
-		public abstract void Draw(SpriteBatch spriteBatch, int x, int y);
+		public abstract void Draw(SpriteBatch spriteBatch, float x, float y);
 		public abstract Vector2 MeasureContent();
 	}
 }

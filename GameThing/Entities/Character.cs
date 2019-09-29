@@ -144,9 +144,9 @@ namespace GameThing.Entities
 		public bool HasRemainingPlayableCards { get { return RemainingPlayableCards > 0; } }
 		public bool HasRemainingMoves { get { return RemainingMoves > 0; } }
 
-		public void InitializeDeck()
+		public void InitializeDeck(CardManager cardManager)
 		{
-			Deck = new CardManager().CreateDefaultDeck(this);
+			Deck = cardManager.CreateDefaultDeck(this);
 			Shuffle(Deck);
 			DrawOneCard();
 			DrawOneCard();

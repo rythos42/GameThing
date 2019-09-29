@@ -27,7 +27,7 @@ namespace GameThing.UI
 			return new Vector2(width, height - MARGIN); // we add one extra margin in the loop above, remove it
 		}
 
-		protected virtual Vector2 GetDrawingPosition(GraphicsDevice graphicsDevice, int x, int y)
+		protected virtual Vector2 GetDrawingPosition(GraphicsDevice graphicsDevice, float x, float y)
 		{
 			if (PlaceFromRight)
 			{
@@ -51,7 +51,7 @@ namespace GameThing.UI
 			Components.ForEach(component => component.LoadContent(content, graphicsDevice));
 		}
 
-		public override void Draw(SpriteBatch spriteBatch, int x, int y)
+		public override void Draw(SpriteBatch spriteBatch, float x, float y)
 		{
 			var contentSize = MeasureContent();
 			Width = (int) contentSize.X + PADDING * 2;
@@ -61,8 +61,8 @@ namespace GameThing.UI
 			X = (int) drawingPosition.X;
 			Y = (int) drawingPosition.Y;
 
-			spriteBatch.Draw(shadowTexture, new Rectangle(X + BOX_SHADOW_X, Y + BOX_SHADOW_Y, Width, Height), Color.White);
-			spriteBatch.Draw(panelTexture, new Rectangle(X, Y, Width, Height), Color.White);
+			spriteBatch.Draw(shadowTexture, new Rectangle((int) X + BOX_SHADOW_X, (int) Y + BOX_SHADOW_Y, Width, Height), Color.White);
+			spriteBatch.Draw(panelTexture, new Rectangle((int) X, (int) Y, Width, Height), Color.White);
 
 			var drawX = X + MARGIN;
 			var drawY = Y + MARGIN;

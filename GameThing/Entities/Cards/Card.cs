@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using GameThing.Data;
 using GameThing.Entities.Cards.Conditions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -101,6 +102,16 @@ namespace GameThing.Entities.Cards
 		{
 			InHand = false;
 			InDiscard = true;
+		}
+
+		public Card CreateForCharacter(Character character)
+		{
+			var cardBytes = Convert.Serialize(this);
+			var clonedCard = Convert.Deserialize<Card>(cardBytes);
+			clonedCard.OwnerCharacter = character;
+			if (clonedCard.Condition != null)
+				clonedCard.Condition.SourceCharacter = character;
+			return clonedCard;
 		}
 
 		public int Width => sprite.Width / 2;

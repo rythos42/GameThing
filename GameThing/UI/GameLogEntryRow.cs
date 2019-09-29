@@ -13,8 +13,11 @@ namespace GameThing.UI
 
 		public GameLogEntry GameLogEntry { get; set; }
 
-		public override void Draw(SpriteBatch spriteBatch, int x, int y)
+		public override void Draw(SpriteBatch spriteBatch, float x, float y)
 		{
+			X = x;
+			Y = y;
+
 			if (GameLogEntry == null)
 				return;
 
@@ -23,7 +26,6 @@ namespace GameThing.UI
 
 			if (GameLogEntry.MovedTo != null)
 			{
-
 				spriteBatch.Draw(moveIcon, new Vector2(x + sourceIcon.Width, y), Color.White);
 			}
 			else
@@ -46,11 +48,14 @@ namespace GameThing.UI
 			unicornHatIcon = content.UnicornHatIcon;
 			cardIcon = content.CardIcon;
 			moveIcon = content.MoveIcon;
+
+			Width = spaghettiHatIcon.Width + cardIcon.Width + unicornHatIcon.Width;
+			Height = spaghettiHatIcon.Height;
 		}
 
 		public override Vector2 MeasureContent()
 		{
-			return new Vector2(spaghettiHatIcon.Width + cardIcon.Width + unicornHatIcon.Width, spaghettiHatIcon.Height);
+			return new Vector2(Width, Height);
 		}
 	}
 }

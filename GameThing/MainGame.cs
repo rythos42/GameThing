@@ -16,7 +16,7 @@ namespace GameThing
 		private SpriteBatch spriteBatch;
 
 		private ScreenType currentScreen = ScreenType.StartMenu;
-		private readonly BattleScreen battleScreen = new BattleScreen();
+		private readonly BattleScreen battleScreen;
 		private readonly StartScreen startScreen;
 		private readonly GameOverScreen gameOverScreen = new GameOverScreen();
 
@@ -29,10 +29,12 @@ namespace GameThing
 
 		private readonly ApplicationData appData = new ApplicationData();
 		private Content content;
+		private readonly CardManager cardManager = new CardManager();
 
 		public MainGame()
 		{
 			startScreen = new StartScreen(appData);
+			battleScreen = new BattleScreen(cardManager);
 
 			graphics = new GraphicsDeviceManager(this)
 			{
@@ -76,7 +78,7 @@ namespace GameThing
 			battleData.Characters.Add(CreateCharacter(CharacterSide.Unicorn, CharacterClass.Squire, CharacterColour.Red));
 			battleData.Characters.Add(CreateCharacter(CharacterSide.Unicorn, CharacterClass.Squire, CharacterColour.White));
 
-			battleData.Characters.ForEach(character => character.InitializeDeck());
+			battleData.Characters.ForEach(character => character.InitializeDeck(cardManager));
 
 			for (int i = 0; i < participantIds.Count; i++)
 			{
@@ -162,7 +164,7 @@ namespace GameThing
 
 		protected override void Initialize()
 		{
-			TouchPanel.EnabledGestures = GestureType.FreeDrag | GestureType.Pinch | GestureType.Tap;
+			TouchPanel.EnabledGestures = GestureType.FreeDrag | GestureType.Pinch | GestureType.Tap | GestureType.Hold;
 
 			base.Initialize();
 		}
