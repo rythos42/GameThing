@@ -15,6 +15,7 @@ namespace GameThing.Entities.Cards.Conditions
 			BuffAmount = buffAmount;
 			TurnCount = turnCount;
 			EndsOn = ConditionEndsOn.StartRound;
+			IconName = "sprites/icons/buff";
 
 			switch (type)
 			{

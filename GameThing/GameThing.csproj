@@ -215,10 +215,12 @@
     <Compile Include="Android\BaseGameUtils\IGameHelperListener.cs" />
     <Compile Include="Data\ApplicationData.cs" />
     <Compile Include="Data\BattleData.cs" />
+    <Compile Include="Events\SelectedCharacterChange.cs" />
     <Compile Include="Events\StartGameAsTesterEventHandler.cs" />
     <Compile Include="GameLogEntry.cs" />
     <Compile Include="Data\Convert.cs" />
     <Compile Include="Data\TeamData.cs" />
+    <Compile Include="UI\AppliedConditionRow.cs" />
     <Compile Include="UI\GameLogEntryRow.cs" />
     <Compile Include="Entities\Cards\Category.cs" />
     <Compile Include="UI\UIComponentTappedEventHandler.cs" />
@@ -300,6 +302,10 @@
     <AndroidAsset Include="Content\sprites\icons\move.xnb" />
     <AndroidAsset Include="Content\sprites\icons\spaghetti_atlas_hat.xnb" />
     <AndroidAsset Include="Content\sprites\icons\unicorn_atlas_hat.xnb" />
+    <AndroidAsset Include="Content\sprites\icons\buff.xnb" />
+    <AndroidAsset Include="Content\sprites\icons\distract.xnb" />
+    <AndroidAsset Include="Content\sprites\icons\run.xnb" />
+    <AndroidAsset Include="Content\sprites\icons\taunt.xnb" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

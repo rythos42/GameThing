@@ -9,6 +9,7 @@ namespace GameThing.Entities.Cards.Conditions
 		{
 			AdditionalMove = additionalMove;
 			EndsOn = ConditionEndsOn.Move;
+			IconName = "sprites/icons/run";
 		}
 
 		[DataMember]

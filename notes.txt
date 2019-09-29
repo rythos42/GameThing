@@ -4,9 +4,7 @@
 	
 Todo (vMVP):
 	- rematch via Join Game crashes
-	- "100% Int damage" unclear -- thought it was "damage to your Int"
-	- Need to show conditions on players
-	- Don't make player do math (100% Int should be "1 damage (100% of Int)")
+	- tooltip on condition icons to give details
 		
 Todo (vNext):
 	- need some amount of randomness
@@ -33,6 +31,9 @@ Todo (vNext):
 
 
 Nice to have:
+	- General card wording
+		- "100% Int damage" unclear -- thought it was "damage to your Int"
+		- Don't make player do math (100% Int should be "1 damage (100% of Int)")
 	- can't "hot seat" because it doesn't end the round after all characters have gone
 	- rename test mode to hot seat
 	- notification when card can't be played, and why

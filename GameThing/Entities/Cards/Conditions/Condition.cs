@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GameThing.Entities.Cards.Conditions
 {
@@ -24,5 +25,8 @@ namespace GameThing.Entities.Cards.Conditions
 
 		[DataMember]
 		public ConditionEndsOn EndsOn { get; protected set; }
+
+		[DataMember]
+		public string IconName { get; protected set; }
 	}
 }

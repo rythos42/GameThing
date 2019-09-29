@@ -10,6 +10,7 @@ namespace GameThing.Entities.Cards.Conditions
 			AbilityScore = abilityScore;
 			BuffPercent = buffPercent;
 			EndsOn = ConditionEndsOn.AfterAttack;
+			IconName = "sprites/icons/distract";
 		}
 
 		[DataMember]

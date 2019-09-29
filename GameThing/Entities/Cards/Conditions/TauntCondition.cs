@@ -10,6 +10,7 @@ namespace GameThing.Entities.Cards.Conditions
 		{
 			SuccessPercent = successPercent;
 			EndsOn = ConditionEndsOn.AfterAttack;
+			IconName = "sprites/icons/taunt";
 		}
 
 		[DataMember]
