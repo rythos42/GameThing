@@ -15,7 +15,7 @@ using MonoGame.Extended.Tiled.Renderers;
 
 namespace GameThing.Screens
 {
-	public class BattleScreen : UIEventContainer
+	public class BattleScreen
 	{
 		private TiledMapRenderer mapRenderer;
 		private Camera<Vector2> camera;
@@ -30,6 +30,8 @@ namespace GameThing.Screens
 		private MapPoint movingPoint;
 		private MapPoint targetingPoint;
 		private readonly CardManager cardManager;
+
+		private ScreenComponent screenComponent;
 
 		private readonly Button newTurnButton;
 		private readonly Button winGameNowButton;
@@ -71,10 +73,7 @@ namespace GameThing.Screens
 		public BattleScreen(CardManager cardManager)
 		{
 			newTurnButton = new Button("New Turn") { UseMinimumButtonSize = false, Tapped = newTurnButton_Tapped };
-			Components.Add(newTurnButton);
-
 			winGameNowButton = new Button("Win Game") { UseMinimumButtonSize = false, Tapped = winGameButton_Tapped };
-			Components.Add(winGameNowButton);
 
 			this.cardManager = cardManager;
 		}
@@ -118,7 +117,6 @@ namespace GameThing.Screens
 		{
 			MapPoint characterPoint;
 			var deployment = character.Side == CharacterSide.Spaghetti ? spaghettiDeployment : unicornDeployment;
-			bool yes = character.Side == CharacterSide.Spaghetti;
 			do
 			{
 				characterPoint = new MapPoint(
@@ -130,10 +128,8 @@ namespace GameThing.Screens
 			character.MapPosition = characterPoint;
 		}
 
-		public override void LoadContent(Content content, GraphicsDevice graphicsDevice)
+		public void LoadContent(Content content, GraphicsDevice graphicsDevice)
 		{
-			base.LoadContent(content, graphicsDevice);
-
 			var map = content.Map;
 			var deploymentLayer = map.GetLayer<TiledMapObjectLayer>("Deployment");
 			spaghettiDeployment = MapHelper.GetObjectRectangleInMapPoints(deploymentLayer.Objects.SingleOrDefault(deployment => deployment.Name.Equals("Spaghetti")));
@@ -160,7 +156,7 @@ namespace GameThing.Screens
 			playerSidePanel.Components.Add(playerSideText);
 
 			for (int i = 0; i < 10; i++)
-				gameLogPanel.Components.Add(new GameLogEntryRow());
+				gameLogPanel.Components.Add(new GameLogEntryRow { Held = gameLogEntryRow_Held });
 
 			heldGameLogEntryPanel.Components.Add(heldGameLogSource);
 			heldGameLogEntryPanel.Components.Add(heldGameLogTarget);
@@ -171,8 +167,14 @@ namespace GameThing.Screens
 			statusPanel.LoadContent(content, graphicsDevice);
 			selectedPlayerStatsPanel.LoadContent(content, graphicsDevice);
 			playerSidePanel.LoadContent(content, graphicsDevice);
-			gameLogPanel.LoadContent(content, graphicsDevice);
 			heldGameLogEntryPanel.LoadContent(content, graphicsDevice);
+
+			screenComponent = new ScreenComponent(graphicsDevice.PresentationParameters.BackBufferWidth, graphicsDevice.PresentationParameters.BackBufferHeight);
+			screenComponent.GestureRead += screenComponent_GestureRead;
+			screenComponent.Components.Add(newTurnButton);
+			screenComponent.Components.Add(winGameNowButton);
+			screenComponent.Components.Add(gameLogPanel);
+			screenComponent.LoadContent(content, graphicsDevice);
 
 			renderTarget = new RenderTarget2D(graphicsDevice, graphicsDevice.Viewport.Width, graphicsDevice.Viewport.Height, false, SurfaceFormat.Color, DepthFormat.None);
 		}
@@ -266,7 +268,7 @@ namespace GameThing.Screens
 			while (TouchPanel.IsGestureAvailable)
 			{
 				gesture = TouchPanel.ReadGesture();
-				showGameLogEntryPanel = false;
+				screenComponent.InvokeContainerGestureRead(gesture);
 
 				if (gesture.GestureType == GestureType.FreeDrag)
 					Pan(gesture);
@@ -274,16 +276,21 @@ namespace GameThing.Screens
 					Zoom(gesture);
 				if (gesture.GestureType == GestureType.Tap)
 				{
-					InvokeContainerTap(gesture);
+					screenComponent.InvokeContainerTap(gesture);
 					Tap(gesture);
 				}
 				if (gesture.GestureType == GestureType.Hold)
-					Hold(gesture);
+					screenComponent.InvokeContainerHeld(gesture);
 			}
 
 			statusPanel.Update(gameTime);
 
 			newTurnButton.IsHighlighted = lockedInCharacter != null && !lockedInCharacter.HasRemainingMoves && !lockedInCharacter.HasRemainingPlayableCards;
+		}
+
+		public void screenComponent_GestureRead(GestureSample gesture)
+		{
+			showGameLogEntryPanel = false;
 		}
 
 		public void Draw(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch, Rectangle clientBounds, GameTime gameTime)
@@ -400,6 +407,29 @@ namespace GameThing.Screens
 		{
 			data.SetWinnerSide(thisPlayerSide);
 			GameOver?.Invoke(data);
+		}
+
+		public void gameLogEntryRow_Held(UIComponent component, GestureSample gesture)
+		{
+			var heldLogEntryRow = component as GameLogEntryRow;
+			if (heldLogEntryRow == null)
+				return;
+
+			showGameLogEntryPanel = true;
+			holdGestureLocation = gesture.Position;
+			var entry = heldLogEntryRow.GameLogEntry;
+			heldGameLogSource.Value = $"Source: {entry.SourceCharacterColour} on {entry.SourceCharacterSide}";
+
+			if (entry.MovedTo != null)
+			{
+				heldGameLogTarget.Value = null;
+				heldGameLogActionText.Value = $"Moved to ({entry.MovedTo.X}, {entry.MovedTo.Y})";
+			}
+			else
+			{
+				heldGameLogTarget.Value = $"Target:  {entry.TargetCharacterColour} on {entry.TargetCharacterSide}";
+				heldGameLogActionText.Value = cardManager.GetCard(entry.CardId).Description;
+			}
 		}
 
 		private void Tap(GestureSample gesture)
@@ -547,29 +577,6 @@ namespace GameThing.Screens
 					return;
 
 				camera.Zoom += scale;
-			}
-		}
-
-		private void Hold(GestureSample gesture)
-		{
-			var heldLogEntryRow = gameLogPanel.Components.FirstOrDefault(component => component.IsAtPoint(gesture.Position)) as GameLogEntryRow;
-			if (heldLogEntryRow == null)
-				return;
-
-			showGameLogEntryPanel = true;
-			holdGestureLocation = gesture.Position;
-			var entry = heldLogEntryRow.GameLogEntry;
-			heldGameLogSource.Value = $"Source: {entry.SourceCharacterColour} on {entry.SourceCharacterSide}";
-
-			if (entry.MovedTo != null)
-			{
-				heldGameLogTarget.Value = null;
-				heldGameLogActionText.Value = $"Moved to ({entry.MovedTo.X}, {entry.MovedTo.Y})";
-			}
-			else
-			{
-				heldGameLogTarget.Value = $"Target:  {entry.TargetCharacterColour} on {entry.TargetCharacterSide}";
-				heldGameLogActionText.Value = cardManager.GetCard(entry.CardId).Description;
 			}
 		}
 	}

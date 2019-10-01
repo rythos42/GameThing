@@ -79,8 +79,7 @@ Tech
 		- check \obj\Release\90\proguard\proguard_project_references.cfg for ideas of how it works
 	- send card IDs instead of the whole card around
 	- move character sprites to a sub folder
-	- combine UIEventContainer and Panel - both keeping track of list of Components
-		- make BattleScreen a UIContainer and run events through it for Update/Gestures/etc
+	- make ScreenComponent draw the UIComponents it contains
 	        
 Game Design
 	- evaluate whether single character or whole side is a better turn

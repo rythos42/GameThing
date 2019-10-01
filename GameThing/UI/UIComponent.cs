@@ -12,6 +12,8 @@ namespace GameThing.UI
 		public const int PADDING = 16;
 
 		public UIComponentTappedEventHandler Tapped;
+		public UIComponentHeldEventHandler Held;
+		public UIComponentGestureReadEventHandler GestureRead;
 
 		public bool IsVisible { get; protected set; }
 		public int Width { get; protected set; }
