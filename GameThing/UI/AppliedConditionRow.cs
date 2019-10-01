@@ -14,6 +14,10 @@ namespace GameThing.UI
 
 		public override void Draw(SpriteBatch spriteBatch, float x, float y)
 		{
+			X = x;
+			Y = y;
+			Dimensions = MeasureContent();
+
 			if (SelectedCharacter == null)
 				return;
 
@@ -23,6 +27,8 @@ namespace GameThing.UI
 				spriteBatch.Draw(icon, new Vector2(x, y), Color.White);
 				x += icon.Width;
 			});
+
+			IsVisible = true;
 		}
 
 		private Texture2D GetIcon(string name)
