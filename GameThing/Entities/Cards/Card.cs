@@ -90,7 +90,7 @@ namespace GameThing.Entities.Cards
 
 			textPosition.Y += font.LineSpacing;
 			var maxLineWidth = Width - (2 * cardMargin);
-			spriteBatch.DrawString(font, Description.WrapText(font, maxLineWidth), textPosition, Color.Black);
+			spriteBatch.DrawString(font, FullDescription.WrapText(font, maxLineWidth), textPosition, Color.Black);
 		}
 
 		public void DrawEffectRange(SpriteBatch spriteBatch)
@@ -132,6 +132,17 @@ namespace GameThing.Entities.Cards
 
 		[DataMember]
 		public string Title { get; set; }
+
+		public string FullDescription
+		{
+			get
+			{
+				if (Condition == null)
+					return Description;
+
+				return Description + ": " + Condition.Text;
+			}
+		}
 
 		[DataMember]
 		public string Description { get; set; }

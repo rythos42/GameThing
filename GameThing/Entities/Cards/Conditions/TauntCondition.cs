@@ -6,7 +6,7 @@ namespace GameThing.Entities.Cards.Conditions
 	[DataContract]
 	public class TauntCondition : Condition
 	{
-		public TauntCondition(int id, decimal successPercent) : base(id)
+		public TauntCondition(int id, string text, decimal successPercent) : base(id, text)
 		{
 			SuccessPercent = successPercent;
 			EndsOn = ConditionEndsOn.AfterAttack;

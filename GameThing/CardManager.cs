@@ -19,11 +19,11 @@ namespace GameThing
 
 		public CardManager()
 		{
-			var basicDistract = new DistractCondition(1, AbilityScore.Strength, 3);
-			var basicTaunt = new TauntCondition(2, 0.7m);
-			var basicRun = new RunCondition(3, 1);
-			var basicStrengthBuff = new BuffCondition(4, AbilityScore.Strength, 2, 3, BuffType.Percent);
-			var basicHealthBuff = new BuffCondition(5, AbilityScore.Health, 3, 5, BuffType.Linear);
+			var basicDistract = new DistractCondition(1, "If the next attack is from another character, it gains +200% Str.", AbilityScore.Strength, 3);
+			var basicTaunt = new TauntCondition(2, "70% chance next card must target this character.", 0.7m);
+			var basicRun = new RunCondition(3, "Your next move gains +1 distance.", 1);
+			var basicStrengthBuff = new BuffCondition(4, "Give another character +100% Str for 3 turns.", AbilityScore.Strength, 2, 3, BuffType.Percent);
+			var basicHealthBuff = new BuffCondition(5, "Gain +3 Health for 5 turns.", AbilityScore.Health, 3, 5, BuffType.Linear);
 
 			database = new List<Card> {
 				new Card (1) {
@@ -47,7 +47,7 @@ namespace GameThing
 				},
 				new Card (3){
 					Title = "Awkward Distraction",
-					Description = "Apply a condition at range 1: If the next attack is from another character, it gains +200% Str.",
+					Description = "Apply a condition at range 1",
 					Range = 1,
 					CardType = Type.Condition,
 					Condition = basicDistract,
@@ -56,7 +56,7 @@ namespace GameThing
 				new Card(4)
 				{
 					Title = "Lame Taunt",
-					Description = "Apply a condition at range 5: 70% chance next card must target this character.",
+					Description = "Apply a condition at range 5",
 					Range = 5,
 					CardType = Type.Condition,
 					Condition = basicTaunt,
@@ -65,7 +65,7 @@ namespace GameThing
 				new Card(5)
 				{
 					Title = "Slow Jog",
-					Description = "Apply a condition to yourself: Your next move gains +1 distance.",
+					Description = "Apply a condition to yourself",
 					Range = 0,
 					CardType = Type.Condition,
 					Condition = basicRun,
@@ -74,7 +74,7 @@ namespace GameThing
 				new Card(6)
 				{
 					Title = "Weak Cheer",
-					Description = "Apply a condition at range 3: Give another character +100% Str for 3 turns.",
+					Description = "Apply a condition at range 3",
 					Range = 3,
 					CardType = Type.Condition,
 					Condition = basicStrengthBuff,
@@ -93,7 +93,7 @@ namespace GameThing
 				new Card(8)
 				{
 					Title = "Prepared Stance",
-					Description = "Apply a condition to yourself: Gain +3 Health for 5 turns.",
+					Description = "Apply a condition to yourself",
 					Range = 0,
 					CardType = Type.Condition,
 					Condition = basicHealthBuff,
