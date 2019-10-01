@@ -41,7 +41,6 @@ namespace GameThing.Screens
 
 		private readonly Panel gameLogPanel = new Panel();
 		private bool showGameLogEntryPanel;
-		private Vector2 holdGestureLocation;
 		private readonly Panel heldGameLogEntryPanel = new Panel();
 		private readonly Text heldGameLogSource = new Text();
 		private readonly Text heldGameLogTarget = new Text();
@@ -388,7 +387,7 @@ namespace GameThing.Screens
 				selectedPlayerStatsPanel.Draw(spriteBatch, gameLogPanel.Width + 2 * UIComponent.MARGIN, newTurnButton.Height + 2 * UIComponent.MARGIN);
 
 			if (showGameLogEntryPanel)
-				heldGameLogEntryPanel.Draw(spriteBatch, holdGestureLocation);
+				heldGameLogEntryPanel.Draw(spriteBatch);
 
 			spriteBatch.End();
 
@@ -416,7 +415,8 @@ namespace GameThing.Screens
 				return;
 
 			showGameLogEntryPanel = true;
-			holdGestureLocation = gesture.Position;
+			heldGameLogEntryPanel.Position = gesture.Position;
+
 			var entry = heldLogEntryRow.GameLogEntry;
 			heldGameLogSource.Value = $"Source: {entry.SourceCharacterColour} on {entry.SourceCharacterSide}";
 
