@@ -9,12 +9,13 @@ namespace GameThing.Entities.Cards.Conditions
 		private readonly Func<decimal, decimal, decimal> applyBuff;
 		private readonly Func<decimal, decimal, decimal> removeBuff;
 
-		public BuffCondition(int id, AbilityScore abilityScore, decimal buffAmount, int turnCount, BuffType type) : base(id)
+		public BuffCondition(int id, string text, AbilityScore abilityScore, decimal buffAmount, int turnCount, BuffType type) : base(id, text)
 		{
 			AbilityScore = abilityScore;
 			BuffAmount = buffAmount;
 			TurnCount = turnCount;
 			EndsOn = ConditionEndsOn.StartRound;
+			IconName = "sprites/icons/buff";
 
 			switch (type)
 			{

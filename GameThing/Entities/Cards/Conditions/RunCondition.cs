@@ -5,10 +5,11 @@ namespace GameThing.Entities.Cards.Conditions
 	[DataContract]
 	public class RunCondition : Condition
 	{
-		public RunCondition(int id, int additionalMove) : base(id)
+		public RunCondition(int id, string text, int additionalMove) : base(id, text)
 		{
 			AdditionalMove = additionalMove;
 			EndsOn = ConditionEndsOn.Move;
+			IconName = "sprites/icons/run";
 		}
 
 		[DataMember]

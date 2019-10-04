@@ -4,9 +4,7 @@
 	
 Todo (vMVP):
 	- rematch via Join Game crashes
-	- "100% Int damage" unclear -- thought it was "damage to your Int"
-	- Need to show conditions on players
-	- Don't make player do math (100% Int should be "1 damage (100% of Int)")
+	- tooltip on condition icons to give details
 		
 Todo (vNext):
 	- need some amount of randomness
@@ -33,6 +31,9 @@ Todo (vNext):
 
 
 Nice to have:
+	- General card wording
+		- "100% Int damage" unclear -- thought it was "damage to your Int"
+		- Don't make player do math (100% Int should be "1 damage (100% of Int)")
 	- can't "hot seat" because it doesn't end the round after all characters have gone
 	- rename test mode to hot seat
 	- notification when card can't be played, and why
@@ -78,8 +79,7 @@ Tech
 		- check \obj\Release\90\proguard\proguard_project_references.cfg for ideas of how it works
 	- send card IDs instead of the whole card around
 	- move character sprites to a sub folder
-	- combine UIEventContainer and Panel - both keeping track of list of Components
-		- make BattleScreen a UIContainer and run events through it for Update/Gestures/etc
+	- make ScreenComponent draw the UIComponents it contains
 	        
 Game Design
 	- evaluate whether single character or whole side is a better turn

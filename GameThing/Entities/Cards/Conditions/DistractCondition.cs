@@ -5,11 +5,12 @@ namespace GameThing.Entities.Cards.Conditions
 	[DataContract]
 	public class DistractCondition : Condition
 	{
-		public DistractCondition(int id, AbilityScore abilityScore, decimal buffPercent) : base(id)
+		public DistractCondition(int id, string text, AbilityScore abilityScore, decimal buffPercent) : base(id, text)
 		{
 			AbilityScore = abilityScore;
 			BuffPercent = buffPercent;
 			EndsOn = ConditionEndsOn.AfterAttack;
+			IconName = "sprites/icons/distract";
 		}
 
 		[DataMember]

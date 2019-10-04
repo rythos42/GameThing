@@ -8,13 +8,15 @@ using Microsoft.Xna.Framework.Input.Touch;
 
 namespace GameThing.Screens
 {
-	public class StartScreen : UIEventContainer
+	public class StartScreen
 	{
 		private readonly Button startAsTester;
 		private readonly Button signIn;
 		private readonly Button createMatch;
 		private readonly Button joinMatch;
 		private SpriteFont font;
+
+		private ScreenComponent screenComponent;
 
 		private readonly ApplicationData appData;
 
@@ -28,16 +30,9 @@ namespace GameThing.Screens
 			this.appData = appData;
 
 			startAsTester = new Button("Test") { Tapped = startAsTester_Tapped };
-			Components.Add(startAsTester);
-
 			signIn = new Button("Sign In") { Tapped = signIn_Tapped };
-			Components.Add(signIn);
-
 			createMatch = new Button("Create Match") { Tapped = createMatch_Tapped };
-			Components.Add(createMatch);
-
 			joinMatch = new Button("Join Match") { Tapped = joinMatch_Tapped };
-			Components.Add(joinMatch);
 		}
 
 		public void startAsTester_Tapped(GestureSample gesture)
@@ -60,9 +55,15 @@ namespace GameThing.Screens
 			JoinMatch?.Invoke();
 		}
 
-		public override void LoadContent(Content content, GraphicsDevice graphicsDevice)
+		public void LoadContent(Content content, GraphicsDevice graphicsDevice)
 		{
-			base.LoadContent(content, graphicsDevice);
+			screenComponent = new ScreenComponent(graphicsDevice.PresentationParameters.BackBufferWidth, graphicsDevice.PresentationParameters.BackBufferHeight);
+			screenComponent.Components.Add(startAsTester);
+			screenComponent.Components.Add(signIn);
+			screenComponent.Components.Add(createMatch);
+			screenComponent.Components.Add(joinMatch);
+			screenComponent.LoadContent(content, graphicsDevice);
+
 			font = content.Font;
 		}
 
@@ -75,7 +76,7 @@ namespace GameThing.Screens
 				gesture = TouchPanel.ReadGesture();
 
 				if (gesture.GestureType == GestureType.Tap)
-					InvokeContainerTap(gesture);
+					screenComponent.InvokeContainerTap(gesture);
 			}
 		}
 

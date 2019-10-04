@@ -1,17 +1,15 @@
-﻿using System.Collections.Generic;
-using GameThing.Entities;
+﻿using GameThing.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GameThing.UI
 {
-	public class Panel : UIComponent
+	public class Panel : UIContainer
 	{
 		private Texture2D panelTexture;
 		private Texture2D shadowTexture;
 
 		public bool PlaceFromRight { get; set; }
-		public List<UIComponent> Components { get; set; } = new List<UIComponent>();
 
 		public override Vector2 MeasureContent()
 		{
@@ -42,13 +40,13 @@ namespace GameThing.UI
 
 		public override void LoadContent(Content content, GraphicsDevice graphicsDevice)
 		{
+			base.LoadContent(content, graphicsDevice);
+
 			shadowTexture = new Texture2D(graphicsDevice, 1, 1);
 			shadowTexture.SetData(new Color[] { Color.Black });
 
 			panelTexture = new Texture2D(graphicsDevice, 1, 1);
 			panelTexture.SetData(new Color[] { Color.Linen });
-
-			Components.ForEach(component => component.LoadContent(content, graphicsDevice));
 		}
 
 		public override void Draw(SpriteBatch spriteBatch, float x, float y)

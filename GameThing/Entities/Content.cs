@@ -25,6 +25,11 @@ namespace GameThing.Entities
 			MoveIcon = contentManager.Load<Texture2D>("sprites/icons/move");
 			CardIcon = contentManager.Load<Texture2D>("sprites/icons/card");
 
+			ConditionIcons.Add(contentManager.Load<Texture2D>("sprites/icons/buff"));
+			ConditionIcons.Add(contentManager.Load<Texture2D>("sprites/icons/distract"));
+			ConditionIcons.Add(contentManager.Load<Texture2D>("sprites/icons/taunt"));
+			ConditionIcons.Add(contentManager.Load<Texture2D>("sprites/icons/run"));
+
 			Highlight = contentManager.Load<Effect>("effects/highlight");
 			Shade = contentManager.Load<Effect>("effects/shade");
 
@@ -54,6 +59,7 @@ namespace GameThing.Entities
 		public Texture2D UnicornHatIcon { get; private set; }
 		public Texture2D MoveIcon { get; private set; }
 		public Texture2D CardIcon { get; private set; }
+		public List<Texture2D> ConditionIcons { get; private set; } = new List<Texture2D>();
 
 		public Effect Highlight { get; private set; }
 		public Effect Shade { get; private set; }

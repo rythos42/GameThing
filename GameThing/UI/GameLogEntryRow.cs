@@ -35,6 +35,7 @@ namespace GameThing.UI
 				var targetIcon = GetIconForSide(GameLogEntry.TargetCharacterSide);
 				spriteBatch.Draw(targetIcon, new Vector2(x + sourceIcon.Width + cardIcon.Width, y), Color.White);
 			}
+			IsVisible = true;
 		}
 
 		private Texture2D GetIconForSide(CharacterSide side)
