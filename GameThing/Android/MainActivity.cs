@@ -36,11 +36,14 @@ namespace GameThing.Android
 
 		protected override void OnCreate(Bundle bundle)
 		{
+			Window.Attributes.LayoutInDisplayCutoutMode = LayoutInDisplayCutoutMode.ShortEdges;
+			Window.AddFlags(WindowManagerFlags.LayoutInOverscan);
 			Window.AddFlags(WindowManagerFlags.Fullscreen);
 			Window.AddFlags(WindowManagerFlags.KeepScreenOn);
 			Window.AddFlags(WindowManagerFlags.TurnScreenOn);
 
 			var uiOptions = (int) Window.DecorView.SystemUiVisibility;
+			uiOptions |= (int) SystemUiFlags.LowProfile;
 			uiOptions |= (int) SystemUiFlags.Fullscreen;
 			uiOptions |= (int) SystemUiFlags.HideNavigation;
 			uiOptions |= (int) SystemUiFlags.ImmersiveSticky;
