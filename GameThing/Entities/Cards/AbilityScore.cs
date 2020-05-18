@@ -2,6 +2,7 @@
 {
 	public enum AbilityScore
 	{
+		None,
 		Health,
 		Strength,
 		Agility,

@@ -19,14 +19,27 @@ namespace GameThing
 
 		public CardManager()
 		{
-			var basicDistract = new DistractCondition(1, "If the next attack is from another character, it gains +200% Str.", AbilityScore.Strength, 3);
-			var basicTaunt = new TauntCondition(2, "70% chance next card must target this character.", 0.7m);
-			var basicRun = new RunCondition(3, "Your next move gains +1 distance.", 1);
-			var basicStrengthBuff = new BuffCondition(4, "Give another character +100% Str for 3 turns.", AbilityScore.Strength, 2, 3, BuffType.Percent);
-			var basicHealthBuff = new BuffCondition(5, "Gain +3 Health for 5 turns.", AbilityScore.Health, 3, 5, BuffType.Linear);
+			var basicDistract = new Condition(1, "If the next attack is from another character, it gains +200% Str.", ConditionType.Distract) { AbilityScore = AbilityScore.Strength, BuffAmount = 3 };
+			var basicTaunt = new Condition(2, "70% chance next card must target this character.", ConditionType.Taunt) { SuccessPercent = 0.7m };
+			var basicRun = new Condition(3, "Your next move gains +1 distance.", ConditionType.Run) { BuffAmount = 1 };
+			var basicStrengthBuff = new Condition(4, "Give another character +100% Str for 3 turns.", ConditionType.Buff)
+			{
+				AbilityScore = AbilityScore.Strength,
+				BuffAmount = 2,
+				TurnCount = 3,
+				BuffType = BuffType.Percent
+			};
+			var basicHealthBuff = new Condition(5, "Gain +3 Health for 5 turns.", ConditionType.Buff)
+			{
+				AbilityScore = AbilityScore.Health,
+				BuffAmount = 3,
+				TurnCount = 5,
+				BuffType = BuffType.Linear
+			};
 
 			database = new List<Card> {
-				new Card (1) {
+				new Card (1)
+				{
 					Title = "Clumsy Stab",
 					Description = "Deal 100% Str damage at range 1.",
 					Range = 1,
@@ -45,7 +58,8 @@ namespace GameThing
 					EffectPercent = 1,
 					Categories = new List<Category> { Category.Intelligence, Category.Healing, Category.Self },
 				},
-				new Card (3){
+				new Card (3)
+				{
 					Title = "Awkward Distraction",
 					Description = "Apply a condition at range 1",
 					Range = 1,
