@@ -18,7 +18,7 @@ namespace GameThing.UI
 			return font.MeasureString(Value);
 		}
 
-		public override void LoadContent(Content content, GraphicsDevice graphicsDevice)
+		protected override void LoadComponentContent(Content content, GraphicsDevice graphicsDevice)
 		{
 			font = content.Font;
 		}

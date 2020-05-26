@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GameThing.UI
@@ -15,13 +14,14 @@ namespace GameThing.UI
 
 		public override void Draw(SpriteBatch spriteBatch, float x, float y)
 		{
-			// Not using this to draw the screen yet.
-			throw new NotImplementedException();
+			spriteBatch.Draw(Background, new Rectangle(0, 0, (int) screenSize.X, (int) screenSize.Y), Color.White);
 		}
 
 		public override Vector2 MeasureContent()
 		{
 			return screenSize;
 		}
+
+		public Texture2D Background { get; set; }
 	}
 }

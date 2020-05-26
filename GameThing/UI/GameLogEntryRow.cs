@@ -1,4 +1,5 @@
-﻿using GameThing.Entities;
+﻿using GameThing.Data;
+using GameThing.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -43,7 +44,7 @@ namespace GameThing.UI
 			return side == CharacterSide.Spaghetti ? spaghettiHatIcon : unicornHatIcon;
 		}
 
-		public override void LoadContent(Content content, GraphicsDevice graphicsDevice)
+		protected override void LoadComponentContent(Content content, GraphicsDevice graphicsDevice)
 		{
 			spaghettiHatIcon = content.SpaghettiHatIcon;
 			unicornHatIcon = content.UnicornHatIcon;

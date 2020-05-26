@@ -6,37 +6,67 @@ namespace GameThing.UI
 {
 	public class Button : UIComponent
 	{
-		private Texture2D buttonTexture;
-		private Texture2D highlightTexture;
-		private Texture2D shadowTexture;
+		private Texture2D buttonLeft;
+		private Texture2D buttonRight;
+		private Texture2D buttonTopBottom;
+		private Texture2D buttonLeftDisabled;
+		private Texture2D buttonRightDisabled;
+		private Texture2D buttonTopBottomDisabled;
+
 		private SpriteFont font;
-		private readonly string text;
+		private string text;
 		private const int MINIMUM_BUTTON_WIDTH = 300;
+
 
 		public Button(string text)
 		{
-			this.text = text;
+			Text = text;
 		}
 
 		public bool IsHighlighted { get; set; }
+
 		public bool UseMinimumButtonSize { get; set; } = true;
 
-		public override void LoadContent(Content content, GraphicsDevice graphicsDevice)
+		public string Text
 		{
-			buttonTexture = new Texture2D(graphicsDevice, 1, 1);
-			buttonTexture.SetData(new Color[] { Color.Silver });
+			get
+			{
+				return text;
+			}
+			set
+			{
+				text = value;
 
-			highlightTexture = new Texture2D(graphicsDevice, 1, 1);
-			highlightTexture.SetData(new Color[] { Color.OrangeRed });
+				ContentLoadedEventHandler updateUiFromText = null;
+				updateUiFromText = () =>
+				{
+					var textSize = font.MeasureString(text);
+					var minimumTextWidth = (int) textSize.X + (PADDING * 2);
+					Width = UseMinimumButtonSize ? MathHelper.Max(minimumTextWidth, MINIMUM_BUTTON_WIDTH) : minimumTextWidth;
+					Height = (int) textSize.Y + (PADDING * 2);
 
-			shadowTexture = new Texture2D(graphicsDevice, 1, 1);
-			shadowTexture.SetData(new Color[] { Color.Black });
+					// remove self from event
+					ContentLoaded -= updateUiFromText;
+				};
 
-			font = content.Font;
-			var textSize = font.MeasureString(text);
-			var minimumTextWidth = (int) textSize.X + (PADDING * 2);
-			Width = UseMinimumButtonSize ? MathHelper.Max(minimumTextWidth, MINIMUM_BUTTON_WIDTH) : minimumTextWidth;
-			Height = (int) textSize.Y + (PADDING * 2);
+				// If we haven't loaded content yet, set an event to update after we do so.
+				if (!HasContentLoaded)
+					ContentLoaded += updateUiFromText;
+				else
+					updateUiFromText();
+			}
+		}
+
+		protected override void LoadComponentContent(Content content, GraphicsDevice graphicsDevice)
+		{
+			buttonLeft = content.ButtonLeft;
+			buttonRight = content.ButtonRight;
+			buttonTopBottom = content.ButtonTopBottom;
+			buttonLeftDisabled = content.ButtonLeftDisabled;
+			buttonRightDisabled = content.ButtonRightDisabled;
+			buttonTopBottomDisabled = content.ButtonTopBottomDisabled;
+
+			font = content.PatrickHandSc;
 		}
 
 		public override void Draw(SpriteBatch spriteBatch, float x, float y)
@@ -44,9 +74,17 @@ namespace GameThing.UI
 			X = x;
 			Y = y;
 
-			spriteBatch.Draw(shadowTexture, new Rectangle((int) x + BOX_SHADOW_X, (int) y + BOX_SHADOW_Y, Width, Height), Color.White);
-			spriteBatch.Draw(IsHighlighted ? highlightTexture : buttonTexture, new Rectangle((int) x, (int) y, Width, Height), Color.White);
-			spriteBatch.DrawString(font, text, new Vector2(x + PADDING, y + PADDING), Color.Black);
+			var spacingCount = Width - buttonLeft.Width - buttonRight.Width;
+			for (int i = 0; i < spacingCount; i++)
+			{
+				spriteBatch.Draw(Enabled ? buttonTopBottom : buttonTopBottomDisabled, new Rectangle((int) x + buttonLeft.Width + i, (int) y, buttonTopBottom.Width, buttonTopBottom.Height), Color.White);
+				spriteBatch.Draw(Enabled ? buttonTopBottom : buttonTopBottomDisabled, new Rectangle((int) x + buttonLeft.Width + i, (int) y + Height - buttonTopBottom.Height, buttonTopBottom.Width, buttonTopBottom.Height), Color.White);
+			}
+
+			spriteBatch.Draw(Enabled ? buttonLeft : buttonLeftDisabled, new Rectangle((int) x, (int) y, buttonLeft.Width, Height), Color.White);
+			spriteBatch.Draw(Enabled ? buttonRight : buttonRightDisabled, new Rectangle((int) x + Width - buttonRight.Width, (int) y, buttonRight.Width, Height), Color.White);
+
+			spriteBatch.DrawString(font, Text, new Vector2(x + PADDING, y + PADDING), Enabled ? Color.Black : new Color(140, 140, 140));
 
 			IsVisible = true;
 		}

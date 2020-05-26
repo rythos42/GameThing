@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using GameThing.Data;
 using GameThing.Entities;
 using GameThing.Entities.Cards;
-using GameThing.Events;
+using GameThing.Manager;
 using GameThing.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,6 +19,8 @@ namespace GameThing.Screens
 {
 	public class BattleScreen
 	{
+		private const int GameLogEntryCount = 8;
+
 		private TiledMapRenderer mapRenderer;
 		private Camera<Vector2> camera;
 		private RenderTarget2D renderTarget;
@@ -32,6 +35,7 @@ namespace GameThing.Screens
 		private MapPoint movingPoint;
 		private MapPoint targetingPoint;
 		private readonly CardManager cardManager;
+		private readonly BattleManager battleManager = BattleManager.Instance;
 
 		private ScreenComponent screenComponent;
 
@@ -51,7 +55,6 @@ namespace GameThing.Screens
 		private bool showAppliedConditionDetailsPanel;
 		private readonly Panel appliedConditionDetailsPanel = new Panel();
 		private readonly Text appliedConditionDetailsText = new Text();
-
 		private readonly Panel selectedPlayerStatsPanel = new Panel();
 		private readonly Text sideText = new Text();
 		private readonly Text playerClassText = new Text();
@@ -71,9 +74,8 @@ namespace GameThing.Screens
 		private Content content;
 		private readonly Random random = new Random();
 
-		public event NextPlayersTurnEventHandler NextPlayersTurn;
 		public event BattleGameOverEventHandler GameOver;
-		public event SelectedCharacterChange SelectedCharacterChange;
+		public event SelectedCharacterChangeEventHandler SelectedCharacterChange;
 
 		public BattleScreen(CardManager cardManager)
 		{
@@ -82,8 +84,17 @@ namespace GameThing.Screens
 			appliedConditionRow = new AppliedConditionRow { Held = appliedConditionRow_Held };
 
 			this.cardManager = cardManager;
+
+			BattleManager.Instance.DataUpdated += BattleManager_DataUpdated;
 		}
-		public bool IsTestMode { get; set; }
+
+		private void BattleManager_DataUpdated(BattleData battleData)
+		{
+			SetBattleData(battleData);
+
+			if (battleData.Status == BattleStatus.Finished)
+				GameOver?.Invoke(battleData);
+		}
 
 		public void SetBattleData(BattleData gameData)
 		{
@@ -177,7 +188,7 @@ namespace GameThing.Screens
 
 			playerSidePanel.Components.Add(playerSideText);
 
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < GameLogEntryCount; i++)
 				gameLogPanel.Components.Add(new GameLogEntryRow { Held = gameLogEntryRow_Held });
 
 			heldGameLogEntryPanel.Components.Add(heldGameLogSource);
@@ -223,14 +234,10 @@ namespace GameThing.Screens
 			appliedConditionRow.SelectedCharacter = newCharacter;
 		}
 
-		public void StartGame(string myParticipantId)
+		public void StartGame(BattleData data)
 		{
-			StartGame(data.Sides[myParticipantId]);
-		}
-
-		public void StartGame(CharacterSide side)
-		{
-			thisPlayerSide = side;
+			SetBattleData(data);
+			thisPlayerSide = data.Sides[ApplicationData.PlayerId];
 			playerSideText.Value = $"Your side: {thisPlayerSide}";
 			lockedInCharacter = null;
 			selectedCharacter = null;
@@ -244,7 +251,7 @@ namespace GameThing.Screens
 			lockedInCharacter = null;
 		}
 
-		private void NextPlayerTurn()
+		private async Task NextPlayerTurn()
 		{
 			if (lockedInCharacter == null)
 			{
@@ -254,6 +261,7 @@ namespace GameThing.Screens
 
 			lockedInCharacter?.EndTurn();
 			lockedInCharacter = null;
+			selectedCharacter = null;
 
 			if (data.OtherSideHasNoRemainingCharactersAndIHaveSome)
 			{
@@ -262,14 +270,16 @@ namespace GameThing.Screens
 			}
 
 			data.ChangePlayingSide();
-			NextPlayersTurn?.Invoke(data);
+			data.TurnNumber++;
+
+			await battleManager.SaveBattle(data);
 
 			// swap device player side if we're in test mode
-			if (IsTestMode)
+			if (data.IsTestMode)
 				thisPlayerSide = data.CurrentSidesTurn;
 		}
 
-		private void CheckForWin()
+		private async Task CheckForWin()
 		{
 			var anySpaghetti = data.Characters.Any(character => character.Side == CharacterSide.Spaghetti);
 			var anyUnicorn = data.Characters.Any(character => character.Side == CharacterSide.Unicorn);
@@ -281,11 +291,13 @@ namespace GameThing.Screens
 				else if (anySpaghetti && !anyUnicorn)
 					data.SetWinnerSide(CharacterSide.Spaghetti);
 
+				await battleManager.SaveBattle(data);
+
 				GameOver?.Invoke(data);
 			}
 		}
 
-		public void Update(GameTime gameTime)
+		public async void Update(GameTime gameTime)
 		{
 			mapRenderer.Update(gameTime);
 
@@ -301,7 +313,7 @@ namespace GameThing.Screens
 				if (gesture.GestureType == GestureType.Tap)
 				{
 					screenComponent.InvokeContainerTap(gesture);
-					Tap(gesture);
+					await Tap(gesture);
 				}
 				if (gesture.GestureType == GestureType.Hold)
 					screenComponent.InvokeContainerHeld(gesture);
@@ -400,7 +412,7 @@ namespace GameThing.Screens
 				newTurnButton.Draw(spriteBatch, UIComponent.MARGIN, UIComponent.MARGIN);
 			statusPanel.Draw(spriteBatch, UIComponent.MARGIN, UIComponent.MARGIN);
 			playerSidePanel.Draw(spriteBatch, newTurnButton.Width + 2 * UIComponent.MARGIN, UIComponent.MARGIN);
-			if (IsTestMode)
+			if (data.IsTestMode)
 				winGameNowButton.Draw(spriteBatch, newTurnButton.Width + playerSidePanel.Width + 3 * UIComponent.MARGIN, UIComponent.MARGIN);
 
 			gameLogPanel.Draw(spriteBatch, UIComponent.MARGIN, newTurnButton.Height + 2 * UIComponent.MARGIN);
@@ -428,12 +440,12 @@ namespace GameThing.Screens
 			showAppliedConditionDetailsPanel = false;
 		}
 
-		public void newTurnButton_Tapped(GestureSample gesture)
+		public async void newTurnButton_Tapped(string id, GestureSample gesture)
 		{
-			NextPlayerTurn();
+			await NextPlayerTurn();
 		}
 
-		public void winGameNowButton_Tapped(GestureSample gesture)
+		public void winGameNowButton_Tapped(string id, GestureSample gesture)
 		{
 			data.SetWinnerSide(thisPlayerSide);
 			GameOver?.Invoke(data);
@@ -470,7 +482,7 @@ namespace GameThing.Screens
 			appliedConditionDetailsText.Value = selectedCharacter.Conditions.Aggregate("", (total, condition) => condition.Condition.Text + "\n" + total).Trim();
 		}
 
-		private void Tap(GestureSample gesture)
+		private async Task Tap(GestureSample gesture)
 		{
 			// Can't tap if it isn't your turn.
 			if (data.CurrentSidesTurn != thisPlayerSide)
@@ -514,7 +526,7 @@ namespace GameThing.Screens
 						if (targetCharacter.CurrentHealth < 1)
 						{
 							data.Characters.Remove(targetCharacter);
-							CheckForWin();
+							await CheckForWin();
 						}
 
 						AddNewGameLogEntry(new GameLogEntry

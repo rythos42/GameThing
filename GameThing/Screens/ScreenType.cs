@@ -4,6 +4,7 @@
 	{
 		Battle,
 		StartMenu,
-		GameOver
+		GameOver,
+		ManageTeams
 	}
 }

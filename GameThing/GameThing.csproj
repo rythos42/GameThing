@@ -66,7 +66,13 @@
     <AndroidDexTool>d8</AndroidDexTool>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Firebase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FirebaseDatabase.net.4.0.4\lib\netstandard2.0\Firebase.dll</HintPath>
+    </Reference>
     <Reference Include="Java.Interop" />
+    <Reference Include="LiteDB, Version=4.1.4.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiteDB.4.1.4\lib\netstandard2.0\LiteDB.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.Android" />
     <Reference Include="MonoGame.Extended, Version=3.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MonoGame.Extended.3.7.0\lib\netstandard2.0\MonoGame.Extended.dll</HintPath>
@@ -93,6 +99,11 @@
     <Reference Include="OpenTK-1.0" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Reactive, Version=4.4.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.4.4.1\lib\netstandard2.0\System.Reactive.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
@@ -183,43 +194,24 @@
     <Reference Include="Xamarin.Android.Support.ViewPager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Xamarin.Android.Support.ViewPager.28.0.0.1\lib\monoandroid90\Xamarin.Android.Support.ViewPager.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.GooglePlayServices.Auth, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Auth.71.1600.0\lib\monoandroid90\Xamarin.GooglePlayServices.Auth.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.GooglePlayServices.Auth.Api.Phone, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Auth.Api.Phone.71.1600.0\lib\monoandroid90\Xamarin.GooglePlayServices.Auth.Api.Phone.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.GooglePlayServices.Auth.Base, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Auth.Base.71.1600.0\lib\monoandroid90\Xamarin.GooglePlayServices.Auth.Base.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.GooglePlayServices.Base, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Base.71.1610.0\lib\monoandroid90\Xamarin.GooglePlayServices.Base.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.GooglePlayServices.Basement, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Basement.71.1620.0\lib\monoandroid90\Xamarin.GooglePlayServices.Basement.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.GooglePlayServices.Drive, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Drive.71.1600.0\lib\monoandroid90\Xamarin.GooglePlayServices.Drive.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.GooglePlayServices.Games, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Games.71.1700.0\lib\monoandroid90\Xamarin.GooglePlayServices.Games.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.GooglePlayServices.Tasks, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Xamarin.GooglePlayServices.Tasks.71.1601.0\lib\monoandroid90\Xamarin.GooglePlayServices.Tasks.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Android\BaseGameUtils\BaseGameActivity.cs" />
-    <Compile Include="Android\BaseGameUtils\GameHelper.cs" />
-    <Compile Include="Android\BaseGameUtils\GameHelperUtils.cs" />
-    <Compile Include="Android\BaseGameUtils\IGameHelperListener.cs" />
+    <Compile Include="ApplicationData.cs" />
+    <Compile Include="Database\BattleMapper.cs" />
+    <Compile Include="Database\TeamMapper.cs" />
+    <Compile Include="Data\BattleStatus.cs" />
     <Compile Include="Data\Convert.cs" />
     <Compile Include="Data\TeamData.cs" />
-    <Compile Include="Data\ApplicationData.cs" />
     <Compile Include="Data\BattleData.cs" />
-    <Compile Include="Events\SelectedCharacterChange.cs" />
-    <Compile Include="Events\StartGameAsTesterEventHandler.cs" />
+    <Compile Include="Entities\Cards\Conditions\ConditionType.cs" />
+    <Compile Include="Manager\BattleDataUpdatedEventHandler.cs" />
+    <Compile Include="Screens\BattleGameOverEventHandler.cs" />
+    <Compile Include="Screens\SelectedCharacterChange.cs" />
+    <Compile Include="Screens\StartBattleEventHandler.cs" />
     <Compile Include="GameLogEntry.cs" />
+    <Compile Include="Manager\BattleManager.cs" />
+    <Compile Include="Manager\TeamManager.cs" />
+    <Compile Include="Screens\ManageTeamsScreen.cs" />
     <Compile Include="UI\AppliedConditionRow.cs" />
     <Compile Include="Entities\Cards\Category.cs" />
     <Compile Include="UI\GameLogEntryRow.cs" />
@@ -234,45 +226,34 @@
     <Compile Include="Entities\DrawableList.cs" />
     <Compile Include="Entities\IDrawable.cs" />
     <Compile Include="Entities\Terrain.cs" />
-    <Compile Include="Events\BattleContentLoadedEventHandler.cs" />
-    <Compile Include="Events\GameOverEventHandler.cs" />
+    <Compile Include="UI\ContentLoadedEventHandler.cs" />
     <Compile Include="MapHelper.cs" />
     <Compile Include="UI\FadingTextPanel.cs" />
     <Compile Include="UI\Panel.cs" />
     <Compile Include="UI\Text.cs" />
     <Compile Include="UI\UIComponent.cs" />
     <Compile Include="UI\UIComponentTappedEventHandler.cs" />
-    <None Include="Android\BaseGameUtils\README.md" />
-    <Compile Include="Android\BaseGameUtils\SignInFailureReason.cs" />
-    <Compile Include="CardManager.cs" />
+    <Compile Include="Manager\CardManager.cs" />
     <Compile Include="Entities\Cards\Conditions\AppliedCondition.cs" />
-    <Compile Include="Entities\Cards\Conditions\BuffCondition.cs" />
     <Compile Include="Entities\Cards\Conditions\Condition.cs" />
     <Compile Include="Entities\Cards\Conditions\ConditionEndsOn.cs" />
-    <Compile Include="Entities\Cards\Conditions\DistractCondition.cs" />
-    <Compile Include="Entities\Cards\Conditions\RunCondition.cs" />
-    <Compile Include="Entities\Cards\Conditions\TauntCondition.cs" />
     <Compile Include="Entities\Cards\AbilityScore.cs" />
     <Compile Include="Entities\Cards\CardType.cs" />
-    <Compile Include="CharacterClass.cs" />
-    <Compile Include="CharacterColour.cs" />
-    <Compile Include="CharacterSide.cs" />
+    <Compile Include="Data\CharacterClass.cs" />
+    <Compile Include="Data\CharacterColour.cs" />
+    <Compile Include="Data\CharacterSide.cs" />
     <Compile Include="Entities\Cards\Card.cs" />
     <Compile Include="Entities\Character.cs" />
     <Compile Include="Entities\HandOfCards.cs" />
     <Compile Include="Android\MainActivity.cs" />
-    <Compile Include="Events\BattleGameOverEventHandler.cs" />
     <Compile Include="MainGame.cs" />
     <Compile Include="MapPoint.cs" />
-    <Compile Include="Events\NextPlayersTurnEventHandler.cs" />
-    <Compile Include="Events\RequestSignInEventHandler.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screens\BattleScreen.cs" />
     <Compile Include="Screens\GameOverScreen.cs" />
     <Compile Include="Screens\ScreenType.cs" />
     <Compile Include="Screens\StartScreen.cs" />
-    <Compile Include="Events\CreateMatchEventHandler.cs" />
     <Compile Include="StringHelper.cs" />
     <Compile Include="UI\Button.cs" />
   </ItemGroup>
@@ -315,6 +296,16 @@
     <AndroidAsset Include="Content\sprites\icons\distract.xnb" />
     <AndroidAsset Include="Content\sprites\icons\run.xnb" />
     <AndroidAsset Include="Content\sprites\icons\taunt.xnb" />
+    <AndroidAsset Include="Content\fonts\PatrickHandSC-Regular.xnb" />
+    <AndroidAsset Include="Content\sprites\backgrounds\main.xnb" />
+    <AndroidAsset Include="Content\sprites\ui\button_left.xnb" />
+    <AndroidAsset Include="Content\sprites\ui\button_right.xnb" />
+    <AndroidAsset Include="Content\sprites\ui\button_top_bottom.xnb" />
+    <AndroidAsset Include="Content\sprites\ui\button_left_disabled.xnb" />
+    <AndroidAsset Include="Content\sprites\ui\button_right_disabled.xnb" />
+    <AndroidAsset Include="Content\sprites\ui\button_top_bottom_disabled.xnb" />
+    <AndroidAsset Include="Content\sprites\ui\panel.xnb" />
+    <EmbeddedResource Include="appsettings.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -376,14 +367,6 @@
     <Error Condition="!Exists('..\packages\Xamarin.Android.Support.v4.28.0.0.1\build\monoandroid90\Xamarin.Android.Support.v4.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.Android.Support.v4.28.0.0.1\build\monoandroid90\Xamarin.Android.Support.v4.targets'))" />
     <Error Condition="!Exists('..\packages\Xamarin.Build.Download.0.4.11\build\Xamarin.Build.Download.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.Build.Download.0.4.11\build\Xamarin.Build.Download.props'))" />
     <Error Condition="!Exists('..\packages\Xamarin.Build.Download.0.4.11\build\Xamarin.Build.Download.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.Build.Download.0.4.11\build\Xamarin.Build.Download.targets'))" />
-    <Error Condition="!Exists('..\packages\Xamarin.GooglePlayServices.Basement.71.1620.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Basement.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.GooglePlayServices.Basement.71.1620.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Basement.targets'))" />
-    <Error Condition="!Exists('..\packages\Xamarin.GooglePlayServices.Tasks.71.1601.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Tasks.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.GooglePlayServices.Tasks.71.1601.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Tasks.targets'))" />
-    <Error Condition="!Exists('..\packages\Xamarin.GooglePlayServices.Base.71.1610.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Base.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.GooglePlayServices.Base.71.1610.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Base.targets'))" />
-    <Error Condition="!Exists('..\packages\Xamarin.GooglePlayServices.Auth.Api.Phone.71.1600.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Auth.Api.Phone.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.GooglePlayServices.Auth.Api.Phone.71.1600.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Auth.Api.Phone.targets'))" />
-    <Error Condition="!Exists('..\packages\Xamarin.GooglePlayServices.Auth.Base.71.1600.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Auth.Base.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.GooglePlayServices.Auth.Base.71.1600.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Auth.Base.targets'))" />
-    <Error Condition="!Exists('..\packages\Xamarin.GooglePlayServices.Auth.71.1600.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Auth.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.GooglePlayServices.Auth.71.1600.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Auth.targets'))" />
-    <Error Condition="!Exists('..\packages\Xamarin.GooglePlayServices.Drive.71.1600.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Drive.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.GooglePlayServices.Drive.71.1600.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Drive.targets'))" />
-    <Error Condition="!Exists('..\packages\Xamarin.GooglePlayServices.Games.71.1700.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Games.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.GooglePlayServices.Games.71.1700.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Games.targets'))" />
     <Error Condition="!Exists('..\packages\MonoGame.Framework.Android.3.7.1.189\build\MonoGame.Framework.Android.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MonoGame.Framework.Android.3.7.1.189\build\MonoGame.Framework.Android.targets'))" />
   </Target>
   <Import Project="..\packages\Xamarin.Android.Support.Annotations.28.0.0.1\build\monoandroid90\Xamarin.Android.Support.Annotations.targets" Condition="Exists('..\packages\Xamarin.Android.Support.Annotations.28.0.0.1\build\monoandroid90\Xamarin.Android.Support.Annotations.targets')" />
@@ -416,14 +399,6 @@
   <Import Project="..\packages\Xamarin.Android.Support.Fragment.28.0.0.1\build\monoandroid90\Xamarin.Android.Support.Fragment.targets" Condition="Exists('..\packages\Xamarin.Android.Support.Fragment.28.0.0.1\build\monoandroid90\Xamarin.Android.Support.Fragment.targets')" />
   <Import Project="..\packages\Xamarin.Android.Support.v4.28.0.0.1\build\monoandroid90\Xamarin.Android.Support.v4.targets" Condition="Exists('..\packages\Xamarin.Android.Support.v4.28.0.0.1\build\monoandroid90\Xamarin.Android.Support.v4.targets')" />
   <Import Project="..\packages\Xamarin.Build.Download.0.4.11\build\Xamarin.Build.Download.targets" Condition="Exists('..\packages\Xamarin.Build.Download.0.4.11\build\Xamarin.Build.Download.targets')" />
-  <Import Project="..\packages\Xamarin.GooglePlayServices.Basement.71.1620.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Basement.targets" Condition="Exists('..\packages\Xamarin.GooglePlayServices.Basement.71.1620.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Basement.targets')" />
-  <Import Project="..\packages\Xamarin.GooglePlayServices.Tasks.71.1601.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Tasks.targets" Condition="Exists('..\packages\Xamarin.GooglePlayServices.Tasks.71.1601.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Tasks.targets')" />
-  <Import Project="..\packages\Xamarin.GooglePlayServices.Base.71.1610.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Base.targets" Condition="Exists('..\packages\Xamarin.GooglePlayServices.Base.71.1610.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Base.targets')" />
-  <Import Project="..\packages\Xamarin.GooglePlayServices.Auth.Api.Phone.71.1600.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Auth.Api.Phone.targets" Condition="Exists('..\packages\Xamarin.GooglePlayServices.Auth.Api.Phone.71.1600.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Auth.Api.Phone.targets')" />
-  <Import Project="..\packages\Xamarin.GooglePlayServices.Auth.Base.71.1600.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Auth.Base.targets" Condition="Exists('..\packages\Xamarin.GooglePlayServices.Auth.Base.71.1600.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Auth.Base.targets')" />
-  <Import Project="..\packages\Xamarin.GooglePlayServices.Auth.71.1600.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Auth.targets" Condition="Exists('..\packages\Xamarin.GooglePlayServices.Auth.71.1600.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Auth.targets')" />
-  <Import Project="..\packages\Xamarin.GooglePlayServices.Drive.71.1600.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Drive.targets" Condition="Exists('..\packages\Xamarin.GooglePlayServices.Drive.71.1600.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Drive.targets')" />
-  <Import Project="..\packages\Xamarin.GooglePlayServices.Games.71.1700.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Games.targets" Condition="Exists('..\packages\Xamarin.GooglePlayServices.Games.71.1700.0\build\MonoAndroid90\Xamarin.GooglePlayServices.Games.targets')" />
   <Import Project="..\packages\MonoGame.Framework.Android.3.7.1.189\build\MonoGame.Framework.Android.targets" Condition="Exists('..\packages\MonoGame.Framework.Android.3.7.1.189\build\MonoGame.Framework.Android.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

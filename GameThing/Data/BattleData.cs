@@ -10,6 +10,9 @@ namespace GameThing.Data
 	public class BattleData
 	{
 		[DataMember]
+		public int TurnNumber { get; set; } = 0;
+
+		[DataMember]
 		public int RoundNumber { get; set; } = 0;
 
 		[DataMember]
@@ -30,6 +33,12 @@ namespace GameThing.Data
 		[DataMember]
 		public List<GameLogEntry> GameLog { get; set; } = new List<GameLogEntry>();
 
+		[DataMember]
+		public bool IsTestMode { get; set; }
+
+		[DataMember]
+		public BattleStatus Status { get; set; }
+
 		public CharacterSide? WinnerSide
 		{
 			get
@@ -40,6 +49,7 @@ namespace GameThing.Data
 
 		public void SetWinnerSide(CharacterSide side)
 		{
+			Status = BattleStatus.Finished;
 			WinnerParticipantId = Sides.SingleOrDefault(keyValuePair => keyValuePair.Value == side).Key;
 		}
 

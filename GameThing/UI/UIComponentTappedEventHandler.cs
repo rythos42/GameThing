@@ -2,5 +2,5 @@
 
 namespace GameThing.UI
 {
-	public delegate void UIComponentTappedEventHandler(GestureSample position);
+	public delegate void UIComponentTappedEventHandler(string id, GestureSample position);
 }

@@ -36,7 +36,7 @@ namespace GameThing.UI
 			return conditionIcons.SingleOrDefault(conditionIcon => conditionIcon.Name == name);
 		}
 
-		public override void LoadContent(Content content, GraphicsDevice graphicsDevice)
+		protected override void LoadComponentContent(Content content, GraphicsDevice graphicsDevice)
 		{
 			conditionIcons = content.ConditionIcons;
 		}

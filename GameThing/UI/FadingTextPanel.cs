@@ -27,9 +27,9 @@ namespace GameThing.UI
 			startShowing = true;
 		}
 
-		public override void LoadContent(Content content, GraphicsDevice graphicsDevice)
+		protected override void LoadComponentContent(Content content, GraphicsDevice graphicsDevice)
 		{
-			base.LoadContent(content, graphicsDevice);
+			base.LoadComponentContent(content, graphicsDevice);
 
 			font = content.Font;
 		}

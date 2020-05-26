@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using GameThing.Entities;
+using GameThing.Manager;
 
 namespace GameThing.Data
 {
@@ -12,9 +13,12 @@ namespace GameThing.Data
 		[DataMember]
 		public List<Character> Characters { get; set; } = new List<Character>();
 
+		[DataMember]
+		public string OwnerPlayerId { get; set; }
+
 		public static TeamData CreateDefaultTeam(CardManager cardManager)
 		{
-			var teamData = new TeamData();
+			var teamData = new TeamData { OwnerPlayerId = ApplicationData.PlayerId };
 			teamData.Characters.Add(CreateCharacter(CharacterColour.Blue, CharacterClass.Squire, cardManager));
 			teamData.Characters.Add(CreateCharacter(CharacterColour.Green, CharacterClass.Squire, cardManager));
 			teamData.Characters.Add(CreateCharacter(CharacterColour.None, CharacterClass.Apprentice, cardManager));
@@ -25,12 +29,12 @@ namespace GameThing.Data
 
 		private static Character CreateCharacter(CharacterColour colour, CharacterClass cClass, CardManager cardManager)
 		{
-			var character = new Character(Guid.NewGuid(), colour, cClass);
+			var character = new Character(Guid.NewGuid(), colour, cClass) { OwnerPlayerId = ApplicationData.PlayerId };
 			character.InitializeDefaultDeck(cardManager);
 			return character;
 		}
 
-		private Character GetById(Guid id)
+		private Character GetCharacter(Guid id)
 		{
 			return Characters.SingleOrDefault(character => character.Id == id);
 		}
@@ -39,15 +43,18 @@ namespace GameThing.Data
 		{
 			foreach (var battleCharacter in battleData.Characters)
 			{
-				foreach (var battleCategory in battleCharacter.AdditionalCategoryLevels.Keys)
-				{
-					var teamCharacter = GetById(battleCharacter.Id);
-					var additionalCategoryLevelFromBattle = battleCharacter.AdditionalCategoryLevels[battleCategory];
+				if (battleCharacter.OwnerPlayerId != OwnerPlayerId)
+					continue;
 
-					if (teamCharacter.CategoryLevels.ContainsKey(battleCategory))
-						teamCharacter.CategoryLevels[battleCategory] += additionalCategoryLevelFromBattle;
+				foreach (var category in battleCharacter.AdditionalCategoryLevels.Keys)
+				{
+					var teamCharacter = GetCharacter(battleCharacter.Id);
+					var additionalCategoryLevelFromBattle = battleCharacter.AdditionalCategoryLevels[category];
+
+					if (teamCharacter.CategoryLevels.ContainsKey(category))
+						teamCharacter.CategoryLevels[category] += additionalCategoryLevelFromBattle;
 					else
-						teamCharacter.CategoryLevels.Add(battleCategory, additionalCategoryLevelFromBattle);
+						teamCharacter.CategoryLevels.Add(category, additionalCategoryLevelFromBattle);
 				}
 			}
 		}

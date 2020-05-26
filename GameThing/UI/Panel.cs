@@ -7,9 +7,9 @@ namespace GameThing.UI
 	public class Panel : UIContainer
 	{
 		private Texture2D panelTexture;
-		private Texture2D shadowTexture;
 
 		public bool PlaceFromRight { get; set; }
+		public bool ShowChrome { get; set; } = true;
 
 		public override Vector2 MeasureContent()
 		{
@@ -38,32 +38,28 @@ namespace GameThing.UI
 			}
 		}
 
-		public override void LoadContent(Content content, GraphicsDevice graphicsDevice)
+		protected override void LoadComponentContent(Content content, GraphicsDevice graphicsDevice)
 		{
-			base.LoadContent(content, graphicsDevice);
+			base.LoadComponentContent(content, graphicsDevice);
 
-			shadowTexture = new Texture2D(graphicsDevice, 1, 1);
-			shadowTexture.SetData(new Color[] { Color.Black });
-
-			panelTexture = new Texture2D(graphicsDevice, 1, 1);
-			panelTexture.SetData(new Color[] { Color.Linen });
+			panelTexture = content.PanelBackground;
 		}
 
 		public override void Draw(SpriteBatch spriteBatch, float x, float y)
 		{
 			var contentSize = MeasureContent();
-			Width = (int) contentSize.X + PADDING * 2;
-			Height = (int) contentSize.Y + PADDING * 2;
+			Width = (int) contentSize.X + PADDING * 2 + (ShowChrome ? 64 : 0);
+			Height = (int) contentSize.Y + PADDING * 2 + (ShowChrome ? 64 : 0);
 
 			var drawingPosition = GetDrawingPosition(spriteBatch.GraphicsDevice, x, y);
 			X = (int) drawingPosition.X;
 			Y = (int) drawingPosition.Y;
 
-			spriteBatch.Draw(shadowTexture, new Rectangle((int) X + BOX_SHADOW_X, (int) Y + BOX_SHADOW_Y, Width, Height), Color.White);
-			spriteBatch.Draw(panelTexture, new Rectangle((int) X, (int) Y, Width, Height), Color.White);
+			if (ShowChrome)
+				spriteBatch.Draw(panelTexture, new Rectangle((int) X, (int) Y, Width, Height), Color.White);
 
-			var drawX = X + MARGIN;
-			var drawY = Y + MARGIN;
+			var drawX = X + MARGIN + (ShowChrome ? 32 : 0);
+			var drawY = Y + MARGIN + (ShowChrome ? 32 : 0);
 			Components.ForEach(component =>
 			{
 				component.Draw(spriteBatch, drawX, drawY);

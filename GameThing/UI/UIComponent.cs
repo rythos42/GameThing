@@ -14,7 +14,9 @@ namespace GameThing.UI
 		public UIComponentTappedEventHandler Tapped;
 		public UIComponentHeldEventHandler Held;
 		public UIComponentGestureReadEventHandler GestureRead;
+		public ContentLoadedEventHandler ContentLoaded;
 
+		public string Id { get; set; }
 		public bool IsVisible { get; set; }
 		public int Width { get; protected set; }
 		public int Height { get; protected set; }
@@ -22,6 +24,8 @@ namespace GameThing.UI
 		public float X { get; protected set; }
 		public float Y { get; protected set; }
 		public Vector2 Position { get { return new Vector2(X, Y); } set { X = value.X; Y = value.Y; } }
+		public bool HasContentLoaded { get; protected set; }
+		public bool Enabled { get; set; } = true;
 
 		public virtual void Update(GameTime gameTime)
 		{
@@ -46,7 +50,22 @@ namespace GameThing.UI
 			Draw(spriteBatch, X, Y);
 		}
 
-		public abstract void LoadContent(Content content, GraphicsDevice graphicsDevice);
+		public void DrawConditional(SpriteBatch spriteBatch, float x, float y, bool draw)
+		{
+			if (draw)
+				Draw(spriteBatch, x, y);
+			else
+				IsVisible = false;
+		}
+
+		public void LoadContent(Content content, GraphicsDevice graphicsDevice)
+		{
+			LoadComponentContent(content, graphicsDevice);
+			HasContentLoaded = true;
+			ContentLoaded?.Invoke();
+		}
+
+		protected abstract void LoadComponentContent(Content content, GraphicsDevice graphicsDevice);
 		public abstract void Draw(SpriteBatch spriteBatch, float x, float y);
 		public abstract Vector2 MeasureContent();
 	}

@@ -1,7 +1,8 @@
 ﻿using GameThing.Data;
 using GameThing.Entities;
-using GameThing.Events;
+using GameThing.Manager;
 using GameThing.Screens;
+using GameThing.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -16,25 +17,17 @@ namespace GameThing
 #pragma warning restore IDE0052 // Remove unread private members
 		private SpriteBatch spriteBatch;
 
-		private ScreenType currentScreen = ScreenType.StartMenu;
 		private readonly BattleScreen battleScreen;
-		private readonly StartScreen startScreen;
+		private readonly StartScreen startScreen = new StartScreen();
 		private readonly GameOverScreen gameOverScreen = new GameOverScreen();
+		private readonly ManageTeamScreen manageTeamScreen;
 
-		public event MatchEventHandler CreateMatch;
-		public event MatchEventHandler JoinMatch;
-		public event NextPlayersTurnEventHandler NextPlayersTurn;
-		public event RequestSignInEventHandler RequestSignIn;
-		public event GameOverEventHandler GameOver;
-		private event BattleContentLoadedEventHandler BattleContentLoaded;
-
-		private readonly ApplicationData appData = new ApplicationData();
-		private Content content;
+		private event ContentLoadedEventHandler ContentLoaded;
 
 		public MainGame()
 		{
-			startScreen = new StartScreen(appData);
 			battleScreen = new BattleScreen(CardManager);
+			manageTeamScreen = new ManageTeamScreen(CardManager);
 
 			graphics = new GraphicsDeviceManager(this)
 			{
@@ -45,99 +38,23 @@ namespace GameThing
 			};
 			Content.RootDirectory = "Content";
 
-			startScreen.StartAsTester += StartScreen_StartedAsTester;
-			startScreen.CreateMatch += StartScreen_CreateMatch;
-			startScreen.JoinMatch += StartScreen_JoinMatch;
-			startScreen.RequestSignIn += StartScreen_RequestSignIn;
 			battleScreen.GameOver += BattleScreen_GameOver;
-			battleScreen.NextPlayersTurn += BattleScreen_NextPlayersTurn;
+			startScreen.StartBattle += StartScreen_StartBattle;
 		}
 
-		public TeamData TeamData { get; set; }
 		public CardManager CardManager { get; private set; } = new CardManager();
 
-		public void SetSignedIn(bool signedIn)
+		private async void BattleScreen_GameOver(BattleData battleData)
 		{
-			appData.SignedIn = signedIn;
+			await TeamManager.Instance.MergeBattleDataAndSaveTeam(battleData);
+			gameOverScreen.Winner = battleData.WinnerSide;
+			ApplicationData.CurrentScreen = ScreenType.GameOver;
 		}
 
-		public BattleData InitializeBattleData(string matchId)
+		private void StartScreen_StartBattle(BattleData data)
 		{
-			return new BattleData
-			{
-				CurrentSidesTurn = CharacterSide.Spaghetti,
-				MatchId = matchId
-			};
-		}
-
-		private void StartScreen_CreateMatch()
-		{
-			CreateMatch?.Invoke();
-		}
-
-		private void StartScreen_JoinMatch()
-		{
-			JoinMatch?.Invoke();
-		}
-
-		private void StartScreen_StartedAsTester()
-		{
-			var battleData = InitializeBattleData(null);
-			battleData.InitializeCharacters("p1", TeamData);
-			battleData.ChangePlayingSide();
-			battleData.InitializeCharacters("p2", TeamData);
-
-			var side = CharacterSide.Spaghetti;
-			currentScreen = ScreenType.Battle;
-			battleData.CurrentSidesTurn = side;
-			battleScreen.IsTestMode = true;
-			battleScreen.SetBattleData(battleData);
-			battleScreen.StartGame(side);
-		}
-
-		private void StartScreen_RequestSignIn()
-		{
-			RequestSignIn?.Invoke();
-		}
-
-		private void BattleScreen_GameOver(BattleData data)
-		{
-			TeamData.MergeBattleData(data);
-
-			GameOver?.Invoke(data, TeamData);
-			ShowGameOver(data);
-		}
-
-		private void BattleScreen_NextPlayersTurn(BattleData data)
-		{
-			NextPlayersTurn?.Invoke(data);
-		}
-
-		public void StartMatch(string myParticipantId, BattleData gameData)
-		{
-			BattleContentLoadedEventHandler startMatch = null;
-			startMatch = () =>
-			{
-				currentScreen = ScreenType.Battle;
-				battleScreen.IsTestMode = false;
-				battleScreen.SetBattleData(gameData);
-				battleScreen.StartGame(myParticipantId);
-
-				// remove self from event
-				BattleContentLoaded -= startMatch;
-			};
-
-			// If we haven't loaded content yet, set an event to start the match after we do so.
-			if (content == null)
-				BattleContentLoaded += startMatch;
-			else
-				startMatch();
-		}
-
-		public void ShowGameOver(BattleData data)
-		{
-			gameOverScreen.Winner = data.WinnerSide;
-			currentScreen = ScreenType.GameOver;
+			battleScreen.StartGame(data);
+			ApplicationData.CurrentScreen = ScreenType.Battle;
 		}
 
 		protected override void Initialize()
@@ -150,43 +67,49 @@ namespace GameThing
 		protected override void LoadContent()
 		{
 			spriteBatch = new SpriteBatch(GraphicsDevice);
-
-			content = new Content(Content);
+			var content = new Content(Content);
 
 			battleScreen.LoadContent(content, GraphicsDevice);
-			BattleContentLoaded?.Invoke();
-
 			startScreen.LoadContent(content, GraphicsDevice);
 			gameOverScreen.LoadContent(content, GraphicsDevice);
+			manageTeamScreen.LoadContent(content, GraphicsDevice);
+
+			ContentLoaded?.Invoke();
 		}
 
 		protected override void UnloadContent()
 		{
 			Content.Unload();
+
+			BattleManager.Instance.Dispose();
 		}
 
 		protected override void Update(GameTime gameTime)
 		{
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
 			{
-				switch (currentScreen)
+				switch (ApplicationData.CurrentScreen)
 				{
 					case ScreenType.GameOver:
 					case ScreenType.Battle:
-						currentScreen = ScreenType.StartMenu; break;
+					case ScreenType.ManageTeams:
+						ApplicationData.CurrentScreen = ScreenType.StartMenu; break;
 					case ScreenType.StartMenu:
 						Exit();
 						break;
 				}
 			}
 
-			switch (currentScreen)
+			switch (ApplicationData.CurrentScreen)
 			{
 				case ScreenType.Battle:
 					battleScreen.Update(gameTime);
 					break;
 				case ScreenType.StartMenu:
 					startScreen.Update(gameTime);
+					break;
+				case ScreenType.ManageTeams:
+					manageTeamScreen.Update(gameTime);
 					break;
 			}
 
@@ -195,7 +118,7 @@ namespace GameThing
 
 		protected override void Draw(GameTime gameTime)
 		{
-			switch (currentScreen)
+			switch (ApplicationData.CurrentScreen)
 			{
 				case ScreenType.Battle:
 					battleScreen.Draw(GraphicsDevice, spriteBatch, Window.ClientBounds);
@@ -205,6 +128,9 @@ namespace GameThing
 					break;
 				case ScreenType.GameOver:
 					gameOverScreen.Draw(GraphicsDevice, spriteBatch);
+					break;
+				case ScreenType.ManageTeams:
+					manageTeamScreen.Draw(GraphicsDevice, spriteBatch);
 					break;
 			}
 

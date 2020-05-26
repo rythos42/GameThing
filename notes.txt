@@ -1,21 +1,19 @@
-- consider giving Shane my old phone...I could really use his "fuck the game" mindset.
-- sort out Google Play API V3, deprecated December 1st
-	https://android-developers.googleblog.com/2019/03/changes-to-google-play-developer-api.html
-	
 Todo (vMVP):
-	- rematch via Join Game crashes
+	- hard to tap on phone (no problem on emulator)
+	- think there might be an issue whereby Characters are given a side, but sides are initially assigned based on who started the game
 	- tooltip on condition icons to give details
-		
-Todo (vNext):
+	- toggle game log
+		- shorter, no longer than player stats with conditions
+	- game log is much to big overall
 	- need some amount of randomness
 		- not "to hit", I hate that
 		- armour is possible
 		- damage maybe, but want it to fit inside existing framework as much as possible
-	- game needs an Armour stat
-	- exception if you press "Test" before team loaded from google drive
-	- some weird exception after "Win Game" button pressed, then press back. Likely due to saving.
+		- game needs an Armour stat
 	- remove Lame Distraction and replace, it's a bad card
+	- figure out how to do notifications -- the Firebase caching is making it hold onto the direct object and then I change it, meaning I have nothing to compare against
 
+Todo (vNext):
 	Building a basic class hierarchy
 	- Need more categories for some of the "higher level" things
 	- some of the brainstormed cards could be entire expansion blocks worth of ideas, separate them out.
@@ -28,9 +26,22 @@ Todo (vNext):
 	- view character category levels
 	- show categories of cards
 	- need many more cards
-
+	- view cards in deck character deck
 
 Nice to have:
+	- ability to have multiple teams
+	- lock down Firebase database, it's wide open right now
+	- translatable
+	- check on tablet
+	- ability to name match
+	- show a thing if game ends while it isn't your turn
+	- make "your turn" marker more obvious
+	- surrender button
+	- give notification an actual icon
+	- notification about battles other than the last one you joined/opened
+	- title above matches buttons "Available Matches" vs "Your Matches"
+	- some matches filtering/sorting when beyond 6 matches
+	- highlight "End Turn" button when no moves left
 	- General card wording
 		- "100% Int damage" unclear -- thought it was "damage to your Int"
 		- Don't make player do math (100% Int should be "1 damage (100% of Int)")
@@ -43,10 +54,6 @@ Nice to have:
 	- don't allow friendly fire
 	- fix card sizing on tablet
 		- rejig HandOfCards spacing to shrink the cards if they don't fit!
-	- hide start screen buttons if loading shit (or give a loading splash screen and THEN go to game)
-	- maybe don't automatically go to a match if we have one -- might be the user has multiple
-	- show logout button to GPG
-	- hide "Join as Spaghetti" button
 	- shouldn't need to de-select a character to select a new one
 	- make characters move on game loop
 	- fix map background
@@ -54,32 +61,30 @@ Nice to have:
 	- zoom is too quick, needs to be slower
 	- pan is to SLOW, or needs a bounce to it
 	- fix autorotate landscape
-	- Awkward Distraction is awkwardly written
 	- save the game after each time a character goes, rather than after each player turn (one side with extra characters, game isn't saved between character turns)
 	- hide "No more moves from opponent" status panel when ending turn
 	- center text on buttons again
 	- character names
 	- allow players to look at their shit when it's not their turn
 	- scroll through game log entries?
+	- update start screen buttons to suck less
+		- more information about your opponent
+		- don't show all of them if you don't need to
+		- able to scroll and/or filter
 
 Tech
-	- decent chance that GameHelper/BaseGameActivity aren't doing the right things anymore -- seems to be a mash-up of older sign-in code and newer
-	- lots of events being passed through MainGame to MainActivity -- wonder if there is a better architecture that still keeps the Android pieces separate
 	- warnings in Monogame Pipeline
 	- how to do polygon objects in maps
 	- Nexus 7 shows black box instead of highlighted character
 	- why outside_0.xnb and outside.xnb?
 	- Entities list vs Character list, why storing the same thing twice?
-	- May need a different classes for Characters
-		- on-device storage
-		- pass between games
-		- on-device in-game
 	- set description, played time and progress value for SnapshotChangeMetadata
-	- consider loosening proguard.cfg -- it's keeping all of com.google.android.gms, but last error only needed com.google.android.gms.auth.api.signin.internal.SignInHubActivity
+	- consider loosening proguard.cfg -- it's keeping all of com.google.android.gms, but not using GPG anymore
 		- check \obj\Release\90\proguard\proguard_project_references.cfg for ideas of how it works
 	- send card IDs instead of the whole card around
 	- move character sprites to a sub folder
 	- make ScreenComponent draw the UIComponents it contains
+	- somewhere to send error logs to
 	        
 Game Design
 	- evaluate whether single character or whole side is a better turn
@@ -90,6 +95,9 @@ Game Design
 	- make movement depend on agilty score
 		- make runcondition an agility buff?
 
+
+UI
+	Toast.MakeText(Application.Context, $"Your friend has been invited to play!", ToastLength.Long).Show();
 
 Deploying:
 	1. Test that `release` build runs. Proguard/etc can mess some things up.
@@ -185,6 +193,7 @@ Free stuff
 	https://opengameart.org/content/isometric-64x64-medieval-building-tileset
 	https://erikari.itch.io/elements-supremacy-assets							(sprites)
 	https://opengameart.org/content/concrete-ui-part-2							(lock)
+	https://codepen.io/tmrDevelops/pen/VeRvKX									(hand-drawn-look buttons)
 
 Shaders
 	http://community.monogame.net/t/applying-shader-on-one-sprite-only/9893/7

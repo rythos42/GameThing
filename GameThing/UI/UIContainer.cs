@@ -18,13 +18,19 @@ namespace GameThing.UI
 
 		public void InvokeContainerTap(GestureSample gesture)
 		{
-			GetComponentAt(gesture.Position)?.Tapped?.Invoke(gesture);
+			var component = GetComponentAt(gesture.Position);
+			if (component?.Enabled == true)
+				component?.Tapped?.Invoke(component?.Id, gesture);
+
+			var componentAsContainer = component as UIContainer;
+			componentAsContainer?.InvokeContainerTap(gesture);
 		}
 
 		public void InvokeContainerHeld(GestureSample gesture)
 		{
 			var component = GetComponentAt(gesture.Position);
-			component?.Held?.Invoke(component, gesture);
+			if (component?.Enabled == true)
+				component?.Held?.Invoke(component, gesture);
 
 			var componentAsContainer = component as UIContainer;
 			componentAsContainer?.InvokeContainerHeld(gesture);
@@ -35,7 +41,7 @@ namespace GameThing.UI
 			GestureRead?.Invoke(gesture);
 		}
 
-		public override void LoadContent(Content content, GraphicsDevice graphicsDevice)
+		protected override void LoadComponentContent(Content content, GraphicsDevice graphicsDevice)
 		{
 			Components.ForEach(component => component.LoadContent(content, graphicsDevice));
 		}
