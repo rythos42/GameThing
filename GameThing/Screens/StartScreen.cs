@@ -44,7 +44,7 @@ namespace GameThing.Screens
 			help = new Button("Help") { Tapped = help_Tapped };
 
 			matchesPanel = new Panel() { ShowChrome = false };
-			helpPanel = new Panel();
+			helpPanel = new Panel() { ExtendedPadding = true };
 
 			BattleManager.Instance.DataUpdated += BattleManager_DataUpdated;
 		}

@@ -10,6 +10,7 @@ namespace GameThing.UI
 
 		public bool PlaceFromRight { get; set; }
 		public bool ShowChrome { get; set; } = true;
+		public bool ExtendedPadding { get; set; } = false;
 
 		public override Vector2 MeasureContent()
 		{
@@ -48,8 +49,8 @@ namespace GameThing.UI
 		public override void Draw(SpriteBatch spriteBatch, float x, float y)
 		{
 			var contentSize = MeasureContent();
-			Width = (int) contentSize.X + PADDING * 2 + (ShowChrome ? 64 : 0);
-			Height = (int) contentSize.Y + PADDING * 2 + (ShowChrome ? 64 : 0);
+			Width = (int) contentSize.X + PADDING * 2 + (ExtendedPadding ? 64 : 0);
+			Height = (int) contentSize.Y + PADDING * 2 + (ExtendedPadding ? 64 : 0);
 
 			var drawingPosition = GetDrawingPosition(spriteBatch.GraphicsDevice, x, y);
 			X = (int) drawingPosition.X;
@@ -58,8 +59,8 @@ namespace GameThing.UI
 			if (ShowChrome)
 				spriteBatch.Draw(panelTexture, new Rectangle((int) X, (int) Y, Width, Height), Color.White);
 
-			var drawX = X + MARGIN + (ShowChrome ? 32 : 0);
-			var drawY = Y + MARGIN + (ShowChrome ? 32 : 0);
+			var drawX = X + MARGIN + (ExtendedPadding ? 32 : 0);
+			var drawY = Y + MARGIN + (ExtendedPadding ? 32 : 0);
 			Components.ForEach(component =>
 			{
 				component.Draw(spriteBatch, drawX, drawY);

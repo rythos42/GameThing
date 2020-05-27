@@ -1,19 +1,18 @@
 Todo (vMVP):
-	- hard to tap on phone (no problem on emulator)
 	- think there might be an issue whereby Characters are given a side, but sides are initially assigned based on who started the game
 	- tooltip on condition icons to give details
-	- toggle game log
-		- shorter, no longer than player stats with conditions
-	- game log is much to big overall
+	- remove Lame Distraction and replace, it's a bad card
+	- figure out how to do notifications -- the Firebase caching is making it hold onto the direct object and then I change it, meaning I have nothing to compare against
+	- hard to tap on phone (no problem on emulator)
+	- allow players to look at their shit when it's not their turn
+
+Todo (vNext):
 	- need some amount of randomness
 		- not "to hit", I hate that
 		- armour is possible
 		- damage maybe, but want it to fit inside existing framework as much as possible
 		- game needs an Armour stat
-	- remove Lame Distraction and replace, it's a bad card
-	- figure out how to do notifications -- the Firebase caching is making it hold onto the direct object and then I change it, meaning I have nothing to compare against
 
-Todo (vNext):
 	Building a basic class hierarchy
 	- Need more categories for some of the "higher level" things
 	- some of the brainstormed cards could be entire expansion blocks worth of ideas, separate them out.
@@ -65,7 +64,6 @@ Nice to have:
 	- hide "No more moves from opponent" status panel when ending turn
 	- center text on buttons again
 	- character names
-	- allow players to look at their shit when it's not their turn
 	- scroll through game log entries?
 	- update start screen buttons to suck less
 		- more information about your opponent

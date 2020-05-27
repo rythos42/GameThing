@@ -42,7 +42,7 @@ namespace GameThing.Entities
 			var spacing = remainingWidth / 5;
 			var position = new Vector2
 			{
-				X = spacing,
+				X = spacing + 40,
 				Y = clientBounds.Height / 2 + 250
 			};
 			CardPosition selectedCardPosition = null;

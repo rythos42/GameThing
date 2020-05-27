@@ -23,19 +23,23 @@ namespace GameThing.UI
 				return;
 
 			var sourceIcon = GetIconForSide(GameLogEntry.SourceCharacterSide);
-			spriteBatch.Draw(sourceIcon, new Vector2(x, y), Color.White);
-
+			var smallIconWidth = sourceIcon.Width / 2;
+			var smallIconHeight = sourceIcon.Height / 2;
+			var nextX = x + (smallIconWidth / 2);
 			if (GameLogEntry.MovedTo != null)
 			{
-				spriteBatch.Draw(moveIcon, new Vector2(x + sourceIcon.Width, y), Color.White);
+				spriteBatch.Draw(moveIcon, new Vector2(x + 2, y + 10), Color.White);
 			}
 			else
 			{
-				spriteBatch.Draw(cardIcon, new Vector2(x + sourceIcon.Width, y), Color.White);
+				spriteBatch.Draw(cardIcon, new Vector2(x + 2, y + 10), Color.White);
 
 				var targetIcon = GetIconForSide(GameLogEntry.TargetCharacterSide);
-				spriteBatch.Draw(targetIcon, new Vector2(x + sourceIcon.Width + cardIcon.Width, y), Color.White);
+				nextX += smallIconWidth / 2;
+				spriteBatch.Draw(targetIcon, new Rectangle((int) nextX, (int) (y + (cardIcon.Height * 0.75)), smallIconWidth, smallIconHeight), Color.White);
 			}
+
+			spriteBatch.Draw(sourceIcon, new Rectangle((int) x, (int) y, smallIconWidth, smallIconHeight), Color.White);
 			IsVisible = true;
 		}
 
@@ -51,7 +55,7 @@ namespace GameThing.UI
 			cardIcon = content.CardIcon;
 			moveIcon = content.MoveIcon;
 
-			Width = spaghettiHatIcon.Width + cardIcon.Width + unicornHatIcon.Width;
+			Width = cardIcon.Width; // this is the result of how it's drawn above
 			Height = spaghettiHatIcon.Height;
 		}
 

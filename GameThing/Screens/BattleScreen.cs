@@ -19,7 +19,7 @@ namespace GameThing.Screens
 {
 	public class BattleScreen
 	{
-		private const int GameLogEntryCount = 8;
+		private const int GameLogEntryCount = 10;
 
 		private TiledMapRenderer mapRenderer;
 		private Camera<Vector2> camera;
