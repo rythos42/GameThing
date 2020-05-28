@@ -24,6 +24,7 @@ namespace GameThing.Screens
 		private ScreenComponent screenComponent;
 		private readonly Panel matchesPanel;
 		private readonly Panel helpPanel;
+		private readonly FadingTextPanel statusPanel = new FadingTextPanel { PlaceFromRight = true };
 
 		private readonly TeamManager teamManager = TeamManager.Instance;
 		private readonly BattleManager battleManager = BattleManager.Instance;
@@ -98,7 +99,7 @@ namespace GameThing.Screens
 		private async void createMatch_Tapped(string id, GestureSample gesture)
 		{
 			var newBattle = await battleManager.CreateBattle(teamManager.Team);
-			SetDynamicButtons();
+			statusPanel.Show("Match created!");
 		}
 
 		public void LoadContent(Content content, GraphicsDevice graphicsDevice)
@@ -112,6 +113,7 @@ namespace GameThing.Screens
 			screenComponent.Components.Add(help);
 			screenComponent.Components.Add(matchesPanel);
 			screenComponent.Components.Add(helpPanel);
+			screenComponent.Components.Add(statusPanel);
 
 			for (int i = 0; i < AvailableMatchesCount; i++)
 				matchesPanel.Components.Add(new Button("No match available.") { Tapped = matchButton_Tapped });
@@ -202,6 +204,8 @@ namespace GameThing.Screens
 				if (gesture.GestureType == GestureType.Tap)
 					screenComponent.InvokeContainerTap(gesture);
 			}
+
+			screenComponent.Update(gameTime);
 		}
 
 		public void Draw(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch)
@@ -220,6 +224,8 @@ namespace GameThing.Screens
 
 			matchesPanel.DrawConditional(spriteBatch, 1100, 168, teamManager.HasTeam);
 			helpPanel.DrawConditional(spriteBatch, 400, 300, showingHelpDialog);
+
+			statusPanel.Draw(spriteBatch, UIComponent.MARGIN * 20, UIComponent.MARGIN * 4);
 
 			spriteBatch.End();
 		}

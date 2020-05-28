@@ -1,7 +1,7 @@
 Todo (vMVP):
 	- tooltip on condition icons to give details
 	- hard to tap on phone (no problem on emulator)
-	- no indication that you hit "Create Match" so you just keep pressing it over and over again...
+	- test mode fails
 
 
 Todo (vNext):
@@ -28,6 +28,7 @@ Todo (vNext):
 	- view cards in deck character deck
 
 Nice to have:
+	- refresh My Matches in case someone joined (or have a notification in that case or something)
 	- think there might be an issue whereby Characters are given a side, but sides are initially assigned based on who started the game
 		- "Side" in this case is a demonination of whether you are "Player One" or "Player Two", but with interesting names.
 		- Ultimately it should have nothing to do with what the look of your players is.

@@ -320,7 +320,7 @@ namespace GameThing.Screens
 					screenComponent.InvokeContainerHeld(gesture);
 			}
 
-			statusPanel.Update(gameTime);
+			screenComponent.Update(gameTime);
 
 			newTurnButton.IsHighlighted = lockedInCharacter != null && !lockedInCharacter.HasRemainingMoves && !lockedInCharacter.HasRemainingPlayableCards;
 		}

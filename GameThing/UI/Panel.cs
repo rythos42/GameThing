@@ -30,7 +30,7 @@ namespace GameThing.UI
 		{
 			if (PlaceFromRight)
 			{
-				var width = MeasureContent().X + MARGIN * 2;
+				var width = MeasureContent().X + x;
 				return new Vector2(graphicsDevice.PresentationParameters.BackBufferWidth - width - MARGIN, y);
 			}
 			else

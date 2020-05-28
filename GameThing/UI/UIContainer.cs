@@ -45,5 +45,10 @@ namespace GameThing.UI
 		{
 			Components.ForEach(component => component.LoadContent(content, graphicsDevice));
 		}
+
+		public override void Update(GameTime gameTime)
+		{
+			Components.ForEach(component => component.Update(gameTime));
+		}
 	}
 }
