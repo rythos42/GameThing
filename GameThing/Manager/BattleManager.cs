@@ -68,7 +68,9 @@ namespace GameThing.Manager
 		private void OnDataUpdated(FirebaseEvent<BattleData> evt)
 		{
 			currentBattle = evt.Object;
-			DataUpdated?.Invoke(evt.Object);
+
+			if (currentBattle.LastPlayingPlayerId != ApplicationData.PlayerId)
+				DataUpdated?.Invoke(evt.Object);
 		}
 
 		public async Task SaveBattle(BattleData battleData)

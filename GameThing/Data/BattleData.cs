@@ -39,6 +39,9 @@ namespace GameThing.Data
 		[DataMember]
 		public BattleStatus Status { get; set; }
 
+		[DataMember]
+		public string LastPlayingPlayerId { get; set; }
+
 		public CharacterSide? WinnerSide
 		{
 			get

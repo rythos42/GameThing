@@ -1,7 +1,8 @@
 Todo (vMVP):
 	- tooltip on condition icons to give details
-	- figure out how to do notifications -- the Firebase caching is making it hold onto the direct object and then I change it, meaning I have nothing to compare against
 	- hard to tap on phone (no problem on emulator)
+	- no indication that you hit "Create Match" so you just keep pressing it over and over again...
+
 
 Todo (vNext):
 	- do release notes

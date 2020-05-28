@@ -269,6 +269,7 @@ namespace GameThing.Screens
 				return;
 			}
 
+			data.LastPlayingPlayerId = ApplicationData.PlayerId;
 			data.ChangePlayingSide();
 			data.TurnNumber++;
 
