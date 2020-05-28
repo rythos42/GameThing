@@ -79,9 +79,9 @@ namespace GameThing.Screens
 		private void startAsTester_Tapped(string id, GestureSample gesture)
 		{
 			var battleData = new BattleData { CurrentSidesTurn = CharacterSide.Spaghetti };
-			battleData.InitializeCharacters("p1", teamManager.Team);
+			battleData.InitializeCharacters(ApplicationData.PlayerId, teamManager.Team);
 			battleData.ChangePlayingSide();
-			battleData.InitializeCharacters("p2", teamManager.Team);
+			battleData.InitializeCharacters(ApplicationData.PlayerId, teamManager.Team);
 
 			var side = CharacterSide.Spaghetti;
 			battleData.CurrentSidesTurn = side;
