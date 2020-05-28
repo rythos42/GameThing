@@ -417,9 +417,9 @@ namespace GameThing.Screens
 			// Draw UI
 			spriteBatch.Begin();
 			if (thisPlayerSide == data.CurrentSidesTurn)
-				newTurnButton.Draw(spriteBatch, UIComponent.MARGIN, UIComponent.MARGIN);
+				newTurnButton.Draw(spriteBatch, playerSidePanel.Width + 2 * UIComponent.MARGIN, UIComponent.MARGIN);
 			statusPanel.Draw(spriteBatch, UIComponent.MARGIN, UIComponent.MARGIN);
-			playerSidePanel.Draw(spriteBatch, newTurnButton.Width + 2 * UIComponent.MARGIN, UIComponent.MARGIN);
+			playerSidePanel.Draw(spriteBatch, UIComponent.MARGIN, UIComponent.MARGIN);
 			if (data.IsTestMode)
 				winGameNowButton.Draw(spriteBatch, newTurnButton.Width + playerSidePanel.Width + 3 * UIComponent.MARGIN, UIComponent.MARGIN);
 
