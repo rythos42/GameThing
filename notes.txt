@@ -1,12 +1,11 @@
 Todo (vMVP):
-	- think there might be an issue whereby Characters are given a side, but sides are initially assigned based on who started the game
 	- tooltip on condition icons to give details
-	- remove Lame Distraction and replace, it's a bad card
 	- figure out how to do notifications -- the Firebase caching is making it hold onto the direct object and then I change it, meaning I have nothing to compare against
 	- hard to tap on phone (no problem on emulator)
-	- allow players to look at their shit when it's not their turn
 
 Todo (vNext):
+	- do release notes
+	- remove Lame Distraction and replace, it's a bad card
 	- need some amount of randomness
 		- not "to hit", I hate that
 		- armour is possible
@@ -28,6 +27,9 @@ Todo (vNext):
 	- view cards in deck character deck
 
 Nice to have:
+	- think there might be an issue whereby Characters are given a side, but sides are initially assigned based on who started the game
+		- "Side" in this case is a demonination of whether you are "Player One" or "Player Two", but with interesting names.
+		- Ultimately it should have nothing to do with what the look of your players is.
 	- ability to have multiple teams
 	- lock down Firebase database, it's wide open right now
 	- translatable
@@ -105,8 +107,6 @@ Google Play
 		"C:\Program Files (x86)\Java\jre1.8.0_171\bin\keytool" -list -v -keystore gamething.keystore
 		"C:\Program Files (x86)\Java\jre1.8.0_171\bin\keytool" -list -v -keystore "%LocalAppData%\Xamarin\Mono for Android\debug.keystore" -alias androiddebugkey -storepass android -keypass android
 		https://developer.android.com/studio/publish/app-signing
-	Better Sign-in
-		https://forums.xamarin.com/discussion/123468/google-sign-in-not-working-in-android
 
 Publishing Xamarin
 	http://developer.xamarin.com/guides/android/deployment,_testing,_and_metrics/publishing_an_application/
@@ -130,14 +130,6 @@ Publishing Xamarin
 
 	Obsfucating code
 	https://www.preemptive.com/dotfuscator/pro/userguide/en/getting_started_xamarin.html
-
-Multiplayer
-	http://community.monogame.net/t/google-sign-in-in-monogame/10913
-	https://developers.google.com/games/services/android/turnbasedMultiplayer
-	https://developers.google.com/android/reference/com/google/android/gms/games/multiplayer/turnbased/TurnBasedMultiplayer
-	https://github.com/mhughson/mbhxamarintbmpdemo
-	https://github.com/xamarin/GooglePlayServicesComponents/blob/master/samples/com.google.android.gms/play-services-games/BeGenerous/MainActivity.cs
-	https://developers.google.com/games/services/android/troubleshooting
 
 MonoGame/XNA
 	http://blog.dylanwilson.net/posts/

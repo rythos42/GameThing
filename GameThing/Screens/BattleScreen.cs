@@ -324,6 +324,11 @@ namespace GameThing.Screens
 			newTurnButton.IsHighlighted = lockedInCharacter != null && !lockedInCharacter.HasRemainingMoves && !lockedInCharacter.HasRemainingPlayableCards;
 		}
 
+		private bool IsMyTurn
+		{
+			get { return data.CurrentSidesTurn == thisPlayerSide; }
+		}
+
 		public void Draw(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch, Rectangle clientBounds)
 		{
 			graphicsDevice.SetRenderTarget(renderTarget);
@@ -337,32 +342,35 @@ namespace GameThing.Screens
 			mapRenderer.Draw(camera.GetViewMatrix());
 			spriteBatch.End();
 
-			spriteBatch.Begin(
-				transformMatrix: camera.GetViewMatrix(),
-				samplerState: SamplerState.PointClamp,
-				blendState: BlendState.AlphaBlend,
-				sortMode: SpriteSortMode.Texture);
-			if (selectedCharacter != null && selectedCard == null && movingPoint == null)
+			if (IsMyTurn)
 			{
-				data.Characters.SingleOrDefault(character => character == selectedCharacter && character.HasRemainingMoves && character.Side == thisPlayerSide)?.DrawMovementRange(spriteBatch);
+				spriteBatch.Begin(
+					transformMatrix: camera.GetViewMatrix(),
+					samplerState: SamplerState.PointClamp,
+					blendState: BlendState.AlphaBlend,
+					sortMode: SpriteSortMode.Texture);
+				if (selectedCharacter != null && selectedCard == null && movingPoint == null)
+				{
+					data.Characters.SingleOrDefault(character => character == selectedCharacter && character.HasRemainingMoves && character.Side == thisPlayerSide)?.DrawMovementRange(spriteBatch);
+				}
+				else if (selectedCard != null && targetingPoint == null)
+				{
+					selectedCard.DrawEffectRange(spriteBatch);
+				}
+				else if (movingPoint != null)
+				{
+					var movingPointScreen = movingPoint.GetScreenPosition();
+					var distanceOverlay = content.DistanceOverlay;
+					spriteBatch.Draw(distanceOverlay, new Rectangle((int) movingPointScreen.X - MapPoint.TileWidth_Half, (int) movingPointScreen.Y, distanceOverlay.Width, distanceOverlay.Height), Color.DarkGreen * 0.5f);
+				}
+				else if (targetingPoint != null)
+				{
+					var targetingPointScreen = targetingPoint.GetScreenPosition();
+					var distanceOverlay = content.DistanceOverlay;
+					spriteBatch.Draw(distanceOverlay, new Rectangle((int) targetingPointScreen.X - MapPoint.TileWidth_Half, (int) targetingPointScreen.Y, distanceOverlay.Width, distanceOverlay.Height), Color.DarkBlue * 0.5f);
+				}
+				spriteBatch.End();
 			}
-			else if (selectedCard != null && targetingPoint == null)
-			{
-				selectedCard.DrawEffectRange(spriteBatch);
-			}
-			else if (movingPoint != null)
-			{
-				var movingPointScreen = movingPoint.GetScreenPosition();
-				var distanceOverlay = content.DistanceOverlay;
-				spriteBatch.Draw(distanceOverlay, new Rectangle((int) movingPointScreen.X - MapPoint.TileWidth_Half, (int) movingPointScreen.Y, distanceOverlay.Width, distanceOverlay.Height), Color.DarkGreen * 0.5f);
-			}
-			else if (targetingPoint != null)
-			{
-				var targetingPointScreen = targetingPoint.GetScreenPosition();
-				var distanceOverlay = content.DistanceOverlay;
-				spriteBatch.Draw(distanceOverlay, new Rectangle((int) targetingPointScreen.X - MapPoint.TileWidth_Half, (int) targetingPointScreen.Y, distanceOverlay.Width, distanceOverlay.Height), Color.DarkBlue * 0.5f);
-			}
-			spriteBatch.End();
 
 			Effect currentEffect = null;
 			bool startedSpriteBatch = false;
@@ -403,7 +411,7 @@ namespace GameThing.Screens
 			spriteBatch.End();
 
 			// Draw a characters hand of cards if player is playing that side
-			if (selectedCharacter != null && selectedCharacter.Side == thisPlayerSide && thisPlayerSide == data.CurrentSidesTurn)
+			if (selectedCharacter != null && selectedCharacter.Side == thisPlayerSide)
 				handOfCards.Draw(spriteBatch, clientBounds, selectedCharacter.CurrentHand, selectedCard);
 
 			// Draw UI
@@ -485,8 +493,8 @@ namespace GameThing.Screens
 		private async Task Tap(GestureSample gesture)
 		{
 			// Can't tap if it isn't your turn.
-			if (data.CurrentSidesTurn != thisPlayerSide)
-				return;
+			//          if (data.CurrentSidesTurn != thisPlayerSide)
+			//return;
 
 			// try to get a card under the tap first 
 			var selectedCardIndex = handOfCards.GetCardIndexAtPosition(gesture.Position);
@@ -509,12 +517,12 @@ namespace GameThing.Screens
 				selectedCharacter = targetCharacter;
 				SelectedCharacterChange?.Invoke(selectedCharacter);
 			}
-			else if (selectedCard != null && targetCharacter != null && selectedCard.IsWithinRangeDistance(mapPoint) && mapPoint.IsWithinMap && (lockedInCharacter == selectedCard.OwnerCharacter || lockedInCharacter == null) && targetingPoint == null)
+			else if (selectedCard != null && targetCharacter != null && selectedCard.IsWithinRangeDistance(mapPoint) && mapPoint.IsWithinMap && (lockedInCharacter == selectedCard.OwnerCharacter || lockedInCharacter == null) && targetingPoint == null && IsMyTurn)
 			{
 				// TRYING TO TARGET A CARD
 				targetingPoint = mapPoint;
 			}
-			else if (targetingPoint?.Equals(mapPoint) == true)
+			else if (targetingPoint?.Equals(mapPoint) == true && IsMyTurn)
 			{
 				// ACTUALLY PLAY SELECTED CARD
 				// we have a character selected and a card selected, try to target whatever is under the tap
@@ -588,9 +596,10 @@ namespace GameThing.Screens
 		private bool CanMoveSelectedCharacter => selectedCharacter.Side == thisPlayerSide
 					&& selectedCharacter.HasRemainingMoves
 					&& !selectedCharacter.ActivatedThisRound
-					&& (lockedInCharacter == selectedCharacter || lockedInCharacter == null);
+					&& (lockedInCharacter == selectedCharacter || lockedInCharacter == null)
+					&& IsMyTurn;
 
-		private bool CanSelectCardFromSelectedCharacter => selectedCharacter != null && selectedCharacter.HasRemainingPlayableCards && !selectedCharacter.ActivatedThisRound;
+		private bool CanSelectCardFromSelectedCharacter => selectedCharacter != null && selectedCharacter.HasRemainingPlayableCards && !selectedCharacter.ActivatedThisRound && IsMyTurn;
 
 		private void Pan(GestureSample gesture)
 		{
