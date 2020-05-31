@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using Antlr4.StringTemplate;
 using GameThing.Data;
 using GameThing.Entities.Cards.Conditions;
 using Microsoft.Xna.Framework;
@@ -138,10 +139,11 @@ namespace GameThing.Entities.Cards
 		{
 			get
 			{
-				if (Condition == null)
-					return Description;
-
-				return Description + ": " + Condition.Text;
+				var templateStr = Condition == null ? Description : Description + ": " + Condition.Text;
+				var template = new Template(templateStr);
+				template.Add("character", OwnerCharacter);
+				template.Add("card", this);
+				return template.Render();
 			}
 		}
 

@@ -1,8 +1,6 @@
 Todo (vMVP):
-	- tooltip on condition icons to give details
 	- hard to tap on phone (no problem on emulator)
 	- test mode fails
-
 
 Todo (vNext):
 	- do release notes
@@ -45,9 +43,6 @@ Nice to have:
 	- title above matches buttons "Available Matches" vs "Your Matches"
 	- some matches filtering/sorting when beyond 6 matches
 	- highlight "End Turn" button when no moves left
-	- General card wording
-		- "100% Int damage" unclear -- thought it was "damage to your Int"
-		- Don't make player do math (100% Int should be "1 damage (100% of Int)")
 	- can't "hot seat" because it doesn't end the round after all characters have gone
 	- rename test mode to hot seat
 	- notification when card can't be played, and why
@@ -96,6 +91,10 @@ Game Design
 		- have characters face the direction they last moved towards
 	- make movement depend on agilty score
 		- make runcondition an agility buff?
+
+Moddable Abilities
+	- make documentation on templatable objects
+	- ensure templatable objects are minimum useful set
 
 
 UI

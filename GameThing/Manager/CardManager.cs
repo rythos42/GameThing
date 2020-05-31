@@ -42,7 +42,7 @@ namespace GameThing.Manager
 				new Card (1)
 				{
 					Title = "Clumsy Stab",
-					Description = "Deal 100% Str damage at range 1.",
+					Description = "Deal 100% Str (<character.CurrentStrength>) damage at range 1.",
 					Range = 1,
 					CardType = Type.Damage,
 					AbilityScore = AbilityScore.Strength,
@@ -52,7 +52,7 @@ namespace GameThing.Manager
 				new Card(2)
 				{
 					Title = "Bad Bandage",
-					Description = "Heal 100% Int to self.",
+					Description = "Heal 100% Int (<character.CurrentIntelligence>) to self.",
 					Range = 0,
 					CardType = Type.Heal,
 					AbilityScore = AbilityScore.Intelligence,
@@ -98,7 +98,7 @@ namespace GameThing.Manager
 				new Card(7)
 				{
 					Title = "Slightly Trained Stab",
-					Description = "Deal 120% Str damage at range 1.",
+					Description = "Deal 120% Str (<character.CurrentStrength>) damage at range 1.",
 					Range = 1,
 					CardType = Type.Damage,
 					AbilityScore = AbilityScore.Strength,
@@ -117,7 +117,7 @@ namespace GameThing.Manager
 				new Card(9)
 				{
 					Title = "Decent Slice",
-					Description = "Deal 120% Agi damage at range 1.",
+					Description = "Deal 120% Agi (<character.CurrentAgility>) damage at range 1.",
 					Range = 1,
 					CardType = Type.Damage,
 					AbilityScore = AbilityScore.Agility,
@@ -127,7 +127,7 @@ namespace GameThing.Manager
 				new Card(10)
 				{
 					Title = "Slipped Backstab",
-					Description = "Deal 150% Agi damage at range 1.",
+					Description = "Deal 150% Agi (<character.CurrentAgility>) damage at range 1.",
 					Range = 1,
 					CardType = Type.Damage,
 					AbilityScore = AbilityScore.Agility,
@@ -147,7 +147,7 @@ namespace GameThing.Manager
 				new Card(12)
 				{
 					Title = "Arcane Missile",
-					Description = "Deal 100% Int damage at range 5.",
+					Description = "Deal 100% Int (<character.CurrentIntelligence>) damage at range 5.",
 					Range = 5,
 					CardType = Type.Damage,
 					AbilityScore = AbilityScore.Intelligence,
