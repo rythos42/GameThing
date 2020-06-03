@@ -1,19 +1,25 @@
-Todo (vMVP):
+Todo:
 	- hard to tap on phone (no problem on emulator)
 	- test mode fails
-
-Todo (vNext):
 	- do release notes
-	- remove Lame Distraction and replace, it's a bad card
-	- need some amount of randomness
-		- not "to hit", I hate that
-		- armour is possible
-		- damage maybe, but want it to fit inside existing framework as much as possible
-		- game needs an Armour stat
 
-	Building a basic class hierarchy
-	- Need more categories for some of the "higher level" things
-	- some of the brainstormed cards could be entire expansion blocks worth of ideas, separate them out.
+	Add:
+		Stats:
+			Initiative stat: when your turn is. Liked Fell Seal model where characters could go multiple times in a round.
+			Evade stat: small percent chance to entirely dodge attack, static percent damage reduction from Strength or Agility attacks
+			Defense stat: static percent damage reduction
+		Categories:
+			Evade
+			Debuff
+			Options
+			Focus
+		Re-do Cards
+			Prepared Stance: Gain 100% Defense for 5 turns.
+			Awkward Distraction: Gain +100% Evade
+			Slow Jog: add Self category
+			Weak Cheer: Remove Strength category
+			Clumsy Stab: Add Reckless category
+
 
 	Manage Team
 	- implement character levels
@@ -24,6 +30,8 @@ Todo (vNext):
 	- show categories of cards
 	- need many more cards
 	- view cards in deck character deck
+	- could do a web app if the information gets to be to much
+
 
 Nice to have:
 	- refresh My Matches in case someone joined (or have a notification in that case or something)

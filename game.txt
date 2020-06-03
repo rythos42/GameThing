@@ -13,19 +13,32 @@ Turn:
 	Characters may move and play 1 card
 		In any order
 
-some characters will be support, ranged, melee, all different types
-	cards have to allow that support is a good idea, not just killing stuff
+Stats
+	Strength
+	Agility
+	Intelligence
+	Health
+	Defense (?) (damage reduction)
+	Evade (?)	(very small chance to stop all damage)
 
-Levels
+Class Progression
+	- Each class has a set of Primary Ability Scores
+	- Each class has a set of Required Minimum Category Levels. Cards provide points into these category levels.
+		- When you get all of the required minimums, you are able to unlock that class and select it as your current.
+
+Card Progression
 	- When you play a card, add 1 point for the character to each category that card contains.
 	- Classes are unlocked at a certain number of points in a particular category
-		- Gain levels in a class by a certain number of points in categories.
-		- Ensure each class has a set of categories that work for it.
-		- Have classes both for depth and breadth of categories
-		- Classes provide passive ability based on level of current selected class
-	- The cards you have available to you are determined by your level in each class.
-		- Each level gives 1 additional card. (or 2 of the same).
-	- Each level in a class gives you some amount of basic stats
+	- The cards you have available to you in your current class are determined by your level in each class.
+		- Each level gives 1 additional card.
+	- MASTER a card by gaining a certain number of points in it, then you get to keep that card when you change classes.
+		- Basic cards are mastered by default.
+
+Level Progression
+	- End of each battle, characters gain a certain amount of XP by participating.
+	- Characters on your team but not in the battle also get a certain, lesser, amount.
+	- Characters have a level-up tree based on XP milestones.
+	- Basic stats improve on each level, based on the Primary Ability Score of your current class
 
 Between games:
 	Decks
@@ -33,3 +46,10 @@ Between games:
 		8 cards in deck per character
 	Classes
 		Change class
+
+Classes:
+	Apprentice
+
+	Pickpocket
+
+	Squire
