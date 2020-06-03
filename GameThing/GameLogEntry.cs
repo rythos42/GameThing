@@ -1,5 +1,5 @@
 ﻿using System.Runtime.Serialization;
-using GameThing.Data;
+using GameThing.Contract;
 using GameThing.Entities;
 
 namespace GameThing

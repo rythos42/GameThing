@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GameThing.Data;
+using GameThing.Contract;
 using GameThing.Entities;
 using GameThing.Entities.Cards;
 using GameThing.Entities.Cards.Conditions;

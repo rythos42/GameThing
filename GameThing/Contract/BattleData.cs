@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 using GameThing.Entities;
 using Newtonsoft.Json;
 
-namespace GameThing.Data
+namespace GameThing.Contract
 {
 	[DataContract]
 	public class BattleData

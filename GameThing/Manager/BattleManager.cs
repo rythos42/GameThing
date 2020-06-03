@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Firebase.Database.Streaming;
-using GameThing.Data;
+using GameThing.Contract;
 using GameThing.Database;
 
 namespace GameThing.Manager

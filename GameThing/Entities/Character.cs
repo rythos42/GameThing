@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
-using GameThing.Data;
+using GameThing.Contract;
 using GameThing.Entities.Cards;
 using GameThing.Entities.Cards.Conditions;
 using GameThing.Manager;

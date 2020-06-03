@@ -4,7 +4,7 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Support.V4.App;
 using Android.Views;
-using GameThing.Data;
+using GameThing.Contract;
 using GameThing.Manager;
 using Microsoft.Xna.Framework;
 

@@ -1,4 +1,4 @@
-﻿namespace GameThing.Data
+﻿namespace GameThing.Contract
 {
 	public enum CharacterClass
 	{

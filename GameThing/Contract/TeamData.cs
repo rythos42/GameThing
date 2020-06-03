@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using GameThing.Entities;
 using GameThing.Manager;
 
-namespace GameThing.Data
+namespace GameThing.Contract
 {
 	[DataContract]
 	public class TeamData

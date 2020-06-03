@@ -3,7 +3,7 @@ using System.IO.Compression;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace GameThing.Data
+namespace GameThing.Contract
 {
 	public static class Convert
 	{

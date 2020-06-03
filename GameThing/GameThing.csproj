@@ -205,10 +205,10 @@
     <Compile Include="ApplicationData.cs" />
     <Compile Include="Database\BattleMapper.cs" />
     <Compile Include="Database\TeamMapper.cs" />
-    <Compile Include="Data\BattleStatus.cs" />
-    <Compile Include="Data\Convert.cs" />
-    <Compile Include="Data\TeamData.cs" />
-    <Compile Include="Data\BattleData.cs" />
+    <Compile Include="Contract\BattleStatus.cs" />
+    <Compile Include="Contract\Convert.cs" />
+    <Compile Include="Contract\TeamData.cs" />
+    <Compile Include="Contract\BattleData.cs" />
     <Compile Include="Entities\Cards\Conditions\ConditionType.cs" />
     <Compile Include="Manager\BattleDataUpdatedEventHandler.cs" />
     <Compile Include="Screens\BattleGameOverEventHandler.cs" />
@@ -245,9 +245,9 @@
     <Compile Include="Entities\Cards\Conditions\ConditionEndsOn.cs" />
     <Compile Include="Entities\Cards\AbilityScore.cs" />
     <Compile Include="Entities\Cards\CardType.cs" />
-    <Compile Include="Data\CharacterClass.cs" />
-    <Compile Include="Data\CharacterColour.cs" />
-    <Compile Include="Data\CharacterSide.cs" />
+    <Compile Include="Contract\CharacterClass.cs" />
+    <Compile Include="Contract\CharacterColour.cs" />
+    <Compile Include="Contract\CharacterSide.cs" />
     <Compile Include="Entities\Cards\Card.cs" />
     <Compile Include="Entities\Character.cs" />
     <Compile Include="Entities\HandOfCards.cs" />

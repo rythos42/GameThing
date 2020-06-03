@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using GameThing.Data;
+using GameThing.Contract;
 using GameThing.Database;
 
 namespace GameThing.Manager

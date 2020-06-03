@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Firebase.Database;
 using Firebase.Database.Query;
-using GameThing.Data;
+using GameThing.Contract;
 
 namespace GameThing.Database
 {

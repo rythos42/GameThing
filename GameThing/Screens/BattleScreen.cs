@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GameThing.Data;
+using GameThing.Contract;
 using GameThing.Entities;
 using GameThing.Entities.Cards;
 using GameThing.Manager;

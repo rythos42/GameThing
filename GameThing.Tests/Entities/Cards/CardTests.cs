@@ -1,5 +1,5 @@
 ﻿using System;
-using GameThing.Data;
+using GameThing.Contract;
 using GameThing.Entities;
 using GameThing.Entities.Cards;
 using NUnit.Framework;

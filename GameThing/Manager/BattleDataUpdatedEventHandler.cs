@@ -1,4 +1,4 @@
-﻿using GameThing.Data;
+﻿using GameThing.Contract;
 
 namespace GameThing.Manager
 {

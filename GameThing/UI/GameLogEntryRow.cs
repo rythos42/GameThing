@@ -1,4 +1,4 @@
-﻿using GameThing.Data;
+﻿using GameThing.Contract;
 using GameThing.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

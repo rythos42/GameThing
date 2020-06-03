@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Runtime.Serialization;
 using Antlr4.StringTemplate;
-using GameThing.Data;
+using GameThing.Contract;
 using GameThing.Entities.Cards.Conditions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

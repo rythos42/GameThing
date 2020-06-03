@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using GameThing.Data;
+using GameThing.Contract;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.Tiled;
