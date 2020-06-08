@@ -1,4 +1,4 @@
-﻿namespace GameThing.Entities.Cards
+﻿namespace GameThing.Contract
 {
 	public enum AbilityScore
 	{

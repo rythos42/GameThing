@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using GameThing.Database;
 using GameThing.Entities;
-using GameThing.Manager;
 
 namespace GameThing.Contract
 {
@@ -16,21 +16,25 @@ namespace GameThing.Contract
 		[DataMember]
 		public string OwnerPlayerId { get; set; }
 
-		public static TeamData CreateDefaultTeam(CardManager cardManager)
+		public static TeamData CreateDefaultTeam()
 		{
+			var squireClass = CharacterClassMapper.Instance.Get("squire");
+			var apprenticeClass = CharacterClassMapper.Instance.Get("apprentice");
+			var pickpocketClass = CharacterClassMapper.Instance.Get("pickpocket");
+
 			var teamData = new TeamData { OwnerPlayerId = ApplicationData.PlayerId };
-			teamData.Characters.Add(CreateCharacter(CharacterColour.Blue, CharacterClass.Squire, cardManager));
-			teamData.Characters.Add(CreateCharacter(CharacterColour.Green, CharacterClass.Squire, cardManager));
-			teamData.Characters.Add(CreateCharacter(CharacterColour.None, CharacterClass.Apprentice, cardManager));
-			teamData.Characters.Add(CreateCharacter(CharacterColour.Red, CharacterClass.Apprentice, cardManager));
-			teamData.Characters.Add(CreateCharacter(CharacterColour.White, CharacterClass.Pickpocket, cardManager));
+			teamData.Characters.Add(CreateCharacter(CharacterColour.Blue, squireClass));
+			teamData.Characters.Add(CreateCharacter(CharacterColour.Green, squireClass));
+			teamData.Characters.Add(CreateCharacter(CharacterColour.None, apprenticeClass));
+			teamData.Characters.Add(CreateCharacter(CharacterColour.Red, apprenticeClass));
+			teamData.Characters.Add(CreateCharacter(CharacterColour.White, pickpocketClass));
 			return teamData;
 		}
 
-		private static Character CreateCharacter(CharacterColour colour, CharacterClass cClass, CardManager cardManager)
+		private static Character CreateCharacter(CharacterColour colour, CharacterClass cClass)
 		{
 			var character = new Character(Guid.NewGuid(), colour, cClass) { OwnerPlayerId = ApplicationData.PlayerId };
-			character.InitializeDefaultDeck(cardManager);
+			character.InitializeDefaultDeck();
 			return character;
 		}
 

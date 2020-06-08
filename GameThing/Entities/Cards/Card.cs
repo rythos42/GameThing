@@ -3,24 +3,21 @@ using System.Linq;
 using System.Runtime.Serialization;
 using Antlr4.StringTemplate;
 using GameThing.Contract;
+using GameThing.Database;
 using GameThing.Entities.Cards.Conditions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
 
 namespace GameThing.Entities.Cards
 {
 	[DataContract]
-	public class Card
+	public class Card : IIdentifiable
 	{
 		private Texture2D sprite;
 		private Texture2D availableRangeTexture;
 		private SpriteFont font;
 		private const int cardMargin = 20;
-
-		public Card(int id)
-		{
-			Id = id;
-		}
 
 		public void SetContent(Content content)
 		{
@@ -31,37 +28,37 @@ namespace GameThing.Entities.Cards
 
 		public bool Play(int roundNumber, Character target = null)
 		{
-			if (CardType == Type.Damage)
+			if (CardType == CardType.Damage)
 			{
 				decimal damage = 0;
 
 				target.Conditions.ForEach(condition => condition.Condition.ApplyBeforeDamage(OwnerCharacter, target));
 
-				switch (AbilityScore)
+				switch (AbilityScore.Value)
 				{
-					case AbilityScore.Agility: damage = OwnerCharacter.CurrentAgility * EffectPercent; break;
-					case AbilityScore.Strength: damage = OwnerCharacter.CurrentStrength * EffectPercent; break;
-					case AbilityScore.Intelligence: damage = OwnerCharacter.CurrentIntelligence * EffectPercent; break;
+					case Contract.AbilityScore.Agility: damage = OwnerCharacter.CurrentAgility * EffectPercent.Value; break;
+					case Contract.AbilityScore.Strength: damage = OwnerCharacter.CurrentStrength * EffectPercent.Value; break;
+					case Contract.AbilityScore.Intelligence: damage = OwnerCharacter.CurrentIntelligence * EffectPercent.Value; break;
 				}
 				target.ApplyDamage(damage);
 
 				target.RemoveConditions(ConditionEndsOn.AfterAttack);
 			}
-			else if (CardType == Type.Heal)
+			else if (CardType == CardType.Heal)
 			{
 				decimal healing = 0;
-				switch (AbilityScore)
+				switch (AbilityScore.Value)
 				{
-					case AbilityScore.Agility: healing = OwnerCharacter.CurrentAgility * EffectPercent; break;
-					case AbilityScore.Strength: healing = OwnerCharacter.CurrentStrength * EffectPercent; break;
-					case AbilityScore.Intelligence: healing = OwnerCharacter.CurrentIntelligence * EffectPercent; break;
+					case Contract.AbilityScore.Agility: healing = OwnerCharacter.CurrentAgility * EffectPercent.Value; break;
+					case Contract.AbilityScore.Strength: healing = OwnerCharacter.CurrentStrength * EffectPercent.Value; break;
+					case Contract.AbilityScore.Intelligence: healing = OwnerCharacter.CurrentIntelligence * EffectPercent.Value; break;
 				}
 				target.ApplyHealing(healing);
 			}
-			else if (CardType == Type.Condition)
+			else if (CardType == CardType.Condition)
 			{
-				// if the condition is on the target already, cancel the card play
-				if (target.Conditions.Any(applied => applied.Condition.Id == Condition.Id))
+				// if a non-stacking condition is on the target already, cancel the card play
+				if (target.Conditions.Any(applied => applied.Condition.StackGroup == Condition.StackGroup))
 					return false;
 
 				target.Conditions.Add(new AppliedCondition(Condition, roundNumber));
@@ -121,7 +118,7 @@ namespace GameThing.Entities.Cards
 		public Character OwnerCharacter { get; set; }
 
 		[DataMember]
-		public Type CardType { get; set; }
+		public CardType CardType { get; set; }
 
 		[DataMember]
 		public bool InHand { get; set; }
@@ -130,7 +127,7 @@ namespace GameThing.Entities.Cards
 		public bool InDiscard { get; set; }
 
 		[DataMember]
-		public int Id { get; set; }
+		public string Id { get; set; }
 
 		[DataMember]
 		public string Title { get; set; }
@@ -157,12 +154,13 @@ namespace GameThing.Entities.Cards
 		public Condition Condition { get; set; }
 
 		[DataMember]
-		public decimal EffectPercent { get; set; }
+		public decimal? EffectPercent { get; set; }
 
 		[DataMember]
-		public AbilityScore AbilityScore { get; set; }
+		public AbilityScore? AbilityScore { get; set; }
 
 		[DataMember]
+		[JsonConverter(typeof(IdentifierBasedConverter<Category>), typeof(CategoryMapper))]
 		public List<Category> Categories { get; set; } = new List<Category>();
 	}
 }

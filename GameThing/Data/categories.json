@@ -1,0 +1,74 @@
+﻿[
+	{
+		"id": "strength",
+		"name": "Strength"
+	},
+	{
+		"id": "intelligence",
+		"name": "Intelligence"
+	},
+	{
+		"id": "agility",
+		"name": "Agility"
+	},
+	{
+		"id": "damage",
+		"name": "Damage"
+	},
+	{
+		"id": "melee",
+		"name": "Melee"
+	},
+	{
+		"id": "healing",
+		"name": "Healing"
+	},
+	{
+		"id": "self",
+		"name": "Self"
+	},
+	{
+		"id": "support",
+		"name": "Support"
+	},
+	{
+		"id": "defense",
+		"name": "Defense"
+	},
+	{
+		"id": "ranged",
+		"name": "Ranged"
+	},
+	{
+		"id": "movement",
+		"name": "Movement"
+	},
+	{
+		"id": "duration",
+		"name": "Duration"
+	},
+	{
+		"id": "reckless",
+		"name": "Reckless"
+	},
+	{
+		"id": "magic",
+		"name": "Magic"
+	},
+	{
+		"id": "evade",
+		"name": "Evade"
+	},
+	{
+		"id": "debuff",
+		"name": "Debuff"
+	},
+	{
+		"id": "options",
+		"name": "Options"
+	},
+	{
+		"id": "focus",
+		"name": "Focus"
+	}
+]

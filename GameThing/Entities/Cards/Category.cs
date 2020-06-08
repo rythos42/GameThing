@@ -1,20 +1,10 @@
-﻿namespace GameThing.Entities.Cards
+﻿using GameThing.Database;
+
+namespace GameThing.Entities.Cards
 {
-	public enum Category
+	public class Category : IIdentifiable
 	{
-		Strength,
-		Intelligence,
-		Agility,
-		Damage,
-		Melee,
-		Healing,
-		Self,
-		Support,
-		Defense,
-		Ranged,
-		Movement,
-		Duration,
-		Reckless,
-		Magic
+		public string Id { get; set; }
+		public string Name { get; set; }
 	}
 }

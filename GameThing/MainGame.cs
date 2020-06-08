@@ -1,4 +1,5 @@
 ﻿using GameThing.Contract;
+using GameThing.Database;
 using GameThing.Entities;
 using GameThing.Manager;
 using GameThing.Screens;
@@ -26,8 +27,8 @@ namespace GameThing
 
 		public MainGame()
 		{
-			battleScreen = new BattleScreen(CardManager);
-			manageTeamScreen = new ManageTeamScreen(CardManager);
+			battleScreen = new BattleScreen();
+			manageTeamScreen = new ManageTeamScreen();
 
 			graphics = new GraphicsDeviceManager(this)
 			{
@@ -40,9 +41,11 @@ namespace GameThing
 
 			battleScreen.GameOver += BattleScreen_GameOver;
 			startScreen.StartBattle += StartScreen_StartBattle;
-		}
 
-		public CardManager CardManager { get; private set; } = new CardManager();
+			CategoryMapper.Instance.Load();
+			CardMapper.Instance.Load();
+			CharacterClassMapper.Instance.Load();
+		}
 
 		private async void BattleScreen_GameOver(BattleData battleData)
 		{

@@ -1,0 +1,51 @@
+categories.json
+
+[
+	{
+		"id": "strength",												/* Unique identifier for a category. Exception will throw if not unique. */
+		"name": "Strength"												/* Display name for a category */
+	}
+]
+
+
+classes.json
+[
+	{
+		"id": "apprentice",												/* Unique identifier for a class. Exception will throw if not unique. */
+		"name": "Apprentice",											/* Display name for a class. */
+		"startingCards": [ "1", "2", "3", "4", "5", "6", "11", "12" ]	/* List of card IDs that this class starts with. Only currently relevant for starter classes. Exception will throw if an ID doesn't exist in card list. */
+	}
+]
+
+
+cards.json
+[
+	{
+		"id": "1",														/* Unique identifier for cards. Exception will throw if not unique. */
+		"title": "",													/* Displayed title for the card, shown on the card. */
+		"cardType": "",													/* "Damage", "Heal" or "Condition". */
+		"description": "",												/* Displayed description for the card, shown on the card. */
+		"range": 1,														/* Count of distance of adjacent squares this card can target. */
+		"condition": {													/* The configuration of the condition this card gives. Must be given if cardType is "Condition". */
+			"stackGroup": "1"											/* When a condition is applied, if the character has a condition with this stackGroup applied already, the new condition is not applied. */
+			"text": "",													/* Displayed text of the condition, shown on the card and on the condition tooltip. */
+			"turnCount": 1,												/* If the condition ends on StartRound, how many turns the condition is applied for. */
+			"endsOn": "",												/* When the condition ends: "StartRound", "AfterAttack" (after the owning character makes an attack), "Move" (after the owning character performs a move)
+			"iconName": "",												/* Path to the sprite used for what this condition looks like on the character summary. */
+			"type": "",													/* What kind of action the condition performs. "Buff", "Distract", "Run", "Taunt". */
+																		/*		"Buff" gives the target some kind of ability score change. (positive or negative) */
+																		/*		"Distract" gives _another character_ targeting the condition target some kind of ability score change. (I know, it's confusing, unlikely to be used) */
+																		/*		"Run" gives the target a movement change. */
+																		/*		"Taunt" means the next attack from the target must attack the owning character of this condition. */
+			"abilityScore": "",											/* If a Buff or Distract type, which of "Strength", "Agility", "Intelligence" is used to determine effect. Not used by Run or Taunt, can be omitted. */
+			"buffAmount": 1,											/* What percent of the ability score is used by a Buff, Distract or Run condition type. Not used by "Taunt", can be omitted. */
+			"buffType": "",												/* "Percent" or "Linear", determines what units "buffAmount" is in. Linear is "+3 Health", Percent is "+300% Health". Not used by "Taunt", can be omitted. */
+			"successPercent": 1											/* Percent chance that the condition is successfully applied. */
+		},
+		"effectPercent": 0.57,											/* What percent of the ability score is used by either a "Damage" or "Heal" card type. Not used for "Condition", can be omitted. */
+		"abilityScore": "",												/* Which of "Strength", "Agility", "Intelligence" is used to determine how much "Damage" or "Heal" is done. Not used for "Condition", can be omitted. */ 
+		"categories": [													/* List of IDs for what categories this card gives points in when it is used. */
+			"strength"
+		]
+	}
+]

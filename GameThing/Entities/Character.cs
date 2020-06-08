@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using GameThing.Contract;
+using GameThing.Database;
 using GameThing.Entities.Cards;
 using GameThing.Entities.Cards.Conditions;
 using GameThing.Manager;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
 
 namespace GameThing.Entities
 {
@@ -67,6 +69,7 @@ namespace GameThing.Entities
 		public CharacterSide Side { get; set; }
 
 		[DataMember]
+		[JsonConverter(typeof(IdentifierBasedConverter<CharacterClass>), typeof(CharacterClassMapper))]
 		public CharacterClass CharacterClass { get; set; }
 
 		[DataMember]
@@ -149,6 +152,7 @@ namespace GameThing.Entities
 		public Dictionary<Category, int> AdditionalCategoryLevels { get; } = new Dictionary<Category, int>();
 
 		[DataMember]
+		[JsonConverter(typeof(IdentifierBasedConverter<Card>), typeof(CardMapper))]
 		public List<Card> Deck { get; private set; } = new List<Card>();
 
 		[DataMember]
@@ -157,9 +161,9 @@ namespace GameThing.Entities
 		public bool HasRemainingPlayableCards => RemainingPlayableCards > 0;
 		public bool HasRemainingMoves => RemainingMoves > 0;
 
-		public void InitializeDefaultDeck(CardManager cardManager)
+		public void InitializeDefaultDeck()
 		{
-			Deck = cardManager.CreateDefaultDeck(this);
+			Deck = CardManager.Instance.CreateDefaultDeck(this);
 		}
 
 		public void InitializeDeckForBattle()

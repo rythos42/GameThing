@@ -12,8 +12,8 @@ namespace GameThing.Tests.Entities.Cards
 		[Test]
 		public void FullDescription_UsesTemplate()
 		{
-			var character = new Character(Guid.NewGuid(), CharacterColour.Blue, CharacterClass.Apprentice);
-			var card = new Card(1)
+			var character = new Character(Guid.NewGuid(), CharacterColour.Blue, new CharacterClass());
+			var card = new Card()
 			{
 				Description = "Deal 100% Str (<character.CurrentStrength>) damage at range 1.",
 				OwnerCharacter = character

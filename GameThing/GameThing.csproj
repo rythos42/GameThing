@@ -204,11 +204,21 @@
   <ItemGroup>
     <Compile Include="ApplicationData.cs" />
     <Compile Include="Database\BattleMapper.cs" />
+    <Compile Include="Database\CardMapper.cs" />
+    <Compile Include="Database\CategoryMapper.cs" />
+    <Compile Include="Database\CharacterClassMapper.cs" />
+    <Compile Include="Database\IIdentifiable.cs" />
+    <Compile Include="Database\IIdentifiableMapper.cs" />
     <Compile Include="Database\TeamMapper.cs" />
     <Compile Include="Contract\BattleStatus.cs" />
     <Compile Include="Contract\Convert.cs" />
     <Compile Include="Contract\TeamData.cs" />
     <Compile Include="Contract\BattleData.cs" />
+    <EmbeddedResource Include="Data\cards.json" />
+    <EmbeddedResource Include="Data\categories.json" />
+    <EmbeddedResource Include="Data\classes.json" />
+    <Compile Include="Entities\Cards\IdentifierBasedConverter.cs" />
+    <Compile Include="Entities\CharacterClass.cs" />
     <Compile Include="Entities\Cards\Conditions\ConditionType.cs" />
     <Compile Include="Manager\BattleDataUpdatedEventHandler.cs" />
     <Compile Include="Screens\BattleGameOverEventHandler.cs" />
@@ -226,7 +236,6 @@
     <Compile Include="UI\UIComponentHeldEventHandler.cs" />
     <Compile Include="UI\UIContainer.cs" />
     <Compile Include="Entities\Cards\Conditions\BuffType.cs" />
-    <Compile Include="Entities\Cards\Type.cs" />
     <Compile Include="Entities\Content.cs" />
     <Compile Include="Entities\Drawable.cs" />
     <Compile Include="Entities\DrawableList.cs" />
@@ -243,9 +252,8 @@
     <Compile Include="Entities\Cards\Conditions\AppliedCondition.cs" />
     <Compile Include="Entities\Cards\Conditions\Condition.cs" />
     <Compile Include="Entities\Cards\Conditions\ConditionEndsOn.cs" />
-    <Compile Include="Entities\Cards\AbilityScore.cs" />
+    <Compile Include="Contract\AbilityScore.cs" />
     <Compile Include="Entities\Cards\CardType.cs" />
-    <Compile Include="Contract\CharacterClass.cs" />
     <Compile Include="Contract\CharacterColour.cs" />
     <Compile Include="Contract\CharacterSide.cs" />
     <Compile Include="Entities\Cards\Card.cs" />

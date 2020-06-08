@@ -34,7 +34,7 @@ namespace GameThing.Screens
 		private readonly DrawableList entities = new DrawableList();
 		private MapPoint movingPoint;
 		private MapPoint targetingPoint;
-		private readonly CardManager cardManager;
+		private readonly CardManager cardManager = CardManager.Instance;
 		private readonly BattleManager battleManager = BattleManager.Instance;
 
 		private ScreenComponent screenComponent;
@@ -77,13 +77,12 @@ namespace GameThing.Screens
 		public event BattleGameOverEventHandler GameOver;
 		public event SelectedCharacterChangeEventHandler SelectedCharacterChange;
 
-		public BattleScreen(CardManager cardManager)
+		public BattleScreen()
 		{
 			newTurnButton = new Button("New Turn") { UseMinimumButtonSize = false, Tapped = newTurnButton_Tapped };
 			winGameNowButton = new Button("Win Game") { UseMinimumButtonSize = false, Tapped = winGameNowButton_Tapped };
 			appliedConditionRow = new AppliedConditionRow { Held = appliedConditionRow_Held };
 
-			this.cardManager = cardManager;
 
 			BattleManager.Instance.DataUpdated += BattleManager_DataUpdated;
 		}
@@ -221,7 +220,7 @@ namespace GameThing.Screens
 			if (newCharacter == null)
 				return;
 
-			playerClassText.Value = $"Class: {selectedCharacter.CharacterClass}";
+			playerClassText.Value = $"Class: {selectedCharacter.CharacterClass.Name}";
 			sideText.Value = $"Side: {selectedCharacter.Side}";
 			healthText.Value = $"Health: {selectedCharacter.CurrentHealth}/{selectedCharacter.CurrentMaxHealth}";
 			strengthText.Value = $"Strength: {selectedCharacter.CurrentStrength}/{selectedCharacter.BaseStrength}";

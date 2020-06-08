@@ -16,12 +16,9 @@ namespace GameThing.Screens
 		private readonly Button backButton;
 
 		private readonly TeamManager teamManager = TeamManager.Instance;
-		private readonly CardManager cardManager;
 
-		public ManageTeamScreen(CardManager cardManager)
+		public ManageTeamScreen()
 		{
-			this.cardManager = cardManager;
-
 			createTeamButton = new Button("Create Team") { Tapped = createTeamButton_Tapped };
 			deleteTeamButton = new Button("Delete Team") { Tapped = deleteTeamButton_Tapped };
 			backButton = new Button("Back") { Tapped = backButton_Tapped };
@@ -38,7 +35,7 @@ namespace GameThing.Screens
 
 		public async void createTeamButton_Tapped(string id, GestureSample gesture)
 		{
-			var defaultTeam = TeamData.CreateDefaultTeam(cardManager);
+			var defaultTeam = TeamData.CreateDefaultTeam();
 			await teamManager.CreateTeam(defaultTeam);
 		}
 

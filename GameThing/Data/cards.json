@@ -1,0 +1,215 @@
+﻿[
+	{
+		"id": "1",
+		"title": "Clumsy Stab",
+		"cardType": "Damage",
+		"description": "Deal 100% Str (<character.CurrentStrength>) damage at range 1.",
+		"range": 1,
+		"effectPercent": 1,
+		"abilityScore": "Strength",
+		"categories": [
+			"strength",
+			"damage",
+			"melee"
+		]
+	},
+	{
+		"id": "2",
+		"title": "Bad Bandage",
+		"cardType": "Heal",
+		"description": "Heal 100% Int (<character.CurrentIntelligence>) to self.",
+		"range": 0,
+		"effectPercent": 1,
+		"abilityScore": "Intelligence",
+		"categories": [
+			"intelligence",
+			"healing",
+			"self"
+		]
+	},
+	{
+		"id": "3",
+		"title": "Awkward Distraction",
+		"cardType": "Condition",
+		"description": "Apply a condition at range 1",
+		"range": 1,
+		"abilityScore": "Intelligence",
+		"categories": [
+			"support",
+			"melee",
+			"strength"
+		],
+		"condition": {
+			"stackGroup": "1",
+			"text": "If the next attack is from another character, it gains +200% Str.",
+			"endsOn": "AfterAttack",
+			"iconName": "sprites/icons/distract",
+			"type": "Distract",
+			"abilityScore": "Strength",
+			"buffAmount": 3,
+			"buffType": "Percent",
+			"successPercent": 1
+		}
+	},
+	{
+		"id": "4",
+		"title": "Lame Taunt",
+		"cardType": "Condition",
+		"description": "Apply a condition at range 5",
+		"range": 5,
+		"condition": {
+			"stackGroup": "2",
+			"text": "70% chance next card must target this character.",
+			"endsOn": "AfterAttack",
+			"iconName": "sprites/icons/taunt",
+			"type": "Taunt",
+			"successPercent": 0.7
+		},
+		"abilityScore": "",
+		"categories": [
+			"support",
+			"reckless",
+			"ranged"
+		]
+	},
+	{
+		"id": "5",
+		"title": "Slow Jog",
+		"cardType": "Condition",
+		"description": "Apply a condition to yourself",
+		"range": 0,
+		"condition": {
+			"stackGroup": "3",
+			"text": "Your next move gains +1 distance.",
+			"endsOn": "Move",
+			"iconName": "sprites/icons/run",
+			"type": "Run",
+			"buffAmount": 1,
+			"buffType": "Linear",
+			"successPercent": 1
+		},
+		"categories": [
+			"movement",
+			"support",
+			"self"
+		]
+	},
+	{
+		"id": "6",
+		"title": "Weak Cheer",
+		"cardType": "Condition",
+		"description": "Apply a condition at range 3",
+		"range": 3,
+		"condition": {
+			"stackGroup": "4",
+			"text": "Give another character +100% Str for 3 turns.",
+			"turnCount": 3,
+			"endsOn": "StartRound",
+			"iconName": "sprites/icons/buff",
+			"type": "Buff",
+			"abilityScore": "Strength",
+			"buffAmount": 2,
+			"buffType": "Percent",
+			"successPercent": 1
+		},
+		"categories": [
+			"support",
+			"strength",
+			"duration"
+		]
+	},
+	{
+		"id": "7",
+		"title": "Slightly Trained Stab",
+		"cardType": "Damage",
+		"description": "Deal 120% Str (<character.CurrentStrength>) damage at range 1.",
+		"range": 1,
+		"effectPercent": 1.2,
+		"abilityScore": "Strength",
+		"categories": [
+			"strength",
+			"damage",
+			"melee"
+		]
+	},
+	{
+		"id": "8",
+		"title": "Prepared Stance",
+		"cardType": "Condition",
+		"description": "Apply a condition to yourself",
+		"range": 0,
+		"categories": [
+			"support",
+			"defense",
+			"healing"
+		],
+		"condition": {
+			"stackGroup": "5",
+			"text": "Gain +3 Health for 5 turns.",
+			"turnCount": 5,
+			"endsOn": "StartRound",
+			"iconName": "sprites/icons/buff",
+			"type": "Buff",
+			"abilityScore": "Health",
+			"buffAmount": 3,
+			"buffType": "Linear",
+			"successPercent": 1
+		}
+	},
+	{
+		"id": "9",
+		"title": "Decent Slice",
+		"cardType": "Damage",
+		"description": "Deal 120% Agi (<character.CurrentAgility>) damage at range 1.",
+		"range": 1,
+		"effectPercent": 1.2,
+		"abilityScore": "Agility",
+		"categories": [
+			"agility",
+			"damage",
+			"melee"
+		]
+	},
+	{
+		"id": "10",
+		"title": "Slipped Backstab",
+		"cardType": "Damage",
+		"description": "Deal 150% Agi (<character.CurrentAgility>) damage at range 1.",
+		"range": 1,
+		"effectPercent": 1.5,
+		"abilityScore": "Agility",
+		"categories": [
+			"agility",
+			"damage",
+			"melee"
+		]
+	},
+	{
+		"id": "11",
+		"title": "Fairie Fire",
+		"cardType": "Damage",
+		"description": "Does nothing. You need to train magic to use it!",
+		"range": 0,
+		"effectPercent": 0,
+		"abilityScore": "Intelligence",
+		"categories": [
+			"intelligence",
+			"magic"
+		]
+	},
+	{
+		"id": "12",
+		"title": "Arcane Missile",
+		"cardType": "Damage",
+		"description": "Deal 100% Int (<character.CurrentIntelligence>) damage at range 5.",
+		"range": 5,
+		"effectPercent": 1,
+		"abilityScore": "Intelligence",
+		"categories": [
+			"intelligence",
+			"magic",
+			"damage",
+			"ranged"
+		]
+	}
+]

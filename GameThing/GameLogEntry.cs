@@ -41,6 +41,6 @@ namespace GameThing
 		public MapPoint MovedTo { get; set; }
 
 		[DataMember]
-		public int CardId { get; set; }
+		public string CardId { get; set; }
 	}
 }

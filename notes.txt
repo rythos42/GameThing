@@ -2,23 +2,23 @@ Todo:
 	- hard to tap on phone (no problem on emulator)
 	- test mode fails
 	- do release notes
+	- determine difference between Contract and Entity and how should this be organized.
 
 	Add:
 		Stats:
 			Initiative stat: when your turn is. Liked Fell Seal model where characters could go multiple times in a round.
+				-> No, this moves away from being able to choose what character to do right now
+				-> But maybe that's good - many choices right now, could be hard to decide.
 			Evade stat: small percent chance to entirely dodge attack, static percent damage reduction from Strength or Agility attacks
 			Defense stat: static percent damage reduction
-		Categories:
-			Evade
-			Debuff
-			Options
-			Focus
+
 		Re-do Cards
 			Prepared Stance: Gain 100% Defense for 5 turns.
 			Awkward Distraction: Gain +100% Evade
 			Slow Jog: add Self category
 			Weak Cheer: Remove Strength category
 			Clumsy Stab: Add Reckless category
+
 
 
 	Manage Team
@@ -86,7 +86,6 @@ Tech
 	- set description, played time and progress value for SnapshotChangeMetadata
 	- consider loosening proguard.cfg -- it's keeping all of com.google.android.gms, but not using GPG anymore
 		- check \obj\Release\90\proguard\proguard_project_references.cfg for ideas of how it works
-	- send card IDs instead of the whole card around
 	- move character sprites to a sub folder
 	- make ScreenComponent draw the UIComponents it contains
 	- somewhere to send error logs to
