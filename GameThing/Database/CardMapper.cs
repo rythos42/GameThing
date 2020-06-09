@@ -56,7 +56,10 @@ namespace GameThing.Database
 
 		public Card Get(string id)
 		{
-			return cards.Single(card => card.Id == id);
+			var thatCard = cards.Single(card => card.Id == id);
+
+			// Cards has mutable state, have to clone when deserializing Character
+			return Contract.Convert.Clone(thatCard);
 		}
 	}
 }
