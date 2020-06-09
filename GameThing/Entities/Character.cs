@@ -27,9 +27,9 @@ namespace GameThing.Entities
 			Colour = colour;
 		}
 
-		public void SetContent(Content content)
+		public void SetContent(Content content, CharacterSide side)
 		{
-			Sprite = content.GetSpriteFor(this);
+			Sprite = content.GetSpriteFor(this, side);
 			availableMovementTexture = content.DistanceOverlay;
 			lockSprite = content.Lock;
 		}
@@ -63,10 +63,6 @@ namespace GameThing.Entities
 
 		[DataMember]
 		public decimal IntelligenceMultiplier { get; set; } = 1;
-
-
-		[DataMember]
-		public CharacterSide Side { get; set; }
 
 		[DataMember]
 		[JsonConverter(typeof(IdentifierBasedConverter<CharacterClass>), typeof(CharacterClassMapper))]

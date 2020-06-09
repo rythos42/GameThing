@@ -2,13 +2,15 @@
 using System.Linq;
 using System.Runtime.Serialization;
 using GameThing.Entities;
-using Newtonsoft.Json;
 
 namespace GameThing.Contract
 {
 	[DataContract]
 	public class BattleData
 	{
+		public const string TestPlayerOneId = "p1";
+		public const string TestPlayerTwoId = "p2";
+
 		[DataMember]
 		public int TurnNumber { get; set; } = 0;
 
@@ -22,7 +24,7 @@ namespace GameThing.Contract
 		public Dictionary<string, CharacterSide> Sides { get; set; } = new Dictionary<string, CharacterSide>();
 
 		[DataMember]
-		public CharacterSide CurrentSidesTurn { get; set; }
+		public string CurrentPlayerId { get; set; }
 
 		[DataMember]
 		public string MatchId { get; set; }
@@ -42,6 +44,11 @@ namespace GameThing.Contract
 		[DataMember]
 		public string LastPlayingPlayerId { get; set; }
 
+		public string GetPlayerId()
+		{
+			return IsTestMode ? CurrentPlayerId : ApplicationData.PlayerId;
+		}
+
 		public CharacterSide? WinnerSide
 		{
 			get
@@ -58,25 +65,25 @@ namespace GameThing.Contract
 
 		public void ChangePlayingSide()
 		{
-			CurrentSidesTurn = CurrentSidesTurn == CharacterSide.Spaghetti ? CharacterSide.Unicorn : CharacterSide.Spaghetti;
+			CurrentPlayerId = GetOtherPlayerId();
+		}
+
+		private string GetOtherPlayerId()
+		{
+			return Sides.Keys.Single(key => key != CurrentPlayerId);
 		}
 
 		public bool OtherSideHasNoRemainingCharactersAndIHaveSome
 		{
 			get
 			{
-				var iHaveCharactersToActivate = Characters.Any(character => character.Side == CurrentSidesTurn && !character.ActivatedThisRound);
+				var iHaveCharactersToActivate = Characters.Any(character => character.OwnerPlayerId == CurrentPlayerId && !character.ActivatedThisRound);
 				if (!iHaveCharactersToActivate)
 					return false;
 
-				var otherSide = CurrentSidesTurn == CharacterSide.Spaghetti ? CharacterSide.Unicorn : CharacterSide.Spaghetti;
-				return !Characters.Any(character => character.Side == otherSide && !character.ActivatedThisRound);
+				var otherPlayerId = GetOtherPlayerId();
+				return !Characters.Any(character => character.OwnerPlayerId == otherPlayerId && !character.ActivatedThisRound);
 			}
-		}
-
-		public string GetParticipantIdForCurrentSide()
-		{
-			return Sides.SingleOrDefault(keyValuePair => keyValuePair.Value == CurrentSidesTurn).Key;
 		}
 
 		public bool HasBothSidesAdded
@@ -84,23 +91,22 @@ namespace GameThing.Contract
 			get { return Sides.Count == 2; }
 		}
 
-		public bool HasMySideAdded(string participantId)
-		{
-			return Sides.ContainsKey(participantId);
-		}
-
-		public void InitializeCharacters(string participantId, TeamData teamData)
+		public void InitializeCharacters(string playerId, TeamData teamData, bool isTestMode = false)
 		{
 			teamData.Characters.ForEach(character =>
 			{
-				cloneCharacter.Side = CurrentSidesTurn;
 				var cloneCharacter = Convert.Clone(character);
 				cloneCharacter.InitializeDeckForBattle();
 				cloneCharacter.ResetTurn();
+
+				if (isTestMode)
+					cloneCharacter.OwnerPlayerId = playerId;    // Change player ID in test mode
+
 				Characters.Add(cloneCharacter);
 			});
 
-			Sides.Add(participantId, CurrentSidesTurn);
+			var currentSide = Sides.Keys.Count == 0 ? CharacterSide.Spaghetti : CharacterSide.Unicorn;
+			Sides.Add(playerId, currentSide);
 		}
 	}
 }

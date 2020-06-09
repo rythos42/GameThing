@@ -1,14 +1,18 @@
 Todo:
 	- hard to tap on phone (no problem on emulator)
-	- test mode fails
 	- do release notes
-	- determine difference between Contract and Entity and how should this be organized.
+
+	- test game works
+
 
 	Add:
 		Stats:
 			Initiative stat: when your turn is. Liked Fell Seal model where characters could go multiple times in a round.
 				-> No, this moves away from being able to choose what character to do right now
 				-> But maybe that's good - many choices right now, could be hard to decide.
+				-> What if players get a debuff if they go sooner in round, or sooner compared to when they went in previous round? 
+					Last/first is less powerful.
+					Could then make a stat "Initiative" which reduces this debuff.
 			Evade stat: small percent chance to entirely dodge attack, static percent damage reduction from Strength or Agility attacks
 			Defense stat: static percent damage reduction
 
@@ -35,9 +39,6 @@ Todo:
 
 Nice to have:
 	- refresh My Matches in case someone joined (or have a notification in that case or something)
-	- think there might be an issue whereby Characters are given a side, but sides are initially assigned based on who started the game
-		- "Side" in this case is a demonination of whether you are "Player One" or "Player Two", but with interesting names.
-		- Ultimately it should have nothing to do with what the look of your players is.
 	- ability to have multiple teams
 	- lock down Firebase database, it's wide open right now
 	- translatable
@@ -78,6 +79,8 @@ Nice to have:
 		- able to scroll and/or filter
 
 Tech
+	- probably BattleData.LastPlayingPlayerId is redundant
+	- determine difference between Contract and Entity and how should this be organized.
 	- warnings in Monogame Pipeline
 	- how to do polygon objects in maps
 	- Nexus 7 shows black box instead of highlighted character

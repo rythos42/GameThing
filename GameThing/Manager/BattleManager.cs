@@ -36,7 +36,7 @@ namespace GameThing.Manager
 			var matchId = Guid.NewGuid();
 			var battleData = new BattleData
 			{
-				CurrentSidesTurn = CharacterSide.Spaghetti,
+				CurrentPlayerId = ApplicationData.PlayerId,
 				MatchId = matchId.ToString()
 			};
 

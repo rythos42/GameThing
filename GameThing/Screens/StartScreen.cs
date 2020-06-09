@@ -79,14 +79,13 @@ namespace GameThing.Screens
 
 		private void startAsTester_Tapped(string id, GestureSample gesture)
 		{
-			var battleData = new BattleData { CurrentSidesTurn = CharacterSide.Spaghetti };
-			battleData.InitializeCharacters(ApplicationData.PlayerId, teamManager.Team);
-			battleData.ChangePlayingSide();
-			battleData.InitializeCharacters(ApplicationData.PlayerId, teamManager.Team);
+			var battleData = new BattleData { CurrentPlayerId = BattleData.TestPlayerOneId, IsTestMode = true };
 
-			var side = CharacterSide.Spaghetti;
-			battleData.CurrentSidesTurn = side;
-			battleData.IsTestMode = true;
+			var clonedTeamOne = Convert.Clone(teamManager.Team);
+			battleData.InitializeCharacters(BattleData.TestPlayerOneId, clonedTeamOne, isTestMode: true);
+
+			var clonedTeamTwo = Convert.Clone(teamManager.Team);
+			battleData.InitializeCharacters(BattleData.TestPlayerTwoId, clonedTeamTwo, isTestMode: true);
 
 			StartBattle?.Invoke(battleData);
 		}
@@ -172,7 +171,7 @@ namespace GameThing.Screens
 
 			// Show "***" if it's your turn, and "v playerId" for opponent
 			var yourPlayerId = ApplicationData.PlayerId;
-			var yourTurn = battleData.CurrentSidesTurn == battleData.Sides[yourPlayerId];
+			var yourTurn = battleData.CurrentPlayerId == yourPlayerId;
 			return (yourTurn ? "*** " : "") + "v. " + battleData.Sides.Keys.First(playerId => playerId != yourPlayerId);
 		}
 

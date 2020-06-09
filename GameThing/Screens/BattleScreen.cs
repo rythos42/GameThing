@@ -29,7 +29,6 @@ namespace GameThing.Screens
 		private Character selectedCharacter;
 		private readonly HandOfCards handOfCards = new HandOfCards();
 		private Card selectedCard;
-		private CharacterSide thisPlayerSide;
 		private Character lockedInCharacter = null;
 		private readonly DrawableList entities = new DrawableList();
 		private MapPoint movingPoint;
@@ -95,20 +94,21 @@ namespace GameThing.Screens
 				GameOver?.Invoke(battleData);
 		}
 
-		public void SetBattleData(BattleData gameData)
+		public void SetBattleData(BattleData battleData)
 		{
 			var otherPlacements = new List<MapPoint>();
 
-			gameData.Characters.ForEach(character =>
+			battleData.Characters.ForEach(character =>
 			{
-				character.SetContent(content);
+				var side = battleData.Sides[character.OwnerPlayerId];
+				character.SetContent(content, side);
 				character.Deck.ForEach(card => card.SetContent(content));
 
 				if (character.MapPosition == null)
-					PlaceCharacterOnMap(character, otherPlacements);
+					PlaceCharacterOnMap(character, otherPlacements, side);
 			});
-			data = gameData;
-			entities.SetCharacters(gameData.Characters);
+			data = battleData;
+			entities.SetCharacters(battleData.Characters);
 
 			SetGameLogEntryRows();
 
@@ -130,10 +130,10 @@ namespace GameThing.Screens
 				((GameLogEntryRow) gameLogPanel.Components[j]).GameLogEntry = data.GameLog[i];
 		}
 
-		private void PlaceCharacterOnMap(Character character, List<MapPoint> otherPlacements)
+		private void PlaceCharacterOnMap(Character character, List<MapPoint> otherPlacements, CharacterSide side)
 		{
 			MapPoint characterPoint;
-			var deployment = character.Side == CharacterSide.Spaghetti ? spaghettiDeployment : unicornDeployment;
+			var deployment = side == CharacterSide.Spaghetti ? spaghettiDeployment : unicornDeployment;
 			do
 			{
 				characterPoint = new MapPoint(
@@ -221,7 +221,7 @@ namespace GameThing.Screens
 				return;
 
 			playerClassText.Value = $"Class: {selectedCharacter.CharacterClass.Name}";
-			sideText.Value = $"Side: {selectedCharacter.Side}";
+			sideText.Value = $"Side: {data.Sides[selectedCharacter.OwnerPlayerId]}";
 			healthText.Value = $"Health: {selectedCharacter.CurrentHealth}/{selectedCharacter.CurrentMaxHealth}";
 			strengthText.Value = $"Strength: {selectedCharacter.CurrentStrength}/{selectedCharacter.BaseStrength}";
 			agilityText.Value = $"Agility: {selectedCharacter.CurrentAgility}/{selectedCharacter.BaseAgility}";
@@ -236,8 +236,7 @@ namespace GameThing.Screens
 		public void StartGame(BattleData data)
 		{
 			SetBattleData(data);
-			thisPlayerSide = data.Sides[ApplicationData.PlayerId];
-			playerSideText.Value = $"Your side: {thisPlayerSide}";
+			playerSideText.Value = $"Your side: {data.Sides[data.GetPlayerId()]}";
 			lockedInCharacter = null;
 			selectedCharacter = null;
 			selectedCard = null;
@@ -272,17 +271,18 @@ namespace GameThing.Screens
 			data.ChangePlayingSide();
 			data.TurnNumber++;
 
-			await battleManager.SaveBattle(data);
-
-			// swap device player side if we're in test mode
-			if (data.IsTestMode)
-				thisPlayerSide = data.CurrentSidesTurn;
+			if (!data.IsTestMode)
+				await battleManager.SaveBattle(data);
+			else
+				playerSideText.Value = $"Your side: {data.Sides[data.GetPlayerId()]}";
 		}
 
 		private async Task CheckForWin()
 		{
-			var anySpaghetti = data.Characters.Any(character => character.Side == CharacterSide.Spaghetti);
-			var anyUnicorn = data.Characters.Any(character => character.Side == CharacterSide.Unicorn);
+			var spaghettiPlayerId = data.Sides.Single(pair => pair.Value == CharacterSide.Spaghetti).Key;
+			var anySpaghetti = data.Characters.Any(character => character.OwnerPlayerId == spaghettiPlayerId);
+			var unicornPlayerId = data.Sides.Single(pair => pair.Value == CharacterSide.Unicorn).Key;
+			var anyUnicorn = data.Characters.Any(character => character.OwnerPlayerId == unicornPlayerId);
 
 			if (!anySpaghetti || !anyUnicorn)
 			{
@@ -326,7 +326,7 @@ namespace GameThing.Screens
 
 		private bool IsMyTurn
 		{
-			get { return data.CurrentSidesTurn == thisPlayerSide; }
+			get { return data.CurrentPlayerId == data.GetPlayerId(); }
 		}
 
 		public void Draw(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch, Rectangle clientBounds)
@@ -351,7 +351,7 @@ namespace GameThing.Screens
 					sortMode: SpriteSortMode.Texture);
 				if (selectedCharacter != null && selectedCard == null && movingPoint == null)
 				{
-					data.Characters.SingleOrDefault(character => character == selectedCharacter && character.HasRemainingMoves && character.Side == thisPlayerSide)?.DrawMovementRange(spriteBatch);
+					data.Characters.SingleOrDefault(character => character == selectedCharacter && character.HasRemainingMoves && character.OwnerPlayerId == data.GetPlayerId())?.DrawMovementRange(spriteBatch);
 				}
 				else if (selectedCard != null && targetingPoint == null)
 				{
@@ -411,12 +411,12 @@ namespace GameThing.Screens
 			spriteBatch.End();
 
 			// Draw a characters hand of cards if player is playing that side
-			if (selectedCharacter != null && selectedCharacter.Side == thisPlayerSide)
+			if (selectedCharacter != null && selectedCharacter.OwnerPlayerId == data.GetPlayerId())
 				handOfCards.Draw(spriteBatch, clientBounds, selectedCharacter.CurrentHand, selectedCard);
 
 			// Draw UI
 			spriteBatch.Begin();
-			if (thisPlayerSide == data.CurrentSidesTurn)
+			if (IsMyTurn)
 				newTurnButton.Draw(spriteBatch, playerSidePanel.Width + 2 * UIComponent.MARGIN, UIComponent.MARGIN);
 			statusPanel.Draw(spriteBatch, UIComponent.MARGIN, UIComponent.MARGIN);
 			playerSidePanel.Draw(spriteBatch, UIComponent.MARGIN, UIComponent.MARGIN);
@@ -455,7 +455,7 @@ namespace GameThing.Screens
 
 		public void winGameNowButton_Tapped(string id, GestureSample gesture)
 		{
-			data.SetWinnerSide(thisPlayerSide);
+			data.SetWinnerSide(data.Sides[data.GetPlayerId()]);
 			GameOver?.Invoke(data);
 		}
 
@@ -539,8 +539,10 @@ namespace GameThing.Screens
 
 						AddNewGameLogEntry(new GameLogEntry
 						{
-							SourceCharacter = selectedCharacter,
-							TargetCharacter = targetCharacter,
+							SourceCharacterColour = selectedCharacter.Colour,
+							SourceCharacterSide = data.Sides[selectedCharacter.OwnerPlayerId],
+							TargetCharacterColour = targetCharacter.Colour,
+							TargetCharacterSide = data.Sides[targetCharacter.OwnerPlayerId],
 							CardId = selectedCard.Id
 						});
 
@@ -571,7 +573,8 @@ namespace GameThing.Screens
 				movingPoint = null;
 				AddNewGameLogEntry(new GameLogEntry
 				{
-					SourceCharacter = selectedCharacter,
+					SourceCharacterColour = selectedCharacter.Colour,
+					SourceCharacterSide = data.Sides[selectedCharacter.OwnerPlayerId],
 					MovedTo = mapPoint
 				});
 			}
@@ -593,7 +596,7 @@ namespace GameThing.Screens
 			SetGameLogEntryRows();
 		}
 
-		private bool CanMoveSelectedCharacter => selectedCharacter.Side == thisPlayerSide
+		private bool CanMoveSelectedCharacter => selectedCharacter.OwnerPlayerId == data.GetPlayerId()
 					&& selectedCharacter.HasRemainingMoves
 					&& !selectedCharacter.ActivatedThisRound
 					&& (lockedInCharacter == selectedCharacter || lockedInCharacter == null)

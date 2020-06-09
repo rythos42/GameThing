@@ -91,9 +91,9 @@ namespace GameThing.Entities
 
 		public TiledMap Map { get; private set; }
 
-		public Texture2D GetSpriteFor(Character character)
+		public Texture2D GetSpriteFor(Character character, CharacterSide side)
 		{
-			return characterSprites[CreateKey(character.Side, character.Colour)];
+			return characterSprites[CreateKey(side, character.Colour)];
 		}
 
 		private string CreateKey(CharacterSide side, CharacterColour colour)
