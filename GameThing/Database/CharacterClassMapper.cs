@@ -13,7 +13,7 @@ namespace GameThing.Database
 		void Load();
 	}
 
-	public class CharacterClassMapper
+	public class CharacterClassMapper : ICharacterClassMapper
 	{
 		private static CharacterClassMapper instance;
 		private List<CharacterClass> classes;
