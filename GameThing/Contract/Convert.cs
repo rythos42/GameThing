@@ -15,6 +15,11 @@ namespace GameThing.Contract
 			TypeNameHandling = TypeNameHandling.Objects
 		};
 
+		public static T Clone<T>(T obj)
+		{
+			return Deserialize<T>(Serialize(obj));
+		}
+
 		public static byte[] Serialize<T>(T objectData)
 		{
 			var objectJson = JsonConvert.SerializeObject(objectData, jsonSettings);

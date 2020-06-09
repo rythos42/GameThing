@@ -105,8 +105,7 @@ namespace GameThing.Entities.Cards
 
 		public Card CreateForCharacter(Character character)
 		{
-			var cardBytes = Convert.Serialize(this);
-			var clonedCard = Convert.Deserialize<Card>(cardBytes);
+			var clonedCard = Convert.Clone(this);
 			clonedCard.OwnerCharacter = character;
 			if (clonedCard.Condition != null)
 				clonedCard.Condition.SourceCharacter = character;

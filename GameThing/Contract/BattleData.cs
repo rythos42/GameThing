@@ -93,28 +93,14 @@ namespace GameThing.Contract
 		{
 			teamData.Characters.ForEach(character =>
 			{
-				var cloneCharacter = Clone(character);
 				cloneCharacter.Side = CurrentSidesTurn;
+				var cloneCharacter = Convert.Clone(character);
 				cloneCharacter.InitializeDeckForBattle();
 				cloneCharacter.ResetTurn();
 				Characters.Add(cloneCharacter);
 			});
 
 			Sides.Add(participantId, CurrentSidesTurn);
-		}
-
-		private Character Clone(Character character)
-		{
-			var jsonSettings = new JsonSerializerSettings
-			{
-				NullValueHandling = NullValueHandling.Ignore,
-				DefaultValueHandling = DefaultValueHandling.Ignore,
-				Formatting = Formatting.None,
-				TypeNameHandling = TypeNameHandling.Objects
-			};
-
-			var serialized = JsonConvert.SerializeObject(character, jsonSettings);
-			return JsonConvert.DeserializeObject<Character>(serialized, jsonSettings);
 		}
 	}
 }
