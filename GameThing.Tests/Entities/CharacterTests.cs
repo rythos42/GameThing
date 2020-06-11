@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GameThing.Contract;
 using GameThing.Entities;
 using GameThing.Entities.Cards;
 using Newtonsoft.Json;
@@ -14,9 +15,7 @@ namespace GameThing.Tests.Entities
 		[Test]
 		public void Serializes_CharacterClassAsCharacterClassId_NotEntireObject()
 		{
-			var characterClass = new CharacterClass { Id = "apprentice", Name = "Apprentice" };
-			var character = new Character(Guid.NewGuid(), Contract.CharacterColour.Blue, characterClass);
-
+			var character = CreateTestCharacter();
 			var characterJson = JsonConvert.SerializeObject(character);
 			var characterJObj = JObject.Parse(characterJson);
 
@@ -27,10 +26,8 @@ namespace GameThing.Tests.Entities
 		[Test]
 		public void Serializes_DeckAsListOfCardIds_NotEntireObject()
 		{
-			var characterClass = new CharacterClass { Id = "apprentice", StartingCards = new List<string> { "1" } };
-			var character = new Character(Guid.NewGuid(), Contract.CharacterColour.Blue, characterClass);
+			var character = CreateTestCharacter();
 			character.Deck.Add(new Card { Id = "1" });
-
 			var characterJson = JsonConvert.SerializeObject(character);
 			var characterJObj = JObject.Parse(characterJson);
 
@@ -38,5 +35,43 @@ namespace GameThing.Tests.Entities
 			Assert.That(serializedDeck.Count, Is.EqualTo(1));
 			Assert.That(serializedDeck[0], Is.EqualTo("1"));
 		}
+
+		[Test]
+		public void ApplyDamage_AccountsForDefense()
+		{
+			var character = CreateTestCharacter();
+
+			character.CurrentHealth = 20;
+			character.DefenseMultiplier = 2;
+			character.ApplyDamage(10);
+			Assert.That(character.CurrentHealth, Is.EqualTo(11));
+
+			character.CurrentHealth = 20;
+			character.DefenseMultiplier = 3;
+			character.ApplyDamage(10);
+			Assert.That(character.CurrentHealth, Is.EqualTo(12));
+
+			character.CurrentHealth = 20;
+			character.DefenseMultiplier = 4;
+			character.ApplyDamage(10);
+			Assert.That(character.CurrentHealth, Is.EqualTo(13));
+
+			character.CurrentHealth = 20;
+			character.DefenseMultiplier = 5;
+			character.ApplyDamage(10);
+			Assert.That(character.CurrentHealth, Is.EqualTo(14));
+
+			character.CurrentHealth = 20;
+			character.DefenseMultiplier = 6;
+			character.ApplyDamage(10);
+			Assert.That(character.CurrentHealth, Is.EqualTo(15));
+		}
+
+		private Character CreateTestCharacter()
+		{
+			var characterClass = new CharacterClass { Id = "apprentice", StartingCards = new List<string> { "1" } };
+			return new Character(Guid.NewGuid(), CharacterColour.Blue, characterClass);
+		}
+
 	}
 }

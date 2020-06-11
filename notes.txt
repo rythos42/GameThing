@@ -5,7 +5,9 @@ Todo:
 
 	- implement Stamina
 	- implement Evade
-	- implement Defense
+	- show Stamina/Evade/Defense on character card
+	- show somewhere what these new stats effect is
+	- NEW ROUND panel likely needs moving or fixing
 	
 
 		Re-do Cards

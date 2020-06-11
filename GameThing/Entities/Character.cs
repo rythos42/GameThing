@@ -48,6 +48,9 @@ namespace GameThing.Entities
 
 		[DataMember]
 		public decimal BaseIntelligence { get; private set; } = 1;
+		public decimal BaseStamina { get; private set; } = 1;
+		public decimal BaseEvade { get; private set; } = 1;
+		public decimal BaseDefense { get; private set; } = 1;
 
 		[DataMember]
 		public decimal CurrentHealth { get; set; } = 7;
@@ -63,6 +66,9 @@ namespace GameThing.Entities
 
 		[DataMember]
 		public decimal IntelligenceMultiplier { get; set; } = 1;
+		public decimal StaminaMultiplier { get; set; } = 1;
+		public decimal EvadeMultiplier { get; set; } = 1;
+		public decimal DefenseMultiplier { get; set; } = 1;
 
 		[DataMember]
 		[JsonConverter(typeof(IdentifierBasedConverter<CharacterClass>), typeof(CharacterClassMapper))]
@@ -77,11 +83,16 @@ namespace GameThing.Entities
 		public decimal CurrentStrength => BaseStrength * StrengthMultiplier;
 		public decimal CurrentAgility => BaseAgility * AgilityMultiplier;
 		public decimal CurrentIntelligence => BaseIntelligence * IntelligenceMultiplier;
+		public decimal CurrentStamina => BaseStamina * StaminaMultiplier;
+		public decimal CurrentEvade => BaseEvade * EvadeMultiplier;
+		public decimal CurrentDefense => BaseDefense * DefenseMultiplier;
 
 		public void ApplyDamage(decimal damageAmount)
 		{
-			CurrentHealth -= damageAmount;
+			CurrentHealth -= damageAmount * DefenseDamageMultipler;
 		}
+
+		private decimal DefenseDamageMultipler { get { return 1 - ((CurrentDefense - 1) * 0.1m); } }
 
 		public void ApplyHealing(decimal damageAmount)
 		{

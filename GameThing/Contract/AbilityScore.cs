@@ -7,5 +7,8 @@
 		Strength,
 		Agility,
 		Intelligence,
+		Stamina,
+		Evade,
+		Defense
 	}
 }
