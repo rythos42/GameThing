@@ -1,20 +1,12 @@
 Todo:
 	- hard to tap on phone (no problem on emulator)
 	- do release notes
-
 	- test game works
 
-
-	Add:
-		Stats:
-			Initiative stat: when your turn is. Liked Fell Seal model where characters could go multiple times in a round.
-				-> No, this moves away from being able to choose what character to do right now
-				-> But maybe that's good - many choices right now, could be hard to decide.
-				-> What if players get a debuff if they go sooner in round, or sooner compared to when they went in previous round? 
-					Last/first is less powerful.
-					Could then make a stat "Initiative" which reduces this debuff.
-			Evade stat: small percent chance to entirely dodge attack, static percent damage reduction from Strength or Agility attacks
-			Defense stat: static percent damage reduction
+	- implement Stamina
+	- implement Evade
+	- implement Defense
+	
 
 		Re-do Cards
 			Prepared Stance: Gain 100% Defense for 5 turns.

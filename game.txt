@@ -18,8 +18,36 @@ Stats
 	Agility
 	Intelligence
 	Health
-	Defense (?) (damage reduction)
-	Evade (?)	(very small chance to stop all damage)
+	Defense
+	Evade
+	Stamina
+
+
+	Stamina
+		The sooner you go between your last turn, the less damage you're able to do and less percent chance of success.
+			- Stamina starts real strong, so careful with giving out +100% bonus to it, more like +10% bonus 
+		Subtract 1/Stamina from 2, and multiply by the baseline 50% to get baseline damage modifier
+			2 - 1/1 = 1					50% * 1	= 50%
+			2 - 1/1.1 = 1.09		50% * 1.09 = 54.54%
+			2 - 1/2 = 1.5			50% * 1.5 = 75%
+			2 - 1/3 = 1.6666		50% * 1.666 = 83.333
+			2 - 1/4 = 1.75			50% * 1.75	= 87.6
+		Take that difference (100% - 50% = 50%), (100% - 87.6% = 12.4%) = x, is how much damage reduction a character gets if they went last and then first.
+		Each character that goes, adds x * (1/characterCount) so that at the last character, that character gets 100% damage.
+							
+	Evade stat: small percent chance to entirely dodge attack
+		2.5 * Evade^2 = MissPercent
+		Evade: 
+			1 gives 2.5% chance attack misses entirely.
+			2 gives 12%
+			3 gives 27%
+			4 gives 40%
+
+	Defense stat: static percent damage reduction
+		Defense 1: 0% damage reduced
+		Defense 2: 10% damage reduced
+		Defense 6: 50% damage reduced
+
 
 Class Progression
 	- Each class has a set of Primary Ability Scores
