@@ -91,6 +91,11 @@ namespace GameThing.Contract
 			get { return Sides.Count == 2; }
 		}
 
+		public bool AnyCharacterUnactivated
+		{
+			get { return Characters.Any(character => !character.ActivatedThisRound); }
+		}
+
 		public void InitializeCharacters(string playerId, TeamData teamData, bool isTestMode = false)
 		{
 			teamData.Characters.ForEach(character =>

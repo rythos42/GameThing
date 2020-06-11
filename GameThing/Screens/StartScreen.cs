@@ -37,7 +37,7 @@ namespace GameThing.Screens
 
 		public StartScreen()
 		{
-			startAsTester = new Button("Test") { Tapped = startAsTester_Tapped };
+			startAsTester = new Button("Hot Seat") { Tapped = startHotSeat_Tapped };
 			teams = new Button("Teams") { Tapped = teams_Tapped };
 			createMatch = new Button("Create Match") { Tapped = createMatch_Tapped };
 			joinMatch = new Button("Join Match") { Tapped = joinMatch_Tapped, Enabled = false };
@@ -77,7 +77,7 @@ namespace GameThing.Screens
 			SetDynamicButtons();
 		}
 
-		private void startAsTester_Tapped(string id, GestureSample gesture)
+		private void startHotSeat_Tapped(string id, GestureSample gesture)
 		{
 			var battleData = new BattleData { CurrentPlayerId = BattleData.TestPlayerOneId, IsTestMode = true };
 

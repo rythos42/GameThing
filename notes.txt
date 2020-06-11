@@ -44,8 +44,6 @@ Nice to have:
 	- title above matches buttons "Available Matches" vs "Your Matches"
 	- some matches filtering/sorting when beyond 6 matches
 	- highlight "End Turn" button when no moves left
-	- can't "hot seat" because it doesn't end the round after all characters have gone
-	- rename test mode to hot seat
 	- notification when card can't be played, and why
 	- allow characters to stand on slopes
 		- draw grid on slopes

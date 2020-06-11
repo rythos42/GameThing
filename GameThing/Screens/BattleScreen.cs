@@ -112,11 +112,6 @@ namespace GameThing.Screens
 
 			SetGameLogEntryRows();
 
-			// Start next round if all characters activated
-			var anyNotActivated = data.Characters.Any(character => !character.ActivatedThisRound);
-			if (!anyNotActivated)
-				StartNextRound();
-
 			// Show NEW ROUND for first two players, have to recalculate count after StartNextRound or it won't show NEW ROUND
 			var countOfActivatedPlayers = data.Characters.Count(character => character.ActivatedThisRound);
 			if (countOfActivatedPlayers <= 2)
@@ -270,6 +265,8 @@ namespace GameThing.Screens
 			data.LastPlayingPlayerId = ApplicationData.PlayerId;
 			data.ChangePlayingSide();
 			data.TurnNumber++;
+			if (!data.AnyCharacterUnactivated)
+				StartNextRound();
 
 			if (!data.IsTestMode)
 				await battleManager.SaveBattle(data);
