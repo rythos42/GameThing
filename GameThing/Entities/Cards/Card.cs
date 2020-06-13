@@ -40,7 +40,7 @@ namespace GameThing.Entities.Cards
 					case Contract.AbilityScore.Strength: damage = OwnerCharacter.CurrentStrength * EffectPercent.Value; break;
 					case Contract.AbilityScore.Intelligence: damage = OwnerCharacter.CurrentIntelligence * EffectPercent.Value; break;
 				}
-				target.ApplyDamage(damage);
+				target.AttemptToApplyDamage(damage);
 
 				target.RemoveConditions(ConditionEndsOn.AfterAttack);
 			}

@@ -221,6 +221,7 @@
     <Compile Include="Entities\CharacterClass.cs" />
     <Compile Include="Entities\Cards\Conditions\ConditionType.cs" />
     <Compile Include="Manager\BattleDataUpdatedEventHandler.cs" />
+    <Compile Include="RandomWrapper.cs" />
     <Compile Include="Screens\BattleGameOverEventHandler.cs" />
     <Compile Include="Screens\SelectedCharacterChange.cs" />
     <Compile Include="Screens\StartBattleEventHandler.cs" />

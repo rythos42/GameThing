@@ -18,7 +18,7 @@ namespace GameThing.Entities
 	{
 		private Texture2D availableMovementTexture;
 		private Texture2D lockSprite;
-		private static readonly Random rng = new Random();
+		private const double EvadeConstant = 0.025; // Used in Evade quadratic equation a*x^2
 
 		public Character(Guid id, CharacterColour colour, CharacterClass characterClass)
 		{
@@ -33,6 +33,8 @@ namespace GameThing.Entities
 			availableMovementTexture = content.DistanceOverlay;
 			lockSprite = content.Lock;
 		}
+
+		public static IRandomWrapper Random { get; internal set; } = new RandomWrapper();
 
 		[DataMember]
 		public Guid Id { get; set; }
@@ -87,9 +89,12 @@ namespace GameThing.Entities
 		public decimal CurrentEvade => BaseEvade * EvadeMultiplier;
 		public decimal CurrentDefense => BaseDefense * DefenseMultiplier;
 
-		public void ApplyDamage(decimal damageAmount)
+		public void AttemptToApplyDamage(decimal damageAmount)
 		{
-			CurrentHealth -= damageAmount * DefenseDamageMultipler;
+			var missChance = EvadeConstant * (double) (CurrentEvade * CurrentEvade);
+
+			if (Random.NextDouble() > missChance)
+				CurrentHealth -= damageAmount * DefenseDamageMultipler;
 		}
 
 		private decimal DefenseDamageMultipler { get { return 1 - ((CurrentDefense - 1) * 0.1m); } }
@@ -209,7 +214,7 @@ namespace GameThing.Entities
 			while (n > 1)
 			{
 				n--;
-				var k = rng.Next(n + 1);
+				var k = Random.Next(n + 1);
 				var value = list[k];
 				list[k] = list[n];
 				list[n] = value;
