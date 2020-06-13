@@ -50,8 +50,11 @@ namespace GameThing.Entities
 
 		[DataMember]
 		public decimal BaseIntelligence { get; private set; } = 1;
+		[DataMember]
 		public decimal BaseStamina { get; private set; } = 1;
+		[DataMember]
 		public decimal BaseEvade { get; private set; } = 1;
+		[DataMember]
 		public decimal BaseDefense { get; private set; } = 1;
 
 		[DataMember]
@@ -68,8 +71,11 @@ namespace GameThing.Entities
 
 		[DataMember]
 		public decimal IntelligenceMultiplier { get; set; } = 1;
+		[DataMember]
 		public decimal StaminaMultiplier { get; set; } = 1;
+		[DataMember]
 		public decimal EvadeMultiplier { get; set; } = 1;
+		[DataMember]
 		public decimal DefenseMultiplier { get; set; } = 1;
 
 		[DataMember]
