@@ -82,7 +82,6 @@ namespace GameThing.Screens
 			winGameNowButton = new Button("Win Game") { UseMinimumButtonSize = false, Tapped = winGameNowButton_Tapped };
 			appliedConditionRow = new AppliedConditionRow { Held = appliedConditionRow_Held };
 
-
 			BattleManager.Instance.DataUpdated += BattleManager_DataUpdated;
 		}
 
@@ -218,10 +217,10 @@ namespace GameThing.Screens
 
 			playerClassText.Value = $"Class: {selectedCharacter.CharacterClass.Name}";
 			sideText.Value = $"Side: {data.Sides[selectedCharacter.OwnerPlayerId]}";
-			healthText.Value = $"Strength: {selectedCharacter.GetCurrentAbilityScore(AbilityScore.Health)}/{selectedCharacter.CurrentMaxHealth}";
-			strengthText.Value = $"Strength: {selectedCharacter.GetCurrentAbilityScore(AbilityScore.Strength)}/{selectedCharacter.GetBaseAbilityScore(AbilityScore.Strength)}";
-			agilityText.Value = $"Strength: {selectedCharacter.GetCurrentAbilityScore(AbilityScore.Agility)}/{selectedCharacter.GetBaseAbilityScore(AbilityScore.Agility)}";
-			intelligenceText.Value = $"Strength: {selectedCharacter.GetCurrentAbilityScore(AbilityScore.Intelligence)}/{selectedCharacter.GetBaseAbilityScore(AbilityScore.Intelligence)}";
+			healthText.Value = $"Health: {selectedCharacter.GetCurrentAbilityScore(AbilityScore.Health).ToString("0.00")}/{selectedCharacter.CurrentMaxHealth.ToString("0.00")}";
+			strengthText.Value = $"Strength: {selectedCharacter.GetCurrentAbilityScore(AbilityScore.Strength).ToString("0.00")}/{selectedCharacter.GetBaseAbilityScore(AbilityScore.Strength).ToString("0.00")}";
+			agilityText.Value = $"Strength: {selectedCharacter.GetCurrentAbilityScore(AbilityScore.Agility).ToString("0.00")}/{selectedCharacter.GetBaseAbilityScore(AbilityScore.Agility).ToString("0.00")}";
+			intelligenceText.Value = $"Strength: {selectedCharacter.GetCurrentAbilityScore(AbilityScore.Intelligence).ToString("0.00")}/{selectedCharacter.GetBaseAbilityScore(AbilityScore.Intelligence).ToString("0.00")}";
 			remainingDeckText.Value = $"Cards in Deck: {selectedCharacter.CardsInDeckCount}";
 			discardDeckText.Value = $"Cards in Discard: {selectedCharacter.CardsInDiscardCount}";
 			remainingMovesText.Value = $"Remaining Moves: {selectedCharacter.RemainingMoves}/{selectedCharacter.MaximumMoves}";

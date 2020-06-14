@@ -2,7 +2,6 @@ Todo:
 	- hard to tap on phone (no problem on emulator)
 	- do release notes
 
-	- show only 2 decimals on character panel
 	- show Stamina/Evade/Defense on character card
 	- show somewhere what these new stats effect is
 	- NEW ROUND panel likely needs moving or fixing
