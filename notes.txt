@@ -2,12 +2,10 @@ Todo:
 	- hard to tap on phone (no problem on emulator)
 	- do release notes
 
-	- show somewhere what these new stats effect is
-		- likely wiki for now
-		- MaximumMoves is 5, MaximumPlays is 2
 	- NEW ROUND panel likely needs moving or fixing
 	- show a thing when Evade causes a miss
 	- show a thing showing actual damage done due to defense
+	- 
 	
 	Re-do Cards
 		Prepared Stance: Gain 100% Defense for 5 turns.
@@ -30,7 +28,7 @@ Todo:
 
 
 Nice to have:
-	- always show health just below characters
+	- always show health and initiative debuff just below characters
 	- refresh My Matches in case someone joined (or have a notification in that case or something)
 	- ability to have multiple teams
 	- lock down Firebase database, it's wide open right now
