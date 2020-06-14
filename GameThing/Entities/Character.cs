@@ -18,7 +18,9 @@ namespace GameThing.Entities
 	{
 		private Texture2D availableMovementTexture;
 		private Texture2D lockSprite;
-		private const double EvadeConstant = 0.025; // Used in Evade quadratic equation a*x^2
+
+		private const double EvadeConstant = 0.025;         // Used in Evade quadratic equation a*x^2
+		private const decimal LastFirstPlayDebuff = 0.5m;   // How much a character is debuffed for damage or healing if they go last in a turn, then go first in a turn.
 
 		public Character(Guid id, CharacterColour colour, CharacterClass characterClass)
 		{
@@ -103,11 +105,23 @@ namespace GameThing.Entities
 
 		private decimal DefenseDamageMultipler { get { return 1 - ((GetCurrentAbilityScore(AbilityScore.Defense) - 1) * 0.1m); } }
 
-		public void ApplyHealing(decimal damageAmount)
+		public void ApplyHealing(decimal healAmount)
 		{
-			baseAbilityScores[AbilityScore.Health] += damageAmount;
-			if (baseAbilityScores[AbilityScore.Health] > CurrentMaxHealth)
-				baseAbilityScores[AbilityScore.Health] = CurrentMaxHealth;
+			baseAbilityScores[AbilityScore.Health] = Math.Min(CurrentMaxHealth, baseAbilityScores[AbilityScore.Health] + healAmount);
+		}
+
+		public decimal ChangeDamageOrHealingForStamina(decimal damageOrHealAmount, int turnNumber)
+		{
+			// Do nothing if the character hasn't gone yet.
+			if (LastPlayedTurnNumber == -1)
+				return damageOrHealAmount;
+
+			var initiativeModifierFromStamina = 2m - (1m / GetCurrentAbilityScore(AbilityScore.Stamina));
+			var turnsSinceLastPlayed = turnNumber - LastPlayedTurnNumber - 1;               // determine how many characters have gone since this characters last turn
+			var unitChunk = (1 - LastFirstPlayDebuff) / CharactersInGameCount;              // determine how much bonus you get for each character that has gone since your last turn
+			var initiativeDebuff = turnsSinceLastPlayed * unitChunk + LastFirstPlayDebuff;  // if you go right away again, 0.5 of the total effect is applied. Otherwise, add how much you get from waiting
+
+			return Math.Min(initiativeDebuff * initiativeModifierFromStamina * damageOrHealAmount, damageOrHealAmount);  // Can't go above what was asked for.
 		}
 
 		[DataMember]
@@ -134,8 +148,9 @@ namespace GameThing.Entities
 			ResetTurn();
 		}
 
-		public void EndTurn()
+		public void EndTurn(int thisTurnNumber)
 		{
+			LastPlayedTurnNumber = thisTurnNumber;
 			ActivatedThisRound = true;
 		}
 
@@ -174,6 +189,10 @@ namespace GameThing.Entities
 		[DataMember]
 		public string OwnerPlayerId { get; set; }
 
+		[DataMember]
+		public int LastPlayedTurnNumber { get; private set; } = -1;
+		public int CharactersInGameCount { get; set; }
+
 		public bool HasRemainingPlayableCards => RemainingPlayableCards > 0;
 		public bool HasRemainingMoves => RemainingMoves > 0;
 
@@ -191,10 +210,10 @@ namespace GameThing.Entities
 			DrawOneCard();
 		}
 
-		public bool PlayCard(Card card, Character targetCharacter, int roundNumber)
+		public bool PlayCard(Card card, Character targetCharacter, int roundNumber, int turnNumber)
 		{
 			// Try to play the card, cancelling if it returns false
-			if (!card.Play(roundNumber, targetCharacter))
+			if (!card.Play(targetCharacter, roundNumber, turnNumber))
 				return false;
 
 			RemainingPlayableCards--;

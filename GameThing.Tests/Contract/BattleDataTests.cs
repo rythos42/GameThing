@@ -18,7 +18,7 @@ namespace GameThing.Tests.Contract
 			character.ResetTurn();  // set unactivated
 			Assert.That(battleData.AnyCharacterUnactivated, Is.True);
 
-			character.EndTurn();    // set activated
+			character.EndTurn(0);    // set activated
 			Assert.That(battleData.AnyCharacterUnactivated, Is.False);
 		}
 	}

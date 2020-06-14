@@ -1,24 +1,21 @@
 Todo:
 	- hard to tap on phone (no problem on emulator)
 	- do release notes
-	- test game works
 
-	- implement Stamina
+	- show only 2 decimals on character panel
 	- show Stamina/Evade/Defense on character card
 	- show somewhere what these new stats effect is
 	- NEW ROUND panel likely needs moving or fixing
 	- show a thing when Evade causes a miss
 	- show a thing showing actual damage done due to defense
 	
-
-		Re-do Cards
-			Prepared Stance: Gain 100% Defense for 5 turns.
-			Awkward Distraction: Gain +100% Evade
-			Slow Jog: add Self category
-			Weak Cheer: Remove Strength category
-			Clumsy Stab: Add Reckless category
-
-
+	Re-do Cards
+		Prepared Stance: Gain 100% Defense for 5 turns.
+		Awkward Distraction: Gain +100% Evade
+		Slow Jog: add Self category
+		Weak Cheer: Remove Strength category
+		Clumsy Stab: Add Reckless category
+	Add all the new cards
 
 	Manage Team
 	- implement character levels
@@ -33,6 +30,7 @@ Todo:
 
 
 Nice to have:
+	- always show health just below characters
 	- refresh My Matches in case someone joined (or have a notification in that case or something)
 	- ability to have multiple teams
 	- lock down Firebase database, it's wide open right now

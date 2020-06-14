@@ -101,6 +101,7 @@ namespace GameThing.Screens
 			battleData.Characters.ForEach(character =>
 			{
 				var side = battleData.Sides[character.OwnerPlayerId];
+				character.CharactersInGameCount = battleData.Characters.Count;
 				character.SetContent(content, side);
 				character.Deck.ForEach(card => card.SetContent(content));
 
@@ -252,7 +253,7 @@ namespace GameThing.Screens
 				return;
 			}
 
-			lockedInCharacter?.EndTurn();
+			lockedInCharacter?.EndTurn(data.TurnNumber);
 			lockedInCharacter = null;
 			selectedCharacter = null;
 
@@ -525,7 +526,7 @@ namespace GameThing.Screens
 				// we have a character selected and a card selected, try to target whatever is under the tap
 				if (selectedCharacter.NextCardMustTarget == null || selectedCharacter.NextCardMustTarget == targetCharacter)
 				{
-					var success = selectedCharacter.PlayCard(selectedCard, targetCharacter, data.RoundNumber);
+					var success = selectedCharacter.PlayCard(selectedCard, targetCharacter, data.RoundNumber, data.TurnNumber);
 					if (success)
 					{
 						if (targetCharacter.GetBaseAbilityScore(AbilityScore.Health) < 1)

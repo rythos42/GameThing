@@ -44,10 +44,10 @@ namespace GameThing.Entities.Cards
 			font = content.Font;
 		}
 
-		public bool Play(int roundNumber, Character target = null)
+		public bool Play(Character target, int roundNumber, int turnNumber)
 		{
 			var applyValue = CardType == CardType.Damage || CardType == CardType.Heal
-				? OwnerCharacter.GetCurrentAbilityScore(AbilityScore.Value) * EffectPercent.Value
+				? OwnerCharacter.ChangeDamageOrHealingForStamina(OwnerCharacter.GetCurrentAbilityScore(AbilityScore.Value) * EffectPercent.Value, turnNumber)
 				: 0;
 
 			if (CardType == CardType.Damage)
