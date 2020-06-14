@@ -481,12 +481,19 @@ namespace GameThing.Screens
 			appliedConditionDetailsText.Value = selectedCharacter.Conditions.Aggregate("", (total, condition) => condition.Condition.Text + "\n" + total).Trim();
 		}
 
+		private string GetStatusTextForPlay(PlayStatus status)
+		{
+			switch (status.Status)
+			{
+				case PlayStatusDetails.FailedTaunted: return "Must target taunting character.";
+				case PlayStatusDetails.FailedNoStack: return "A non-stacking buff of the same type is already applied.";
+				case PlayStatusDetails.FailedEvaded: return "Evaded!";
+				default: return null;
+			}
+		}
+
 		private async Task Tap(GestureSample gesture)
 		{
-			// Can't tap if it isn't your turn.
-			//          if (data.CurrentSidesTurn != thisPlayerSide)
-			//return;
-
 			// try to get a card under the tap first 
 			var selectedCardIndex = handOfCards.GetCardIndexAtPosition(gesture.Position);
 			if (selectedCardIndex != -1)
@@ -516,32 +523,32 @@ namespace GameThing.Screens
 			else if (targetingPoint?.Equals(mapPoint) == true && IsMyTurn)
 			{
 				// ACTUALLY PLAY SELECTED CARD
-				// we have a character selected and a card selected, try to target whatever is under the tap
-				if (selectedCharacter.NextCardMustTarget == null || selectedCharacter.NextCardMustTarget == targetCharacter)
+				var playStatus = selectedCharacter.PlayCard(selectedCard, targetCharacter, data.RoundNumber, data.TurnNumber);
+				if (!playStatus.PlayCancelled)
 				{
-					var success = selectedCharacter.PlayCard(selectedCard, targetCharacter, data.RoundNumber, data.TurnNumber);
-					if (success)
+					if (targetCharacter.GetBaseAbilityScore(AbilityScore.Health) < 1)
 					{
-						if (targetCharacter.GetBaseAbilityScore(AbilityScore.Health) < 1)
-						{
-							data.Characters.Remove(targetCharacter);
-							await CheckForWin();
-						}
-
-						AddNewGameLogEntry(new GameLogEntry
-						{
-							SourceCharacterColour = selectedCharacter.Colour,
-							SourceCharacterSide = data.Sides[selectedCharacter.OwnerPlayerId],
-							TargetCharacterColour = targetCharacter.Colour,
-							TargetCharacterSide = data.Sides[targetCharacter.OwnerPlayerId],
-							CardId = selectedCard.Id
-						});
-
-						lockedInCharacter = selectedCard.OwnerCharacter;
-						selectedCard = null;
-						targetingPoint = null;
+						data.Characters.Remove(targetCharacter);
+						await CheckForWin();
 					}
+
+					AddNewGameLogEntry(new GameLogEntry
+					{
+						SourceCharacterColour = selectedCharacter.Colour,
+						SourceCharacterSide = data.Sides[selectedCharacter.OwnerPlayerId],
+						TargetCharacterColour = targetCharacter.Colour,
+						TargetCharacterSide = data.Sides[targetCharacter.OwnerPlayerId],
+						CardId = selectedCard.Id
+					});
+
+					lockedInCharacter = selectedCard.OwnerCharacter;
+					selectedCard = null;
+					targetingPoint = null;
 				}
+
+				var statusText = GetStatusTextForPlay(playStatus);
+				if (statusText != null)
+					statusPanel.Show(statusText);
 			}
 			else if (selectedCard != null)
 			{

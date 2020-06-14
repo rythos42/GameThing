@@ -3,7 +3,6 @@ Todo:
 	- do release notes
 
 	- NEW ROUND panel likely needs moving or fixing
-	- show a thing when Evade causes a miss
 	- show a thing showing actual damage done due to defense
 	- 
 	
@@ -28,6 +27,7 @@ Todo:
 
 
 Nice to have:
+	- add Evaded to game log entry
 	- always show health and initiative debuff just below characters
 	- refresh My Matches in case someone joined (or have a notification in that case or something)
 	- ability to have multiple teams

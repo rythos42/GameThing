@@ -44,7 +44,7 @@ namespace GameThing.Entities.Cards
 			font = content.Font;
 		}
 
-		public bool Play(Character target, int roundNumber, int turnNumber)
+		public PlayStatus Play(Character target, int roundNumber, int turnNumber)
 		{
 			var applyValue = CardType == CardType.Damage || CardType == CardType.Heal
 				? OwnerCharacter.ChangeDamageOrHealingForStamina(OwnerCharacter.GetCurrentAbilityScore(AbilityScore.Value) * EffectPercent.Value, turnNumber)
@@ -64,13 +64,13 @@ namespace GameThing.Entities.Cards
 			{
 				// if a non-stacking condition is on the target already, cancel the card play
 				if (target.Conditions.Any(applied => applied.Condition.StackGroup == Condition.StackGroup))
-					return false;
+					return new PlayStatus(PlayStatusDetails.FailedNoStack) { PlayCancelled = true };
 
 				target.Conditions.Add(new AppliedCondition(Condition, roundNumber));
 				Condition.ApplyImmediately(target);
 			}
 
-			return true;
+			return new PlayStatus(PlayStatusDetails.Success);
 		}
 
 		public bool IsWithinRangeDistance(MapPoint checkPoint)

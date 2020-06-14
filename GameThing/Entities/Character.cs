@@ -210,11 +210,17 @@ namespace GameThing.Entities
 			DrawOneCard();
 		}
 
-		public bool PlayCard(Card card, Character targetCharacter, int roundNumber, int turnNumber)
+		public PlayStatus PlayCard(Card card, Character targetCharacter, int roundNumber, int turnNumber)
 		{
-			// Try to play the card, cancelling if it returns false
-			if (!card.Play(targetCharacter, roundNumber, turnNumber))
-				return false;
+			if (NextCardMustTarget != null && NextCardMustTarget != targetCharacter)
+				return new PlayStatus(PlayStatusDetails.FailedTaunted) { PlayCancelled = true };
+
+			// Try to play the card
+			var played = card.Play(targetCharacter, roundNumber, turnNumber);
+
+			// Don't want to penalize player for these failures: act as though card isn't played
+			if (played.PlayCancelled)
+				return played;
 
 			RemainingPlayableCards--;
 			card.Discard();
@@ -228,7 +234,7 @@ namespace GameThing.Entities
 					AdditionalCategoryLevels.Add(cardCategory, 1);
 			});
 
-			return true;
+			return played;
 		}
 
 		private void Shuffle(List<Card> list)
