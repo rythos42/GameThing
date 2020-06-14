@@ -217,10 +217,10 @@ namespace GameThing.Screens
 
 			playerClassText.Value = $"Class: {selectedCharacter.CharacterClass.Name}";
 			sideText.Value = $"Side: {data.Sides[selectedCharacter.OwnerPlayerId]}";
-			healthText.Value = $"Health: {selectedCharacter.CurrentHealth}/{selectedCharacter.CurrentMaxHealth}";
-			strengthText.Value = $"Strength: {selectedCharacter.CurrentStrength}/{selectedCharacter.BaseStrength}";
-			agilityText.Value = $"Agility: {selectedCharacter.CurrentAgility}/{selectedCharacter.BaseAgility}";
-			intelligenceText.Value = $"Intelligence: {selectedCharacter.CurrentIntelligence}/{selectedCharacter.BaseIntelligence}";
+			healthText.Value = $"Strength: {selectedCharacter.GetCurrentAbilityScore(AbilityScore.Health)}/{selectedCharacter.CurrentMaxHealth}";
+			strengthText.Value = $"Strength: {selectedCharacter.GetCurrentAbilityScore(AbilityScore.Strength)}/{selectedCharacter.GetBaseAbilityScore(AbilityScore.Strength)}";
+			agilityText.Value = $"Strength: {selectedCharacter.GetCurrentAbilityScore(AbilityScore.Agility)}/{selectedCharacter.GetBaseAbilityScore(AbilityScore.Agility)}";
+			intelligenceText.Value = $"Strength: {selectedCharacter.GetCurrentAbilityScore(AbilityScore.Intelligence)}/{selectedCharacter.GetBaseAbilityScore(AbilityScore.Intelligence)}";
 			remainingDeckText.Value = $"Cards in Deck: {selectedCharacter.CardsInDeckCount}";
 			discardDeckText.Value = $"Cards in Discard: {selectedCharacter.CardsInDiscardCount}";
 			remainingMovesText.Value = $"Remaining Moves: {selectedCharacter.RemainingMoves}/{selectedCharacter.MaximumMoves}";
@@ -528,7 +528,7 @@ namespace GameThing.Screens
 					var success = selectedCharacter.PlayCard(selectedCard, targetCharacter, data.RoundNumber);
 					if (success)
 					{
-						if (targetCharacter.CurrentHealth < 1)
+						if (targetCharacter.GetBaseAbilityScore(AbilityScore.Health) < 1)
 						{
 							data.Characters.Remove(targetCharacter);
 							await CheckForWin();

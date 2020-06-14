@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
-using Antlr4.StringTemplate;
 using GameThing.Contract;
 using GameThing.Database;
 using GameThing.Entities.Cards.Conditions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
+using Scriban;
+using Scriban.Runtime;
 
 namespace GameThing.Entities.Cards
 {
@@ -19,6 +20,23 @@ namespace GameThing.Entities.Cards
 		private SpriteFont font;
 		private const int cardMargin = 20;
 
+		private Character ownerCharacter;
+		private string description;
+
+		private readonly ScriptObject templateScriptObject;
+		private readonly TemplateContext textParsingTemplateContext;
+		private Template descriptionTemplate;
+
+		public Card()
+		{
+			templateScriptObject = new ScriptObject();
+			templateScriptObject["card"] = this;
+
+			// Any properties that start with "Templating", remove that. It's a marker that this property is intended only for use with the template engine.
+			textParsingTemplateContext = new TemplateContext { MemberRenamer = member => member.Name.Replace("Templating", "") };
+			textParsingTemplateContext.PushGlobal(templateScriptObject);
+		}
+
 		public void SetContent(Content content)
 		{
 			sprite = content.Card;
@@ -28,32 +46,19 @@ namespace GameThing.Entities.Cards
 
 		public bool Play(int roundNumber, Character target = null)
 		{
+			var applyValue = CardType == CardType.Damage || CardType == CardType.Heal
+				? OwnerCharacter.GetCurrentAbilityScore(AbilityScore.Value) * EffectPercent.Value
+				: 0;
+
 			if (CardType == CardType.Damage)
 			{
-				decimal damage = 0;
-
 				target.Conditions.ForEach(condition => condition.Condition.ApplyBeforeDamage(OwnerCharacter, target));
-
-				switch (AbilityScore.Value)
-				{
-					case Contract.AbilityScore.Agility: damage = OwnerCharacter.CurrentAgility * EffectPercent.Value; break;
-					case Contract.AbilityScore.Strength: damage = OwnerCharacter.CurrentStrength * EffectPercent.Value; break;
-					case Contract.AbilityScore.Intelligence: damage = OwnerCharacter.CurrentIntelligence * EffectPercent.Value; break;
-				}
-				target.AttemptToApplyDamage(damage);
-
+				target.AttemptToApplyDamage(applyValue);
 				target.RemoveConditions(ConditionEndsOn.AfterAttack);
 			}
 			else if (CardType == CardType.Heal)
 			{
-				decimal healing = 0;
-				switch (AbilityScore.Value)
-				{
-					case Contract.AbilityScore.Agility: healing = OwnerCharacter.CurrentAgility * EffectPercent.Value; break;
-					case Contract.AbilityScore.Strength: healing = OwnerCharacter.CurrentStrength * EffectPercent.Value; break;
-					case Contract.AbilityScore.Intelligence: healing = OwnerCharacter.CurrentIntelligence * EffectPercent.Value; break;
-				}
-				target.ApplyHealing(healing);
+				target.ApplyHealing(applyValue);
 			}
 			else if (CardType == CardType.Condition)
 			{
@@ -105,7 +110,7 @@ namespace GameThing.Entities.Cards
 
 		public Card CreateForCharacter(Character character)
 		{
-			var clonedCard = Convert.Clone(this);
+			var clonedCard = Contract.Convert.Clone(this);
 			clonedCard.OwnerCharacter = character;
 			if (clonedCard.Condition != null)
 				clonedCard.Condition.SourceCharacter = character;
@@ -114,7 +119,15 @@ namespace GameThing.Entities.Cards
 
 		public int Width => sprite.Width / 2;
 		public int Height => sprite.Height / 2;
-		public Character OwnerCharacter { get; set; }
+		public Character OwnerCharacter
+		{
+			get { return ownerCharacter; }
+			set
+			{
+				ownerCharacter = value;
+				templateScriptObject["character"] = value;
+			}
+		}
 
 		[DataMember]
 		public CardType CardType { get; set; }
@@ -135,16 +148,20 @@ namespace GameThing.Entities.Cards
 		{
 			get
 			{
-				var templateStr = Condition == null ? Description : Description + ": " + Condition.Text;
-				var template = new Template(templateStr);
-				template.Add("character", OwnerCharacter);
-				template.Add("card", this);
-				return template.Render();
+				return descriptionTemplate.Render(textParsingTemplateContext);
 			}
 		}
 
 		[DataMember]
-		public string Description { get; set; }
+		public string Description
+		{
+			get { return description; }
+			set
+			{
+				description = value;
+				descriptionTemplate = Template.Parse(value);
+			}
+		}
 
 		[DataMember]
 		public int Range { get; set; }

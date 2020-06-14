@@ -40,89 +40,109 @@ namespace GameThing.Tests.Entities
 		public void AttemptToApplyDamage_AccountsForDefense()
 		{
 			var character = CreateTestCharacter();
-			character.EvadeMultiplier = 0;  // Ignore Evade
+			character.SetAbilityScoreMultiplier(AbilityScore.Evade, 0);  // Ignore Evade
 
-			character.CurrentHealth = 20;
-			character.DefenseMultiplier = 2;
+			character.SetCurrentHealth(20);
+			character.SetAbilityScoreMultiplier(AbilityScore.Defense, 2);
 			character.AttemptToApplyDamage(10);
-			Assert.That(character.CurrentHealth, Is.EqualTo(11));
+			Assert.That(character.GetBaseAbilityScore(AbilityScore.Health), Is.EqualTo(11));
 
-			character.CurrentHealth = 20;
-			character.DefenseMultiplier = 3;
+			character.SetCurrentHealth(20);
+			character.SetAbilityScoreMultiplier(AbilityScore.Defense, 3);
 			character.AttemptToApplyDamage(10);
-			Assert.That(character.CurrentHealth, Is.EqualTo(12));
+			Assert.That(character.GetBaseAbilityScore(AbilityScore.Health), Is.EqualTo(12));
 
-			character.CurrentHealth = 20;
-			character.DefenseMultiplier = 4;
+			character.SetCurrentHealth(20);
+			character.SetAbilityScoreMultiplier(AbilityScore.Defense, 4);
 			character.AttemptToApplyDamage(10);
-			Assert.That(character.CurrentHealth, Is.EqualTo(13));
+			Assert.That(character.GetBaseAbilityScore(AbilityScore.Health), Is.EqualTo(13));
 
-			character.CurrentHealth = 20;
-			character.DefenseMultiplier = 5;
+			character.SetCurrentHealth(20);
+			character.SetAbilityScoreMultiplier(AbilityScore.Defense, 5);
 			character.AttemptToApplyDamage(10);
-			Assert.That(character.CurrentHealth, Is.EqualTo(14));
+			Assert.That(character.GetBaseAbilityScore(AbilityScore.Health), Is.EqualTo(14));
 
-			character.CurrentHealth = 20;
-			character.DefenseMultiplier = 6;
+			character.SetCurrentHealth(20);
+			character.SetAbilityScoreMultiplier(AbilityScore.Defense, 6);
 			character.AttemptToApplyDamage(10);
-			Assert.That(character.CurrentHealth, Is.EqualTo(15));
+			Assert.That(character.GetBaseAbilityScore(AbilityScore.Health), Is.EqualTo(15));
 		}
 
 		[Test]
 		public void AttemptToApplyDamage_AccountsForEvade()
 		{
 			var character = CreateTestCharacter();
-			character.DefenseMultiplier = 1;    // Ensure no defense
+			character.SetAbilityScoreMultiplier(AbilityScore.Defense, 1); // Ensure no defense
 
 			var testRandom = new TestRandomWrapper();
 			Character.Random = testRandom;
 
 			// Evade 1 is 2.5% chance of miss
-			character.CurrentHealth = 20;
+			character.SetAbilityScoreMultiplier(AbilityScore.Evade, 1);
+
+			character.SetCurrentHealth(20);
 			testRandom.Double = 0.025d;   // 0.025 roll > 0.025 evade is false, so no damage
 			character.AttemptToApplyDamage(20);
-			Assert.That(character.CurrentHealth, Is.EqualTo(20));
+			Assert.That(character.GetBaseAbilityScore(AbilityScore.Health), Is.EqualTo(20));
 
-			character.CurrentHealth = 20;
+			character.SetCurrentHealth(20);
 			testRandom.Double = 0.0251d;   // 0.0251 roll > 0.025 evade is true, so damage
 			character.AttemptToApplyDamage(20);
-			Assert.That(character.CurrentHealth, Is.EqualTo(0));
+			Assert.That(character.GetBaseAbilityScore(AbilityScore.Health), Is.EqualTo(0));
 
-			// Evade 2 is 10% chance of msis
-			character.CurrentHealth = 20;
-			character.EvadeMultiplier = 2;
+			// Evade 2 is 10% chance of miss
+			character.SetAbilityScoreMultiplier(AbilityScore.Evade, 2);
+
+			character.SetCurrentHealth(20);
 			testRandom.Double = 0.1d;   // 0.1 roll > 0.1 evade is false, so no damage
 			character.AttemptToApplyDamage(20);
-			Assert.That(character.CurrentHealth, Is.EqualTo(20));
+			Assert.That(character.GetBaseAbilityScore(AbilityScore.Health), Is.EqualTo(20));
 
-			character.CurrentHealth = 20;
+			character.SetCurrentHealth(20);
 			testRandom.Double = 0.11d;   // 0.11 roll > 0.1 evade is true, so damage
 			character.AttemptToApplyDamage(20);
-			Assert.That(character.CurrentHealth, Is.EqualTo(0));
+			Assert.That(character.GetBaseAbilityScore(AbilityScore.Health), Is.EqualTo(0));
 
-			// Evade 3 is 22.5% chance of msis
-			character.CurrentHealth = 20;
-			character.EvadeMultiplier = 3;
+
+			// Evade 3 is 22.5% chance of miss
+			character.SetAbilityScoreMultiplier(AbilityScore.Evade, 3);
+
+			character.SetCurrentHealth(20);
 			testRandom.Double = 0.225d;   // 0.225 roll > 0.225 evade is false, so no damage
 			character.AttemptToApplyDamage(20);
-			Assert.That(character.CurrentHealth, Is.EqualTo(20));
+			Assert.That(character.GetBaseAbilityScore(AbilityScore.Health), Is.EqualTo(20));
 
-			character.CurrentHealth = 20;
+			character.SetCurrentHealth(20);
 			testRandom.Double = 0.2251d;   // 0.2251 roll > 0.225 evade is true, so damage
 			character.AttemptToApplyDamage(20);
-			Assert.That(character.CurrentHealth, Is.EqualTo(0));
+			Assert.That(character.GetBaseAbilityScore(AbilityScore.Health), Is.EqualTo(0));
+
 
 			// Evade 4 is 40% chance of msis
-			character.CurrentHealth = 20;
-			character.EvadeMultiplier = 4;
+			character.SetAbilityScoreMultiplier(AbilityScore.Evade, 4);
+
+			character.SetCurrentHealth(20);
 			testRandom.Double = 0.4d;   // 0.4 roll > 0.4 evade is false, so no damage
 			character.AttemptToApplyDamage(20);
-			Assert.That(character.CurrentHealth, Is.EqualTo(20));
+			Assert.That(character.GetBaseAbilityScore(AbilityScore.Health), Is.EqualTo(20));
 
-			character.CurrentHealth = 20;
+			character.SetCurrentHealth(20);
 			testRandom.Double = 41;   // 0.41 roll > 0.4 evade is true, so damage
 			character.AttemptToApplyDamage(20);
-			Assert.That(character.CurrentHealth, Is.EqualTo(0));
+			Assert.That(character.GetBaseAbilityScore(AbilityScore.Health), Is.EqualTo(0));
+		}
+
+		[Test]
+		public void SetsAndGetsAbilityScores()
+		{
+			var character = CreateTestCharacter();
+
+			Assert.That(character.GetBaseAbilityScore(AbilityScore.Strength), Is.EqualTo(1));
+			Assert.That(character.GetCurrentAbilityScore(AbilityScore.Strength), Is.EqualTo(1));
+
+			character.SetAbilityScoreMultiplier(AbilityScore.Strength, 2);
+			Assert.That(character.GetAbilityScoreMultiplier(AbilityScore.Strength), Is.EqualTo(2));
+			Assert.That(character.GetCurrentAbilityScore(AbilityScore.Strength), Is.EqualTo(2));
 		}
 
 		private Character CreateTestCharacter()

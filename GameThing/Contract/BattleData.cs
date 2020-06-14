@@ -12,7 +12,7 @@ namespace GameThing.Contract
 		public const string TestPlayerTwoId = "p2";
 
 		[DataMember]
-		public int TurnNumber { get; set; } = 0;
+		public int TurnNumber { get; set; } = 1;
 
 		[DataMember]
 		public int RoundNumber { get; set; } = 0;

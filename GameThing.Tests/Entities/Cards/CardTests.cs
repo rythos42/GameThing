@@ -15,7 +15,7 @@ namespace GameThing.Tests.Entities.Cards
 			var character = new Character(Guid.NewGuid(), CharacterColour.Blue, new CharacterClass());
 			var card = new Card()
 			{
-				Description = "Deal 100% Str (<character.CurrentStrength>) damage at range 1.",
+				Description = "Deal 100% Str ({{character.CurrentAbilityScores.Strength}}) damage at range 1.",
 				OwnerCharacter = character
 			};
 

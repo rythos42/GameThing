@@ -16,13 +16,8 @@ namespace GameThing.Entities.Cards.Conditions
 			switch (Type)
 			{
 				case ConditionType.Buff:
-					switch (AbilityScore.Value)
-					{
-						case Contract.AbilityScore.Health: target.CurrentHealth = ApplyBuff(target.CurrentHealth, BuffAmount.Value); break;
-						case Contract.AbilityScore.Agility: target.AgilityMultiplier = ApplyBuff(target.AgilityMultiplier, BuffAmount.Value); break;
-						case Contract.AbilityScore.Intelligence: target.IntelligenceMultiplier = ApplyBuff(target.IntelligenceMultiplier, BuffAmount.Value); break;
-						case Contract.AbilityScore.Strength: target.StrengthMultiplier = ApplyBuff(target.StrengthMultiplier, BuffAmount.Value); break;
-					}
+					var score = AbilityScore.Value;
+					target.SetAbilityScoreMultiplier(score, ApplyBuff(target.GetAbilityScoreMultiplier(score), BuffAmount.Value));
 					break;
 
 				case ConditionType.Taunt:
@@ -48,41 +43,24 @@ namespace GameThing.Entities.Cards.Conditions
 					if (source == SourceCharacter)
 						return;
 
-					switch (AbilityScore)
-					{
-						case Contract.AbilityScore.Agility: source.AgilityMultiplier = ApplyBuff(source.AgilityMultiplier, BuffAmount.Value); break;
-						case Contract.AbilityScore.Intelligence: source.IntelligenceMultiplier = ApplyBuff(source.IntelligenceMultiplier, BuffAmount.Value); break;
-						case Contract.AbilityScore.Strength: source.StrengthMultiplier = ApplyBuff(source.StrengthMultiplier, BuffAmount.Value); break;
-					}
+					var score = AbilityScore.Value;
+					source.SetAbilityScoreMultiplier(score, ApplyBuff(source.GetAbilityScoreMultiplier(score), BuffAmount.Value));
 					break;
 			}
 		}
 
 		public void Remove(Character from)
 		{
+			var score = AbilityScore.Value;
 			switch (Type)
 			{
 				case ConditionType.Buff:
-					switch (AbilityScore)
-					{
-						case Contract.AbilityScore.Health: from.CurrentHealth = RemoveBuff(from.CurrentHealth, BuffAmount.Value); break;
-						case Contract.AbilityScore.Agility: from.AgilityMultiplier = RemoveBuff(from.AgilityMultiplier, BuffAmount.Value); break;
-						case Contract.AbilityScore.Intelligence: from.IntelligenceMultiplier = RemoveBuff(from.IntelligenceMultiplier, BuffAmount.Value); break;
-						case Contract.AbilityScore.Strength: from.StrengthMultiplier = RemoveBuff(from.StrengthMultiplier, BuffAmount.Value); break;
-					}
+				case ConditionType.Distract:
+					from.SetAbilityScoreMultiplier(score, RemoveBuff(from.GetAbilityScoreMultiplier(score), BuffAmount.Value));
 					break;
 
 				case ConditionType.Run:
 					from.MaximumMoves = (int) Math.Round(RemoveBuff(from.MaximumMoves, BuffAmount.Value));
-					break;
-
-				case ConditionType.Distract:
-					switch (AbilityScore)
-					{
-						case Contract.AbilityScore.Agility: from.AgilityMultiplier = RemoveBuff(from.AgilityMultiplier, BuffAmount.Value); break;
-						case Contract.AbilityScore.Intelligence: from.IntelligenceMultiplier = RemoveBuff(from.IntelligenceMultiplier, BuffAmount.Value); break;
-						case Contract.AbilityScore.Strength: from.StrengthMultiplier = RemoveBuff(from.StrengthMultiplier, BuffAmount.Value); break;
-					}
 					break;
 			}
 		}

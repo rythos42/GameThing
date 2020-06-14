@@ -43,40 +43,44 @@ namespace GameThing.Entities
 		public override MapPoint MapPosition { get; set; }
 
 		[DataMember]
-		public decimal BaseStrength { get; private set; } = 1;
+		private readonly IDictionary<AbilityScore, decimal> baseAbilityScores = new Dictionary<AbilityScore, decimal>
+		{
+			{ AbilityScore.Strength, 1 },
+			{ AbilityScore.Agility, 1 },
+			{ AbilityScore.Intelligence, 1 },
+			{ AbilityScore.Stamina, 1 },
+			{ AbilityScore.Evade, 1 },
+			{ AbilityScore.Defense, 1 },
+			{ AbilityScore.Health, 7 },
+		};
 
 		[DataMember]
-		public decimal BaseAgility { get; private set; } = 1;
+		private readonly IDictionary<AbilityScore, decimal> abilityScoreMultipliers = new Dictionary<AbilityScore, decimal>
+		{
+			{ AbilityScore.Strength, 1 },
+			{ AbilityScore.Agility, 1 },
+			{ AbilityScore.Intelligence, 1 },
+			{ AbilityScore.Stamina, 1 },
+			{ AbilityScore.Evade, 1 },
+			{ AbilityScore.Defense, 1 },
+			{ AbilityScore.Health, 1 },
+		};
 
-		[DataMember]
-		public decimal BaseIntelligence { get; private set; } = 1;
-		[DataMember]
-		public decimal BaseStamina { get; private set; } = 1;
-		[DataMember]
-		public decimal BaseEvade { get; private set; } = 1;
-		[DataMember]
-		public decimal BaseDefense { get; private set; } = 1;
+		public IDictionary<string, decimal> TemplatingBaseAbilityScores => baseAbilityScores.ToDictionary(item => item.Key.ToString(), item => item.Value);
+		public IDictionary<string, decimal> TemplatingCurrentAbilityScores => baseAbilityScores.ToDictionary(item => item.Key.ToString(), item => GetCurrentAbilityScore(item.Key));
 
-		[DataMember]
-		public decimal CurrentHealth { get; set; } = 7;
+		public decimal GetBaseAbilityScore(AbilityScore score) => baseAbilityScores[score];
+		public decimal GetAbilityScoreMultiplier(AbilityScore score) => abilityScoreMultipliers[score];
+		public decimal SetAbilityScoreMultiplier(AbilityScore score, decimal scoreValue) => abilityScoreMultipliers[score] = scoreValue;
+		public decimal GetCurrentAbilityScore(AbilityScore score) => baseAbilityScores[score] * abilityScoreMultipliers[score];
+
+		internal void SetCurrentHealth(decimal health)
+		{
+			baseAbilityScores[AbilityScore.Health] = health;
+		}
 
 		[DataMember]
 		public decimal CurrentMaxHealth { get; private set; } = 7;
-
-		[DataMember]
-		public decimal StrengthMultiplier { get; set; } = 1;
-
-		[DataMember]
-		public decimal AgilityMultiplier { get; set; } = 1;
-
-		[DataMember]
-		public decimal IntelligenceMultiplier { get; set; } = 1;
-		[DataMember]
-		public decimal StaminaMultiplier { get; set; } = 1;
-		[DataMember]
-		public decimal EvadeMultiplier { get; set; } = 1;
-		[DataMember]
-		public decimal DefenseMultiplier { get; set; } = 1;
 
 		[DataMember]
 		[JsonConverter(typeof(IdentifierBasedConverter<CharacterClass>), typeof(CharacterClassMapper))]
@@ -88,28 +92,22 @@ namespace GameThing.Entities
 		[DataMember]
 		public Character NextCardMustTarget { get; set; }
 
-		public decimal CurrentStrength => BaseStrength * StrengthMultiplier;
-		public decimal CurrentAgility => BaseAgility * AgilityMultiplier;
-		public decimal CurrentIntelligence => BaseIntelligence * IntelligenceMultiplier;
-		public decimal CurrentStamina => BaseStamina * StaminaMultiplier;
-		public decimal CurrentEvade => BaseEvade * EvadeMultiplier;
-		public decimal CurrentDefense => BaseDefense * DefenseMultiplier;
-
 		public void AttemptToApplyDamage(decimal damageAmount)
 		{
-			var missChance = EvadeConstant * (double) (CurrentEvade * CurrentEvade);
+			var currentEvade = GetCurrentAbilityScore(AbilityScore.Evade);
+			var missChance = EvadeConstant * (double) (currentEvade * currentEvade);
 
 			if (Random.NextDouble() > missChance)
-				CurrentHealth -= damageAmount * DefenseDamageMultipler;
+				baseAbilityScores[AbilityScore.Health] -= damageAmount * DefenseDamageMultipler;
 		}
 
-		private decimal DefenseDamageMultipler { get { return 1 - ((CurrentDefense - 1) * 0.1m); } }
+		private decimal DefenseDamageMultipler { get { return 1 - ((GetCurrentAbilityScore(AbilityScore.Defense) - 1) * 0.1m); } }
 
 		public void ApplyHealing(decimal damageAmount)
 		{
-			CurrentHealth += damageAmount;
-			if (CurrentHealth > CurrentMaxHealth)
-				CurrentHealth = CurrentMaxHealth;
+			baseAbilityScores[AbilityScore.Health] += damageAmount;
+			if (baseAbilityScores[AbilityScore.Health] > CurrentMaxHealth)
+				baseAbilityScores[AbilityScore.Health] = CurrentMaxHealth;
 		}
 
 		[DataMember]
