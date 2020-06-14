@@ -58,13 +58,11 @@ namespace GameThing.Screens
 		private readonly Text sideText = new Text();
 		private readonly Text playerClassText = new Text();
 		private readonly Text healthText = new Text();
-		private readonly Text strengthText = new Text();
-		private readonly Text agilityText = new Text();
-		private readonly Text intelligenceText = new Text();
-		private readonly Text remainingDeckText = new Text();
-		private readonly Text discardDeckText = new Text();
-		private readonly Text remainingMovesText = new Text();
-		private readonly Text remainingPlayableCardsText = new Text();
+		private readonly Text strAgiText = new Text();
+		private readonly Text intStaText = new Text();
+		private readonly Text evdDefText = new Text();
+		private readonly Text deckText = new Text();
+		private readonly Text playsMovesText = new Text();
 		private readonly AppliedConditionRow appliedConditionRow;
 
 		private Rectangle spaghettiDeployment;
@@ -170,13 +168,11 @@ namespace GameThing.Screens
 			selectedPlayerStatsPanel.Components.Add(playerClassText);
 			selectedPlayerStatsPanel.Components.Add(sideText);
 			selectedPlayerStatsPanel.Components.Add(healthText);
-			selectedPlayerStatsPanel.Components.Add(strengthText);
-			selectedPlayerStatsPanel.Components.Add(agilityText);
-			selectedPlayerStatsPanel.Components.Add(intelligenceText);
-			selectedPlayerStatsPanel.Components.Add(remainingDeckText);
-			selectedPlayerStatsPanel.Components.Add(discardDeckText);
-			selectedPlayerStatsPanel.Components.Add(remainingMovesText);
-			selectedPlayerStatsPanel.Components.Add(remainingPlayableCardsText);
+			selectedPlayerStatsPanel.Components.Add(strAgiText);
+			selectedPlayerStatsPanel.Components.Add(intStaText);
+			selectedPlayerStatsPanel.Components.Add(evdDefText);
+			selectedPlayerStatsPanel.Components.Add(deckText);
+			selectedPlayerStatsPanel.Components.Add(playsMovesText);
 			selectedPlayerStatsPanel.Components.Add(appliedConditionRow);
 			SelectedCharacterChange += UpdateSelectedCharacterPanel;
 
@@ -218,13 +214,11 @@ namespace GameThing.Screens
 			playerClassText.Value = $"Class: {selectedCharacter.CharacterClass.Name}";
 			sideText.Value = $"Side: {data.Sides[selectedCharacter.OwnerPlayerId]}";
 			healthText.Value = $"Health: {selectedCharacter.GetCurrentAbilityScore(AbilityScore.Health).ToString("0.00")}/{selectedCharacter.CurrentMaxHealth.ToString("0.00")}";
-			strengthText.Value = $"Strength: {selectedCharacter.GetCurrentAbilityScore(AbilityScore.Strength).ToString("0.00")}/{selectedCharacter.GetBaseAbilityScore(AbilityScore.Strength).ToString("0.00")}";
-			agilityText.Value = $"Strength: {selectedCharacter.GetCurrentAbilityScore(AbilityScore.Agility).ToString("0.00")}/{selectedCharacter.GetBaseAbilityScore(AbilityScore.Agility).ToString("0.00")}";
-			intelligenceText.Value = $"Strength: {selectedCharacter.GetCurrentAbilityScore(AbilityScore.Intelligence).ToString("0.00")}/{selectedCharacter.GetBaseAbilityScore(AbilityScore.Intelligence).ToString("0.00")}";
-			remainingDeckText.Value = $"Cards in Deck: {selectedCharacter.CardsInDeckCount}";
-			discardDeckText.Value = $"Cards in Discard: {selectedCharacter.CardsInDiscardCount}";
-			remainingMovesText.Value = $"Remaining Moves: {selectedCharacter.RemainingMoves}/{selectedCharacter.MaximumMoves}";
-			remainingPlayableCardsText.Value = $"Remaining Plays: {selectedCharacter.RemainingPlayableCards}/{selectedCharacter.MaximumPlayableCards}";
+			strAgiText.Value = $"Str: {selectedCharacter.GetCurrentAbilityScore(AbilityScore.Strength).ToString("0.00")} / Agi: {selectedCharacter.GetCurrentAbilityScore(AbilityScore.Agility).ToString("0.00")}";
+			intStaText.Value = $"Int: {selectedCharacter.GetCurrentAbilityScore(AbilityScore.Intelligence).ToString("0.00")} / Sta: {selectedCharacter.GetCurrentAbilityScore(AbilityScore.Stamina).ToString("0.00")}";
+			evdDefText.Value = $"Evd: {selectedCharacter.GetCurrentAbilityScore(AbilityScore.Evade).ToString("0.00")} / Def: {selectedCharacter.GetCurrentAbilityScore(AbilityScore.Defense).ToString("0.00")}";
+			deckText.Value = $"Deck: {selectedCharacter.CardsInDeckCount} / Discard: {selectedCharacter.CardsInDiscardCount}";
+			playsMovesText.Value = $"Moves: {selectedCharacter.RemainingMoves} / Plays: {selectedCharacter.RemainingPlayableCards}";
 			appliedConditionRow.SelectedCharacter = newCharacter;
 		}
 

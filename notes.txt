@@ -2,8 +2,9 @@ Todo:
 	- hard to tap on phone (no problem on emulator)
 	- do release notes
 
-	- show Stamina/Evade/Defense on character card
 	- show somewhere what these new stats effect is
+		- likely wiki for now
+		- MaximumMoves is 5, MaximumPlays is 2
 	- NEW ROUND panel likely needs moving or fixing
 	- show a thing when Evade causes a miss
 	- show a thing showing actual damage done due to defense
