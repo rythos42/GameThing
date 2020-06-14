@@ -485,11 +485,21 @@ namespace GameThing.Screens
 		{
 			switch (status.Status)
 			{
-				case PlayStatusDetails.FailedTaunted: return "Must target taunting character.";
-				case PlayStatusDetails.FailedNoStack: return "A non-stacking buff of the same type is already applied.";
-				case PlayStatusDetails.FailedEvaded: return "Evaded!";
-				default: return null;
+				case PlayStatusDetails.FailedTaunted:
+					return "Must target taunting character.";
+				case PlayStatusDetails.FailedNoStack:
+					return "A non-stacking buff of the same type is already applied.";
+				case PlayStatusDetails.FailedEvaded:
+					return "Evaded!";
+				case PlayStatusDetails.Success:
+					switch (status.CardType)
+					{
+						case CardType.Damage: return $"Damaged for {status.ActualDamageOrHealingDone}.";
+						case CardType.Heal: return $"Healed for {status.ActualDamageOrHealingDone}.";
+					}
+					return null;
 			}
+			return null;
 		}
 
 		private async Task Tap(GestureSample gesture)

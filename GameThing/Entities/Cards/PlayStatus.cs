@@ -17,5 +17,7 @@
 
 		public PlayStatusDetails Status { get; set; }
 		public bool PlayCancelled { get; set; }
+		public decimal ActualDamageOrHealingDone { get; set; }
+		public CardType CardType { get; set; }
 	}
 }

@@ -1,10 +1,7 @@
 Todo:
 	- hard to tap on phone (no problem on emulator)
 	- do release notes
-
 	- NEW ROUND panel likely needs moving or fixing
-	- show a thing showing actual damage done due to defense
-	- 
 	
 	Re-do Cards
 		Prepared Stance: Gain 100% Defense for 5 turns.
@@ -27,6 +24,7 @@ Todo:
 
 
 Nice to have:
+	- inconsistent in showing status of card play
 	- add Evaded to game log entry
 	- always show health and initiative debuff just below characters
 	- refresh My Matches in case someone joined (or have a notification in that case or something)

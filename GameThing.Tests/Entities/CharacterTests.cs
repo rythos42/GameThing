@@ -44,7 +44,7 @@ namespace GameThing.Tests.Entities
 
 			character.SetCurrentHealth(20);
 			character.SetAbilityScoreMultiplier(AbilityScore.Defense, 2);
-			character.AttemptToApplyDamage(10);
+			var playStatus = character.AttemptToApplyDamage(10);
 			Assert.That(character.GetBaseAbilityScore(AbilityScore.Health), Is.EqualTo(11));
 
 			character.SetCurrentHealth(20);
@@ -66,6 +66,21 @@ namespace GameThing.Tests.Entities
 			character.SetAbilityScoreMultiplier(AbilityScore.Defense, 6);
 			character.AttemptToApplyDamage(10);
 			Assert.That(character.GetBaseAbilityScore(AbilityScore.Health), Is.EqualTo(15));
+		}
+
+		[Test]
+		public void AttemptToApplyDamage_ReturnsInformationAboutPlay_ForDefense()
+		{
+			var character = CreateTestCharacter();
+			character.SetAbilityScoreMultiplier(AbilityScore.Evade, 0);  // Ignore Evade
+
+			character.SetCurrentHealth(20);
+			character.SetAbilityScoreMultiplier(AbilityScore.Defense, 2);
+			var playStatus = character.AttemptToApplyDamage(10);
+			Assert.That(playStatus.CardType, Is.EqualTo(CardType.Damage));
+			Assert.That(playStatus.PlayCancelled, Is.EqualTo(false));
+			Assert.That(playStatus.Status, Is.EqualTo(PlayStatusDetails.Success));
+			Assert.That(playStatus.ActualDamageOrHealingDone, Is.EqualTo(9));
 		}
 
 		[Test]
@@ -130,6 +145,36 @@ namespace GameThing.Tests.Entities
 			testRandom.Double = 41;   // 0.41 roll > 0.4 evade is true, so damage
 			character.AttemptToApplyDamage(20);
 			Assert.That(character.GetBaseAbilityScore(AbilityScore.Health), Is.EqualTo(0));
+		}
+
+		[Test]
+		public void AttemptToApplyDamage_ReturnsInformationAboutPlay_ForEvade()
+		{
+			var character = CreateTestCharacter();
+			character.SetAbilityScoreMultiplier(AbilityScore.Defense, 1); // Ensure no defense
+
+			var testRandom = new TestRandomWrapper();
+			Character.Random = testRandom;
+
+			// Evade 1 is 2.5% chance of miss
+			character.SetAbilityScoreMultiplier(AbilityScore.Evade, 1);
+
+			character.SetCurrentHealth(20);
+			testRandom.Double = 0.025d;   // 0.025 roll > 0.025 evade is false, so no damage
+			var playStatus = character.AttemptToApplyDamage(20);
+			Assert.That(playStatus.CardType, Is.EqualTo(CardType.Damage));
+			Assert.That(playStatus.PlayCancelled, Is.EqualTo(false));
+			Assert.That(playStatus.Status, Is.EqualTo(PlayStatusDetails.FailedEvaded));
+			Assert.That(playStatus.ActualDamageOrHealingDone, Is.EqualTo(0));
+
+			character.SetCurrentHealth(20);
+			testRandom.Double = 0.0251d;   // 0.0251 roll > 0.025 evade is true, so damage
+			playStatus = character.AttemptToApplyDamage(20);
+			Assert.That(character.GetBaseAbilityScore(AbilityScore.Health), Is.EqualTo(0));
+			Assert.That(playStatus.CardType, Is.EqualTo(CardType.Damage));
+			Assert.That(playStatus.PlayCancelled, Is.EqualTo(false));
+			Assert.That(playStatus.Status, Is.EqualTo(PlayStatusDetails.Success));
+			Assert.That(playStatus.ActualDamageOrHealingDone, Is.EqualTo(20));
 		}
 
 		[Test]

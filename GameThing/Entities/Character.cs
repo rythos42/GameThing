@@ -94,20 +94,26 @@ namespace GameThing.Entities
 		[DataMember]
 		public Character NextCardMustTarget { get; set; }
 
-		public void AttemptToApplyDamage(decimal damageAmount)
+		public PlayStatus AttemptToApplyDamage(decimal damageAmount)
 		{
 			var currentEvade = GetCurrentAbilityScore(AbilityScore.Evade);
 			var missChance = EvadeConstant * (double) (currentEvade * currentEvade);
 
-			if (Random.NextDouble() > missChance)
-				baseAbilityScores[AbilityScore.Health] -= damageAmount * DefenseDamageMultipler;
+			if (Random.NextDouble() <= missChance)
+				return new PlayStatus(PlayStatusDetails.FailedEvaded);
+
+			var actualDamageDone = damageAmount * DefenseDamageMultipler;
+			baseAbilityScores[AbilityScore.Health] -= actualDamageDone;
+			return new PlayStatus(PlayStatusDetails.Success) { ActualDamageOrHealingDone = actualDamageDone, CardType = CardType.Damage };
 		}
 
 		private decimal DefenseDamageMultipler { get { return 1 - ((GetCurrentAbilityScore(AbilityScore.Defense) - 1) * 0.1m); } }
 
-		public void ApplyHealing(decimal healAmount)
+		public PlayStatus ApplyHealing(decimal healAmount)
 		{
-			baseAbilityScores[AbilityScore.Health] = Math.Min(CurrentMaxHealth, baseAbilityScores[AbilityScore.Health] + healAmount);
+			var actualHealingDone = baseAbilityScores[AbilityScore.Health] + healAmount;
+			baseAbilityScores[AbilityScore.Health] = Math.Min(CurrentMaxHealth, actualHealingDone);
+			return new PlayStatus(PlayStatusDetails.Success) { ActualDamageOrHealingDone = actualHealingDone, CardType = CardType.Heal };
 		}
 
 		public decimal ChangeDamageOrHealingForStamina(decimal damageOrHealAmount, int turnNumber)

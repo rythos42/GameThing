@@ -53,12 +53,14 @@ namespace GameThing.Entities.Cards
 			if (CardType == CardType.Damage)
 			{
 				target.Conditions.ForEach(condition => condition.Condition.ApplyBeforeDamage(OwnerCharacter, target));
-				target.AttemptToApplyDamage(applyValue);
+				var playStatus = target.AttemptToApplyDamage(applyValue);
 				target.RemoveConditions(ConditionEndsOn.AfterAttack);
+
+				return playStatus;
 			}
 			else if (CardType == CardType.Heal)
 			{
-				target.ApplyHealing(applyValue);
+				return target.ApplyHealing(applyValue);
 			}
 			else if (CardType == CardType.Condition)
 			{
