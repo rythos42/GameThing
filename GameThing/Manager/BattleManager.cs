@@ -41,7 +41,6 @@ namespace GameThing.Manager
 			};
 
 			battleData.InitializeCharacters(ApplicationData.PlayerId, team);
-			battleData.ChangePlayingSide();
 			await battleMapper.PutBattle(battleData);
 
 			return battleData;
@@ -51,6 +50,7 @@ namespace GameThing.Manager
 		{
 			currentBattle = await battleMapper.GetBattle(matchId);
 			currentBattle.InitializeCharacters(ApplicationData.PlayerId, team);
+			currentBattle.ChangePlayingSide();
 			await battleMapper.PutBattle(currentBattle);
 
 			watchingBattle = battleMapper.ObserveBattle(matchId).Subscribe(OnDataUpdated);

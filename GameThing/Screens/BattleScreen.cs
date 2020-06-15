@@ -38,7 +38,7 @@ namespace GameThing.Screens
 
 		private ScreenComponent screenComponent;
 
-		private readonly Button newTurnButton;
+		private readonly Button endTurnButton;
 		private readonly Button winGameNowButton;
 		private readonly FadingTextPanel statusPanel = new FadingTextPanel() { PlaceFromRight = true };
 		private readonly Panel playerSidePanel = new Panel();
@@ -76,7 +76,7 @@ namespace GameThing.Screens
 
 		public BattleScreen()
 		{
-			newTurnButton = new Button("New Turn") { UseMinimumButtonSize = false, Tapped = newTurnButton_Tapped };
+			endTurnButton = new Button("End Turn") { UseMinimumButtonSize = false, Tapped = endTurnButton_Tapped };
 			winGameNowButton = new Button("Win Game") { UseMinimumButtonSize = false, Tapped = winGameNowButton_Tapped };
 			appliedConditionRow = new AppliedConditionRow { Held = appliedConditionRow_Held };
 
@@ -110,9 +110,8 @@ namespace GameThing.Screens
 
 			SetGameLogEntryRows();
 
-			// Show NEW ROUND for first two players, have to recalculate count after StartNextRound or it won't show NEW ROUND
 			var countOfActivatedPlayers = data.Characters.Count(character => character.ActivatedThisRound);
-			if (countOfActivatedPlayers <= 2)
+			if (countOfActivatedPlayers <= 1)   // show for 0 player count and 1 player count, to catch both players
 				statusPanel.Show("NEW ROUND");
 		}
 
@@ -189,7 +188,7 @@ namespace GameThing.Screens
 
 			screenComponent = new ScreenComponent(graphicsDevice.PresentationParameters.BackBufferWidth, graphicsDevice.PresentationParameters.BackBufferHeight);
 			screenComponent.GestureRead += screenComponent_GestureRead;
-			screenComponent.Components.Add(newTurnButton);
+			screenComponent.Components.Add(endTurnButton);
 			screenComponent.Components.Add(winGameNowButton);
 			screenComponent.Components.Add(selectedPlayerStatsPanel);
 			screenComponent.Components.Add(gameLogPanel);
@@ -235,7 +234,6 @@ namespace GameThing.Screens
 		{
 			data.RoundNumber++;
 			data.Characters.ForEach(character => character.StartNewRound(data.RoundNumber));
-			lockedInCharacter = null;
 		}
 
 		private async Task NextPlayerTurn()
@@ -260,7 +258,11 @@ namespace GameThing.Screens
 			data.ChangePlayingSide();
 			data.TurnNumber++;
 			if (!data.AnyCharacterUnactivated)
+			{
 				StartNextRound();
+				if (data.IsTestMode)
+					statusPanel.Show("NEW ROUND");
+			}
 
 			if (!data.IsTestMode)
 				await battleManager.SaveBattle(data);
@@ -312,7 +314,7 @@ namespace GameThing.Screens
 
 			screenComponent.Update(gameTime);
 
-			newTurnButton.IsHighlighted = lockedInCharacter != null && !lockedInCharacter.HasRemainingMoves && !lockedInCharacter.HasRemainingPlayableCards;
+			endTurnButton.IsHighlighted = lockedInCharacter != null && !lockedInCharacter.HasRemainingMoves && !lockedInCharacter.HasRemainingPlayableCards;
 		}
 
 		private bool IsMyTurn
@@ -408,16 +410,16 @@ namespace GameThing.Screens
 			// Draw UI
 			spriteBatch.Begin();
 			if (IsMyTurn)
-				newTurnButton.Draw(spriteBatch, playerSidePanel.Width + 2 * UIComponent.MARGIN, UIComponent.MARGIN);
+				endTurnButton.Draw(spriteBatch, playerSidePanel.Width + 2 * UIComponent.MARGIN, UIComponent.MARGIN);
 			statusPanel.Draw(spriteBatch, UIComponent.MARGIN, UIComponent.MARGIN);
 			playerSidePanel.Draw(spriteBatch, UIComponent.MARGIN, UIComponent.MARGIN);
 			if (data.IsTestMode)
-				winGameNowButton.Draw(spriteBatch, newTurnButton.Width + playerSidePanel.Width + 3 * UIComponent.MARGIN, UIComponent.MARGIN);
+				winGameNowButton.Draw(spriteBatch, endTurnButton.Width + playerSidePanel.Width + 3 * UIComponent.MARGIN, UIComponent.MARGIN);
 
-			gameLogPanel.Draw(spriteBatch, UIComponent.MARGIN, newTurnButton.Height + 2 * UIComponent.MARGIN);
+			gameLogPanel.Draw(spriteBatch, UIComponent.MARGIN, endTurnButton.Height + 2 * UIComponent.MARGIN);
 
 			if (selectedCharacter != null)
-				selectedPlayerStatsPanel.Draw(spriteBatch, gameLogPanel.Width + 2 * UIComponent.MARGIN, newTurnButton.Height + 2 * UIComponent.MARGIN);
+				selectedPlayerStatsPanel.Draw(spriteBatch, gameLogPanel.Width + 2 * UIComponent.MARGIN, endTurnButton.Height + 2 * UIComponent.MARGIN);
 
 			if (showGameLogEntryPanel)
 				heldGameLogEntryPanel.Draw(spriteBatch);
@@ -439,7 +441,7 @@ namespace GameThing.Screens
 			showAppliedConditionDetailsPanel = false;
 		}
 
-		public async void newTurnButton_Tapped(string id, GestureSample gesture)
+		public async void endTurnButton_Tapped(string id, GestureSample gesture)
 		{
 			await NextPlayerTurn();
 		}
