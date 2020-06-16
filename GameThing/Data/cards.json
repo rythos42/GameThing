@@ -40,7 +40,7 @@
 			"evade"
 		],
 		"condition": {
-			"stackGroup": "1",
+			"stackGroup": "evade",
 			"text": "Give the another character +100% Evade for 3 turns.",
 			"turnCount": 3,
 			"endsOn": "StartRound",
@@ -59,7 +59,7 @@
 		"description": "Apply a condition at range 5",
 		"range": 5,
 		"condition": {
-			"stackGroup": "2",
+			"stackGroup": "taunt",
 			"text": "70% chance next card must target this character.",
 			"endsOn": "AfterAttack",
 			"iconName": "sprites/icons/taunt",
@@ -80,7 +80,7 @@
 		"description": "Apply a condition to yourself",
 		"range": 0,
 		"condition": {
-			"stackGroup": "3",
+			"stackGroup": "movement",
 			"text": "Your next move gains +1 distance.",
 			"endsOn": "Move",
 			"iconName": "sprites/icons/run",
@@ -102,7 +102,7 @@
 		"description": "Apply a condition at range 3",
 		"range": 3,
 		"condition": {
-			"stackGroup": "4",
+			"stackGroup": "strength",
 			"text": "Give another character +100% Str for 3 turns.",
 			"turnCount": 3,
 			"endsOn": "StartRound",
@@ -144,7 +144,7 @@
 			"self"
 		],
 		"condition": {
-			"stackGroup": "5",
+			"stackGroup": "defense",
 			"text": "Gain 100% Def ({{character.CurrentAbilityScores.Defense}}) for 3 turns.",
 			"turnCount": 3,
 			"endsOn": "StartRound",
