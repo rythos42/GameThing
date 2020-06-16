@@ -1,4 +1,5 @@
 ﻿[
+	/* Starter */
 	{
 		"id": "clumsy_stab",
 		"title": "Clumsy Stab",
@@ -81,7 +82,7 @@
 		"range": 0,
 		"condition": {
 			"stackGroup": "movement",
-			"text": "Your next move gains +1 distance.",
+			"text": "On your next move gain 1 distance.",
 			"endsOn": "Move",
 			"iconName": "sprites/icons/run",
 			"type": "Run",
@@ -118,6 +119,8 @@
 			"duration"
 		]
 	},
+
+	/* Squire (starter) */
 	{
 		"id": "slightly_trained_stab",
 		"title": "Slightly Trained Stab",
@@ -156,6 +159,8 @@
 			"successPercent": 1
 		}
 	},
+
+	/* Pickpocket (starter) */
 	{
 		"id": "decent_slice",
 		"title": "Decent Slice",
@@ -184,6 +189,8 @@
 			"melee"
 		]
 	},
+
+	/* Apprentice (starter) */
 	{
 		"id": "fairie_fire",
 		"title": "Fairie Fire",
