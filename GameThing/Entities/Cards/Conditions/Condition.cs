@@ -30,7 +30,7 @@ namespace GameThing.Entities.Cards.Conditions
 		public string Text { get; set; }
 
 		[DataMember]
-		public int TurnCount { get; set; } = -1;
+		public int? TurnCount { get; set; }
 
 		[DataMember]
 		public ConditionEndsOn EndsOn { get; set; }
@@ -39,7 +39,7 @@ namespace GameThing.Entities.Cards.Conditions
 		public string IconName { get; set; }
 
 		[DataMember]
-		public decimal SuccessPercent { get; set; }
+		public decimal SuccessPercent { get; set; } = 1;
 
 		[DataMember]
 		public List<Effect> Effects { get; set; }

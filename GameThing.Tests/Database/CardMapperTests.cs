@@ -78,6 +78,30 @@ namespace GameThing.Tests.Database
 		}
 
 		[Test]
+		public void LoadCards_HasUnsetDefaults()
+		{
+			var jsonString = @"
+                [
+                    {
+                        ""id"": 8,
+                        ""range"": 1,
+                        ""categories"": [],
+                        ""condition"": {
+                            ""endsOn"": ""StartRound"",
+                            ""effects"": []
+                        }
+                    }
+                ]
+            ";
+
+			var cardMapper = (CardMapper) CardMapper.Instance;
+			cardMapper.LoadCards(jsonString);
+
+			var returnedCard = cardMapper.Get("8");
+			Assert.That(returnedCard.Condition.SuccessPercent, Is.EqualTo(1));  // so don't have to set it on every card
+		}
+
+		[Test]
 		public void LoadCards_ThrowsIfDuplicateIds()
 		{
 			var jsonString = @"

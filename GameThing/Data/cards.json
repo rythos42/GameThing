@@ -46,7 +46,6 @@
 			"turnCount": 3,
 			"endsOn": "StartRound",
 			"iconName": "sprites/icons/buff",
-			"successPercent": 1,
 			"effects": [
 				{
 					"type": "Buff",
@@ -93,7 +92,6 @@
 			"text": "On your next move gain 1 distance.",
 			"endsOn": "Move",
 			"iconName": "sprites/icons/run",
-			"successPercent": 1,
 			"effects": [
 				{
 					"type": "Run",
@@ -120,7 +118,6 @@
 			"turnCount": 3,
 			"endsOn": "StartRound",
 			"iconName": "sprites/icons/buff",
-			"successPercent": 1,
 			"effects": [
 				{
 					"type": "Buff",
@@ -168,7 +165,6 @@
 			"turnCount": 3,
 			"endsOn": "StartRound",
 			"iconName": "sprites/icons/buff",
-			"successPercent": 1,
 			"effects": [
 				{
 					"type": "Buff",
@@ -258,7 +254,6 @@
 			"turnCount": 3,
 			"endsOn": "StartRound",
 			"iconName": "sprites/icons/buff",
-			"successPercent": 1,
 			"effects": [
 				{
 					"type": "Buff",

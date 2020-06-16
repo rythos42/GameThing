@@ -149,7 +149,7 @@ namespace GameThing.Entities
 
 		public void StartNewRound(int roundNumber)
 		{
-			RemoveConditions(ConditionEndsOn.StartRound, condition => condition.RoundNumber + condition.Condition.TurnCount == roundNumber);
+			RemoveConditions(ConditionEndsOn.StartRound, condition => condition.RoundNumber + (condition.Condition.TurnCount ?? 0) == roundNumber);
 
 			ResetTurn();
 		}
