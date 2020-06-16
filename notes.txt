@@ -1,6 +1,4 @@
 Todo:
-	- hard to tap on phone (no problem on emulator)
-	- doesn't always tap on emulator either
 	- do release notes
 	
 	Add all the new cards
