@@ -14,5 +14,79 @@
 		"name": "Pickpocket",
 		"cards": [ "clumsy_stab", "bad_bandage", "awkward_distraction", "lame_taunt", "slow_jog", "weak_cheer", "decent_slice", "slipped_backstab" ]
 	},
+	{
+		"id": "assassin",
+		"name": "Assassin",
+		"cards": [ "evade", "preparation", "skilled_backstab", "poison" ]
+	},
+	{
+		"id": "bard",
+		"name": "Bard",
+		"cards": [ "easy_ballad", "ply", "rousing", "spry_song" ]
+	},
+	{
+		"id": "ranger",
+		"name": "Ranger",
+		"cards": [ "root_trap", "fire_trap", "careful_shot", "watchful_shot" ]
+	},
+	{
+		"id": "dancer",
+		"name": "Dancer",
+		"cards": [ "dance", "play_dead", "practiced", "understudy" ]
+	},
+	{
+		"id": "thug",
+		"name": "Thug",
+		"cards": [ "thump", "ambush", "menacing", "quick_punch" ]
+	},
+	{
+		"id": "medic",
+		"name": "Medic",
+		"cards": [ "first_aid", "ready", "rush", "get_down" ]
+	},
+	{
+		"id": "knight",
+		"name": "Knight",
+		"cards": [ "shield_up", "watchful", "taunt", "charge" ]
+	},
+	{
+		"id": "archer",
+		"name": "Archer",
+		"cards": [ "short_bow", "long_bow", "long_shot", "practice_shot" ]
+	},
+	{
+		"id": "barbarian",
+		"name": "Barbarian",
+		"cards": [ "massive_strike", "leap", "wild_swing", "inner_strength" ]
+	},
+	{
+		"id": "sorcerer",
+		"name": "Sorcerer",
+		"cards": [ "fireball", "flame_wall", "frostbite", "freeze" ]
+	},
+	{
+		"id": "cleric",
+		"name": "Cleric",
+		"cards": [ "heal", "revive", "mass_heal", "cure" ]
+	},
+	{
+		"id": "engineer",
+		"name": "Engineer",
+		"cards": [ "mobile_armour", "healbot", "tunneller", "cloak" ]
+	},
+	{
+		"id": "mage",
+		"name": "Mage",
+		"cards": [ "lightning", "spark", "earthquake", "gust" ]
+	},
+	{
+		"id": "chronomancer",
+		"name": "Chronomancer",
+		"cards": [ "slow_pace", "quick", "stop", "immediate" ]
+	},
+	{
+		"id": "warlock",
+		"name": "Warlock",
+		"cards": [ "pact", "cycle", "hellfire", "demonbolt" ]
 	}
 ]
