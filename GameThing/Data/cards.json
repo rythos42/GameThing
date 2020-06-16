@@ -10,7 +10,8 @@
 		"categories": [
 			"strength",
 			"damage",
-			"melee"
+			"melee",
+			"reckless"
 		]
 	},
 	{
@@ -33,20 +34,20 @@
 		"cardType": "Condition",
 		"description": "Apply a condition at range 1",
 		"range": 1,
-		"abilityScore": "Intelligence",
 		"categories": [
 			"support",
-			"melee",
-			"strength"
+			"self",
+			"evade"
 		],
 		"condition": {
 			"stackGroup": "1",
-			"text": "If the next attack is from another character, it gains +200% Str.",
-			"endsOn": "AfterAttack",
-			"iconName": "sprites/icons/distract",
-			"type": "Distract",
-			"abilityScore": "Strength",
-			"buffAmount": 3,
+			"text": "Give the another character +100% Evade for 3 turns.",
+			"turnCount": 3,
+			"endsOn": "StartRound",
+			"iconName": "sprites/icons/buff",
+			"type": "Buff",
+			"abilityScore": "Evade",
+			"buffAmount": 2,
 			"buffType": "Percent",
 			"successPercent": 1
 		}
@@ -114,7 +115,6 @@
 		},
 		"categories": [
 			"support",
-			"strength",
 			"duration"
 		]
 	},
@@ -141,18 +141,18 @@
 		"categories": [
 			"support",
 			"defense",
-			"healing"
+			"self"
 		],
 		"condition": {
 			"stackGroup": "5",
-			"text": "Gain +3 Health for 5 turns.",
-			"turnCount": 5,
+			"text": "Gain 100% Def ({{character.CurrentAbilityScores.Defense}}) for 3 turns.",
+			"turnCount": 3,
 			"endsOn": "StartRound",
 			"iconName": "sprites/icons/buff",
 			"type": "Buff",
-			"abilityScore": "Health",
-			"buffAmount": 3,
-			"buffType": "Linear",
+			"abilityScore": "Defense",
+			"buffAmount": 2,
+			"buffType": "Percent",
 			"successPercent": 1
 		}
 	},

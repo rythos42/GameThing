@@ -3,12 +3,6 @@ Todo:
 	- doesn't always tap on emulator either
 	- do release notes
 	
-	Re-do Cards
-		Prepared Stance: Gain 100% Defense for 5 turns.
-		Awkward Distraction: Gain +100% Evade
-		Slow Jog: add Self category
-		Weak Cheer: Remove Strength category
-		Clumsy Stab: Add Reckless category
 	Add all the new cards
 
 	Manage Team
