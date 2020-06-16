@@ -258,7 +258,7 @@ namespace GameThing.Tests.Entities
 
 		private Character CreateTestCharacter()
 		{
-			var characterClass = new CharacterClass { Id = "apprentice", StartingCards = new List<string> { "1" } };
+			var characterClass = new CharacterClass { Id = "apprentice", Cards = new List<string> { "1" } };
 			return new Character(Guid.NewGuid(), CharacterColour.Blue, characterClass);
 		}
 

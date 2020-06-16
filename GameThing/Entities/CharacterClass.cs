@@ -7,6 +7,6 @@ namespace GameThing.Entities
 	{
 		public string Id { get; set; }
 		public string Name { get; set; }
-		public IList<string> StartingCards { get; set; }
+		public IList<string> Cards { get; set; }
 	}
 }

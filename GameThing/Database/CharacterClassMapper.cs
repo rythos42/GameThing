@@ -51,7 +51,7 @@ namespace GameThing.Database
 
 			try
 			{
-				classes.SelectMany(characterClass => characterClass.StartingCards).ToList().ForEach(cardId => CardMapper.Instance.Get(cardId));
+				classes.SelectMany(characterClass => characterClass.Cards).ToList().ForEach(cardId => CardMapper.Instance.Get(cardId));
 			}
 			catch (Exception)
 			{

@@ -6,11 +6,9 @@ Todo:
 	Manage Team
 	- implement character levels
 	- edit character decks
-	- delete team
 	- change character class
 	- view character category levels
 	- show categories of cards
-	- need many more cards
 	- view cards in deck character deck
 	- could do a web app if the information gets to be to much
 

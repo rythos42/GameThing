@@ -29,7 +29,7 @@ namespace GameThing.Manager
 
 		public List<Card> CreateDefaultDeck(Character character)
 		{
-			return character.CharacterClass.StartingCards.Select(cardId => GetCard(cardId).CreateForCharacter(character)).ToList();
+			return character.CharacterClass.Cards.Select(cardId => GetCard(cardId).CreateForCharacter(character)).ToList();
 		}
 	}
 }

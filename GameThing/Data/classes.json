@@ -2,16 +2,17 @@
 	{
 		"id": "apprentice",
 		"name": "Apprentice",
-		"startingCards": [ 1, 2, 3, 4, 5, 6, 11, 12 ]
+		"cards": [ "clumsy_stab", "bad_bandage", "awkward_distraction", "lame_taunt", "slow_jog", "weak_cheer", "fairie_fire", "arcane_missile" ]
 	},
 	{
 		"id": "squire",
 		"name": "Squire",
-		"startingCards": [ 1, 2, 3, 4, 5, 6, 7, 8 ]
+		"cards": [ "clumsy_stab", "bad_bandage", "awkward_distraction", "lame_taunt", "slow_jog", "weak_cheer", "slightly_trained_stab", "prepared_stance" ]
 	},
 	{
 		"id": "pickpocket",
 		"name": "Pickpocket",
-		"startingCards": [ 1, 2, 3, 4, 5, 6, 9, 10 ]
+		"cards": [ "clumsy_stab", "bad_bandage", "awkward_distraction", "lame_taunt", "slow_jog", "weak_cheer", "decent_slice", "slipped_backstab" ]
+	},
 	}
 ]
