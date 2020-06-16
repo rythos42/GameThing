@@ -263,5 +263,37 @@
 				}
 			]
 		}
+	},
+	{
+		"id": "preparation",
+		"title": "Preparation",
+		"cardType": "Condition",
+		"description": "Apply a condition to yourself",
+		"range": 0,
+		"categories": [
+			"movement",
+			"self",
+			"strength",
+			"focus"
+		],
+		"condition": {
+			"stackGroup": "strength",
+			"text": "Gain 2 movement, +100% Str ({{character.CurrentAbilityScores.Strength}}) before your next attack.",
+			"endsOn": "NextAttack",
+			"iconName": "sprites/icons/buff",
+			"effects": [
+				{
+					"type": "Buff",
+					"abilityScore": "Strength",
+					"buffAmount": 2,
+					"buffType": "Percent"
+				},
+				{
+					"type": "Run",
+					"buffAmount": 2,
+					"buffType": "Linear"
+				}
+			]
+		}
 	}
 ]
