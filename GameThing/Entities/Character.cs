@@ -141,7 +141,7 @@ namespace GameThing.Entities
 
 				if (condition.Condition.EndsOn == endsOn && (appliesTo?.Invoke(condition) ?? true) == true)
 				{
-					condition.Condition.Remove(this);
+					condition.Condition.RemoveEffects(this);
 					Conditions.Remove(condition);
 				}
 			}
@@ -288,13 +288,13 @@ namespace GameThing.Entities
 		[OnDeserialized]
 		internal void OnDeserialized(StreamingContext context)
 		{
-			// We don't serialize the OwnerCharacter for cards as it's wasteful, need to set after we build the Character and Deck
+			// We don't serialize the OwningCharacter for cards as it's wasteful, need to set after we build the Character and Deck
 			Deck.ForEach(card =>
 			{
 				card.OwnerCharacter = this;
 
 				if (card.Condition != null)
-					card.Condition.SourceCharacter = this;
+					card.Condition.OwningCharacter = this;
 			});
 		}
 

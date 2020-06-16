@@ -17,7 +17,7 @@ namespace GameThing.Tests.Database
                     {
                         ""id"": ""apprentice"",
                         ""name"": ""Apprentice"",
-                        ""startingCards"": [ ""1"", ""2"", ""3"", ""4"", ""5"", ""6"", ""11"", ""12"" ]
+                        ""cards"": [ ""1"", ""2"", ""3"", ""4"", ""5"", ""6"", ""11"", ""12"" ]
                     }
                 ]
             ";
@@ -29,7 +29,7 @@ namespace GameThing.Tests.Database
 
 			var characterClass = classMapper.Get("apprentice");
 			Assert.That(characterClass.Name, Is.EqualTo("Apprentice"));
-			Assert.That(characterClass.StartingCards, Is.EqualTo(new List<string> { "1", "2", "3", "4", "5", "6", "11", "12" }));
+			Assert.That(characterClass.Cards, Is.EqualTo(new List<string> { "1", "2", "3", "4", "5", "6", "11", "12" }));
 
 			CardMapper.Instance = originalCardMapper;
 		}

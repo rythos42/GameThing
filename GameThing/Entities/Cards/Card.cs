@@ -52,7 +52,7 @@ namespace GameThing.Entities.Cards
 
 			if (CardType == CardType.Damage)
 			{
-				target.Conditions.ForEach(condition => condition.Condition.ApplyBeforeDamage(OwnerCharacter, target));
+				target.Conditions.ForEach(condition => condition.Condition.ApplyEffects(OwnerCharacter, target));
 				var playStatus = target.AttemptToApplyDamage(applyValue);
 				target.RemoveConditions(ConditionEndsOn.AfterAttack);
 
@@ -69,7 +69,7 @@ namespace GameThing.Entities.Cards
 					return new PlayStatus(PlayStatusDetails.FailedNoStack) { PlayCancelled = true };
 
 				target.Conditions.Add(new AppliedCondition(Condition, roundNumber));
-				Condition.ApplyImmediately(target);
+				Condition.ApplyEffects(OwnerCharacter, target);
 			}
 
 			return new PlayStatus(PlayStatusDetails.Success);
@@ -115,7 +115,7 @@ namespace GameThing.Entities.Cards
 			var clonedCard = Contract.Convert.Clone(this);
 			clonedCard.OwnerCharacter = character;
 			if (clonedCard.Condition != null)
-				clonedCard.Condition.SourceCharacter = character;
+				clonedCard.Condition.OwningCharacter = character;
 			return clonedCard;
 		}
 

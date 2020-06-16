@@ -46,11 +46,15 @@
 			"turnCount": 3,
 			"endsOn": "StartRound",
 			"iconName": "sprites/icons/buff",
-			"type": "Buff",
-			"abilityScore": "Evade",
-			"buffAmount": 2,
-			"buffType": "Percent",
-			"successPercent": 1
+			"successPercent": 1,
+			"effects": [
+				{
+					"type": "Buff",
+					"abilityScore": "Evade",
+					"buffAmount": 2,
+					"buffType": "Percent"
+				}
+			]
 		}
 	},
 	{
@@ -64,8 +68,12 @@
 			"text": "70% chance next card must target this character.",
 			"endsOn": "AfterAttack",
 			"iconName": "sprites/icons/taunt",
-			"type": "Taunt",
-			"successPercent": 0.7
+			"successPercent": 0.7,
+			"effects": [
+				{
+					"type": "Taunt"
+				}
+			]
 		},
 		"abilityScore": "",
 		"categories": [
@@ -85,10 +93,14 @@
 			"text": "On your next move gain 1 distance.",
 			"endsOn": "Move",
 			"iconName": "sprites/icons/run",
-			"type": "Run",
-			"buffAmount": 1,
-			"buffType": "Linear",
-			"successPercent": 1
+			"successPercent": 1,
+			"effects": [
+				{
+					"type": "Run",
+					"buffAmount": 1,
+					"buffType": "Linear"
+				}
+			]
 		},
 		"categories": [
 			"movement",
@@ -108,11 +120,15 @@
 			"turnCount": 3,
 			"endsOn": "StartRound",
 			"iconName": "sprites/icons/buff",
-			"type": "Buff",
-			"abilityScore": "Strength",
-			"buffAmount": 2,
-			"buffType": "Percent",
-			"successPercent": 1
+			"successPercent": 1,
+			"effects": [
+				{
+					"type": "Buff",
+					"abilityScore": "Strength",
+					"buffAmount": 2,
+					"buffType": "Percent"
+				}
+			]
 		},
 		"categories": [
 			"support",
@@ -152,11 +168,15 @@
 			"turnCount": 3,
 			"endsOn": "StartRound",
 			"iconName": "sprites/icons/buff",
-			"type": "Buff",
-			"abilityScore": "Defense",
-			"buffAmount": 2,
-			"buffType": "Percent",
-			"successPercent": 1
+			"successPercent": 1,
+			"effects": [
+				{
+					"type": "Buff",
+					"abilityScore": "Defense",
+					"buffAmount": 2,
+					"buffType": "Percent"
+				}
+			]
 		}
 	},
 
@@ -218,5 +238,35 @@
 			"damage",
 			"ranged"
 		]
+	},
+
+	/* Assassin */
+	{
+		"id": "evade",
+		"title": "Evade",
+		"cardType": "Condition",
+		"description": "Apply a condition to yourself",
+		"range": 0,
+		"categories": [
+			"agility",
+			"evade",
+			"self"
+		],
+		"condition": {
+			"stackGroup": "evade",
+			"text": "Gain 300% Evd ({{character.CurrentAbilityScores.Evade}}) for 3 turns.",
+			"turnCount": 3,
+			"endsOn": "StartRound",
+			"iconName": "sprites/icons/buff",
+			"successPercent": 1,
+			"effects": [
+				{
+					"type": "Buff",
+					"abilityScore": "Evade",
+					"buffAmount": 4,
+					"buffType": "Percent"
+				}
+			]
+		}
 	}
 ]

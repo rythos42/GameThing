@@ -215,10 +215,11 @@
     <EmbeddedResource Include="Data\cards.json" />
     <EmbeddedResource Include="Data\categories.json" />
     <EmbeddedResource Include="Data\classes.json" />
+    <Compile Include="Entities\Cards\Conditions\Effect.cs" />
     <Compile Include="Entities\Cards\IdentifierBasedConverter.cs" />
     <Compile Include="Entities\Cards\PlayStatus.cs" />
     <Compile Include="Entities\CharacterClass.cs" />
-    <Compile Include="Entities\Cards\Conditions\ConditionType.cs" />
+    <Compile Include="Entities\Cards\Conditions\EffectType.cs" />
     <Compile Include="Manager\BattleDataUpdatedEventHandler.cs" />
     <Compile Include="RandomWrapper.cs" />
     <Compile Include="Screens\BattleGameOverEventHandler.cs" />

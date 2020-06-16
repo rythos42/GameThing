@@ -1,6 +1,6 @@
 ﻿namespace GameThing.Entities.Cards.Conditions
 {
-	public enum ConditionType
+	public enum EffectType
 	{
 		Buff,
 		Distract,

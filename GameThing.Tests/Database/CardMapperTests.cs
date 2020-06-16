@@ -32,11 +32,15 @@ namespace GameThing.Tests.Database
                             ""turnCount"": 5,
                             ""endsOn"": ""StartRound"",
                             ""iconName"": ""sprites/icons/buff"",
-                            ""type"": ""Buff"",
-                            ""abilityScore"": ""Health"",
-                            ""buffAmount"": 3,
-                            ""buffType"": ""Linear"",
-                            ""successPercent"": 1
+                            ""successPercent"": 1,
+                            ""effects"": [
+                                {
+                                    ""type"": ""Buff"",
+                                    ""abilityScore"": ""Health"",
+                                    ""buffAmount"": 3,
+                                    ""buffType"": ""Linear"",
+                                }
+                            ]
                         }
                     }
                 ]
@@ -63,11 +67,12 @@ namespace GameThing.Tests.Database
 			Assert.That(returnedCard.Condition.TurnCount, Is.EqualTo(5));
 			Assert.That(returnedCard.Condition.EndsOn, Is.EqualTo(ConditionEndsOn.StartRound));
 			Assert.That(returnedCard.Condition.IconName, Is.EqualTo("sprites/icons/buff"));
-			Assert.That(returnedCard.Condition.Type, Is.EqualTo(ConditionType.Buff));
-			Assert.That(returnedCard.Condition.AbilityScore, Is.EqualTo(AbilityScore.Health));
-			Assert.That(returnedCard.Condition.BuffAmount, Is.EqualTo(3));
-			Assert.That(returnedCard.Condition.BuffType, Is.EqualTo(BuffType.Linear));
 			Assert.That(returnedCard.Condition.SuccessPercent, Is.EqualTo(1));
+			Assert.That(returnedCard.Condition.Effects.Count, Is.EqualTo(1));
+			Assert.That(returnedCard.Condition.Effects[0].Type, Is.EqualTo(EffectType.Buff));
+			Assert.That(returnedCard.Condition.Effects[0].AbilityScore, Is.EqualTo(AbilityScore.Health));
+			Assert.That(returnedCard.Condition.Effects[0].BuffAmount, Is.EqualTo(3));
+			Assert.That(returnedCard.Condition.Effects[0].BuffType, Is.EqualTo(BuffType.Linear));
 
 			CategoryMapper.Instance = originalCategoryMapper;
 		}
@@ -115,21 +120,3 @@ namespace GameThing.Tests.Database
 		}
 	}
 }
-
-
-/*
- * 
-        internal void LoadCards(string jsonString)
-        {
-            cards = JsonConvert.DeserializeObject<List<Card>>(jsonString);
-
-            var cardIds = cards.Select(card => card.Id);
-            if (cardIds.Distinct().Count() != cardIds.Count())
-                throw new Exception("One of the card IDs in cards.json is not unique.");
-        }
-
-        public Card GetCard(int id)
-        {
-            return cards.Single(card => card.Id == id);
-        }
- */
