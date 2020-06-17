@@ -277,22 +277,6 @@
     <AndroidAsset Include="Content\tilemaps\iso-64x64-outside.xnb" />
     <AndroidAsset Include="Content\tilemaps\Map.xnb" />
     <AndroidAsset Include="Content\sprites\card.xnb" />
-    <AndroidAsset Include="Content\sprites\spaghetti_atlas_blue.xnb" />
-    <AndroidAsset Include="Content\sprites\spaghetti_atlas_green.xnb" />
-    <AndroidAsset Include="Content\sprites\spaghetti_atlas_none.xnb" />
-    <AndroidAsset Include="Content\sprites\spaghetti_atlas_red.xnb" />
-    <AndroidAsset Include="Content\sprites\spaghetti_atlas_white.xnb" />
-    <AndroidAsset Include="Content\sprites\unicorn_atlas_blue.xnb" />
-    <AndroidAsset Include="Content\sprites\unicorn_atlas_green.xnb" />
-    <AndroidAsset Include="Content\sprites\unicorn_atlas_none.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </AndroidAsset>
-    <AndroidAsset Include="Content\sprites\unicorn_atlas_red.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </AndroidAsset>
-    <AndroidAsset Include="Content\sprites\unicorn_atlas_white.xnb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </AndroidAsset>
     <AndroidAsset Include="Content\fonts\Carlito-Regular.xnb" />
     <AndroidAsset Include="Content\sprites\distance_overlay.xnb" />
     <AndroidAsset Include="Content\effects\highlight.xnb" />
@@ -321,6 +305,16 @@
     <AndroidAsset Include="Content\sprites\ui\button_top_bottom_disabled.xnb" />
     <AndroidAsset Include="Content\sprites\ui\panel.xnb" />
     <EmbeddedResource Include="appsettings.json" />
+    <AndroidAsset Include="Content\sprites\spaghetti\spaghetti_atlas_blue_south.xnb" />
+    <AndroidAsset Include="Content\sprites\spaghetti\spaghetti_atlas_green_south.xnb" />
+    <AndroidAsset Include="Content\sprites\spaghetti\spaghetti_atlas_none_south.xnb" />
+    <AndroidAsset Include="Content\sprites\spaghetti\spaghetti_atlas_red_south.xnb" />
+    <AndroidAsset Include="Content\sprites\spaghetti\spaghetti_atlas_white_south.xnb" />
+    <AndroidAsset Include="Content\sprites\unicorn\unicorn_atlas_blue_south.xnb" />
+    <AndroidAsset Include="Content\sprites\unicorn\unicorn_atlas_green_south.xnb" />
+    <AndroidAsset Include="Content\sprites\unicorn\unicorn_atlas_none_south.xnb" />
+    <AndroidAsset Include="Content\sprites\unicorn\unicorn_atlas_red_south.xnb" />
+    <AndroidAsset Include="Content\sprites\unicorn\unicorn_atlas_white_south.xnb" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

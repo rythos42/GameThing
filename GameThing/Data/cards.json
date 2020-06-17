@@ -82,7 +82,7 @@
 		]
 	},
 	{
-		"id": "slow_job",
+		"id": "slow_jog",
 		"title": "Slow Jog",
 		"cardType": "Condition",
 		"description": "Apply a condition to yourself",
@@ -279,7 +279,7 @@
 		"condition": {
 			"stackGroup": "strength",
 			"text": "Gain 2 movement, +100% Str ({{character.CurrentAbilityScores.Strength}}) before your next attack.",
-			"endsOn": "NextAttack",
+			"endsOn": "AfterAttack",
 			"iconName": "sprites/icons/buff",
 			"effects": [
 				{

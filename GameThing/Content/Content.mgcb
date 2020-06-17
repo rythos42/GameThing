@@ -184,7 +184,7 @@
 /processorParam:TextureFormat=Color
 /build:sprites/icons/unicorn_atlas_hat.png
 
-#begin sprites/spaghetti_atlas_blue.png
+#begin sprites/spaghetti/spaghetti_atlas_blue_south.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -194,9 +194,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:sprites/spaghetti_atlas_blue.png
+/build:sprites/spaghetti/spaghetti_atlas_blue_south.png
 
-#begin sprites/spaghetti_atlas_green.png
+#begin sprites/spaghetti/spaghetti_atlas_green_south.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -206,9 +206,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:sprites/spaghetti_atlas_green.png
+/build:sprites/spaghetti/spaghetti_atlas_green_south.png
 
-#begin sprites/spaghetti_atlas_none.png
+#begin sprites/spaghetti/spaghetti_atlas_none_south.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -218,9 +218,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:sprites/spaghetti_atlas_none.png
+/build:sprites/spaghetti/spaghetti_atlas_none_south.png
 
-#begin sprites/spaghetti_atlas_red.png
+#begin sprites/spaghetti/spaghetti_atlas_red_south.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -230,9 +230,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:sprites/spaghetti_atlas_red.png
+/build:sprites/spaghetti/spaghetti_atlas_red_south.png
 
-#begin sprites/spaghetti_atlas_white.png
+#begin sprites/spaghetti/spaghetti_atlas_white_south.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -242,7 +242,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:sprites/spaghetti_atlas_white.png
+/build:sprites/spaghetti/spaghetti_atlas_white_south.png
 
 #begin sprites/terrain/large_bush.png
 /importer:TextureImporter
@@ -364,7 +364,7 @@
 /processorParam:TextureFormat=Color
 /build:sprites/ui/panel.png
 
-#begin sprites/unicorn_atlas_blue.png
+#begin sprites/unicorn/unicorn_atlas_blue_south.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -374,9 +374,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:sprites/unicorn_atlas_blue.png
+/build:sprites/unicorn/unicorn_atlas_blue_south.png
 
-#begin sprites/unicorn_atlas_green.png
+#begin sprites/unicorn/unicorn_atlas_green_south.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -386,9 +386,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:sprites/unicorn_atlas_green.png
+/build:sprites/unicorn/unicorn_atlas_green_south.png
 
-#begin sprites/unicorn_atlas_none.png
+#begin sprites/unicorn/unicorn_atlas_none_south.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -398,9 +398,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:sprites/unicorn_atlas_none.png
+/build:sprites/unicorn/unicorn_atlas_none_south.png
 
-#begin sprites/unicorn_atlas_red.png
+#begin sprites/unicorn/unicorn_atlas_red_south.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -410,9 +410,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:sprites/unicorn_atlas_red.png
+/build:sprites/unicorn/unicorn_atlas_red_south.png
 
-#begin sprites/unicorn_atlas_white.png
+#begin sprites/unicorn/unicorn_atlas_white_south.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -422,7 +422,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:sprites/unicorn_atlas_white.png
+/build:sprites/unicorn/unicorn_atlas_white_south.png
 
 #begin tilemaps/ComplexMap.tmx
 /importer:TiledMapImporter
