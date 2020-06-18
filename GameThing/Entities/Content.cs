@@ -52,7 +52,7 @@ namespace GameThing.Entities
 				foreach (CharacterColour colour in Enum.GetValues(typeof(CharacterColour)))
 				{
 					var sideLower = side.ToString().ToLower();
-					characterSprites[CreateKey(side, colour)] = contentManager.Load<Texture2D>($"sprites/{sideLower}/{sideLower}_atlas_{colour.ToString().ToLower()}_south");
+					characterSprites[CreateKey(side, colour)] = contentManager.Load<Texture2D>($"sprites/{sideLower}/{sideLower}_atlas_{colour.ToString().ToLower()}_south_0");
 				}
 			}
 
