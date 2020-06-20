@@ -325,12 +325,23 @@ namespace GameThing.Entities
 
 		public void Move(MapPoint movePoint)
 		{
-			var distance = Math.Abs(MapPosition.X - movePoint.X) + Math.Abs(MapPosition.Y - movePoint.Y);
+			var xDistance = MapPosition.X - movePoint.X;
+			var yDistance = MapPosition.Y - movePoint.Y;
+			var xAbsDistance = Math.Abs(xDistance);
+			var yAbsDistance = Math.Abs(yDistance);
+			var distance = xAbsDistance + yAbsDistance;
 
 			RemainingMoves -= distance;
 			MapPosition = movePoint;
 
 			RemoveConditions(ConditionEndsOn.Move);
+
+			// EQUAL in first condition means prefer to set facing to North/South when moving exactly diagonally
+			// Ignore EQUAL in second conditions because character's can't move 0 squares, so have to be moving along an axis if 1 axis is greater than the other
+			Facing = yAbsDistance >= xAbsDistance
+				? yDistance < 0 ? CharacterFacing.South : CharacterFacing.North
+				: xDistance < 0 ? CharacterFacing.East : CharacterFacing.West;
+
 		}
 
 		public override void Draw(SpriteBatch spriteBatch)

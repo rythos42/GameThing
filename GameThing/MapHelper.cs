@@ -40,6 +40,8 @@ namespace GameThing
 			}
 		}
 
+		public static int MapHeight { get { return map.Height; } }
+		public static int MapWidth { get { return map.Width; } }
 		public static int MaxLayer { get; private set; }
 		public static DrawableList Entities { get; set; }
 

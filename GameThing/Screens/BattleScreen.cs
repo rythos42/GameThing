@@ -135,6 +135,7 @@ namespace GameThing.Screens
 			} while (otherPlacements.Contains(characterPoint));
 			otherPlacements.Add(characterPoint);
 			character.MapPosition = characterPoint;
+			character.Facing = characterPoint.Y < MapHelper.MapWidth / 2 ? CharacterFacing.South : CharacterFacing.North;
 		}
 
 		public void LoadContent(Content content, GraphicsDevice graphicsDevice)

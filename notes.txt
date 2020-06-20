@@ -1,7 +1,5 @@
 Todo:
 	- do release notes
-	- change facing when characters move
-	- calculate the correct starter facing
 	
 	Add all the new cards
 
@@ -15,6 +13,7 @@ Todo:
 	- could do a web app if the information gets to be to much
 	
 Nice to have:
+	- make characters "walk" towards their destination instead of instant jump
 	- refresh matches list from time to time, or add a refresh button
 	- inconsistent in showing status of card play
 	- add Evaded to game log entry
