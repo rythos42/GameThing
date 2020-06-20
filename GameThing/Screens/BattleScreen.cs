@@ -314,6 +314,9 @@ namespace GameThing.Screens
 
 			screenComponent.Update(gameTime);
 
+			foreach (var drawable in entities.Drawables)
+				drawable.Update(gameTime);
+
 			endTurnButton.IsHighlighted = lockedInCharacter != null && !lockedInCharacter.HasRemainingMoves && !lockedInCharacter.HasRemainingPlayableCards;
 		}
 

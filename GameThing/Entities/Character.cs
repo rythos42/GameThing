@@ -9,6 +9,9 @@ using GameThing.Entities.Cards.Conditions;
 using GameThing.Manager;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended.Animations;
+using MonoGame.Extended.Sprites;
+using MonoGame.Extended.TextureAtlases;
 using Newtonsoft.Json;
 
 namespace GameThing.Entities
@@ -18,6 +21,7 @@ namespace GameThing.Entities
 	{
 		private Texture2D availableMovementTexture;
 		private Texture2D lockSprite;
+		private readonly Dictionary<CharacterFacing, AnimatedSprite> animatedSprite = new Dictionary<CharacterFacing, AnimatedSprite>();
 
 		private const double EvadeConstant = 0.025;         // Used in Evade quadratic equation a*x^2
 		private const decimal LastFirstPlayDebuff = 0.5m;   // How much a character is debuffed for damage or healing if they go last in a turn, then go first in a turn.
@@ -31,9 +35,14 @@ namespace GameThing.Entities
 
 		public void SetContent(Content content, CharacterSide side)
 		{
-			Sprite = content.GetSpriteFor(this, side);
 			availableMovementTexture = content.DistanceOverlay;
 			lockSprite = content.Lock;
+
+			var animationFactory = content.GetAnimationFactory(side);
+			animatedSprite[CharacterFacing.North] = new AnimatedSprite(animationFactory, content.GetSpriteTag(Colour, CharacterFacing.North));
+			animatedSprite[CharacterFacing.East] = new AnimatedSprite(animationFactory, content.GetSpriteTag(Colour, CharacterFacing.East));
+			animatedSprite[CharacterFacing.South] = new AnimatedSprite(animationFactory, content.GetSpriteTag(Colour, CharacterFacing.South));
+			animatedSprite[CharacterFacing.West] = new AnimatedSprite(animationFactory, content.GetSpriteTag(Colour, CharacterFacing.West));
 		}
 
 		public static IRandomWrapper Random { get; internal set; } = new RandomWrapper();
@@ -43,6 +52,9 @@ namespace GameThing.Entities
 
 		[DataMember]
 		public override MapPoint MapPosition { get; set; }
+
+		public override int SpriteHeight { get { return 170; } }
+		public override int SpriteWidth { get { return 85; } }
 
 		[DataMember]
 		private readonly IDictionary<AbilityScore, decimal> baseAbilityScores = new Dictionary<AbilityScore, decimal>
@@ -172,6 +184,9 @@ namespace GameThing.Entities
 
 		[DataMember]
 		public int RemainingMoves { get; set; }
+
+		[DataMember]
+		public CharacterFacing Facing { get; set; } = CharacterFacing.South;
 
 		[DataMember]
 		public int RemainingPlayableCards { get; private set; }
@@ -318,21 +333,19 @@ namespace GameThing.Entities
 			RemoveConditions(ConditionEndsOn.Move);
 		}
 
-		public override Texture2D Sprite { get; set; }
-
 		public override void Draw(SpriteBatch spriteBatch)
 		{
 			var drawPosition = MapPosition.GetScreenPosition();
-			drawPosition.Y -= Sprite.Height / 1.3f;
-			drawPosition.X -= Sprite.Width / 2;
+			drawPosition.Y -= MapPoint.TileHeight_Half + MapPoint.TileHeight; // this calculation may not be related to these values, not sure whats up here
+			drawPosition.X += 5;    // just a little bump
 
-			spriteBatch.Draw(Sprite, drawPosition, Color.White);
+			spriteBatch.Draw(animatedSprite[Facing], drawPosition);
 		}
 
 		public void DrawLock(SpriteBatch spriteBatch)
 		{
 			var drawPosition = MapPosition.GetScreenPosition();
-			drawPosition.Y -= Sprite.Height - (lockSprite.Height / 2);
+			drawPosition.Y -= SpriteHeight - (lockSprite.Height / 2);
 			drawPosition.X -= lockSprite.Width / 2;
 
 			spriteBatch.Draw(lockSprite, drawPosition, Color.White);
@@ -341,6 +354,11 @@ namespace GameThing.Entities
 		public void DrawMovementRange(SpriteBatch spriteBatch)
 		{
 			MapHelper.DrawRange(RemainingMoves, MapPosition, spriteBatch, availableMovementTexture, Color.White, showUnderCharacters: false);
+		}
+
+		public override void Update(GameTime gameTime)
+		{
+			animatedSprite[Facing].Update(gameTime);
 		}
 	}
 }

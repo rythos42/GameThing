@@ -19,7 +19,14 @@ namespace GameThing.Entities
 			spriteBatch.Draw(Sprite, drawPosition, Color.White);
 		}
 
-		public override Texture2D Sprite { get; set; }
+		public override void Update(GameTime gameTime)
+		{
+		}
+
+		public override int SpriteHeight => Sprite.Height;
+		public override int SpriteWidth => Sprite.Width;
+
+		public Texture2D Sprite { get; set; }
 		public override MapPoint MapPosition { get; set; }
 	}
 }

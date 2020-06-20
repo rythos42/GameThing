@@ -184,7 +184,7 @@
 /processorParam:TextureFormat=Color
 /build:sprites/icons/unicorn_atlas_hat.png
 
-#begin sprites/spaghetti/spaghetti_atlas_blue_south_0.png
+#begin sprites/spaghetti/sprites.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -194,55 +194,12 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:sprites/spaghetti/spaghetti_atlas_blue_south_0.png
+/build:sprites/spaghetti/sprites.png
 
-#begin sprites/spaghetti/spaghetti_atlas_green_south_0.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:sprites/spaghetti/spaghetti_atlas_green_south_0.png
-
-#begin sprites/spaghetti/spaghetti_atlas_none_south_0.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:sprites/spaghetti/spaghetti_atlas_none_south_0.png
-
-#begin sprites/spaghetti/spaghetti_atlas_red_south_0.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:sprites/spaghetti/spaghetti_atlas_red_south_0.png
-
-#begin sprites/spaghetti/spaghetti_atlas_white_south_0.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:sprites/spaghetti/spaghetti_atlas_white_south_0.png
+#begin sprites/spaghetti/spritesMap.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:sprites/spaghetti/spritesMap.xml
 
 #begin sprites/terrain/large_bush.png
 /importer:TextureImporter
@@ -364,7 +321,7 @@
 /processorParam:TextureFormat=Color
 /build:sprites/ui/panel.png
 
-#begin sprites/unicorn/unicorn_atlas_blue_south_0.png
+#begin sprites/unicorn/sprites.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -374,55 +331,12 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:sprites/unicorn/unicorn_atlas_blue_south_0.png
+/build:sprites/unicorn/sprites.png
 
-#begin sprites/unicorn/unicorn_atlas_green_south_0.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:sprites/unicorn/unicorn_atlas_green_south_0.png
-
-#begin sprites/unicorn/unicorn_atlas_none_south_0.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:sprites/unicorn/unicorn_atlas_none_south_0.png
-
-#begin sprites/unicorn/unicorn_atlas_red_south_0.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:sprites/unicorn/unicorn_atlas_red_south_0.png
-
-#begin sprites/unicorn/unicorn_atlas_white_south_0.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:sprites/unicorn/unicorn_atlas_white_south_0.png
+#begin sprites/unicorn/spritesMap.xml
+/importer:XmlImporter
+/processor:PassThroughProcessor
+/build:sprites/unicorn/spritesMap.xml
 
 #begin tilemaps/ComplexMap.tmx
 /importer:TiledMapImporter

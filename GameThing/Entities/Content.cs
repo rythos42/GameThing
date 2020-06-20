@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using GameThing.Contract;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended.Animations.SpriteSheets;
+using MonoGame.Extended.TextureAtlases;
 using MonoGame.Extended.Tiled;
 
 namespace GameThing.Entities
 {
 	public class Content
 	{
-		private readonly Dictionary<string, Texture2D> characterSprites = new Dictionary<string, Texture2D>();
-
 		public Content(ContentManager contentManager)
 		{
 			Font = contentManager.Load<SpriteFont>("fonts/Carlito-Regular");
@@ -47,17 +47,62 @@ namespace GameThing.Entities
 			Highlight = contentManager.Load<Effect>("effects/highlight");
 			Shade = contentManager.Load<Effect>("effects/shade");
 
-			foreach (CharacterSide side in Enum.GetValues(typeof(CharacterSide)))
-			{
-				foreach (CharacterColour colour in Enum.GetValues(typeof(CharacterColour)))
-				{
-					var sideLower = side.ToString().ToLower();
-					characterSprites[CreateKey(side, colour)] = contentManager.Load<Texture2D>($"sprites/{sideLower}/{sideLower}_atlas_{colour.ToString().ToLower()}_south_0");
-				}
-			}
-
 			//Map = contentManager.Load<TiledMap>("tilemaps/Map");
 			Map = contentManager.Load<TiledMap>("tilemaps/ComplexMap");
+
+			spaghettiFactory = CreateAnimationFactory(contentManager, CharacterSide.Spaghetti);
+			unicornFactory = CreateAnimationFactory(contentManager, CharacterSide.Unicorn);
+		}
+
+		private SpriteSheetAnimationFactory CreateAnimationFactory(ContentManager contentManager, CharacterSide side)
+		{
+			var sideString = side.ToString().ToLower();
+			var texture = contentManager.Load<Texture2D>($"sprites/{sideString}/sprites");
+			var map = contentManager.Load<Dictionary<string, Rectangle>>($"sprites/{sideString}/spritesMap");
+			var atlas = new TextureAtlas("character", texture, map);
+			var factory = new SpriteSheetAnimationFactory(atlas);
+
+			int start = -1;
+			factory.Add(GetSpriteTag(CharacterColour.Blue, CharacterFacing.East), new SpriteSheetAnimationData(Next6(ref start)));
+			factory.Add(GetSpriteTag(CharacterColour.Blue, CharacterFacing.North), new SpriteSheetAnimationData(Next6(ref start)));
+			factory.Add(GetSpriteTag(CharacterColour.Blue, CharacterFacing.South), new SpriteSheetAnimationData(Next6(ref start)));
+			factory.Add(GetSpriteTag(CharacterColour.Blue, CharacterFacing.West), new SpriteSheetAnimationData(Next6(ref start)));
+			factory.Add(GetSpriteTag(CharacterColour.Green, CharacterFacing.East), new SpriteSheetAnimationData(Next6(ref start)));
+			factory.Add(GetSpriteTag(CharacterColour.Green, CharacterFacing.North), new SpriteSheetAnimationData(Next6(ref start)));
+			factory.Add(GetSpriteTag(CharacterColour.Green, CharacterFacing.South), new SpriteSheetAnimationData(Next6(ref start)));
+			factory.Add(GetSpriteTag(CharacterColour.Green, CharacterFacing.West), new SpriteSheetAnimationData(Next6(ref start)));
+			factory.Add(GetSpriteTag(CharacterColour.None, CharacterFacing.East), new SpriteSheetAnimationData(Next6(ref start)));
+			factory.Add(GetSpriteTag(CharacterColour.None, CharacterFacing.North), new SpriteSheetAnimationData(Next6(ref start)));
+			factory.Add(GetSpriteTag(CharacterColour.None, CharacterFacing.South), new SpriteSheetAnimationData(Next6(ref start)));
+			factory.Add(GetSpriteTag(CharacterColour.None, CharacterFacing.West), new SpriteSheetAnimationData(Next6(ref start)));
+			factory.Add(GetSpriteTag(CharacterColour.Red, CharacterFacing.East), new SpriteSheetAnimationData(Next6(ref start)));
+			factory.Add(GetSpriteTag(CharacterColour.Red, CharacterFacing.North), new SpriteSheetAnimationData(Next6(ref start)));
+			factory.Add(GetSpriteTag(CharacterColour.Red, CharacterFacing.South), new SpriteSheetAnimationData(Next6(ref start)));
+			factory.Add(GetSpriteTag(CharacterColour.Red, CharacterFacing.West), new SpriteSheetAnimationData(Next6(ref start)));
+			factory.Add(GetSpriteTag(CharacterColour.White, CharacterFacing.East), new SpriteSheetAnimationData(Next6(ref start)));
+			factory.Add(GetSpriteTag(CharacterColour.White, CharacterFacing.North), new SpriteSheetAnimationData(Next6(ref start)));
+			factory.Add(GetSpriteTag(CharacterColour.White, CharacterFacing.South), new SpriteSheetAnimationData(Next6(ref start)));
+			factory.Add(GetSpriteTag(CharacterColour.White, CharacterFacing.West), new SpriteSheetAnimationData(Next6(ref start)));
+
+			return factory;
+		}
+
+		private int[] Next6(ref int start)
+		{
+			return new[] { ++start, ++start, ++start, ++start, ++start, ++start };
+		}
+
+		private readonly SpriteSheetAnimationFactory spaghettiFactory;
+		private readonly SpriteSheetAnimationFactory unicornFactory;
+
+		public SpriteSheetAnimationFactory GetAnimationFactory(CharacterSide side)
+		{
+			return side == CharacterSide.Spaghetti ? spaghettiFactory : unicornFactory;
+		}
+
+		public string GetSpriteTag(CharacterColour colour, CharacterFacing facing)
+		{
+			return $"{colour.ToString().ToLower()}_{facing.ToString().ToLower()}";
 		}
 
 		public SpriteFont Font { get; private set; }
@@ -91,15 +136,5 @@ namespace GameThing.Entities
 		public Effect Shade { get; private set; }
 
 		public TiledMap Map { get; private set; }
-
-		public Texture2D GetSpriteFor(Character character, CharacterSide side)
-		{
-			return characterSprites[CreateKey(side, character.Colour)];
-		}
-
-		private string CreateKey(CharacterSide side, CharacterColour colour)
-		{
-			return $"{side}:{colour}";
-		}
 	}
 }

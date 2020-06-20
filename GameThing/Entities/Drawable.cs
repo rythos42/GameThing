@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GameThing.Entities
 {
@@ -8,7 +9,7 @@ namespace GameThing.Entities
 		{
 			get
 			{
-				return (int) MapPosition.GetScreenPosition().Y + Sprite.Height;
+				return (int) MapPosition.GetScreenPosition().Y + SpriteHeight;
 			}
 		}
 
@@ -18,8 +19,10 @@ namespace GameThing.Entities
 		}
 
 		public abstract MapPoint MapPosition { get; set; }
-		public abstract Texture2D Sprite { get; set; }
+		public abstract int SpriteHeight { get; }
+		public abstract int SpriteWidth { get; }
 
 		public abstract void Draw(SpriteBatch spriteBatch);
+		public abstract void Update(GameTime gameTime);
 	}
 }

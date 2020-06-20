@@ -1,5 +1,7 @@
 Todo:
 	- do release notes
+	- change facing when characters move
+	- calculate the correct starter facing
 	
 	Add all the new cards
 
@@ -11,8 +13,7 @@ Todo:
 	- show categories of cards
 	- view cards in deck character deck
 	- could do a web app if the information gets to be to much
-
-
+	
 Nice to have:
 	- refresh matches list from time to time, or add a refresh button
 	- inconsistent in showing status of card play
