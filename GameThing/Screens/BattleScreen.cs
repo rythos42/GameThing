@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using GameThing.Contract;
 using GameThing.Entities;
 using GameThing.Entities.Cards;
+using GameThing.Entities.Cards.Requirements;
 using GameThing.Manager;
 using GameThing.UI;
 using Microsoft.Xna.Framework;
@@ -497,11 +498,19 @@ namespace GameThing.Screens
 					return "A non-stacking buff of the same type is already applied.";
 				case PlayStatusDetails.FailedEvaded:
 					return "Evaded!";
+				case PlayStatusDetails.FailedRequirement:
+					switch (status.RequirementType)
+					{
+						case RequirementType.BehindTarget:
+							return "You must be behind the target.";
+						default:
+							throw new Exception($"GetStatusTextForPlay not configured for requirement {status.RequirementType}.");
+					}
 				case PlayStatusDetails.Success:
 					switch (status.CardType)
 					{
-						case CardType.Damage: return $"Damaged for {status.ActualDamageOrHealingDone}.";
-						case CardType.Heal: return $"Healed for {status.ActualDamageOrHealingDone}.";
+						case CardType.Damage: return $"Damaged for {status.ActualDamageOrHealingDone.ToString("0.00")}.";
+						case CardType.Heal: return $"Healed for {status.ActualDamageOrHealingDone.ToString("0.00")}.";
 					}
 					return null;
 			}

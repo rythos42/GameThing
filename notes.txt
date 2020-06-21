@@ -1,23 +1,25 @@
 Todo:
-	- do release notes
-	
 	Add all the new cards
+	- need to parse Conditions text for Prepared Stance
+	- always show health and initiative debuff just below characters
 
 	Manage Team
-	- implement character levels
-	- edit character decks
-	- change character class
-	- view character category levels
-	- show categories of cards
-	- view cards in deck character deck
-	- could do a web app if the information gets to be to much
+		- implement character levels
+		- edit character decks
+		- change character class
+		- view character category levels
+		- show categories of cards
+		- view cards in deck character deck
+		- could do a web app if the information gets to be to much
+
+	- release notes
 	
 Nice to have:
+	- show it better when a character has activated, when you have them selected
 	- make characters "walk" towards their destination instead of instant jump
 	- refresh matches list from time to time, or add a refresh button
 	- inconsistent in showing status of card play
 	- add Evaded to game log entry
-	- always show health and initiative debuff just below characters
 	- refresh My Matches in case someone joined (or have a notification in that case or something)
 	- ability to have multiple teams
 	- lock down Firebase database, it's wide open right now
@@ -57,6 +59,9 @@ Nice to have:
 		- able to scroll and/or filter
 
 Tech
+	Requirements:
+		- is "range" on cards a type of requirement?
+		- is "taunted" a type of requirement?
 	- probably BattleData.LastPlayingPlayerId is redundant
 	- determine difference between Contract and Entity and how should this be organized.
 	- warnings in Monogame Pipeline

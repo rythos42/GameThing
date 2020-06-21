@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 using GameThing.Contract;
 using GameThing.Database;
 using GameThing.Entities.Cards.Conditions;
+using GameThing.Entities.Cards.Requirements;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
@@ -49,6 +50,10 @@ namespace GameThing.Entities.Cards
 			var applyValue = CardType == CardType.Damage || CardType == CardType.Heal
 				? OwnerCharacter.ChangeDamageOrHealingForStamina(OwnerCharacter.GetCurrentAbilityScore(AbilityScore.Value) * EffectPercent.Value, turnNumber)
 				: 0;
+
+			var failedRequirements = Requirements.Where(requirement => !requirement.Met(OwnerCharacter, target));
+			if (failedRequirements.Any())
+				return new PlayStatus(PlayStatusDetails.FailedRequirement) { PlayCancelled = true, RequirementType = failedRequirements.First().Type };
 
 			if (CardType == CardType.Damage)
 			{
@@ -150,7 +155,7 @@ namespace GameThing.Entities.Cards
 		{
 			get
 			{
-				return descriptionTemplate.Render(textParsingTemplateContext);
+				return descriptionTemplate.Render(textParsingTemplateContext) + (Condition == null ? "" : (": " + Condition.Text));
 			}
 		}
 
@@ -180,5 +185,8 @@ namespace GameThing.Entities.Cards
 		[DataMember]
 		[JsonConverter(typeof(IdentifierBasedConverter<Category>), typeof(CategoryMapper))]
 		public List<Category> Categories { get; set; } = new List<Category>();
+
+		[DataMember]
+		public List<Requirement> Requirements { get; set; } = new List<Requirement>();
 	}
 }

@@ -195,7 +195,7 @@
 		"id": "slipped_backstab",
 		"title": "Slipped Backstab",
 		"cardType": "Damage",
-		"description": "Deal 150% Agi ({{character.CurrentAbilityScores.Agility}}) damage at range 1.",
+		"description": "Deal 150% Agi ({{character.CurrentAbilityScores.Agility}}) damage at range 1, when behind target.",
 		"range": 1,
 		"effectPercent": 1.5,
 		"abilityScore": "Agility",
@@ -203,6 +203,11 @@
 			"agility",
 			"damage",
 			"melee"
+		],
+		"requirements": [
+			{
+				"requirement": "BehindTarget"
+			}
 		]
 	},
 
@@ -295,5 +300,24 @@
 				}
 			]
 		}
+	},
+	{
+		"id": "skilled_backstab",
+		"title": "Skilled Backstab",
+		"cardType": "Damage",
+		"description": "Deal 200% Agi ({{character.CurrentAbilityScores.Agility}}) damage at range 1, when behind target.",
+		"range": 1,
+		"effectPercent": 2,
+		"abilityScore": "Agility",
+		"categories": [
+			"damage",
+			"agility",
+			"melee"
+		],
+		"requirements": [
+			{
+				"type": "BehindTarget"
+			}
+		]
 	}
 ]

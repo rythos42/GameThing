@@ -49,11 +49,11 @@ namespace GameThing.Entities.Cards.Conditions
 
 		public void Remove(Character from)
 		{
-			var score = AbilityScore.Value;
 			switch (Type)
 			{
 				case EffectType.Buff:
 				case EffectType.Distract:
+					var score = AbilityScore.Value;
 					from.SetAbilityScoreMultiplier(score, RemoveBuff(from.GetAbilityScoreMultiplier(score), BuffAmount.Value));
 					break;
 

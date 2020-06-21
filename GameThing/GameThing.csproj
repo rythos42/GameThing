@@ -221,6 +221,8 @@
     <Compile Include="Entities\Cards\Conditions\Effect.cs" />
     <Compile Include="Entities\Cards\IdentifierBasedConverter.cs" />
     <Compile Include="Entities\Cards\PlayStatus.cs" />
+    <Compile Include="Entities\Cards\Requirements\Requirement.cs" />
+    <Compile Include="Entities\Cards\Requirements\RequirementType.cs" />
     <Compile Include="Entities\CharacterClass.cs" />
     <Compile Include="Entities\Cards\Conditions\EffectType.cs" />
     <Compile Include="Entities\CharacterFacing.cs" />

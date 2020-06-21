@@ -1,11 +1,14 @@
-﻿namespace GameThing.Entities.Cards
+﻿using GameThing.Entities.Cards.Requirements;
+
+namespace GameThing.Entities.Cards
 {
 	public enum PlayStatusDetails
 	{
 		Success,
 		FailedTaunted,
 		FailedNoStack,
-		FailedEvaded
+		FailedEvaded,
+		FailedRequirement
 	}
 
 	public class PlayStatus
@@ -19,5 +22,6 @@
 		public bool PlayCancelled { get; set; }
 		public decimal ActualDamageOrHealingDone { get; set; }
 		public CardType CardType { get; set; }
+		public RequirementType RequirementType { get; set; }
 	}
 }
