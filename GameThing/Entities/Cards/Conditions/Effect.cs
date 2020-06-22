@@ -35,7 +35,7 @@ namespace GameThing.Entities.Cards.Conditions
 
 				case EffectType.Run:
 					target.RemainingMoves = (int) Math.Round(ApplyBuff(target.RemainingMoves, BuffAmount.Value));
-					target.MaximumMoves += (int) Math.Round(ApplyBuff(target.MaximumMoves, BuffAmount.Value));
+					target.MaximumMoves = (int) Math.Round(ApplyBuff(target.MaximumMoves, BuffAmount.Value));
 					break;
 
 				case EffectType.Distract:
@@ -43,6 +43,10 @@ namespace GameThing.Entities.Cards.Conditions
 						return;
 
 					source.SetAbilityScoreMultiplier(Score, ApplyBuff(source.GetAbilityScoreMultiplier(Score), BuffAmount.Value));
+					break;
+
+				case EffectType.Remove:
+					target.ApplyDamage(BuffAmount.Value);
 					break;
 			}
 		}

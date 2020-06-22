@@ -43,5 +43,8 @@ namespace GameThing.Entities.Cards.Conditions
 
 		[DataMember]
 		public List<Effect> Effects { get; set; }
+
+		[DataMember]
+		public Recurrence.Recurrence Recurrence { get; set; }
 	}
 }

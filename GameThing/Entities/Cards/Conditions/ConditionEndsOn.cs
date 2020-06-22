@@ -3,6 +3,7 @@
 	public enum ConditionEndsOn
 	{
 		StartRound,
+		EndRound,
 		Move,
 		AfterAttack
 	}

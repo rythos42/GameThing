@@ -15,6 +15,9 @@ Todo:
 	- release notes
 	
 Nice to have:
+	- "Remove" effect not currently able to be used on anything other than health
+	- update Poison icon
+	- inconsistency in calling things "round" vs "turn" between cards and code
 	- show it better when a character has activated, when you have them selected
 	- make characters "walk" towards their destination instead of instant jump
 	- refresh matches list from time to time, or add a refresh button

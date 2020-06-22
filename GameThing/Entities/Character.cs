@@ -6,6 +6,7 @@ using GameThing.Contract;
 using GameThing.Database;
 using GameThing.Entities.Cards;
 using GameThing.Entities.Cards.Conditions;
+using GameThing.Entities.Cards.Conditions.Recurrence;
 using GameThing.Manager;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -106,6 +107,11 @@ namespace GameThing.Entities
 		[DataMember]
 		public Character NextCardMustTarget { get; set; }
 
+		public void ApplyDamage(decimal damageAmount)
+		{
+			baseAbilityScores[AbilityScore.Health] -= damageAmount;
+		}
+
 		public PlayStatus AttemptToApplyDamage(decimal damageAmount)
 		{
 			var currentEvade = GetCurrentAbilityScore(AbilityScore.Evade);
@@ -159,11 +165,27 @@ namespace GameThing.Entities
 			}
 		}
 
+		private void ApplyRecurrence(RecurrencePeriod period, RecurrenceTrigger trigger)
+		{
+			foreach (var condition in Conditions)
+			{
+				if (condition.Condition.Recurrence.Is(period, trigger))
+					condition.Condition.ApplyEffects(null, this);
+			}
+		}
+
 		public void StartNewRound(int roundNumber)
 		{
 			RemoveConditions(ConditionEndsOn.StartRound, condition => condition.RoundNumber + (condition.Condition.TurnCount ?? 0) == roundNumber);
 
 			ResetTurn();
+		}
+
+		public void EndRound(int roundNumber)
+		{
+			ApplyRecurrence(RecurrencePeriod.PerRound, RecurrenceTrigger.End);
+
+			RemoveConditions(ConditionEndsOn.EndRound, condition => condition.RoundNumber + (condition.Condition.TurnCount ?? 0) == roundNumber);
 		}
 
 		public void EndTurn(int thisTurnNumber)

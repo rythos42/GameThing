@@ -319,5 +319,36 @@
 				"type": "BehindTarget"
 			}
 		]
+	},
+	{
+		"id": "poison",
+		"title": "Poison",
+		"cardType": "Condition",
+		"description": "Apply a condition at range 1",
+		"range": 1,
+		"categories": [
+			"debuff",
+			"healing",
+			"duration"
+		],
+		"recurrence": {
+			"period": "PerRound",
+			"trigger": "End"
+		},
+		"condition": {
+			"stackGroup": "poison",
+			"text": "Give a character -1 Health per turn for 3 turns.",
+			"turnCount": 3,
+			"endsOn": "EndRound",
+			"iconName": "sprites/icons/buff",
+			"effects": [
+				{
+					"type": "Remove",
+					"abilityScore": "Health",
+					"buffAmount": 1,
+					"buffType": "Linear"
+				}
+			]
+		}
 	}
 ]

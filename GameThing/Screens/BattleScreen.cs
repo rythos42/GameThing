@@ -234,6 +234,7 @@ namespace GameThing.Screens
 
 		private void StartNextRound()
 		{
+			data.Characters.ForEach(character => character.EndRound(data.RoundNumber));
 			data.RoundNumber++;
 			data.Characters.ForEach(character => character.StartNewRound(data.RoundNumber));
 		}

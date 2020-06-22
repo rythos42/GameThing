@@ -5,6 +5,7 @@
 		Buff,
 		Distract,
 		Run,
-		Taunt
+		Taunt,
+		Remove
 	}
 }
