@@ -15,6 +15,7 @@ Todo:
 	- release notes
 	
 Nice to have:
+	- show name on character panel in battle
 	- "Remove" effect not currently able to be used on anything other than health
 	- update Poison icon
 	- inconsistency in calling things "round" vs "turn" between cards and code
@@ -40,7 +41,6 @@ Nice to have:
 	- notification when card can't be played, and why
 	- allow characters to stand on slopes
 		- draw grid on slopes
-	- stuff at range 0 played on self without needing to tap again
 	- don't allow friendly fire
 	- fix card sizing on tablet
 		- rejig HandOfCards spacing to shrink the cards if they don't fit!
@@ -54,7 +54,6 @@ Nice to have:
 	- save the game after each time a character goes, rather than after each player turn (one side with extra characters, game isn't saved between character turns)
 	- hide "No more moves from opponent" status panel when ending turn
 	- center text on buttons again
-	- character names
 	- scroll through game log entries?
 	- update start screen buttons to suck less
 		- more information about your opponent
@@ -67,7 +66,6 @@ Tech
 		- is "taunted" a type of requirement?
 	- probably BattleData.LastPlayingPlayerId is redundant
 	- determine difference between Contract and Entity and how should this be organized.
-	- warnings in Monogame Pipeline
 	- how to do polygon objects in maps
 	- Nexus 7 shows black box instead of highlighted character
 	- why outside_0.xnb and outside.xnb?
@@ -75,16 +73,11 @@ Tech
 	- set description, played time and progress value for SnapshotChangeMetadata
 	- consider loosening proguard.cfg -- it's keeping all of com.google.android.gms, but not using GPG anymore
 		- check \obj\Release\90\proguard\proguard_project_references.cfg for ideas of how it works
-	- move character sprites to a sub folder
 	- make ScreenComponent draw the UIComponents it contains
 	- somewhere to send error logs to
 	        
 Game Design
 	- evaluate whether single character or whole side is a better turn
-	- make character facing directions (like for Slipped Backstab)
-		- there's no "behind" for this to do anything with
-		- make Slipped Backstab only if behind the character
-		- have characters face the direction they last moved towards
 	- make movement depend on agilty score
 		- make runcondition an agility buff?
 

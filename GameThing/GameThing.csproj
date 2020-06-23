@@ -210,6 +210,7 @@
     <Compile Include="Database\CharacterClassMapper.cs" />
     <Compile Include="Database\IIdentifiable.cs" />
     <Compile Include="Database\IIdentifiableMapper.cs" />
+    <Compile Include="Database\NameMapper.cs" />
     <Compile Include="Database\TeamMapper.cs" />
     <Compile Include="Contract\BattleStatus.cs" />
     <Compile Include="Contract\Convert.cs" />
@@ -218,6 +219,7 @@
     <EmbeddedResource Include="Data\cards.json" />
     <EmbeddedResource Include="Data\categories.json" />
     <EmbeddedResource Include="Data\classes.json" />
+    <EmbeddedResource Include="Data\names.json" />
     <Compile Include="Entities\Cards\Conditions\Effect.cs" />
     <Compile Include="Entities\Cards\Conditions\Recurrence\Recurrence.cs" />
     <Compile Include="Entities\Cards\Conditions\Recurrence\RecurrencePeriod.cs" />

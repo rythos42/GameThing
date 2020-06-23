@@ -18,6 +18,7 @@ namespace GameThing.Contract
 
 		public static TeamData CreateDefaultTeam()
 		{
+			NameMapper.Instance.Load();
 			var squireClass = CharacterClassMapper.Instance.Get("squire");
 			var apprenticeClass = CharacterClassMapper.Instance.Get("apprentice");
 			var pickpocketClass = CharacterClassMapper.Instance.Get("pickpocket");
@@ -33,7 +34,11 @@ namespace GameThing.Contract
 
 		private static Character CreateCharacter(CharacterColour colour, CharacterClass cClass)
 		{
-			var character = new Character(Guid.NewGuid(), colour, cClass) { OwnerPlayerId = ApplicationData.PlayerId };
+			var character = new Character(Guid.NewGuid(), colour, cClass)
+			{
+				OwnerPlayerId = ApplicationData.PlayerId,
+				Name = NameMapper.Instance.GetRandom()
+			};
 			character.InitializeDefaultDeck();
 			return character;
 		}

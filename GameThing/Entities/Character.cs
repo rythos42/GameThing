@@ -98,6 +98,9 @@ namespace GameThing.Entities
 		public decimal CurrentMaxHealth { get; private set; } = 7;
 
 		[DataMember]
+		public string Name { get; set; }
+
+		[DataMember]
 		[JsonConverter(typeof(IdentifierBasedConverter<CharacterClass>), typeof(CharacterClassMapper))]
 		public CharacterClass CharacterClass { get; set; }
 
