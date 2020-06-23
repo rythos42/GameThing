@@ -10,10 +10,15 @@ namespace GameThing.Screens
 {
 	public class ManageTeamScreen
 	{
+		private const int characterCount = 5;
+
 		private ScreenComponent screenComponent;
 		private readonly Button createTeamButton;
 		private readonly Button deleteTeamButton;
 		private readonly Button backButton;
+		private Panel teamPanel = new Panel { ShowChrome = false };
+
+		private TeamData team;
 
 		private readonly TeamManager teamManager = TeamManager.Instance;
 
@@ -22,21 +27,49 @@ namespace GameThing.Screens
 			createTeamButton = new Button("Create Team") { Tapped = createTeamButton_Tapped };
 			deleteTeamButton = new Button("Delete Team") { Tapped = deleteTeamButton_Tapped };
 			backButton = new Button("Back") { Tapped = backButton_Tapped };
+
+			if (teamManager.Team == null)
+				teamManager.OnTeamLoad += SetTeam;
+			else
+				SetTeam(team);
 		}
 
 		public void LoadContent(Content content, GraphicsDevice graphicsDevice)
 		{
+			if (teamPanel.Components.Count == 0)
+			{
+				for (int i = 0; i < characterCount; i++)
+				{
+					var characterButton = new Button("No team loaded.");
+					teamPanel.Components.Add(characterButton);
+				}
+			}
+
 			screenComponent = new ScreenComponent(graphicsDevice.PresentationParameters.BackBufferWidth, graphicsDevice.PresentationParameters.BackBufferHeight) { Background = content.MainBackground };
 			screenComponent.Components.Add(createTeamButton);
 			screenComponent.Components.Add(deleteTeamButton);
 			screenComponent.Components.Add(backButton);
+			screenComponent.Components.Add(teamPanel);
 			screenComponent.LoadContent(content, graphicsDevice);
+		}
+
+		private void SetTeam(TeamData team)
+		{
+			for (int i = 0; i < characterCount; i++)
+			{
+				var character = team.Characters[i];
+
+				if (teamPanel.Components.Count <= i)
+					teamPanel.Components.Add(new Button(character.Name));
+				else
+					((Button) teamPanel.Components[i]).Text = character.Name;
+			}
 		}
 
 		public async void createTeamButton_Tapped(string id, GestureSample gesture)
 		{
-			var defaultTeam = TeamData.CreateDefaultTeam();
-			await teamManager.CreateTeam(defaultTeam);
+			team = TeamData.CreateDefaultTeam();
+			await teamManager.CreateTeam(team);
 		}
 
 		public async void deleteTeamButton_Tapped(string id, GestureSample gesture)
@@ -70,6 +103,7 @@ namespace GameThing.Screens
 			deleteTeamButton.DrawConditional(spriteBatch, 450, 200, teamManager.HasTeam);
 			createTeamButton.DrawConditional(spriteBatch, 450, 200, !teamManager.HasTeam);
 			backButton.Draw(spriteBatch, 450, 320);
+			teamPanel.DrawConditional(spriteBatch, 1100, 168, teamManager.HasTeam);
 
 			spriteBatch.End();
 		}

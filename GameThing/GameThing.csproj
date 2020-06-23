@@ -232,6 +232,7 @@
     <Compile Include="Entities\Cards\Conditions\EffectType.cs" />
     <Compile Include="Entities\CharacterFacing.cs" />
     <Compile Include="Manager\BattleDataUpdatedEventHandler.cs" />
+    <Compile Include="Manager\TeamLoadedEventHandler.cs" />
     <Compile Include="RandomWrapper.cs" />
     <Compile Include="Screens\BattleGameOverEventHandler.cs" />
     <Compile Include="Screens\SelectedCharacterChange.cs" />

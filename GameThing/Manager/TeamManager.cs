@@ -10,6 +10,8 @@ namespace GameThing.Manager
 
 		private readonly TeamMapper teamMapper = new TeamMapper(ApplicationData.FirebaseUrl);
 
+		public event TeamLoadedEventHandler OnTeamLoad;
+
 		public static TeamManager Instance
 		{
 			get
@@ -26,6 +28,7 @@ namespace GameThing.Manager
 			{
 				HasTeam = !team.IsFaulted && team.Result != null;
 				Team = team.Result;
+				OnTeamLoad?.Invoke(Team);
 			});
 		}
 
@@ -34,6 +37,7 @@ namespace GameThing.Manager
 			await teamMapper.SaveTeam(ApplicationData.PlayerId, team);
 			HasTeam = true;
 			Team = team;
+			OnTeamLoad(team);
 		}
 
 		public async Task DeleteTeam()
