@@ -18,18 +18,16 @@ namespace GameThing
 #pragma warning restore IDE0052 // Remove unread private members
 		private SpriteBatch spriteBatch;
 
-		private readonly BattleScreen battleScreen;
+		private readonly BattleScreen battleScreen = new BattleScreen();
 		private readonly StartScreen startScreen = new StartScreen();
 		private readonly GameOverScreen gameOverScreen = new GameOverScreen();
-		private readonly ManageTeamScreen manageTeamScreen;
+		private readonly ManageTeamScreen manageTeamScreen = new ManageTeamScreen();
+		private readonly ManageCharacterScreen manageCharacterScreen = new ManageCharacterScreen();
 
 		private event ContentLoadedEventHandler ContentLoaded;
 
 		public MainGame()
 		{
-			battleScreen = new BattleScreen();
-			manageTeamScreen = new ManageTeamScreen();
-
 			graphics = new GraphicsDeviceManager(this)
 			{
 				IsFullScreen = true,
@@ -41,6 +39,7 @@ namespace GameThing
 
 			battleScreen.GameOver += BattleScreen_GameOver;
 			startScreen.StartBattle += StartScreen_StartBattle;
+			manageTeamScreen.CharacterTapped += ManageTeamScreen_CharacterTapped;
 
 			CategoryMapper.Instance.Load();
 			CardMapper.Instance.Load();
@@ -60,6 +59,12 @@ namespace GameThing
 			ApplicationData.CurrentScreen = ScreenType.Battle;
 		}
 
+		private void ManageTeamScreen_CharacterTapped(Character character)
+		{
+			manageCharacterScreen.Character = character;
+			ApplicationData.CurrentScreen = ScreenType.ManageCharacter;
+		}
+
 		protected override void Initialize()
 		{
 			TouchPanel.EnabledGestures = GestureType.FreeDrag | GestureType.Pinch | GestureType.Tap | GestureType.Hold;
@@ -76,6 +81,7 @@ namespace GameThing
 			startScreen.LoadContent(content, GraphicsDevice);
 			gameOverScreen.LoadContent(content, GraphicsDevice);
 			manageTeamScreen.LoadContent(content, GraphicsDevice);
+			manageCharacterScreen.LoadContent(content, GraphicsDevice);
 
 			ContentLoaded?.Invoke();
 		}
@@ -97,6 +103,8 @@ namespace GameThing
 					case ScreenType.Battle:
 					case ScreenType.ManageTeams:
 						ApplicationData.CurrentScreen = ScreenType.StartMenu; break;
+					case ScreenType.ManageCharacter:
+						ApplicationData.CurrentScreen = ScreenType.ManageTeams; break;
 					case ScreenType.StartMenu:
 						Exit();
 						break;
@@ -105,15 +113,10 @@ namespace GameThing
 
 			switch (ApplicationData.CurrentScreen)
 			{
-				case ScreenType.Battle:
-					battleScreen.Update(gameTime);
-					break;
-				case ScreenType.StartMenu:
-					startScreen.Update(gameTime);
-					break;
-				case ScreenType.ManageTeams:
-					manageTeamScreen.Update(gameTime);
-					break;
+				case ScreenType.Battle: battleScreen.Update(gameTime); break;
+				case ScreenType.StartMenu: startScreen.Update(gameTime); break;
+				case ScreenType.ManageTeams: manageTeamScreen.Update(gameTime); break;
+				case ScreenType.ManageCharacter: manageCharacterScreen.Update(gameTime); break;
 			}
 
 			base.Update(gameTime);
@@ -123,18 +126,11 @@ namespace GameThing
 		{
 			switch (ApplicationData.CurrentScreen)
 			{
-				case ScreenType.Battle:
-					battleScreen.Draw(GraphicsDevice, spriteBatch, Window.ClientBounds);
-					break;
-				case ScreenType.StartMenu:
-					startScreen.Draw(GraphicsDevice, spriteBatch);
-					break;
-				case ScreenType.GameOver:
-					gameOverScreen.Draw(GraphicsDevice, spriteBatch);
-					break;
-				case ScreenType.ManageTeams:
-					manageTeamScreen.Draw(GraphicsDevice, spriteBatch);
-					break;
+				case ScreenType.Battle: battleScreen.Draw(GraphicsDevice, spriteBatch, Window.ClientBounds); break;
+				case ScreenType.StartMenu: startScreen.Draw(GraphicsDevice, spriteBatch); break;
+				case ScreenType.GameOver: gameOverScreen.Draw(GraphicsDevice, spriteBatch); break;
+				case ScreenType.ManageTeams: manageTeamScreen.Draw(GraphicsDevice, spriteBatch); break;
+				case ScreenType.ManageCharacter: manageCharacterScreen.Draw(GraphicsDevice, spriteBatch); break;
 			}
 
 			base.Draw(gameTime);

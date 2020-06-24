@@ -5,6 +5,7 @@
 		Battle,
 		StartMenu,
 		GameOver,
-		ManageTeams
+		ManageTeams,
+		ManageCharacter
 	}
 }

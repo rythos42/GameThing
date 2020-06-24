@@ -1,4 +1,6 @@
-﻿using GameThing.Contract;
+﻿using System;
+using System.Linq;
+using GameThing.Contract;
 using GameThing.Entities;
 using GameThing.Manager;
 using GameThing.UI;
@@ -23,6 +25,8 @@ namespace GameThing.Screens
 
 		private readonly TeamManager teamManager = TeamManager.Instance;
 
+		public event CharacterTappedEventHandler CharacterTapped;
+
 		public ManageTeamScreen()
 		{
 			createTeamButton = new Button("Create Team") { Tapped = createTeamButton_Tapped };
@@ -41,7 +45,7 @@ namespace GameThing.Screens
 			{
 				for (int i = 0; i < characterCount; i++)
 				{
-					var characterButton = new Button("No team loaded.");
+					var characterButton = new Button("No team loaded.") { Tapped = characterButton_Tapped, Id = null };
 					teamPanel.Components.Add(characterButton);
 				}
 			}
@@ -63,10 +67,16 @@ namespace GameThing.Screens
 				var character = team.Characters[i];
 
 				if (teamPanel.Components.Count <= i)
-					teamPanel.Components.Add(new Button(character.Name));
+					teamPanel.Components.Add(new Button(character.Name) { Tapped = characterButton_Tapped, Id = character.Id.ToString() });
 				else
 					((Button) teamPanel.Components[i]).Text = character.Name;
 			}
+		}
+
+		public void characterButton_Tapped(string id, GestureSample gesture)
+		{
+			var selectedCharacter = teamManager.Team.Characters.Single(character => character.Id == Guid.Parse(id));
+			CharacterTapped?.Invoke(selectedCharacter);
 		}
 
 		public async void createTeamButton_Tapped(string id, GestureSample gesture)
