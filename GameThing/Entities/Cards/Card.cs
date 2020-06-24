@@ -27,6 +27,8 @@ namespace GameThing.Entities.Cards
 		private readonly ScriptObject templateScriptObject;
 		private readonly TemplateContext textParsingTemplateContext;
 		private Template descriptionTemplate;
+		private Template conditionDescriptionTemplate;
+		private Condition condition;
 
 		public Card()
 		{
@@ -155,7 +157,7 @@ namespace GameThing.Entities.Cards
 		{
 			get
 			{
-				return descriptionTemplate.Render(textParsingTemplateContext) + (Condition == null ? "" : (": " + Condition.Text));
+				return descriptionTemplate.Render(textParsingTemplateContext) + (Condition == null ? "" : (": " + conditionDescriptionTemplate.Render(textParsingTemplateContext)));
 			}
 		}
 
@@ -174,7 +176,15 @@ namespace GameThing.Entities.Cards
 		public int Range { get; set; }
 
 		[DataMember]
-		public Condition Condition { get; set; }
+		public Condition Condition
+		{
+			get { return condition; }
+			set
+			{
+				condition = value;
+				conditionDescriptionTemplate = Template.Parse(value.Text);
+			}
+		}
 
 		[DataMember]
 		public decimal? EffectPercent { get; set; }

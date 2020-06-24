@@ -1,6 +1,5 @@
 Todo:
 	Add all the new cards
-	- need to parse Conditions text for Prepared Stance
 	- always show health and initiative debuff just below characters
 
 	Manage Team
