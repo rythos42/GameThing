@@ -321,6 +321,7 @@
     <AndroidAsset Include="Content\sprites\unicorn\sprites.xnb" />
     <AndroidAsset Include="Content\sprites\spaghetti\spritesMap.xnb" />
     <AndroidAsset Include="Content\sprites\unicorn\spritesMap.xnb" />
+    <AndroidAsset Include="Content\sprites\backgrounds\line.xnb" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

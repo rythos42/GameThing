@@ -16,7 +16,8 @@ namespace GameThing.Screens
 		private readonly Button createTeamButton;
 		private readonly Button deleteTeamButton;
 		private readonly Button backButton;
-		private Panel teamPanel = new Panel { ShowChrome = false };
+		private readonly Panel teamPanel = new Panel { ShowChrome = false };
+		private Texture2D backgroundLine;
 
 		private TeamData team;
 
@@ -51,6 +52,8 @@ namespace GameThing.Screens
 			screenComponent.Components.Add(backButton);
 			screenComponent.Components.Add(teamPanel);
 			screenComponent.LoadContent(content, graphicsDevice);
+
+			backgroundLine = content.BackgroundLine;
 		}
 
 		private void SetTeam(TeamData team)
@@ -103,6 +106,9 @@ namespace GameThing.Screens
 			deleteTeamButton.DrawConditional(spriteBatch, 450, 200, teamManager.HasTeam);
 			createTeamButton.DrawConditional(spriteBatch, 450, 200, !teamManager.HasTeam);
 			backButton.Draw(spriteBatch, 450, 320);
+
+			spriteBatch.Draw(backgroundLine, new Rectangle((graphicsDevice.Viewport.Width / 2) - 15, (int) (graphicsDevice.Viewport.Height * 0.125), 30, (int) (graphicsDevice.Viewport.Height * 0.75)), Color.White);
+
 			teamPanel.DrawConditional(spriteBatch, 1100, 168, teamManager.HasTeam);
 
 			spriteBatch.End();

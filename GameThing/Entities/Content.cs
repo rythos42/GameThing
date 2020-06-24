@@ -24,6 +24,7 @@ namespace GameThing.Entities
 			MediumTree = contentManager.Load<Texture2D>("sprites/terrain/medium_tree");
 
 			MainBackground = contentManager.Load<Texture2D>("sprites/backgrounds/main");
+			BackgroundLine = contentManager.Load<Texture2D>("sprites/backgrounds/line");
 
 			Lock = contentManager.Load<Texture2D>("sprites/icons/lock");
 			SpaghettiHatIcon = contentManager.Load<Texture2D>("sprites/icons/spaghetti_atlas_hat");
@@ -113,6 +114,7 @@ namespace GameThing.Entities
 		public Texture2D Lock { get; private set; }
 
 		public Texture2D MainBackground { get; private set; }
+		public Texture2D BackgroundLine { get; private set; }
 
 		public Texture2D LargeBush { get; private set; }
 		public Texture2D SmallTree { get; private set; }

@@ -25,6 +25,7 @@ namespace GameThing.Screens
 		private readonly Panel matchesPanel;
 		private readonly Panel helpPanel;
 		private readonly FadingTextPanel statusPanel = new FadingTextPanel { PlaceFromRight = true };
+		private Texture2D backgroundLine;
 
 		private readonly TeamManager teamManager = TeamManager.Instance;
 		private readonly BattleManager battleManager = BattleManager.Instance;
@@ -136,6 +137,7 @@ namespace GameThing.Screens
 			});
 
 			battleManager.GetMyBattles().ContinueWith(task => myBattles.AddRange(task.Result));
+			backgroundLine = content.BackgroundLine;
 		}
 
 		public void screenComponent_GestureRead(GestureSample gesture)
@@ -220,6 +222,8 @@ namespace GameThing.Screens
 			joinMatch.DrawConditional(spriteBatch, 450, 560, teamManager.HasTeam);
 			myMatches.DrawConditional(spriteBatch, 450, 680, teamManager.HasTeam);
 			help.Draw(spriteBatch, 450, 800);
+
+			spriteBatch.Draw(backgroundLine, new Rectangle((graphicsDevice.Viewport.Width / 2) - 15, (int) (graphicsDevice.Viewport.Height * 0.125), 30, (int) (graphicsDevice.Viewport.Height * 0.75)), Color.White);
 
 			matchesPanel.DrawConditional(spriteBatch, 1100, 168, teamManager.HasTeam);
 			helpPanel.DrawConditional(spriteBatch, 400, 300, showingHelpDialog);
