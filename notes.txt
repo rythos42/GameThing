@@ -62,6 +62,7 @@ Nice to have:
 		- able to scroll and/or filter
 
 Tech
+	- made it so that ComponentList.Add(item) LoadsContent if possible, so much of the UI component creation (dynamic stuff) could be re-done
 	Requirements:
 		- is "range" on cards a type of requirement?
 		- is "taunted" a type of requirement?

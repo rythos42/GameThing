@@ -42,7 +42,14 @@ namespace GameThing.UI
 
 		protected override void LoadComponentContent(Content content, GraphicsDevice graphicsDevice)
 		{
-			Components.ForEach(component => component.LoadContent(content, graphicsDevice));
+			// Store these for when we add components later
+			Components.Content = content;
+			Components.GraphicsDevice = graphicsDevice;
+			Components.ForEach(component =>
+			{
+				if (!component.HasContentLoaded)
+					component.LoadContent(content, graphicsDevice);
+			});
 		}
 
 		public override void Update(GameTime gameTime)

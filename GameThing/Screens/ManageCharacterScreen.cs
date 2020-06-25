@@ -10,13 +10,33 @@ namespace GameThing.Screens
 	{
 		private ScreenComponent screenComponent;
 		private readonly Button backButton;
+		private readonly Panel categoryPanel = new Panel { ShowChrome = false };
+
+		private Character character;
 
 		public ManageCharacterScreen()
 		{
 			backButton = new Button("Back") { Tapped = backButton_Tapped };
 		}
 
-		public Character Character { get; set; }
+		public Character Character
+		{
+			get { return character; }
+			set
+			{
+				character = value;
+
+				categoryPanel.Components.Clear();
+				foreach (var levelKeyPair in character.CategoryLevels)
+				{
+					if (levelKeyPair.Value == 0)
+						continue;
+
+					var text = $"{levelKeyPair.Key}: {levelKeyPair.Value}";
+					categoryPanel.Components.Add(new Text { Value = text });
+				}
+			}
+		}
 
 		public void backButton_Tapped(string id, GestureSample gesture)
 		{
@@ -27,6 +47,7 @@ namespace GameThing.Screens
 		{
 			screenComponent = new ScreenComponent(graphicsDevice.PresentationParameters.BackBufferWidth, graphicsDevice.PresentationParameters.BackBufferHeight) { Background = content.MainBackground };
 			screenComponent.Components.Add(backButton);
+			screenComponent.Components.Add(categoryPanel);
 			screenComponent.LoadContent(content, graphicsDevice);
 		}
 
@@ -47,7 +68,8 @@ namespace GameThing.Screens
 
 			spriteBatch.Begin();
 			screenComponent.Draw(spriteBatch);
-			backButton.Draw(spriteBatch, 450, 320);
+			backButton.Draw(spriteBatch, 200, 100);
+			categoryPanel.Draw(spriteBatch, 450, 320);
 
 			spriteBatch.End();
 		}
