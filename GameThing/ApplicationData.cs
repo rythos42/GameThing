@@ -10,6 +10,7 @@ namespace GameThing
 		private static Configuration config;
 
 		public static string FirebaseUrl { get { return config.FirebaseUrl; } }
+		public static bool AllowMergingHotSeat { get { return config.AllowMergingHotSeat; } }
 
 		public static string PlayerId
 		{
@@ -38,6 +39,7 @@ namespace GameThing
 		private class Configuration
 		{
 			public string FirebaseUrl { get; set; }
+			public bool AllowMergingHotSeat { get; set; }
 		}
 	}
 }

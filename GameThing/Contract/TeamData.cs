@@ -52,7 +52,7 @@ namespace GameThing.Contract
 		{
 			foreach (var battleCharacter in battleData.Characters)
 			{
-				if (battleCharacter.OwnerPlayerId != OwnerPlayerId)
+				if (battleCharacter.OwnerPlayerId != OwnerPlayerId && !(battleData.IsTestMode && ApplicationData.AllowMergingHotSeat))
 					continue;
 
 				foreach (var category in battleCharacter.AdditionalCategoryLevels.Keys)
@@ -65,6 +65,8 @@ namespace GameThing.Contract
 					else
 						teamCharacter.CategoryLevels.Add(category, additionalCategoryLevelFromBattle);
 				}
+
+				battleCharacter.AdditionalCategoryLevels.Clear();
 			}
 		}
 	}

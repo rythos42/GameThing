@@ -172,7 +172,7 @@ namespace GameThing.Entities
 		{
 			foreach (var condition in Conditions)
 			{
-				if (condition.Condition.Recurrence.Is(period, trigger))
+				if (condition.Condition?.Recurrence?.Is(period, trigger) == true)
 					condition.Condition.ApplyEffects(null, this);
 			}
 		}
@@ -223,10 +223,10 @@ namespace GameThing.Entities
 		public bool ActivatedThisRound { get; private set; }
 
 		[DataMember]
-		public Dictionary<Category, int> CategoryLevels { get; } = new Dictionary<Category, int>();
+		public Dictionary<string, int> CategoryLevels { get; } = new Dictionary<string, int>();
 
 		[DataMember]
-		public Dictionary<Category, int> AdditionalCategoryLevels { get; } = new Dictionary<Category, int>();
+		public Dictionary<string, int> AdditionalCategoryLevels { get; } = new Dictionary<string, int>();
 
 		[DataMember]
 		[JsonConverter(typeof(IdentifierBasedConverter<Card>), typeof(CardMapper))]
@@ -274,10 +274,10 @@ namespace GameThing.Entities
 
 			card.Categories.ForEach(cardCategory =>
 			{
-				if (AdditionalCategoryLevels.ContainsKey(cardCategory))
-					AdditionalCategoryLevels[cardCategory]++;
+				if (AdditionalCategoryLevels.ContainsKey(cardCategory.Id))
+					AdditionalCategoryLevels[cardCategory.Id]++;
 				else
-					AdditionalCategoryLevels.Add(cardCategory, 1);
+					AdditionalCategoryLevels.Add(cardCategory.Id, 1);
 			});
 
 			return played;
