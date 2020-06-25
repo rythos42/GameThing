@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using GameThing.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,7 +8,7 @@ namespace GameThing.UI
 {
 	public abstract class UIContainer : UIComponent
 	{
-		public List<UIComponent> Components { get; set; } = new List<UIComponent>();
+		public ComponentList Components { get; set; } = new ComponentList();
 
 		protected UIComponent GetComponentAt(Vector2 position)
 		{
