@@ -121,11 +121,11 @@ namespace GameThing.Entities
 			var missChance = EvadeConstant * (double) (currentEvade * currentEvade);
 
 			if (Random.NextDouble() <= missChance)
-				return new PlayStatus(PlayStatusDetails.FailedEvaded);
+				return new PlayStatus(PlayStatusDetails.FailedEvaded, CardType.Damage);
 
 			var actualDamageDone = damageAmount * DefenseDamageMultipler;
 			baseAbilityScores[AbilityScore.Health] -= actualDamageDone;
-			return new PlayStatus(PlayStatusDetails.Success) { ActualDamageOrHealingDone = actualDamageDone, CardType = CardType.Damage };
+			return new PlayStatus(PlayStatusDetails.Success, CardType.Damage) { ActualDamageOrHealingDone = actualDamageDone };
 		}
 
 		private decimal DefenseDamageMultipler { get { return 1 - ((GetCurrentAbilityScore(AbilityScore.Defense) - 1) * 0.1m); } }
@@ -134,7 +134,7 @@ namespace GameThing.Entities
 		{
 			var actualHealingDone = baseAbilityScores[AbilityScore.Health] + healAmount;
 			baseAbilityScores[AbilityScore.Health] = Math.Min(CurrentMaxHealth, actualHealingDone);
-			return new PlayStatus(PlayStatusDetails.Success) { ActualDamageOrHealingDone = actualHealingDone, CardType = CardType.Heal };
+			return new PlayStatus(PlayStatusDetails.Success, CardType.Heal) { ActualDamageOrHealingDone = actualHealingDone };
 		}
 
 		public decimal ChangeDamageOrHealingForStamina(decimal damageOrHealAmount, int turnNumber)
@@ -259,7 +259,7 @@ namespace GameThing.Entities
 		public PlayStatus PlayCard(Card card, Character targetCharacter, int roundNumber, int turnNumber)
 		{
 			if (NextCardMustTarget != null && NextCardMustTarget != targetCharacter)
-				return new PlayStatus(PlayStatusDetails.FailedTaunted) { PlayCancelled = true };
+				return new PlayStatus(PlayStatusDetails.FailedTaunted, card.CardType) { PlayCancelled = true };
 
 			// Try to play the card
 			var played = card.Play(targetCharacter, roundNumber, turnNumber);

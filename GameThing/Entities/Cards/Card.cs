@@ -55,7 +55,7 @@ namespace GameThing.Entities.Cards
 
 			var failedRequirements = Requirements.Where(requirement => !requirement.Met(OwnerCharacter, target));
 			if (failedRequirements.Any())
-				return new PlayStatus(PlayStatusDetails.FailedRequirement) { PlayCancelled = true, RequirementType = failedRequirements.First().Type };
+				return new PlayStatus(PlayStatusDetails.FailedRequirement, CardType) { PlayCancelled = true, RequirementType = failedRequirements.First().Type };
 
 			if (CardType == CardType.Damage)
 			{
@@ -73,13 +73,13 @@ namespace GameThing.Entities.Cards
 			{
 				// if a non-stacking condition is on the target already, cancel the card play
 				if (target.Conditions.Any(applied => applied.Condition.StackGroup == Condition.StackGroup))
-					return new PlayStatus(PlayStatusDetails.FailedNoStack) { PlayCancelled = true };
+					return new PlayStatus(PlayStatusDetails.FailedNoStack, CardType) { PlayCancelled = true };
 
 				target.Conditions.Add(new AppliedCondition(Condition, roundNumber));
 				Condition.ApplyEffects(OwnerCharacter, target);
 			}
 
-			return new PlayStatus(PlayStatusDetails.Success);
+			return new PlayStatus(PlayStatusDetails.Success, CardType);
 		}
 
 		public bool IsWithinRangeDistance(MapPoint checkPoint)

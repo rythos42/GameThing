@@ -1,7 +1,6 @@
 Todo:
 	Add all the new cards
 	- always show health and initiative debuff just below characters
-	- Weak Cheer shows "Damage for 0.00"
 
 	Manage Team
 		- implement character levels

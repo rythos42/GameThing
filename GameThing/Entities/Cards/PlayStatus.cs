@@ -13,9 +13,10 @@ namespace GameThing.Entities.Cards
 
 	public class PlayStatus
 	{
-		public PlayStatus(PlayStatusDetails status)
+		public PlayStatus(PlayStatusDetails status, CardType cardType)
 		{
 			Status = status;
+			CardType = cardType;
 		}
 
 		public PlayStatusDetails Status { get; set; }
