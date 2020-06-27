@@ -62,6 +62,7 @@ Nice to have:
 		- able to scroll and/or filter
 
 Tech
+	- will need to fix database schema so that I can prevent users from reading each others data
 	- made it so that ComponentList.Add(item) LoadsContent if possible, so much of the UI component creation (dynamic stuff) could be re-done
 	Requirements:
 		- is "range" on cards a type of requirement?
@@ -96,8 +97,8 @@ Deploying:
 
 Google Play
 	Certificates
-		"C:\Program Files (x86)\Java\jre1.8.0_171\bin\keytool" -list -v -keystore gamething.keystore
-		"C:\Program Files (x86)\Java\jre1.8.0_171\bin\keytool" -list -v -keystore "%LocalAppData%\Xamarin\Mono for Android\debug.keystore" -alias androiddebugkey -storepass android -keypass android
+		"C:\Program Files (x86)\Java\jre1.8.0_231\bin\keytool" -list -v -keystore gamething.keystore
+		"C:\Program Files (x86)\Java\jre1.8.0_231\bin\keytool" -list -v -keystore "%LocalAppData%\Xamarin\Mono for Android\debug.keystore" -alias androiddebugkey -storepass android -keypass android
 		https://developer.android.com/studio/publish/app-signing
 
 Publishing Xamarin

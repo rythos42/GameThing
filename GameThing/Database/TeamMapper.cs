@@ -1,32 +1,30 @@
 ﻿using System.Threading.Tasks;
-using Firebase.Database;
-using Firebase.Database.Query;
 using GameThing.Contract;
 
 namespace GameThing.Database
 {
 	public class TeamMapper
 	{
-		private readonly FirebaseClient firebase;
+		private readonly FirebaseDatabase<TeamData> firebase;
 
 		public TeamMapper(string firebaseUrl)
 		{
-			firebase = new FirebaseClient(firebaseUrl);
+			firebase = new FirebaseDatabase<TeamData>(firebaseUrl, "Team");
 		}
 
 		public async Task<TeamData> GetTeam(string playerId)
 		{
-			return await firebase.Child($"Team/{playerId}").OnceSingleAsync<TeamData>();
+			return await firebase.Get(playerId);
 		}
 
 		public async Task SaveTeam(string playerId, TeamData data)
 		{
-			await firebase.Child($"Team/{playerId}").PutAsync(data);
+			await firebase.Save(playerId, data);
 		}
 
 		public async Task DeleteTeam(string playerId)
 		{
-			await firebase.Child($"Team/{playerId}").DeleteAsync();
+			await firebase.Delete(playerId);
 		}
 	}
 }

@@ -69,6 +69,9 @@
     <Reference Include="Firebase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\FirebaseDatabase.net.4.0.4\lib\netstandard2.0\Firebase.dll</HintPath>
     </Reference>
+    <Reference Include="Firebase.Auth, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FirebaseAuthentication.net.3.4.0\lib\netstandard1.1\Firebase.Auth.dll</HintPath>
+    </Reference>
     <Reference Include="Java.Interop" />
     <Reference Include="LiteDB, Version=4.1.4.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27, processorArchitecture=MSIL">
       <HintPath>..\packages\LiteDB.4.1.4\lib\netstandard2.0\LiteDB.dll</HintPath>
@@ -208,6 +211,7 @@
     <Compile Include="Database\CardMapper.cs" />
     <Compile Include="Database\CategoryMapper.cs" />
     <Compile Include="Database\CharacterClassMapper.cs" />
+    <Compile Include="Database\FirebaseDatabase.cs" />
     <Compile Include="Database\IIdentifiable.cs" />
     <Compile Include="Database\IIdentifiableMapper.cs" />
     <Compile Include="Database\NameMapper.cs" />
