@@ -5,7 +5,8 @@ namespace GameThing.Entities
 {
 	public interface IDrawable
 	{
-		void Draw(SpriteBatch spriteBatch);
+		void DrawWithEffect(SpriteBatch spriteBatch);
+		void DrawWithoutEffect(SpriteBatch spritebatch);
 		void Update(GameTime gameTime);
 		bool IsAtPoint(MapPoint checkPoint);
 

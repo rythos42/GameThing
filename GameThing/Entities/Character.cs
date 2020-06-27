@@ -22,6 +22,8 @@ namespace GameThing.Entities
 	{
 		private Texture2D availableMovementTexture;
 		private Texture2D lockSprite;
+		private Texture2D fullHealthTexture;
+		private Texture2D emptyHealthTexture;
 		private readonly Dictionary<CharacterFacing, AnimatedSprite> animatedSprite = new Dictionary<CharacterFacing, AnimatedSprite>();
 
 		private const double EvadeConstant = 0.025;         // Used in Evade quadratic equation a*x^2
@@ -41,9 +43,13 @@ namespace GameThing.Entities
 
 			var animationFactory = content.GetAnimationFactory(side);
 			animatedSprite[CharacterFacing.North] = new AnimatedSprite(animationFactory, content.GetSpriteTag(Colour, CharacterFacing.North));
+			animatedSprite[CharacterFacing.North] = new AnimatedSprite(animationFactory, content.GetSpriteTag(Colour, CharacterFacing.North));
 			animatedSprite[CharacterFacing.East] = new AnimatedSprite(animationFactory, content.GetSpriteTag(Colour, CharacterFacing.East));
 			animatedSprite[CharacterFacing.South] = new AnimatedSprite(animationFactory, content.GetSpriteTag(Colour, CharacterFacing.South));
 			animatedSprite[CharacterFacing.West] = new AnimatedSprite(animationFactory, content.GetSpriteTag(Colour, CharacterFacing.West));
+
+			fullHealthTexture = content.FullHealthTexture;
+			emptyHealthTexture = content.EmptyHealthTexture;
 		}
 
 		public static IRandomWrapper Random { get; internal set; } = new RandomWrapper();
@@ -369,13 +375,25 @@ namespace GameThing.Entities
 
 		}
 
-		public override void Draw(SpriteBatch spriteBatch)
+		public override void DrawWithEffect(SpriteBatch spriteBatch)
 		{
 			var drawPosition = MapPosition.GetScreenPosition();
 			drawPosition.Y -= MapPoint.TileHeight_Half + MapPoint.TileHeight; // this calculation may not be related to these values, not sure whats up here
 			drawPosition.X += 5;    // just a little bump
-
 			spriteBatch.Draw(animatedSprite[Facing], drawPosition);
+		}
+
+		public override void DrawWithoutEffect(SpriteBatch spriteBatch)
+		{
+			var drawPosition = MapPosition.GetScreenPosition();
+			var barWidth = (int) (SpriteWidth * 0.6);
+			var currentHealthWidth = (int) (GetBaseAbilityScore(AbilityScore.Health) / CurrentMaxHealth * barWidth);
+			var healthHeight = 3;
+			var barDrawX = (int) (drawPosition.X - (barWidth / 2));
+			var barDrawY = (int) drawPosition.Y + 5;
+			spriteBatch.Draw(fullHealthTexture, new Rectangle(barDrawX, barDrawY, currentHealthWidth, healthHeight), Color.White);
+			var emptyHealthWidth = barWidth - currentHealthWidth;
+			spriteBatch.Draw(emptyHealthTexture, new Rectangle(barDrawX + currentHealthWidth, barDrawY, emptyHealthWidth, healthHeight), Color.White);
 		}
 
 		public void DrawLock(SpriteBatch spriteBatch)

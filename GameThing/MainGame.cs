@@ -75,7 +75,7 @@ namespace GameThing
 		protected override void LoadContent()
 		{
 			spriteBatch = new SpriteBatch(GraphicsDevice);
-			var content = new Content(Content);
+			var content = new Content(Content, GraphicsDevice);
 
 			battleScreen.LoadContent(content, GraphicsDevice);
 			startScreen.LoadContent(content, GraphicsDevice);

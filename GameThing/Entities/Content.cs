@@ -11,7 +11,7 @@ namespace GameThing.Entities
 {
 	public class Content
 	{
-		public Content(ContentManager contentManager)
+		public Content(ContentManager contentManager, GraphicsDevice graphicsDevice)
 		{
 			Font = contentManager.Load<SpriteFont>("fonts/Carlito-Regular");
 			PatrickHandSc = contentManager.Load<SpriteFont>("fonts/PatrickHandSC-Regular");
@@ -53,6 +53,12 @@ namespace GameThing.Entities
 
 			spaghettiFactory = CreateAnimationFactory(contentManager, CharacterSide.Spaghetti);
 			unicornFactory = CreateAnimationFactory(contentManager, CharacterSide.Unicorn);
+
+			FullHealthTexture = new Texture2D(graphicsDevice, 1, 1);
+			FullHealthTexture.SetData(new Color[] { Color.LimeGreen });
+
+			EmptyHealthTexture = new Texture2D(graphicsDevice, 1, 1);
+			EmptyHealthTexture.SetData(new Color[] { Color.Red });
 		}
 
 		private SpriteSheetAnimationFactory CreateAnimationFactory(ContentManager contentManager, CharacterSide side)
@@ -112,6 +118,8 @@ namespace GameThing.Entities
 		public Texture2D DistanceOverlay { get; private set; }
 		public Texture2D Card { get; private set; }
 		public Texture2D Lock { get; private set; }
+		public Texture2D FullHealthTexture { get; private set; }
+		public Texture2D EmptyHealthTexture { get; private set; }
 
 		public Texture2D MainBackground { get; private set; }
 		public Texture2D BackgroundLine { get; private set; }

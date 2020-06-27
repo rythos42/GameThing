@@ -11,16 +11,12 @@ namespace GameThing.Entities
 			MapPosition = mapPosition;
 		}
 
-		public override void Draw(SpriteBatch spriteBatch)
+		public override void DrawWithoutEffect(SpriteBatch spriteBatch)
 		{
 			var drawPosition = MapPosition.GetScreenPosition();
 			drawPosition.Y -= Sprite.Height - MapPoint.TileHeight;
 			drawPosition.X -= Sprite.Width / 2;
 			spriteBatch.Draw(Sprite, drawPosition, Color.White);
-		}
-
-		public override void Update(GameTime gameTime)
-		{
 		}
 
 		public override int SpriteHeight => Sprite.Height;

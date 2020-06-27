@@ -405,7 +405,18 @@ namespace GameThing.Screens
 				if (drawable == lockedInCharacter)
 					lockedInCharacter.DrawLock(spriteBatch);
 
-				drawable.Draw(spriteBatch);
+				drawable.DrawWithEffect(spriteBatch);
+			}
+			spriteBatch.End();
+
+			spriteBatch.Begin(
+				transformMatrix: camera.GetViewMatrix(),
+				samplerState: SamplerState.PointClamp,
+				blendState: BlendState.AlphaBlend,
+				sortMode: SpriteSortMode.Texture);
+			foreach (var drawable in entities.Drawables)
+			{
+				drawable.DrawWithoutEffect(spriteBatch);
 			}
 			spriteBatch.End();
 

@@ -22,7 +22,8 @@ namespace GameThing.Entities
 		public abstract int SpriteHeight { get; }
 		public abstract int SpriteWidth { get; }
 
-		public abstract void Draw(SpriteBatch spriteBatch);
-		public abstract void Update(GameTime gameTime);
+		public virtual void DrawWithEffect(SpriteBatch spriteBatch) { }
+		public virtual void DrawWithoutEffect(SpriteBatch spriteBatch) { }
+		public virtual void Update(GameTime gameTime) { }
 	}
 }
