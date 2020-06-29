@@ -56,9 +56,12 @@ namespace GameThing.Entities
 
 			FullHealthTexture = new Texture2D(graphicsDevice, 1, 1);
 			FullHealthTexture.SetData(new Color[] { Color.LimeGreen });
-
 			EmptyHealthTexture = new Texture2D(graphicsDevice, 1, 1);
 			EmptyHealthTexture.SetData(new Color[] { Color.Red });
+			InitiativeTexture = new Texture2D(graphicsDevice, 1, 1);
+			InitiativeTexture.SetData(new Color[] { Color.Yellow });
+			BlackTexture = new Texture2D(graphicsDevice, 1, 1);
+			BlackTexture.SetData(new Color[] { Color.Black });
 		}
 
 		private SpriteSheetAnimationFactory CreateAnimationFactory(ContentManager contentManager, CharacterSide side)
@@ -120,6 +123,8 @@ namespace GameThing.Entities
 		public Texture2D Lock { get; private set; }
 		public Texture2D FullHealthTexture { get; private set; }
 		public Texture2D EmptyHealthTexture { get; private set; }
+		public Texture2D InitiativeTexture { get; private set; }
+		public Texture2D BlackTexture { get; private set; }
 
 		public Texture2D MainBackground { get; private set; }
 		public Texture2D BackgroundLine { get; private set; }

@@ -100,6 +100,7 @@ namespace GameThing.Screens
 			{
 				var side = battleData.Sides[character.OwnerPlayerId];
 				character.CharactersInGameCount = battleData.Characters.Count;
+				character.CurrentTurn = battleData.TurnNumber;
 				character.SetContent(content, side);
 				character.Deck.ForEach(card => card.SetContent(content));
 
@@ -260,6 +261,7 @@ namespace GameThing.Screens
 			data.LastPlayingPlayerId = ApplicationData.PlayerId;
 			data.ChangePlayingSide();
 			data.TurnNumber++;
+			data.Characters.ForEach(character => character.CurrentTurn = data.TurnNumber);
 			if (!data.AnyCharacterUnactivated)
 			{
 				StartNextRound();
@@ -560,7 +562,7 @@ namespace GameThing.Screens
 			else if (targetingPoint?.Equals(mapPoint) == true && IsMyTurn)
 			{
 				// ACTUALLY PLAY SELECTED CARD
-				var playStatus = selectedCharacter.PlayCard(selectedCard, targetCharacter, data.RoundNumber, data.TurnNumber);
+				var playStatus = selectedCharacter.PlayCard(selectedCard, targetCharacter, data.RoundNumber);
 				if (!playStatus.PlayCancelled)
 				{
 					if (targetCharacter.GetBaseAbilityScore(AbilityScore.Health) < 1)

@@ -210,20 +210,25 @@ namespace GameThing.Tests.Entities
 			var character = CreateTestCharacter();
 			character.CharactersInGameCount = 10;
 			character.EndTurn(1);
+			character.CurrentTurn = 2;
 
-			Assert.That(character.ChangeDamageOrHealingForStamina(100, 2), Is.EqualTo(50m));
+			Assert.That(character.ChangeDamageOrHealingForStamina(100), Is.EqualTo(50m));
 
+			character.CurrentTurn = 2;
 			character.SetAbilityScoreMultiplier(AbilityScore.Stamina, 1.1m);
-			Assert.That(character.ChangeDamageOrHealingForStamina(100, 2), Is.EqualTo(54.54545454545454545454545454m));
+			Assert.That(character.ChangeDamageOrHealingForStamina(100), Is.EqualTo(54.55m));
 
+			character.CurrentTurn = 2;
 			character.SetAbilityScoreMultiplier(AbilityScore.Stamina, 2m);
-			Assert.That(character.ChangeDamageOrHealingForStamina(100, 2), Is.EqualTo(75m));
+			Assert.That(character.ChangeDamageOrHealingForStamina(100), Is.EqualTo(75m));
 
+			character.CurrentTurn = 2;
 			character.SetAbilityScoreMultiplier(AbilityScore.Stamina, 3m);
-			Assert.That(character.ChangeDamageOrHealingForStamina(100, 2), Is.EqualTo(83.33333333333333333333333334m));
+			Assert.That(character.ChangeDamageOrHealingForStamina(100), Is.EqualTo(83.33m));
 
+			character.CurrentTurn = 2;
 			character.SetAbilityScoreMultiplier(AbilityScore.Stamina, 4);
-			Assert.That(character.ChangeDamageOrHealingForStamina(100, 2), Is.EqualTo(87.5m));
+			Assert.That(character.ChangeDamageOrHealingForStamina(100), Is.EqualTo(87.5m));
 		}
 
 		[Test]
@@ -233,27 +238,52 @@ namespace GameThing.Tests.Entities
 			character.CharactersInGameCount = 10;
 
 			// No change if the character hasn't gone yet.
-			Assert.That(character.ChangeDamageOrHealingForStamina(100, 9), Is.EqualTo(100m));
+			character.CurrentTurn = 9;
+			Assert.That(character.ChangeDamageOrHealingForStamina(100), Is.EqualTo(100m));
 
 			// Set the last turn this character moved.
 			character.EndTurn(1);
 
 			// Give gradually more power the further away from your last turn it is.
-			Assert.That(character.ChangeDamageOrHealingForStamina(100, 2), Is.EqualTo(50m));
-			Assert.That(character.ChangeDamageOrHealingForStamina(100, 3), Is.EqualTo(55m));
-			Assert.That(character.ChangeDamageOrHealingForStamina(100, 4), Is.EqualTo(60m));
-			Assert.That(character.ChangeDamageOrHealingForStamina(100, 5), Is.EqualTo(65m));
-			Assert.That(character.ChangeDamageOrHealingForStamina(100, 6), Is.EqualTo(70m));
-			Assert.That(character.ChangeDamageOrHealingForStamina(100, 7), Is.EqualTo(75m));
-			Assert.That(character.ChangeDamageOrHealingForStamina(100, 8), Is.EqualTo(80m));
-			Assert.That(character.ChangeDamageOrHealingForStamina(100, 9), Is.EqualTo(85m));
-			Assert.That(character.ChangeDamageOrHealingForStamina(100, 10), Is.EqualTo(90m));
-			Assert.That(character.ChangeDamageOrHealingForStamina(100, 11), Is.EqualTo(95m));
-			Assert.That(character.ChangeDamageOrHealingForStamina(100, 12), Is.EqualTo(100m));
+			character.CurrentTurn = 2;
+			Assert.That(character.ChangeDamageOrHealingForStamina(100), Is.EqualTo(50m));
+
+			character.CurrentTurn = 3;
+			Assert.That(character.ChangeDamageOrHealingForStamina(100), Is.EqualTo(55.56m));
+
+			character.CurrentTurn = 4;
+			Assert.That(character.ChangeDamageOrHealingForStamina(100), Is.EqualTo(61.11m));
+
+			character.CurrentTurn = 5;
+			Assert.That(character.ChangeDamageOrHealingForStamina(100), Is.EqualTo(66.67m));
+
+			character.CurrentTurn = 6;
+			Assert.That(character.ChangeDamageOrHealingForStamina(100), Is.EqualTo(72.22m));
+
+			character.CurrentTurn = 7;
+			Assert.That(character.ChangeDamageOrHealingForStamina(100), Is.EqualTo(77.78m));
+
+			character.CurrentTurn = 8;
+			Assert.That(character.ChangeDamageOrHealingForStamina(100), Is.EqualTo(83.33m));
+
+			character.CurrentTurn = 9;
+			Assert.That(character.ChangeDamageOrHealingForStamina(100), Is.EqualTo(88.89m));
+
+			character.CurrentTurn = 10;
+			Assert.That(character.ChangeDamageOrHealingForStamina(100), Is.EqualTo(94.44m));
+
+			character.CurrentTurn = 11;
+			Assert.That(character.ChangeDamageOrHealingForStamina(100), Is.EqualTo(100m));
 
 			// If somehow the game lets you go past your turn, can't go above the damage or healing that was requested
-			Assert.That(character.ChangeDamageOrHealingForStamina(100, 13), Is.EqualTo(100m));
-			Assert.That(character.ChangeDamageOrHealingForStamina(100, 14), Is.EqualTo(100m));
+			character.CurrentTurn = 12;
+			Assert.That(character.ChangeDamageOrHealingForStamina(100), Is.EqualTo(100m));
+
+			character.CurrentTurn = 13;
+			Assert.That(character.ChangeDamageOrHealingForStamina(100), Is.EqualTo(100m));
+
+			character.CurrentTurn = 14;
+			Assert.That(character.ChangeDamageOrHealingForStamina(100), Is.EqualTo(100m));
 		}
 
 		private Character CreateTestCharacter()

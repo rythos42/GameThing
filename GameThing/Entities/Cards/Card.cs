@@ -47,10 +47,10 @@ namespace GameThing.Entities.Cards
 			font = content.Font;
 		}
 
-		public PlayStatus Play(Character target, int roundNumber, int turnNumber)
+		public PlayStatus Play(Character target, int roundNumber)
 		{
 			var applyValue = CardType == CardType.Damage || CardType == CardType.Heal
-				? OwnerCharacter.ChangeDamageOrHealingForStamina(OwnerCharacter.GetCurrentAbilityScore(AbilityScore.Value) * EffectPercent.Value, turnNumber)
+				? OwnerCharacter.ChangeDamageOrHealingForStamina(OwnerCharacter.GetCurrentAbilityScore(AbilityScore.Value) * EffectPercent.Value)
 				: 0;
 
 			var failedRequirements = Requirements.Where(requirement => !requirement.Met(OwnerCharacter, target));

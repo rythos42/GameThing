@@ -1,6 +1,5 @@
 Todo:
 	Add all the new cards
-	- always show health and initiative debuff just below characters
 
 	Manage Team
 		- implement character levels

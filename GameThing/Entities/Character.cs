@@ -24,6 +24,8 @@ namespace GameThing.Entities
 		private Texture2D lockSprite;
 		private Texture2D fullHealthTexture;
 		private Texture2D emptyHealthTexture;
+		private Texture2D initiativeTexture;
+		private Texture2D blackTexture;
 		private readonly Dictionary<CharacterFacing, AnimatedSprite> animatedSprite = new Dictionary<CharacterFacing, AnimatedSprite>();
 
 		private const double EvadeConstant = 0.025;         // Used in Evade quadratic equation a*x^2
@@ -50,6 +52,8 @@ namespace GameThing.Entities
 
 			fullHealthTexture = content.FullHealthTexture;
 			emptyHealthTexture = content.EmptyHealthTexture;
+			initiativeTexture = content.InitiativeTexture;
+			blackTexture = content.BlackTexture;
 		}
 
 		public static IRandomWrapper Random { get; internal set; } = new RandomWrapper();
@@ -143,18 +147,25 @@ namespace GameThing.Entities
 			return new PlayStatus(PlayStatusDetails.Success, CardType.Heal) { ActualDamageOrHealingDone = actualHealingDone };
 		}
 
-		public decimal ChangeDamageOrHealingForStamina(decimal damageOrHealAmount, int turnNumber)
+		private decimal InitiativeModifierPercent
 		{
-			// Do nothing if the character hasn't gone yet.
-			if (LastPlayedTurnNumber == -1)
-				return damageOrHealAmount;
+			get
+			{
+				if (LastPlayedTurnNumber == -1)
+					return 1;
 
-			var initiativeModifierFromStamina = 2m - (1m / GetCurrentAbilityScore(AbilityScore.Stamina));
-			var turnsSinceLastPlayed = turnNumber - LastPlayedTurnNumber - 1;               // determine how many characters have gone since this characters last turn
-			var unitChunk = (1 - LastFirstPlayDebuff) / CharactersInGameCount;              // determine how much bonus you get for each character that has gone since your last turn
-			var initiativeDebuff = turnsSinceLastPlayed * unitChunk + LastFirstPlayDebuff;  // if you go right away again, 0.5 of the total effect is applied. Otherwise, add how much you get from waiting
+				var initiativeModifierFromStamina = 2m - (1m / GetCurrentAbilityScore(AbilityScore.Stamina));
+				var turnsSinceLastPlayed = CurrentTurn - LastPlayedTurnNumber - 1;              // determine how many characters have gone since this characters last turn
+				var unitChunk = (1 - LastFirstPlayDebuff) / (CharactersInGameCount - 1);        // determine how much bonus you get for each character that has gone since your last turn
+				var initiativeDebuff = turnsSinceLastPlayed * unitChunk + LastFirstPlayDebuff;  // if you go right away again, 0.5 of the total effect is applied. Otherwise, add how much you get from waiting
 
-			return Math.Min(initiativeDebuff * initiativeModifierFromStamina * damageOrHealAmount, damageOrHealAmount);  // Can't go above what was asked for.
+				return Math.Round(initiativeDebuff * initiativeModifierFromStamina, 4);
+			}
+		}
+
+		public decimal ChangeDamageOrHealingForStamina(decimal damageOrHealAmount)
+		{
+			return Math.Min(InitiativeModifierPercent * damageOrHealAmount, damageOrHealAmount);  // Can't go above what was asked for.
 		}
 
 		[DataMember]
@@ -244,6 +255,7 @@ namespace GameThing.Entities
 		[DataMember]
 		public int LastPlayedTurnNumber { get; private set; } = -1;
 		public int CharactersInGameCount { get; set; }
+		public int CurrentTurn { get; set; } = -1;
 
 		public bool HasRemainingPlayableCards => RemainingPlayableCards > 0;
 		public bool HasRemainingMoves => RemainingMoves > 0;
@@ -262,13 +274,13 @@ namespace GameThing.Entities
 			DrawOneCard();
 		}
 
-		public PlayStatus PlayCard(Card card, Character targetCharacter, int roundNumber, int turnNumber)
+		public PlayStatus PlayCard(Card card, Character targetCharacter, int roundNumber)
 		{
 			if (NextCardMustTarget != null && NextCardMustTarget != targetCharacter)
 				return new PlayStatus(PlayStatusDetails.FailedTaunted, card.CardType) { PlayCancelled = true };
 
 			// Try to play the card
-			var played = card.Play(targetCharacter, roundNumber, turnNumber);
+			var played = card.Play(targetCharacter, roundNumber);
 
 			// Don't want to penalize player for these failures: act as though card isn't played
 			if (played.PlayCancelled)
@@ -387,13 +399,26 @@ namespace GameThing.Entities
 		{
 			var drawPosition = MapPosition.GetScreenPosition();
 			var barWidth = (int) (SpriteWidth * 0.6);
-			var currentHealthWidth = (int) (GetBaseAbilityScore(AbilityScore.Health) / CurrentMaxHealth * barWidth);
-			var healthHeight = 3;
+			var barHeight = 3;
 			var barDrawX = (int) (drawPosition.X - (barWidth / 2));
 			var barDrawY = (int) drawPosition.Y + 5;
-			spriteBatch.Draw(fullHealthTexture, new Rectangle(barDrawX, barDrawY, currentHealthWidth, healthHeight), Color.White);
+
+			// Health bar
+			var currentHealthWidth = (int) (GetBaseAbilityScore(AbilityScore.Health) / CurrentMaxHealth * barWidth);
+			spriteBatch.Draw(fullHealthTexture, new Rectangle(barDrawX, barDrawY, currentHealthWidth, barHeight), Color.White);
 			var emptyHealthWidth = barWidth - currentHealthWidth;
-			spriteBatch.Draw(emptyHealthTexture, new Rectangle(barDrawX + currentHealthWidth, barDrawY, emptyHealthWidth, healthHeight), Color.White);
+			spriteBatch.Draw(emptyHealthTexture, new Rectangle(barDrawX + currentHealthWidth, barDrawY, emptyHealthWidth, barHeight), Color.White);
+
+			// Initiative bar
+			var currentInitiativeWidth = (int) ((1 - InitiativeModifierPercent) * barWidth);
+			spriteBatch.Draw(initiativeTexture, new Rectangle(barDrawX, barDrawY + barHeight + 1, currentInitiativeWidth, barHeight), Color.White);
+
+			// Bar frames
+			spriteBatch.Draw(blackTexture, new Rectangle(barDrawX - 1, barDrawY - 1, barWidth + 1, 1), Color.White);                        // Top
+			spriteBatch.Draw(blackTexture, new Rectangle(barDrawX - 1, barDrawY + barHeight, barWidth + 1, 1), Color.White);                // Middle
+			spriteBatch.Draw(blackTexture, new Rectangle(barDrawX - 1, barDrawY + barHeight + barHeight, barWidth + 1, 1), Color.White);    // Bottom
+			spriteBatch.Draw(blackTexture, new Rectangle(barDrawX - 1, barDrawY - 1, 1, barHeight + barHeight + 1), Color.White);                       // Left
+			spriteBatch.Draw(blackTexture, new Rectangle(barDrawX + barWidth, barDrawY - 1, 1, barHeight + barHeight + 1), Color.White);                // Right
 		}
 
 		public void DrawLock(SpriteBatch spriteBatch)
