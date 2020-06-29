@@ -56,10 +56,13 @@ Class Progression
 
 Card Progression
 	- When you play a card, add 1 point for the character to each category that card contains.
-	- Classes are unlocked at a certain number of points in a particular category
-	- The cards you have available to you in your current class are determined by your level in each class.
-		- Each level gives 1 additional card.
-	- MASTER a card by gaining a certain number of points in it, then you get to keep that card when you change classes.
+	- Classes are unlocked at a certain number of points in a particular set of categories
+
+	- Gain all cards for a class when you have it as your current class.
+		- Am I limiting my ability to add more cards to a class? How else could we get more cards?
+		- Still room to add cards that require a certain category point level or a certain character level
+	- MASTER a card by _gaining_ a certain number of of the needed points while in the cards class
+		- Mastering a card lets you keep it when you change classes.
 		- Basic cards are mastered by default.
 
 Level Progression
