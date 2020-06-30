@@ -7,20 +7,27 @@ namespace GameThing.UI
 	public class Text : UIComponent
 	{
 		private SpriteFont font;
+		private string value;
 
-		public string Value { get; set; }
-
-		public override Vector2 MeasureContent()
+		public string Value
 		{
-			if (Value == null)
-				return Vector2.Zero;
+			get { return value; }
+			set
+			{
+				this.value = value;
+				SetDimensions();
+			}
+		}
 
-			return font.MeasureString(Value);
+		private void SetDimensions()
+		{
+			Dimensions = Value == null || font == null ? Vector2.Zero : font.MeasureString(Value);
 		}
 
 		protected override void LoadComponentContent(Content content, GraphicsDevice graphicsDevice)
 		{
 			font = content.Font;
+			SetDimensions();
 		}
 
 		public override void Draw(SpriteBatch spriteBatch, float x, float y)

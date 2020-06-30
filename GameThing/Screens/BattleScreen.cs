@@ -42,20 +42,20 @@ namespace GameThing.Screens
 		private readonly Button endTurnButton;
 		private readonly Button winGameNowButton;
 		private readonly FadingTextPanel statusPanel = new FadingTextPanel() { PlaceFromRight = true };
-		private readonly Panel playerSidePanel = new Panel();
+		private readonly ElasticPanel playerSidePanel = new ElasticPanel();
 		private readonly Text playerSideText = new Text();
 
-		private readonly Panel gameLogPanel = new Panel();
+		private readonly ElasticPanel gameLogPanel = new ElasticPanel();
 		private bool showGameLogEntryPanel;
-		private readonly Panel heldGameLogEntryPanel = new Panel();
+		private readonly ElasticPanel heldGameLogEntryPanel = new ElasticPanel();
 		private readonly Text heldGameLogSource = new Text();
 		private readonly Text heldGameLogTarget = new Text();
 		private readonly Text heldGameLogActionText = new Text();
 
 		private bool showAppliedConditionDetailsPanel;
-		private readonly Panel appliedConditionDetailsPanel = new Panel();
+		private readonly ElasticPanel appliedConditionDetailsPanel = new ElasticPanel();
 		private readonly Text appliedConditionDetailsText = new Text();
-		private readonly Panel selectedPlayerStatsPanel = new Panel();
+		private readonly ElasticPanel selectedPlayerStatsPanel = new ElasticPanel();
 		private readonly Text sideText = new Text();
 		private readonly Text playerClassText = new Text();
 		private readonly Text healthText = new Text();
@@ -167,6 +167,7 @@ namespace GameThing.Screens
 			camera = new OrthographicCamera(graphicsDevice);
 			camera.LookAt(new Vector2(0, map.HeightInPixels / 2));  // center the map in the screen
 
+			selectedPlayerStatsPanel.Background = content.PanelBackground;
 			selectedPlayerStatsPanel.Components.Add(playerClassText);
 			selectedPlayerStatsPanel.Components.Add(sideText);
 			selectedPlayerStatsPanel.Components.Add(healthText);
@@ -178,17 +179,22 @@ namespace GameThing.Screens
 			selectedPlayerStatsPanel.Components.Add(appliedConditionRow);
 			SelectedCharacterChange += UpdateSelectedCharacterPanel;
 
+			playerSidePanel.Background = content.PanelBackground;
 			playerSidePanel.Components.Add(playerSideText);
 
+			gameLogPanel.Background = content.PanelBackground;
 			for (int i = 0; i < GameLogEntryCount; i++)
 				gameLogPanel.Components.Add(new GameLogEntryRow { Held = gameLogEntryRow_Held });
 
+			heldGameLogEntryPanel.Background = content.PanelBackground;
 			heldGameLogEntryPanel.Components.Add(heldGameLogSource);
 			heldGameLogEntryPanel.Components.Add(heldGameLogTarget);
 			heldGameLogEntryPanel.Components.Add(heldGameLogActionText);
 
+			appliedConditionDetailsPanel.Background = content.PanelBackground;
 			appliedConditionDetailsPanel.Components.Add(appliedConditionDetailsText);
 
+			statusPanel.Background = content.PanelBackground;
 			screenComponent = new ScreenComponent(graphicsDevice.PresentationParameters.BackBufferWidth, graphicsDevice.PresentationParameters.BackBufferHeight);
 			screenComponent.GestureRead += screenComponent_GestureRead;
 			screenComponent.Components.Add(endTurnButton);

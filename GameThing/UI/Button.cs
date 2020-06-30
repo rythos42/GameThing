@@ -88,10 +88,5 @@ namespace GameThing.UI
 
 			IsVisible = true;
 		}
-
-		public override Vector2 MeasureContent()
-		{
-			return new Vector2(Width, Height);
-		}
 	}
 }

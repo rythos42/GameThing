@@ -3,7 +3,7 @@ Todo:
 	- Change available cards
 	- Master cards
 	- Class unlocks
-	- design manage team screen
+	- draw manage team screen
 	- release notes
 	
 Nice to have:

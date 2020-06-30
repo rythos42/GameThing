@@ -16,7 +16,9 @@ namespace GameThing.UI
 		{
 			X = x;
 			Y = y;
-			Dimensions = MeasureContent();
+			Dimensions = SelectedCharacter == null || SelectedCharacter.Conditions.Count == 0
+				? Vector2.Zero
+				: new Vector2(SelectedCharacter.Conditions.Count * conditionIcons[0].Width, conditionIcons[0].Height);
 
 			if (SelectedCharacter == null)
 				return;
@@ -39,14 +41,6 @@ namespace GameThing.UI
 		protected override void LoadComponentContent(Content content, GraphicsDevice graphicsDevice)
 		{
 			conditionIcons = content.ConditionIcons;
-		}
-
-		public override Vector2 MeasureContent()
-		{
-			if (SelectedCharacter == null || SelectedCharacter.Conditions.Count == 0)
-				return Vector2.Zero;
-
-			return new Vector2(SelectedCharacter.Conditions.Count * conditionIcons[0].Width, conditionIcons[0].Height);
 		}
 	}
 }

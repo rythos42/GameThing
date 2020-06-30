@@ -252,6 +252,7 @@
     <Compile Include="UI\ComponentList.cs" />
     <Compile Include="UI\GameLogEntryRow.cs" />
     <Compile Include="UI\ScreenComponent.cs" />
+    <Compile Include="UI\StaticPanel.cs" />
     <Compile Include="UI\UIComponentGestureReadEventHandler.cs" />
     <Compile Include="UI\UIComponentHeldEventHandler.cs" />
     <Compile Include="UI\UIContainer.cs" />
@@ -264,7 +265,7 @@
     <Compile Include="UI\ContentLoadedEventHandler.cs" />
     <Compile Include="MapHelper.cs" />
     <Compile Include="UI\FadingTextPanel.cs" />
-    <Compile Include="UI\Panel.cs" />
+    <Compile Include="UI\ElasticPanel.cs" />
     <Compile Include="UI\Text.cs" />
     <Compile Include="UI\UIComponent.cs" />
     <Compile Include="UI\UIComponentTappedEventHandler.cs" />

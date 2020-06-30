@@ -67,6 +67,5 @@ namespace GameThing.UI
 
 		protected abstract void LoadComponentContent(Content content, GraphicsDevice graphicsDevice);
 		public abstract void Draw(SpriteBatch spriteBatch, float x, float y);
-		public abstract Vector2 MeasureContent();
 	}
 }

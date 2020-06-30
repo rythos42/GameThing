@@ -58,10 +58,5 @@ namespace GameThing.UI
 			Width = cardIcon.Width; // this is the result of how it's drawn above
 			Height = spaghettiHatIcon.Height;
 		}
-
-		public override Vector2 MeasureContent()
-		{
-			return new Vector2(Width, Height);
-		}
 	}
 }

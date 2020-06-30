@@ -8,17 +8,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BA38CCA5-9153-484E-A899-4EB8CA925701}"
 	ProjectSection(SolutionItems) = preProject
 		.editorConfig = .editorConfig
-		datafiles.txt = datafiles.txt
-		notes.txt = notes.txt
+		Documents\datafiles.txt = Documents\datafiles.txt
+		Documents\game.txt = Documents\game.txt
+		Documents\notes.txt = Documents\notes.txt
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "design", "design", "{29C4A8B6-031F-43DC-8AF4-5C3384244074}"
-	ProjectSection(SolutionItems) = preProject
-		feedback.txt = feedback.txt
-		game.txt = game.txt
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameThing.Tests", "GameThing.Tests\GameThing.Tests.csproj", "{0071F1E9-F8A2-4DA4-BC4E-8B88F92B75EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameThing.Tests", "GameThing.Tests\GameThing.Tests.csproj", "{0071F1E9-F8A2-4DA4-BC4E-8B88F92B75EA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,9 +34,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{29C4A8B6-031F-43DC-8AF4-5C3384244074} = {BA38CCA5-9153-484E-A899-4EB8CA925701}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {00AB0EDE-D0A8-4D68-A103-5EA0DD76D49B}

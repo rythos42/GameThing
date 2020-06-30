@@ -8,7 +8,12 @@ namespace GameThing.UI
 {
 	public abstract class UIContainer : UIComponent
 	{
+		private Texture2D borderTexture;
+
 		public ComponentList Components { get; set; } = new ComponentList();
+		public bool AutoDrawChildren { get; set; } = false;
+		public bool ExtendedPadding { get; set; } = false;
+		public bool ShowBorder { get; set; } = false;
 
 		protected UIComponent GetComponentAt(Vector2 position)
 		{
@@ -50,11 +55,37 @@ namespace GameThing.UI
 				if (!component.HasContentLoaded)
 					component.LoadContent(content, graphicsDevice);
 			});
+
+			borderTexture = content.BlackTexture;
 		}
 
 		public override void Update(GameTime gameTime)
 		{
 			Components.ForEach(component => component.Update(gameTime));
+		}
+
+		public override void Draw(SpriteBatch spriteBatch, float x, float y)
+		{
+			if (!AutoDrawChildren)
+				return;
+
+			if (ShowBorder)
+			{
+				int borderWidth = 2;
+				spriteBatch.Draw(borderTexture, new Rectangle((int) X, (int) Y, Width, borderWidth), Color.White);            // Top
+				spriteBatch.Draw(borderTexture, new Rectangle((int) X, (int) Y + Height, Width, borderWidth), Color.White);   // Bottom
+				spriteBatch.Draw(borderTexture, new Rectangle((int) X, (int) Y, borderWidth, Height), Color.White);           // Left
+				spriteBatch.Draw(borderTexture, new Rectangle((int) X + Width, (int) Y, borderWidth, Height), Color.White);   // Right
+			}
+
+			var drawX = X + MARGIN + (ExtendedPadding ? 32 : 0);
+			var drawY = Y + MARGIN + (ExtendedPadding ? 32 : 0);
+			Components.ForEach(component =>
+			{
+				component.Draw(spriteBatch, drawX, drawY);
+				drawY += MARGIN + component.Height;
+			});
+			IsVisible = true;
 		}
 	}
 }

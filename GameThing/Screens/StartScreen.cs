@@ -22,8 +22,8 @@ namespace GameThing.Screens
 		private readonly Button myMatches;
 		private readonly Button help;
 		private ScreenComponent screenComponent;
-		private readonly Panel matchesPanel;
-		private readonly Panel helpPanel;
+		private readonly ElasticPanel matchesPanel;
+		private readonly ElasticPanel helpPanel;
 		private readonly FadingTextPanel statusPanel = new FadingTextPanel { PlaceFromRight = true };
 		private Texture2D backgroundLine;
 
@@ -45,8 +45,8 @@ namespace GameThing.Screens
 			myMatches = new Button("My Matches") { Tapped = myMatches_Tapped };
 			help = new Button("Help") { Tapped = help_Tapped };
 
-			matchesPanel = new Panel() { ShowChrome = false };
-			helpPanel = new Panel() { ExtendedPadding = true };
+			matchesPanel = new ElasticPanel();
+			helpPanel = new ElasticPanel() { ExtendedPadding = true };
 
 			BattleManager.Instance.DataUpdated += BattleManager_DataUpdated;
 		}
@@ -104,6 +104,7 @@ namespace GameThing.Screens
 
 		public void LoadContent(Content content, GraphicsDevice graphicsDevice)
 		{
+			statusPanel.Background = content.PanelBackground;
 			screenComponent = new ScreenComponent(graphicsDevice.PresentationParameters.BackBufferWidth, graphicsDevice.PresentationParameters.BackBufferHeight) { Background = content.MainBackground };
 			screenComponent.Components.Add(startAsTester);
 			screenComponent.Components.Add(teams);
@@ -118,6 +119,7 @@ namespace GameThing.Screens
 			for (int i = 0; i < AvailableMatchesCount; i++)
 				matchesPanel.Components.Add(new Button("No match available.") { Tapped = matchButton_Tapped });
 
+			helpPanel.Background = content.PanelBackground;
 			helpPanel.Components.Add(new Text { Value = "Welcome to the MVP of GameThing!" });
 			helpPanel.Components.Add(new Text { Value = "You play as a team of 5 characters." });
 			helpPanel.Components.Add(new Text { Value = "Each character has a deck of 8 cards, with 4 cards in hand at a time." });

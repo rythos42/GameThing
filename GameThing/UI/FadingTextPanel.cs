@@ -5,14 +5,14 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GameThing.UI
 {
-	public class FadingTextPanel : Panel
+	public class FadingTextPanel : ElasticPanel
 	{
 		private SpriteFont font;
 
 		private bool showing = false;
 		private bool startShowing = false;
 		private TimeSpan startedShowingAt;
-		private Text textUi = new Text();
+		private readonly Text textUi = new Text();
 
 		public FadingTextPanel()
 		{

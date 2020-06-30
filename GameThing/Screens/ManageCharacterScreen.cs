@@ -10,7 +10,8 @@ namespace GameThing.Screens
 	{
 		private ScreenComponent screenComponent;
 		private readonly Button backButton;
-		private readonly Panel categoryPanel = new Panel { ShowChrome = false };
+		private readonly ElasticPanel categoryPanel = new ElasticPanel();
+		private readonly ElasticPanel contentPanel = new ElasticPanel { ShowBorder = true };
 
 		private Character character;
 
@@ -47,7 +48,8 @@ namespace GameThing.Screens
 		{
 			screenComponent = new ScreenComponent(graphicsDevice.PresentationParameters.BackBufferWidth, graphicsDevice.PresentationParameters.BackBufferHeight) { Background = content.MainBackground };
 			screenComponent.Components.Add(backButton);
-			screenComponent.Components.Add(categoryPanel);
+			screenComponent.Components.Add(contentPanel);
+			//screenComponent.Components.Add(categoryPanel);
 			screenComponent.LoadContent(content, graphicsDevice);
 		}
 
@@ -69,7 +71,8 @@ namespace GameThing.Screens
 			spriteBatch.Begin();
 			screenComponent.Draw(spriteBatch);
 			backButton.Draw(spriteBatch, 200, 100);
-			categoryPanel.Draw(spriteBatch, 450, 320);
+			//categoryPanel.Draw(spriteBatch, 450, 320);
+			contentPanel.Draw(spriteBatch, 400, 300);
 
 			spriteBatch.End();
 		}

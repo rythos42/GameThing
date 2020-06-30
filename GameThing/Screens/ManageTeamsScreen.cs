@@ -18,7 +18,7 @@ namespace GameThing.Screens
 		private readonly Button createTeamButton;
 		private readonly Button deleteTeamButton;
 		private readonly Button backButton;
-		private readonly Panel teamPanel = new Panel { ShowChrome = false };
+		private readonly ElasticPanel teamPanel = new ElasticPanel();
 		private Texture2D backgroundLine;
 
 		private TeamData team;
@@ -41,15 +41,6 @@ namespace GameThing.Screens
 
 		public void LoadContent(Content content, GraphicsDevice graphicsDevice)
 		{
-			if (teamPanel.Components.Count == 0)
-			{
-				for (int i = 0; i < characterCount; i++)
-				{
-					var characterButton = new Button("No team loaded.") { Tapped = characterButton_Tapped, Id = null };
-					teamPanel.Components.Add(characterButton);
-				}
-			}
-
 			screenComponent = new ScreenComponent(graphicsDevice.PresentationParameters.BackBufferWidth, graphicsDevice.PresentationParameters.BackBufferHeight) { Background = content.MainBackground };
 			screenComponent.Components.Add(createTeamButton);
 			screenComponent.Components.Add(deleteTeamButton);
@@ -65,11 +56,7 @@ namespace GameThing.Screens
 			for (int i = 0; i < characterCount; i++)
 			{
 				var character = team.Characters[i];
-
-				if (teamPanel.Components.Count <= i)
-					teamPanel.Components.Add(new Button(character.Name) { Tapped = characterButton_Tapped, Id = character.Id.ToString() });
-				else
-					((Button) teamPanel.Components[i]).Text = character.Name;
+				teamPanel.Components.Add(new Button(character.Name) { Tapped = characterButton_Tapped, Id = character.Id.ToString() });
 			}
 		}
 
