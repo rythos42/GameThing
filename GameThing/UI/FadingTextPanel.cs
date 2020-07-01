@@ -1,5 +1,4 @@
 ﻿using System;
-using GameThing.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -7,8 +6,6 @@ namespace GameThing.UI
 {
 	public class FadingTextPanel : Panel
 	{
-		private SpriteFont font;
-
 		private bool showing = false;
 		private bool startShowing = false;
 		private TimeSpan startedShowingAt;
@@ -25,13 +22,6 @@ namespace GameThing.UI
 		{
 			textUi.Value = text;
 			startShowing = true;
-		}
-
-		protected override void LoadComponentContent(Content content, GraphicsDevice graphicsDevice)
-		{
-			base.LoadComponentContent(content, graphicsDevice);
-
-			font = content.Font;
 		}
 
 		public override void Update(GameTime gameTime)

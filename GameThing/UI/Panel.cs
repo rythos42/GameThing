@@ -44,8 +44,8 @@ namespace GameThing.UI
 			var contentSize = MeasureContent();
 			var drawingPosition = GetDrawingPosition(spriteBatch.GraphicsDevice, x, y);
 
-			Width = (int) contentSize.X + PADDING * 2 + (ExtendedPadding ? 64 : 0);
-			Height = (int) contentSize.Y + PADDING * 2 + (ExtendedPadding ? 64 : 0);
+			Width = (int) contentSize.X + (PADDING * 2) + (ExtendedPadding ? 64 : 0);
+			Height = (int) contentSize.Y + (PADDING * 2) + (ExtendedPadding ? 64 : 0);
 			X = (int) drawingPosition.X;
 			Y = (int) drawingPosition.Y;
 

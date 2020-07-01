@@ -71,7 +71,7 @@ namespace GameThing.UI
 
 			if (ShowBorder)
 			{
-				int borderWidth = 2;
+				var borderWidth = 2;
 				spriteBatch.Draw(borderTexture, new Rectangle((int) X, (int) Y, Width, borderWidth), Color.White);            // Top
 				spriteBatch.Draw(borderTexture, new Rectangle((int) X, (int) Y + Height, Width, borderWidth), Color.White);   // Bottom
 				spriteBatch.Draw(borderTexture, new Rectangle((int) X, (int) Y, borderWidth, Height), Color.White);           // Left

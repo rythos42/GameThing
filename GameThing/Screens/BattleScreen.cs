@@ -20,7 +20,7 @@ namespace GameThing.Screens
 {
 	public class BattleScreen
 	{
-		private const int GameLogEntryCount = 10;
+		private const int gameLogEntryCount = 10;
 
 		private TiledMapRenderer mapRenderer;
 		private Camera<Vector2> camera;
@@ -77,9 +77,9 @@ namespace GameThing.Screens
 
 		public BattleScreen()
 		{
-			endTurnButton = new Button("End Turn") { UseMinimumButtonSize = false, Tapped = endTurnButton_Tapped };
-			winGameNowButton = new Button("Win Game") { UseMinimumButtonSize = false, Tapped = winGameNowButton_Tapped };
-			appliedConditionRow = new AppliedConditionRow { Held = appliedConditionRow_Held };
+			endTurnButton = new Button("End Turn") { UseMinimumButtonSize = false, Tapped = EndTurnButton_Tapped };
+			winGameNowButton = new Button("Win Game") { UseMinimumButtonSize = false, Tapped = WinGameNowButton_Tapped };
+			appliedConditionRow = new AppliedConditionRow { Held = AppliedConditionRow_Held };
 
 			BattleManager.Instance.DataUpdated += BattleManager_DataUpdated;
 		}
@@ -183,8 +183,8 @@ namespace GameThing.Screens
 			playerSidePanel.Components.Add(playerSideText);
 
 			gameLogPanel.Background = content.PanelBackground;
-			for (int i = 0; i < GameLogEntryCount; i++)
-				gameLogPanel.Components.Add(new GameLogEntryRow { Held = gameLogEntryRow_Held });
+			for (var i = 0; i < gameLogEntryCount; i++)
+				gameLogPanel.Components.Add(new GameLogEntryRow { Held = GameLogEntryRow_Held });
 
 			heldGameLogEntryPanel.Background = content.PanelBackground;
 			heldGameLogEntryPanel.Components.Add(heldGameLogSource);
@@ -196,7 +196,7 @@ namespace GameThing.Screens
 
 			statusPanel.Background = content.PanelBackground;
 			screenComponent = new ScreenComponent(graphicsDevice.PresentationParameters.BackBufferWidth, graphicsDevice.PresentationParameters.BackBufferHeight);
-			screenComponent.GestureRead += screenComponent_GestureRead;
+			screenComponent.GestureRead += ScreenComponent_GestureRead;
 			screenComponent.Components.Add(endTurnButton);
 			screenComponent.Components.Add(winGameNowButton);
 			screenComponent.Components.Add(selectedPlayerStatsPanel);
@@ -331,10 +331,7 @@ namespace GameThing.Screens
 			endTurnButton.IsHighlighted = lockedInCharacter != null && !lockedInCharacter.HasRemainingMoves && !lockedInCharacter.HasRemainingPlayableCards;
 		}
 
-		private bool IsMyTurn
-		{
-			get { return data.CurrentPlayerId == data.GetPlayerId(); }
-		}
+		private bool IsMyTurn => data.CurrentPlayerId == data.GetPlayerId();
 
 		public void Draw(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch, Rectangle clientBounds)
 		{
@@ -379,20 +376,19 @@ namespace GameThing.Screens
 				spriteBatch.End();
 			}
 
-			Effect currentEffect = null;
-			bool startedSpriteBatch = false;
-			Func<IDrawable, Effect> effectForDrawable = drawable =>
+			Effect effectForDrawable(IDrawable drawable)
 			{
-				var character = drawable as Character;
-				if (character == null)
-					return null;
-				if (character == selectedCharacter)
-					return content.Highlight;
-				if (character.ActivatedThisRound)
-					return content.Shade;
-				return null;
-			};
+				return !(drawable is Character character)
+					? null
+					: character == selectedCharacter
+						? content.Highlight
+						: character.ActivatedThisRound
+							? content.Shade
+							: null;
+			}
 
+			Effect currentEffect = null;
+			var startedSpriteBatch = false;
 			foreach (var drawable in entities.Drawables)
 			{
 				var characterEffect = effectForDrawable(drawable);
@@ -435,16 +431,16 @@ namespace GameThing.Screens
 			// Draw UI
 			spriteBatch.Begin();
 			if (IsMyTurn)
-				endTurnButton.Draw(spriteBatch, playerSidePanel.Width + 2 * UIComponent.MARGIN, UIComponent.MARGIN);
+				endTurnButton.Draw(spriteBatch, playerSidePanel.Width + (2 * UIComponent.MARGIN), UIComponent.MARGIN);
 			statusPanel.Draw(spriteBatch, UIComponent.MARGIN, UIComponent.MARGIN);
 			playerSidePanel.Draw(spriteBatch, UIComponent.MARGIN, UIComponent.MARGIN);
 			if (data.IsTestMode)
-				winGameNowButton.Draw(spriteBatch, endTurnButton.Width + playerSidePanel.Width + 3 * UIComponent.MARGIN, UIComponent.MARGIN);
+				winGameNowButton.Draw(spriteBatch, endTurnButton.Width + playerSidePanel.Width + (3 * UIComponent.MARGIN), UIComponent.MARGIN);
 
-			gameLogPanel.Draw(spriteBatch, UIComponent.MARGIN, endTurnButton.Height + 2 * UIComponent.MARGIN);
+			gameLogPanel.Draw(spriteBatch, UIComponent.MARGIN, endTurnButton.Height + (2 * UIComponent.MARGIN));
 
 			if (selectedCharacter != null)
-				selectedPlayerStatsPanel.Draw(spriteBatch, gameLogPanel.Width + 2 * UIComponent.MARGIN, endTurnButton.Height + 2 * UIComponent.MARGIN);
+				selectedPlayerStatsPanel.Draw(spriteBatch, gameLogPanel.Width + (2 * UIComponent.MARGIN), endTurnButton.Height + (2 * UIComponent.MARGIN));
 
 			if (showGameLogEntryPanel)
 				heldGameLogEntryPanel.Draw(spriteBatch);
@@ -460,27 +456,26 @@ namespace GameThing.Screens
 			spriteBatch.End();
 		}
 
-		public void screenComponent_GestureRead(GestureSample gesture)
+		public void ScreenComponent_GestureRead(GestureSample gesture)
 		{
 			showGameLogEntryPanel = false;
 			showAppliedConditionDetailsPanel = false;
 		}
 
-		public async void endTurnButton_Tapped(string id, GestureSample gesture)
+		public async void EndTurnButton_Tapped(string id, GestureSample gesture)
 		{
 			await NextPlayerTurn();
 		}
 
-		public void winGameNowButton_Tapped(string id, GestureSample gesture)
+		public void WinGameNowButton_Tapped(string id, GestureSample gesture)
 		{
 			data.SetWinnerSide(data.Sides[data.GetPlayerId()]);
 			GameOver?.Invoke(data);
 		}
 
-		public void gameLogEntryRow_Held(UIComponent component, GestureSample gesture)
+		public void GameLogEntryRow_Held(UIComponent component, GestureSample gesture)
 		{
-			var heldLogEntryRow = component as GameLogEntryRow;
-			if (heldLogEntryRow == null)
+			if (!(component is GameLogEntryRow heldLogEntryRow))
 				return;
 
 			showGameLogEntryPanel = true;
@@ -501,7 +496,7 @@ namespace GameThing.Screens
 			}
 		}
 
-		public void appliedConditionRow_Held(UIComponent component, GestureSample gesture)
+		public void AppliedConditionRow_Held(UIComponent component, GestureSample gesture)
 		{
 			showAppliedConditionDetailsPanel = true;
 			appliedConditionDetailsPanel.Position = gesture.Position;

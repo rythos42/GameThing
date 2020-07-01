@@ -11,7 +11,7 @@ namespace GameThing.UI
 
 		public string Value
 		{
-			get { return value; }
+			get => value;
 			set
 			{
 				this.value = value;

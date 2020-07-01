@@ -13,7 +13,7 @@ namespace GameThing.Screens
 {
 	public class StartScreen
 	{
-		private const int AvailableMatchesCount = 6;
+		private const int availableMatchesCount = 6;
 
 		private readonly Button startAsTester;
 		private readonly Button teams;
@@ -38,12 +38,12 @@ namespace GameThing.Screens
 
 		public StartScreen()
 		{
-			startAsTester = new Button("Hot Seat") { Tapped = startHotSeat_Tapped };
-			teams = new Button("Teams") { Tapped = teams_Tapped };
-			createMatch = new Button("Create Match") { Tapped = createMatch_Tapped };
-			joinMatch = new Button("Join Match") { Tapped = joinMatch_Tapped, Enabled = false };
-			myMatches = new Button("My Matches") { Tapped = myMatches_Tapped };
-			help = new Button("Help") { Tapped = help_Tapped };
+			startAsTester = new Button("Hot Seat") { Tapped = StartHotSeat_Tapped };
+			teams = new Button("Teams") { Tapped = Teams_Tapped };
+			createMatch = new Button("Create Match") { Tapped = CreateMatch_Tapped };
+			joinMatch = new Button("Join Match") { Tapped = JoinMatch_Tapped, Enabled = false };
+			myMatches = new Button("My Matches") { Tapped = MyMatches_Tapped };
+			help = new Button("Help") { Tapped = Help_Tapped };
 
 			matchesPanel = new Panel();
 			helpPanel = new Panel() { ExtendedPadding = true };
@@ -57,12 +57,12 @@ namespace GameThing.Screens
 				myBattles.Remove(battleData);
 		}
 
-		private void help_Tapped(string id, GestureSample gesture)
+		private void Help_Tapped(string id, GestureSample gesture)
 		{
 			showingHelpDialog = true;
 		}
 
-		private void joinMatch_Tapped(string id, GestureSample gesture)
+		private void JoinMatch_Tapped(string id, GestureSample gesture)
 		{
 			joinMatch.Enabled = false;
 			myMatches.Enabled = true;
@@ -70,7 +70,7 @@ namespace GameThing.Screens
 			SetDynamicButtons();
 		}
 
-		private void myMatches_Tapped(string id, GestureSample gesture)
+		private void MyMatches_Tapped(string id, GestureSample gesture)
 		{
 			joinMatch.Enabled = true;
 			myMatches.Enabled = false;
@@ -78,7 +78,7 @@ namespace GameThing.Screens
 			SetDynamicButtons();
 		}
 
-		private void startHotSeat_Tapped(string id, GestureSample gesture)
+		private void StartHotSeat_Tapped(string id, GestureSample gesture)
 		{
 			var battleData = new BattleData { CurrentPlayerId = BattleData.TestPlayerOneId, IsTestMode = true };
 
@@ -91,14 +91,14 @@ namespace GameThing.Screens
 			StartBattle?.Invoke(battleData);
 		}
 
-		private void teams_Tapped(string id, GestureSample gesture)
+		private void Teams_Tapped(string id, GestureSample gesture)
 		{
 			ApplicationData.CurrentScreen = ScreenType.ManageTeams;
 		}
 
-		private async void createMatch_Tapped(string id, GestureSample gesture)
+		private async void CreateMatch_Tapped(string id, GestureSample gesture)
 		{
-			var newBattle = await battleManager.CreateBattle(teamManager.Team);
+			await battleManager.CreateBattle(teamManager.Team);
 			statusPanel.Show("Match created!");
 		}
 
@@ -116,8 +116,8 @@ namespace GameThing.Screens
 			screenComponent.Components.Add(helpPanel);
 			screenComponent.Components.Add(statusPanel);
 
-			for (int i = 0; i < AvailableMatchesCount; i++)
-				matchesPanel.Components.Add(new Button("No match available.") { Tapped = matchButton_Tapped });
+			for (var i = 0; i < availableMatchesCount; i++)
+				matchesPanel.Components.Add(new Button("No match available.") { Tapped = MatchButton_Tapped });
 
 			helpPanel.Background = content.PanelBackground;
 			helpPanel.Components.Add(new Text { Value = "Welcome to the MVP of GameThing!" });
@@ -129,7 +129,7 @@ namespace GameThing.Screens
 			helpPanel.Components.Add(new Text { Value = "After one side looses all characters, the other side wins!" });
 			helpPanel.Components.Add(new Text { Value = "The MVP only has play versus another person and is turn-based." });
 
-			screenComponent.GestureRead += screenComponent_GestureRead;
+			screenComponent.GestureRead += ScreenComponent_GestureRead;
 			screenComponent.LoadContent(content, graphicsDevice);
 
 			battleManager.GetAvailableBattles().ContinueWith(task =>
@@ -142,14 +142,14 @@ namespace GameThing.Screens
 			backgroundLine = content.BackgroundLine;
 		}
 
-		public void screenComponent_GestureRead(GestureSample gesture)
+		public void ScreenComponent_GestureRead(GestureSample gesture)
 		{
 			showingHelpDialog = false;
 		}
 
 		private void SetDynamicButtons()
 		{
-			for (int i = 0; i < AvailableMatchesCount; i++)
+			for (var i = 0; i < availableMatchesCount; i++)
 			{
 				var matchButton = (Button) matchesPanel.Components[i];
 				var battle = showingAvailableMatches
@@ -179,9 +179,9 @@ namespace GameThing.Screens
 			return (yourTurn ? "*** " : "") + "v. " + battleData.Sides.Keys.First(playerId => playerId != yourPlayerId);
 		}
 
-		private async void matchButton_Tapped(string matchId, GestureSample gesture)
+		private async void MatchButton_Tapped(string matchId, GestureSample gesture)
 		{
-			BattleData battleData = null;
+			BattleData battleData;
 			if (showingAvailableMatches)
 			{
 				battleData = await battleManager.JoinBattleAndObserve(matchId, teamManager.Team);

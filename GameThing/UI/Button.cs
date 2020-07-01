@@ -15,8 +15,7 @@ namespace GameThing.UI
 
 		private SpriteFont font;
 		private string text;
-		private const int MINIMUM_BUTTON_WIDTH = 300;
-
+		protected const int MINIMUM_BUTTON_WIDTH = 300;
 
 		public Button(string text)
 		{
@@ -29,16 +28,12 @@ namespace GameThing.UI
 
 		public string Text
 		{
-			get
-			{
-				return text;
-			}
+			get => text;
 			set
 			{
 				text = value;
 
-				ContentLoadedEventHandler updateUiFromText = null;
-				updateUiFromText = () =>
+				void updateUiFromText()
 				{
 					var textSize = font.MeasureString(text);
 					var minimumTextWidth = (int) textSize.X + (PADDING * 2);
@@ -47,7 +42,7 @@ namespace GameThing.UI
 
 					// remove self from event
 					ContentLoaded -= updateUiFromText;
-				};
+				}
 
 				// If we haven't loaded content yet, set an event to update after we do so.
 				if (!HasContentLoaded)
@@ -75,7 +70,7 @@ namespace GameThing.UI
 			Y = y;
 
 			var spacingCount = Width - buttonLeft.Width - buttonRight.Width;
-			for (int i = 0; i < spacingCount; i++)
+			for (var i = 0; i < spacingCount; i++)
 			{
 				spriteBatch.Draw(Enabled ? buttonTopBottom : buttonTopBottomDisabled, new Rectangle((int) x + buttonLeft.Width + i, (int) y, buttonTopBottom.Width, buttonTopBottom.Height), Color.White);
 				spriteBatch.Draw(Enabled ? buttonTopBottom : buttonTopBottomDisabled, new Rectangle((int) x + buttonLeft.Width + i, (int) y + Height - buttonTopBottom.Height, buttonTopBottom.Width, buttonTopBottom.Height), Color.White);
