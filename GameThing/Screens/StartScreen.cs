@@ -113,7 +113,7 @@ namespace GameThing.Screens
 		public void LoadContent(Content content, GraphicsDevice graphicsDevice)
 		{
 			statusPanel.Background = content.PanelBackground;
-			screenComponent = new ScreenComponent(graphicsDevice.PresentationParameters.BackBufferWidth, graphicsDevice.PresentationParameters.BackBufferHeight) { Background = content.MainBackground };
+			screenComponent = new ScreenComponent() { Background = content.MainBackground };
 			screenComponent.Components.Add(startAsTester);
 			screenComponent.Components.Add(teams);
 			screenComponent.Components.Add(createMatch);

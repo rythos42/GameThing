@@ -46,7 +46,7 @@ namespace GameThing.Screens
 
 		public void LoadContent(Content content, GraphicsDevice graphicsDevice)
 		{
-			screenComponent = new ScreenComponent(graphicsDevice.PresentationParameters.BackBufferWidth, graphicsDevice.PresentationParameters.BackBufferHeight) { Background = content.MainBackground };
+			screenComponent = new ScreenComponent() { Background = content.MainBackground };
 			screenComponent.Components.Add(backButton);
 			screenComponent.Components.Add(contentPanel);
 			//screenComponent.Components.Add(categoryPanel);
