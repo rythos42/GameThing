@@ -12,7 +12,7 @@ namespace GameThing.UI
 
 		public Character SelectedCharacter { get; set; }
 
-		public override void Draw(SpriteBatch spriteBatch)
+		protected override void DrawComponent(SpriteBatch spriteBatch)
 		{
 			Dimensions = SelectedCharacter == null || SelectedCharacter.Conditions.Count == 0
 				? Vector2.Zero
@@ -28,8 +28,6 @@ namespace GameThing.UI
 				spriteBatch.Draw(icon, new Vector2(drawX, Y), Color.White);
 				drawX += icon.Width;
 			});
-
-			IsVisible = true;
 		}
 
 		private Texture2D GetIcon(string name)

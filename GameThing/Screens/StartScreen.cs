@@ -30,7 +30,6 @@ namespace GameThing.Screens
 		private readonly List<BattleData> availableBattles = new List<BattleData>();
 		private readonly List<BattleData> myBattles = new List<BattleData>();
 		private bool showingAvailableMatches = true;
-		private bool showingHelpDialog = false;
 
 		public StartBattleEventHandler StartBattle;
 
@@ -44,9 +43,20 @@ namespace GameThing.Screens
 			help = new Button("Help") { Tapped = Help_Tapped, X = 450, Y = 800 };
 
 			matchesPanel = new Panel { X = 1100, Y = 168 };
-			helpPanel = new Panel() { ExtendedPadding = true, X = 400, Y = 300 };
+			helpPanel = new Panel() { ExtendedPadding = true, X = 400, Y = 300, IsVisible = false };
 
 			BattleManager.Instance.DataUpdated += BattleManager_DataUpdated;
+			teamManager.OnTeamLoad += TeamManager_OnTeamLoad;
+		}
+
+		private void TeamManager_OnTeamLoad(TeamData team)
+		{
+			var hasTeam = team != null;
+			startAsTester.IsVisible = hasTeam;
+			createMatch.IsVisible = hasTeam;
+			joinMatch.IsVisible = hasTeam;
+			myMatches.IsVisible = hasTeam;
+			matchesPanel.IsVisible = hasTeam;
 		}
 
 		private void BattleManager_DataUpdated(BattleData battleData)
@@ -57,7 +67,7 @@ namespace GameThing.Screens
 
 		private void Help_Tapped(string id, GestureSample gesture)
 		{
-			showingHelpDialog = true;
+			helpPanel.IsVisible = true;
 		}
 
 		private void JoinMatch_Tapped(string id, GestureSample gesture)
@@ -139,7 +149,7 @@ namespace GameThing.Screens
 
 		public void ScreenComponent_GestureRead(GestureSample gesture)
 		{
-			showingHelpDialog = false;
+			helpPanel.IsVisible = false;
 		}
 
 		private void SetDynamicButtons()
@@ -216,17 +226,17 @@ namespace GameThing.Screens
 			spriteBatch.Begin();
 			screenComponent.Draw(spriteBatch);
 
-			startAsTester.DrawConditional(spriteBatch, teamManager.HasTeam);
+			startAsTester.Draw(spriteBatch);
 			teams.Draw(spriteBatch);
-			createMatch.DrawConditional(spriteBatch, teamManager.HasTeam);
-			joinMatch.DrawConditional(spriteBatch, teamManager.HasTeam);
-			myMatches.DrawConditional(spriteBatch, teamManager.HasTeam);
+			createMatch.Draw(spriteBatch);
+			joinMatch.Draw(spriteBatch);
+			myMatches.Draw(spriteBatch);
 			help.Draw(spriteBatch);
 
 			spriteBatch.Draw(backgroundLine, new Rectangle((graphicsDevice.Viewport.Width / 2) - 15, (int) (graphicsDevice.Viewport.Height * 0.125), 30, (int) (graphicsDevice.Viewport.Height * 0.75)), Color.White);
 
-			matchesPanel.DrawConditional(spriteBatch, teamManager.HasTeam);
-			helpPanel.DrawConditional(spriteBatch, showingHelpDialog);
+			matchesPanel.Draw(spriteBatch);
+			helpPanel.Draw(spriteBatch);
 
 			statusPanel.X = graphicsDevice.PresentationParameters.BackBufferWidth - (statusPanel.MeasureContent().X + (UIComponent.MARGIN * 20)) - UIComponent.MARGIN;  // draw from right
 			statusPanel.Draw(spriteBatch);

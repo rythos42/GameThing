@@ -41,12 +41,12 @@ namespace GameThing.UI
 			}
 		}
 
-		public override void Draw(SpriteBatch spriteBatch)
+		protected override void DrawComponent(SpriteBatch spriteBatch)
 		{
 			if (!showing)
 				return;
 
-			base.Draw(spriteBatch);
+			base.DrawComponent(spriteBatch);
 		}
 	}
 }

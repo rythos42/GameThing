@@ -3,6 +3,7 @@ MVP vNext:
 		Build UI for manage character screen
 		Keeping in mind how to refactor existing screens
 
+	- character being drawn under trees near the bottom
 	- Add all the new cards
 	- Draw manage team screen and implement all things mentioned in it.
 		- Master cards

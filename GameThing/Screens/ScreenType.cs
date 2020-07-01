@@ -3,7 +3,7 @@
 	public enum ScreenType
 	{
 		Battle,
-		StartMenu,
+		Start,
 		GameOver,
 		ManageTeams,
 		ManageCharacter

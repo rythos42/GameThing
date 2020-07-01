@@ -14,7 +14,7 @@ namespace GameThing.UI
 
 		public GameLogEntry GameLogEntry { get; set; }
 
-		public override void Draw(SpriteBatch spriteBatch)
+		protected override void DrawComponent(SpriteBatch spriteBatch)
 		{
 			if (GameLogEntry == null)
 				return;
@@ -37,7 +37,6 @@ namespace GameThing.UI
 			}
 
 			spriteBatch.Draw(sourceIcon, new Rectangle((int) X, (int) Y, smallIconWidth, smallIconHeight), Color.White);
-			IsVisible = true;
 		}
 
 		private Texture2D GetIconForSide(CharacterSide side)

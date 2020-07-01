@@ -9,18 +9,10 @@ namespace GameThing
 	{
 		private static Configuration config;
 
-		public static string FirebaseUrl { get { return config.FirebaseUrl; } }
-		public static bool AllowMergingHotSeat { get { return config.AllowMergingHotSeat; } }
-
-		public static string PlayerId
-		{
-			get
-			{
-				return global::Android.Provider.Settings.Secure.GetString(global::Android.App.Application.Context.ContentResolver, global::Android.Provider.Settings.Secure.AndroidId);
-			}
-		}
-
-		public static ScreenType CurrentScreen { get; set; } = ScreenType.StartMenu;
+		public static string FirebaseUrl => config.FirebaseUrl;
+		public static bool AllowMergingHotSeat => config.AllowMergingHotSeat;
+		public static string PlayerId => global::Android.Provider.Settings.Secure.GetString(global::Android.App.Application.Context.ContentResolver, global::Android.Provider.Settings.Secure.AndroidId);
+		public static ScreenType CurrentScreen { get; set; } = ScreenType.Start;
 
 		public static void LoadConfiguration()
 		{

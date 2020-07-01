@@ -53,6 +53,13 @@ namespace GameThing.Screens
 
 		private void SetTeam(TeamData team)
 		{
+			var hasTeam = team != null;
+			deleteTeamButton.IsVisible = hasTeam;
+			createTeamButton.IsVisible = !hasTeam;
+			teamPanel.IsVisible = hasTeam;
+			if (team == null)
+				return;
+
 			for (var i = 0; i < characterCount; i++)
 			{
 				var character = team.Characters[i];
@@ -79,7 +86,7 @@ namespace GameThing.Screens
 
 		public void BackButton_Tapped(string id, GestureSample gesture)
 		{
-			ApplicationData.CurrentScreen = ScreenType.StartMenu;
+			ApplicationData.CurrentScreen = ScreenType.Start;
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Part of public API")]
@@ -101,13 +108,13 @@ namespace GameThing.Screens
 			spriteBatch.Begin();
 			screenComponent.Draw(spriteBatch);
 
-			deleteTeamButton.DrawConditional(spriteBatch, teamManager.HasTeam);
-			createTeamButton.DrawConditional(spriteBatch, !teamManager.HasTeam);
+			deleteTeamButton.Draw(spriteBatch);
+			createTeamButton.Draw(spriteBatch);
 			backButton.Draw(spriteBatch);
 
 			spriteBatch.Draw(backgroundLine, new Rectangle((graphicsDevice.Viewport.Width / 2) - 15, (int) (graphicsDevice.Viewport.Height * 0.125), 30, (int) (graphicsDevice.Viewport.Height * 0.75)), Color.White);
 
-			teamPanel.DrawConditional(spriteBatch, teamManager.HasTeam);
+			teamPanel.Draw(spriteBatch);
 
 			spriteBatch.End();
 		}

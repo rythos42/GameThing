@@ -37,7 +37,7 @@ namespace GameThing.Manager
 			await teamMapper.SaveTeam(ApplicationData.PlayerId, team);
 			HasTeam = true;
 			Team = team;
-			OnTeamLoad(team);
+			OnTeamLoad?.Invoke(team);
 		}
 
 		public async Task DeleteTeam()
@@ -45,6 +45,7 @@ namespace GameThing.Manager
 			await teamMapper.DeleteTeam(ApplicationData.PlayerId);
 			HasTeam = false;
 			Team = null;
+			OnTeamLoad?.Invoke(null);
 		}
 
 		public async Task MergeBattleDataAndSaveTeam(BattleData battleData)

@@ -64,7 +64,7 @@ namespace GameThing.UI
 			Components.ForEach(component => component.Update(gameTime));
 		}
 
-		public override void Draw(SpriteBatch spriteBatch)
+		protected override void DrawComponent(SpriteBatch spriteBatch)
 		{
 			if (!AutoDrawChildren)
 				return;
@@ -87,7 +87,6 @@ namespace GameThing.UI
 				component.Draw(spriteBatch);
 				drawY += MARGIN + component.Height;
 			});
-			IsVisible = true;
 		}
 	}
 }

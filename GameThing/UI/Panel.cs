@@ -26,7 +26,7 @@ namespace GameThing.UI
 			return new Vector2(width, height - MARGIN); // we add one extra margin in the loop above, remove it
 		}
 
-		public override void Draw(SpriteBatch spriteBatch)
+		protected override void DrawComponent(SpriteBatch spriteBatch)
 		{
 			if (SizingMode == SizingMode.FitContent)
 			{
@@ -38,7 +38,7 @@ namespace GameThing.UI
 			if (Background != null)
 				spriteBatch.Draw(Background, new Rectangle((int) X, (int) Y, Width, Height), Color.White);
 
-			base.Draw(spriteBatch);
+			base.DrawComponent(spriteBatch);
 		}
 	}
 }

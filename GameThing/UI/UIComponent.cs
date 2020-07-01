@@ -17,7 +17,7 @@ namespace GameThing.UI
 		public ContentLoadedEventHandler ContentLoaded;
 
 		public string Id { get; set; }
-		public bool IsVisible { get; set; }
+		public bool IsVisible { get; set; } = true;
 		public int Width { get; protected set; }
 		public int Height { get; protected set; }
 		public Vector2 Dimensions { get => new Vector2(Width, Height); set { Width = (int) value.X; Height = (int) value.Y; } }
@@ -40,14 +40,6 @@ namespace GameThing.UI
 				&& Y + Height > checkPoint.Y;
 		}
 
-		public void DrawConditional(SpriteBatch spriteBatch, bool draw)
-		{
-			if (draw)
-				Draw(spriteBatch);
-			else
-				IsVisible = false;
-		}
-
 		public void LoadContent(Content content, GraphicsDevice graphicsDevice)
 		{
 			LoadComponentContent(content, graphicsDevice);
@@ -55,7 +47,13 @@ namespace GameThing.UI
 			ContentLoaded?.Invoke();
 		}
 
+		public void Draw(SpriteBatch spriteBatch)
+		{
+			if (IsVisible)
+				DrawComponent(spriteBatch);
+		}
+
 		protected abstract void LoadComponentContent(Content content, GraphicsDevice graphicsDevice);
-		public abstract void Draw(SpriteBatch spriteBatch);
+		protected abstract void DrawComponent(SpriteBatch spriteBatch);
 	}
 }

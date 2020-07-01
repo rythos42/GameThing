@@ -102,10 +102,10 @@ namespace GameThing
 					case ScreenType.GameOver:
 					case ScreenType.Battle:
 					case ScreenType.ManageTeams:
-						ApplicationData.CurrentScreen = ScreenType.StartMenu; break;
+						ApplicationData.CurrentScreen = ScreenType.Start; break;
 					case ScreenType.ManageCharacter:
 						ApplicationData.CurrentScreen = ScreenType.ManageTeams; break;
-					case ScreenType.StartMenu:
+					case ScreenType.Start:
 						Exit();
 						break;
 				}
@@ -114,7 +114,7 @@ namespace GameThing
 			switch (ApplicationData.CurrentScreen)
 			{
 				case ScreenType.Battle: battleScreen.Update(gameTime); break;
-				case ScreenType.StartMenu: startScreen.Update(gameTime); break;
+				case ScreenType.Start: startScreen.Update(gameTime); break;
 				case ScreenType.ManageTeams: manageTeamScreen.Update(gameTime); break;
 				case ScreenType.ManageCharacter: manageCharacterScreen.Update(gameTime); break;
 			}
@@ -127,7 +127,7 @@ namespace GameThing
 			switch (ApplicationData.CurrentScreen)
 			{
 				case ScreenType.Battle: battleScreen.Draw(GraphicsDevice, spriteBatch, Window.ClientBounds); break;
-				case ScreenType.StartMenu: startScreen.Draw(GraphicsDevice, spriteBatch); break;
+				case ScreenType.Start: startScreen.Draw(GraphicsDevice, spriteBatch); break;
 				case ScreenType.GameOver: gameOverScreen.Draw(GraphicsDevice, spriteBatch); break;
 				case ScreenType.ManageTeams: manageTeamScreen.Draw(GraphicsDevice, spriteBatch); break;
 				case ScreenType.ManageCharacter: manageCharacterScreen.Draw(GraphicsDevice, spriteBatch); break;

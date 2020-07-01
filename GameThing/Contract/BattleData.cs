@@ -49,13 +49,7 @@ namespace GameThing.Contract
 			return IsTestMode ? CurrentPlayerId : ApplicationData.PlayerId;
 		}
 
-		public CharacterSide? WinnerSide
-		{
-			get
-			{
-				return Sides.ContainsKey(WinnerParticipantId) ? Sides[WinnerParticipantId] : (CharacterSide?) null;
-			}
-		}
+		public CharacterSide? WinnerSide => Sides.ContainsKey(WinnerParticipantId) ? Sides[WinnerParticipantId] : (CharacterSide?) null;
 
 		public void SetWinnerSide(CharacterSide side)
 		{
@@ -86,15 +80,8 @@ namespace GameThing.Contract
 			}
 		}
 
-		public bool HasBothSidesAdded
-		{
-			get { return Sides.Count == 2; }
-		}
-
-		public bool AnyCharacterUnactivated
-		{
-			get { return Characters.Any(character => !character.ActivatedThisRound); }
-		}
+		public bool HasBothSidesAdded => Sides.Count == 2;
+		public bool AnyCharacterUnactivated => Characters.Any(character => !character.ActivatedThisRound);
 
 		public void InitializeCharacters(string playerId, TeamData teamData, bool isTestMode = false)
 		{

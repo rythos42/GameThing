@@ -64,7 +64,7 @@ namespace GameThing.UI
 			font = content.PatrickHandSc;
 		}
 
-		public override void Draw(SpriteBatch spriteBatch)
+		protected override void DrawComponent(SpriteBatch spriteBatch)
 		{
 			var spacingCount = Width - buttonLeft.Width - buttonRight.Width;
 			for (var i = 0; i < spacingCount; i++)
@@ -77,8 +77,6 @@ namespace GameThing.UI
 			spriteBatch.Draw(Enabled ? buttonRight : buttonRightDisabled, new Rectangle((int) X + Width - buttonRight.Width, (int) Y, buttonRight.Width, Height), Color.White);
 
 			spriteBatch.DrawString(font, Text, new Vector2(X + PADDING, Y + PADDING), Enabled ? Color.Black : new Color(140, 140, 140));
-
-			IsVisible = true;
 		}
 	}
 }
