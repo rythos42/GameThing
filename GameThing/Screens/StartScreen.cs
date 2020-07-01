@@ -24,7 +24,7 @@ namespace GameThing.Screens
 		private ScreenComponent screenComponent;
 		private readonly Panel matchesPanel;
 		private readonly Panel helpPanel;
-		private readonly FadingTextPanel statusPanel = new FadingTextPanel { HorizontalAlignment = HorizontalAlignment.Right };
+		private readonly FadingTextPanel statusPanel = new FadingTextPanel { Y = UIComponent.MARGIN * 4 };
 		private Texture2D backgroundLine;
 
 		private readonly TeamManager teamManager = TeamManager.Instance;
@@ -38,15 +38,15 @@ namespace GameThing.Screens
 
 		public StartScreen()
 		{
-			startAsTester = new Button("Hot Seat") { Tapped = StartHotSeat_Tapped };
-			teams = new Button("Teams") { Tapped = Teams_Tapped };
-			createMatch = new Button("Create Match") { Tapped = CreateMatch_Tapped };
-			joinMatch = new Button("Join Match") { Tapped = JoinMatch_Tapped, Enabled = false };
-			myMatches = new Button("My Matches") { Tapped = MyMatches_Tapped };
-			help = new Button("Help") { Tapped = Help_Tapped };
+			startAsTester = new Button("Hot Seat") { Tapped = StartHotSeat_Tapped, X = 450, Y = 200 };
+			teams = new Button("Teams") { Tapped = Teams_Tapped, X = 450, Y = 320 };
+			createMatch = new Button("Create Match") { Tapped = CreateMatch_Tapped, X = 450, Y = 450 };
+			joinMatch = new Button("Join Match") { Tapped = JoinMatch_Tapped, Enabled = false, X = 450, Y = 560 };
+			myMatches = new Button("My Matches") { Tapped = MyMatches_Tapped, X = 450, Y = 680 };
+			help = new Button("Help") { Tapped = Help_Tapped, X = 450, Y = 800 };
 
-			matchesPanel = new Panel();
-			helpPanel = new Panel() { ExtendedPadding = true };
+			matchesPanel = new Panel { X = 1100, Y = 168 };
+			helpPanel = new Panel() { ExtendedPadding = true, X = 400, Y = 300 };
 
 			BattleManager.Instance.DataUpdated += BattleManager_DataUpdated;
 		}
@@ -218,19 +218,20 @@ namespace GameThing.Screens
 			spriteBatch.Begin();
 			screenComponent.Draw(spriteBatch);
 
-			startAsTester.DrawConditional(spriteBatch, 450, 200, teamManager.HasTeam);
-			teams.Draw(spriteBatch, 450, 320);
-			createMatch.DrawConditional(spriteBatch, 450, 440, teamManager.HasTeam);
-			joinMatch.DrawConditional(spriteBatch, 450, 560, teamManager.HasTeam);
-			myMatches.DrawConditional(spriteBatch, 450, 680, teamManager.HasTeam);
-			help.Draw(spriteBatch, 450, 800);
+			startAsTester.DrawConditional(spriteBatch, teamManager.HasTeam);
+			teams.Draw(spriteBatch);
+			createMatch.DrawConditional(spriteBatch, teamManager.HasTeam);
+			joinMatch.DrawConditional(spriteBatch, teamManager.HasTeam);
+			myMatches.DrawConditional(spriteBatch, teamManager.HasTeam);
+			help.Draw(spriteBatch);
 
 			spriteBatch.Draw(backgroundLine, new Rectangle((graphicsDevice.Viewport.Width / 2) - 15, (int) (graphicsDevice.Viewport.Height * 0.125), 30, (int) (graphicsDevice.Viewport.Height * 0.75)), Color.White);
 
-			matchesPanel.DrawConditional(spriteBatch, 1100, 168, teamManager.HasTeam);
-			helpPanel.DrawConditional(spriteBatch, 400, 300, showingHelpDialog);
+			matchesPanel.DrawConditional(spriteBatch, teamManager.HasTeam);
+			helpPanel.DrawConditional(spriteBatch, showingHelpDialog);
 
-			statusPanel.Draw(spriteBatch, UIComponent.MARGIN * 20, UIComponent.MARGIN * 4);
+			statusPanel.X = graphicsDevice.PresentationParameters.BackBufferWidth - (statusPanel.MeasureContent().X + (UIComponent.MARGIN * 20)) - UIComponent.MARGIN;  // draw from right
+			statusPanel.Draw(spriteBatch);
 
 			spriteBatch.End();
 		}

@@ -10,19 +10,19 @@ namespace GameThing.Screens
 	{
 		private ScreenComponent screenComponent;
 		private readonly Button backButton;
-		private readonly Panel categoryPanel = new Panel();
-		private readonly Panel contentPanel = new Panel { ShowBorder = true };
+		private readonly Panel categoryPanel = new Panel { X = 320, Y = 320 };
+		private readonly Panel contentPanel = new Panel { ShowBorder = true, X = 400, Y = 300 };
 
 		private Character character;
 
 		public ManageCharacterScreen()
 		{
-			backButton = new Button("Back") { Tapped = backButton_Tapped };
+			backButton = new Button("Back") { Tapped = BackButton_Tapped, X = 200, Y = 100 };
 		}
 
 		public Character Character
 		{
-			get { return character; }
+			get => character;
 			set
 			{
 				character = value;
@@ -39,7 +39,7 @@ namespace GameThing.Screens
 			}
 		}
 
-		public void backButton_Tapped(string id, GestureSample gesture)
+		public void BackButton_Tapped(string id, GestureSample gesture)
 		{
 			ApplicationData.CurrentScreen = ScreenType.ManageTeams;
 		}
@@ -53,6 +53,7 @@ namespace GameThing.Screens
 			screenComponent.LoadContent(content, graphicsDevice);
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Part of public API")]
 		public void Update(GameTime gameTime)
 		{
 			while (TouchPanel.IsGestureAvailable)
@@ -70,9 +71,9 @@ namespace GameThing.Screens
 
 			spriteBatch.Begin();
 			screenComponent.Draw(spriteBatch);
-			backButton.Draw(spriteBatch, 200, 100);
-			//categoryPanel.Draw(spriteBatch, 450, 320);
-			contentPanel.Draw(spriteBatch, 400, 300);
+			backButton.Draw(spriteBatch);
+			//categoryPanel.Draw(spriteBatch);
+			contentPanel.Draw(spriteBatch);
 
 			spriteBatch.End();
 		}

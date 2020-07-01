@@ -250,8 +250,8 @@
     <Compile Include="UI\AppliedConditionRow.cs" />
     <Compile Include="Entities\Cards\Category.cs" />
     <Compile Include="UI\ComponentList.cs" />
+    <Compile Include="UI\SizingMode.cs" />
     <Compile Include="UI\GameLogEntryRow.cs" />
-    <Compile Include="UI\HorizontalAlignment.cs" />
     <Compile Include="UI\ScreenComponent.cs" />
     <Compile Include="UI\UIComponentGestureReadEventHandler.cs" />
     <Compile Include="UI\UIComponentHeldEventHandler.cs" />

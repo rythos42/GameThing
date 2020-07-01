@@ -14,32 +14,29 @@ namespace GameThing.UI
 
 		public GameLogEntry GameLogEntry { get; set; }
 
-		public override void Draw(SpriteBatch spriteBatch, float x, float y)
+		public override void Draw(SpriteBatch spriteBatch)
 		{
-			X = x;
-			Y = y;
-
 			if (GameLogEntry == null)
 				return;
 
 			var sourceIcon = GetIconForSide(GameLogEntry.SourceCharacterSide);
 			var smallIconWidth = sourceIcon.Width / 2;
 			var smallIconHeight = sourceIcon.Height / 2;
-			var nextX = x + (smallIconWidth / 2);
+			var nextX = X + (smallIconWidth / 2);
 			if (GameLogEntry.MovedTo != null)
 			{
-				spriteBatch.Draw(moveIcon, new Vector2(x + 2, y + 10), Color.White);
+				spriteBatch.Draw(moveIcon, new Vector2(X + 2, Y + 10), Color.White);
 			}
 			else
 			{
-				spriteBatch.Draw(cardIcon, new Vector2(x + 2, y + 10), Color.White);
+				spriteBatch.Draw(cardIcon, new Vector2(X + 2, Y + 10), Color.White);
 
 				var targetIcon = GetIconForSide(GameLogEntry.TargetCharacterSide);
 				nextX += smallIconWidth / 2;
-				spriteBatch.Draw(targetIcon, new Rectangle((int) nextX, (int) (y + (cardIcon.Height * 0.75)), smallIconWidth, smallIconHeight), Color.White);
+				spriteBatch.Draw(targetIcon, new Rectangle((int) nextX, (int) (Y + (cardIcon.Height * 0.75)), smallIconWidth, smallIconHeight), Color.White);
 			}
 
-			spriteBatch.Draw(sourceIcon, new Rectangle((int) x, (int) y, smallIconWidth, smallIconHeight), Color.White);
+			spriteBatch.Draw(sourceIcon, new Rectangle((int) X, (int) Y, smallIconWidth, smallIconHeight), Color.White);
 			IsVisible = true;
 		}
 

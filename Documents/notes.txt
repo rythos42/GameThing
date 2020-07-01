@@ -1,9 +1,12 @@
-Todo:
+MVP vNext:
+	Refactor UI
+		Build UI for manage character screen
+		Keeping in mind how to refactor existing screens
+
 	- Add all the new cards
-	- Change available cards
-	- Master cards
-	- Class unlocks
-	- draw manage team screen
+	- Draw manage team screen and implement all things mentioned in it.
+		- Master cards
+		- Class unlocks
 	- release notes
 	
 Nice to have:

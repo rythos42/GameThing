@@ -30,15 +30,12 @@ namespace GameThing.UI
 			SetDimensions();
 		}
 
-		public override void Draw(SpriteBatch spriteBatch, float x, float y)
+		public override void Draw(SpriteBatch spriteBatch)
 		{
-			X = x;
-			Y = y;
-
 			if (Value == null)
 				return;
 
-			spriteBatch.DrawString(font, Value, new Vector2(x, y), Color.Black);
+			spriteBatch.DrawString(font, Value, new Vector2(X, Y), Color.Black);
 			IsVisible = true;
 		}
 	}

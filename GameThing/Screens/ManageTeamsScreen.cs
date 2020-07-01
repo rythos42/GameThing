@@ -18,7 +18,7 @@ namespace GameThing.Screens
 		private readonly Button createTeamButton;
 		private readonly Button deleteTeamButton;
 		private readonly Button backButton;
-		private readonly Panel teamPanel = new Panel();
+		private readonly Panel teamPanel = new Panel { X = 1100, Y = 168 };
 		private Texture2D backgroundLine;
 
 		private TeamData team;
@@ -29,9 +29,9 @@ namespace GameThing.Screens
 
 		public ManageTeamScreen()
 		{
-			createTeamButton = new Button("Create Team") { Tapped = createTeamButton_Tapped };
-			deleteTeamButton = new Button("Delete Team") { Tapped = deleteTeamButton_Tapped };
-			backButton = new Button("Back") { Tapped = backButton_Tapped };
+			createTeamButton = new Button("Create Team") { Tapped = CreateTeamButton_Tapped, X = 450, Y = 200 };
+			deleteTeamButton = new Button("Delete Team") { Tapped = DeleteTeamButton_Tapped, X = 450, Y = 200 };
+			backButton = new Button("Back") { Tapped = BackButton_Tapped, X = 450, Y = 320 };
 
 			if (teamManager.Team == null)
 				teamManager.OnTeamLoad += SetTeam;
@@ -53,35 +53,36 @@ namespace GameThing.Screens
 
 		private void SetTeam(TeamData team)
 		{
-			for (int i = 0; i < characterCount; i++)
+			for (var i = 0; i < characterCount; i++)
 			{
 				var character = team.Characters[i];
-				teamPanel.Components.Add(new Button(character.Name) { Tapped = characterButton_Tapped, Id = character.Id.ToString() });
+				teamPanel.Components.Add(new Button(character.Name) { Tapped = CharacterButton_Tapped, Id = character.Id.ToString() });
 			}
 		}
 
-		public void characterButton_Tapped(string id, GestureSample gesture)
+		public void CharacterButton_Tapped(string id, GestureSample gesture)
 		{
 			var selectedCharacter = teamManager.Team.Characters.Single(character => character.Id == Guid.Parse(id));
 			CharacterTapped?.Invoke(selectedCharacter);
 		}
 
-		public async void createTeamButton_Tapped(string id, GestureSample gesture)
+		public async void CreateTeamButton_Tapped(string id, GestureSample gesture)
 		{
 			team = TeamData.CreateDefaultTeam();
 			await teamManager.CreateTeam(team);
 		}
 
-		public async void deleteTeamButton_Tapped(string id, GestureSample gesture)
+		public async void DeleteTeamButton_Tapped(string id, GestureSample gesture)
 		{
 			await teamManager.DeleteTeam();
 		}
 
-		public void backButton_Tapped(string id, GestureSample gesture)
+		public void BackButton_Tapped(string id, GestureSample gesture)
 		{
 			ApplicationData.CurrentScreen = ScreenType.StartMenu;
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Part of public API")]
 		public void Update(GameTime gameTime)
 		{
 			while (TouchPanel.IsGestureAvailable)
@@ -100,13 +101,13 @@ namespace GameThing.Screens
 			spriteBatch.Begin();
 			screenComponent.Draw(spriteBatch);
 
-			deleteTeamButton.DrawConditional(spriteBatch, 450, 200, teamManager.HasTeam);
-			createTeamButton.DrawConditional(spriteBatch, 450, 200, !teamManager.HasTeam);
-			backButton.Draw(spriteBatch, 450, 320);
+			deleteTeamButton.DrawConditional(spriteBatch, teamManager.HasTeam);
+			createTeamButton.DrawConditional(spriteBatch, !teamManager.HasTeam);
+			backButton.Draw(spriteBatch);
 
 			spriteBatch.Draw(backgroundLine, new Rectangle((graphicsDevice.Viewport.Width / 2) - 15, (int) (graphicsDevice.Viewport.Height * 0.125), 30, (int) (graphicsDevice.Viewport.Height * 0.75)), Color.White);
 
-			teamPanel.DrawConditional(spriteBatch, 1100, 168, teamManager.HasTeam);
+			teamPanel.DrawConditional(spriteBatch, teamManager.HasTeam);
 
 			spriteBatch.End();
 		}

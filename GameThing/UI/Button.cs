@@ -64,22 +64,19 @@ namespace GameThing.UI
 			font = content.PatrickHandSc;
 		}
 
-		public override void Draw(SpriteBatch spriteBatch, float x, float y)
+		public override void Draw(SpriteBatch spriteBatch)
 		{
-			X = x;
-			Y = y;
-
 			var spacingCount = Width - buttonLeft.Width - buttonRight.Width;
 			for (var i = 0; i < spacingCount; i++)
 			{
-				spriteBatch.Draw(Enabled ? buttonTopBottom : buttonTopBottomDisabled, new Rectangle((int) x + buttonLeft.Width + i, (int) y, buttonTopBottom.Width, buttonTopBottom.Height), Color.White);
-				spriteBatch.Draw(Enabled ? buttonTopBottom : buttonTopBottomDisabled, new Rectangle((int) x + buttonLeft.Width + i, (int) y + Height - buttonTopBottom.Height, buttonTopBottom.Width, buttonTopBottom.Height), Color.White);
+				spriteBatch.Draw(Enabled ? buttonTopBottom : buttonTopBottomDisabled, new Rectangle((int) X + buttonLeft.Width + i, (int) Y, buttonTopBottom.Width, buttonTopBottom.Height), Color.White);
+				spriteBatch.Draw(Enabled ? buttonTopBottom : buttonTopBottomDisabled, new Rectangle((int) X + buttonLeft.Width + i, (int) Y + Height - buttonTopBottom.Height, buttonTopBottom.Width, buttonTopBottom.Height), Color.White);
 			}
 
-			spriteBatch.Draw(Enabled ? buttonLeft : buttonLeftDisabled, new Rectangle((int) x, (int) y, buttonLeft.Width, Height), Color.White);
-			spriteBatch.Draw(Enabled ? buttonRight : buttonRightDisabled, new Rectangle((int) x + Width - buttonRight.Width, (int) y, buttonRight.Width, Height), Color.White);
+			spriteBatch.Draw(Enabled ? buttonLeft : buttonLeftDisabled, new Rectangle((int) X, (int) Y, buttonLeft.Width, Height), Color.White);
+			spriteBatch.Draw(Enabled ? buttonRight : buttonRightDisabled, new Rectangle((int) X + Width - buttonRight.Width, (int) Y, buttonRight.Width, Height), Color.White);
 
-			spriteBatch.DrawString(font, Text, new Vector2(x + PADDING, y + PADDING), Enabled ? Color.Black : new Color(140, 140, 140));
+			spriteBatch.DrawString(font, Text, new Vector2(X + PADDING, Y + PADDING), Enabled ? Color.Black : new Color(140, 140, 140));
 
 			IsVisible = true;
 		}

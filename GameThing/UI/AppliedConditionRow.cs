@@ -12,10 +12,8 @@ namespace GameThing.UI
 
 		public Character SelectedCharacter { get; set; }
 
-		public override void Draw(SpriteBatch spriteBatch, float x, float y)
+		public override void Draw(SpriteBatch spriteBatch)
 		{
-			X = x;
-			Y = y;
 			Dimensions = SelectedCharacter == null || SelectedCharacter.Conditions.Count == 0
 				? Vector2.Zero
 				: new Vector2(SelectedCharacter.Conditions.Count * conditionIcons[0].Width, conditionIcons[0].Height);
@@ -23,11 +21,12 @@ namespace GameThing.UI
 			if (SelectedCharacter == null)
 				return;
 
+			var drawX = X;
 			SelectedCharacter.Conditions.ForEach(appliedCondition =>
 			{
 				var icon = GetIcon(appliedCondition.Condition.IconName);
-				spriteBatch.Draw(icon, new Vector2(x, y), Color.White);
-				x += icon.Width;
+				spriteBatch.Draw(icon, new Vector2(drawX, Y), Color.White);
+				drawX += icon.Width;
 			});
 
 			IsVisible = true;

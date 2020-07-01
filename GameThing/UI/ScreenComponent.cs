@@ -13,7 +13,7 @@ namespace GameThing.UI
 			Dimensions = screenSize;
 		}
 
-		public override void Draw(SpriteBatch spriteBatch, float x, float y)
+		public override void Draw(SpriteBatch spriteBatch)
 		{
 			spriteBatch.Draw(Background, new Rectangle(0, 0, (int) screenSize.X, (int) screenSize.Y), Color.White);
 		}
