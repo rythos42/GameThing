@@ -13,8 +13,6 @@ namespace GameThing.Screens
 {
 	public class StartScreen
 	{
-		private const int availableMatchesCount = 6;
-
 		private readonly Button startAsTester;
 		private readonly Button teams;
 		private readonly Button createMatch;
@@ -116,9 +114,6 @@ namespace GameThing.Screens
 			screenComponent.Components.Add(helpPanel);
 			screenComponent.Components.Add(statusPanel);
 
-			for (var i = 0; i < availableMatchesCount; i++)
-				matchesPanel.Components.Add(new Button("No match available.") { Tapped = MatchButton_Tapped });
-
 			helpPanel.Background = content.PanelBackground;
 			helpPanel.Components.Add(new Text { Value = "Welcome to the MVP of GameThing!" });
 			helpPanel.Components.Add(new Text { Value = "You play as a team of 5 characters." });
@@ -149,18 +144,21 @@ namespace GameThing.Screens
 
 		private void SetDynamicButtons()
 		{
-			for (var i = 0; i < availableMatchesCount; i++)
-			{
-				var matchButton = (Button) matchesPanel.Components[i];
-				var battle = showingAvailableMatches
-					? (i < availableBattles.Count ? availableBattles[i] : null)
-					: (i < myBattles.Count ? myBattles[i] : null);
+			matchesPanel.Components.Clear();
+			var count = showingAvailableMatches ? availableBattles.Count : myBattles.Count;
 
-				matchButton.Id = battle?.MatchId;
-				matchButton.Text = GetBattleName(battle);
-				matchButton.Enabled = showingAvailableMatches
-					? battle != null
-					: battle?.HasBothSidesAdded == true;
+			for (var i = 0; i < count; i++)
+			{
+				var battle = showingAvailableMatches ? availableBattles[i] : myBattles[i];
+				var matchButton = new Button(GetBattleName(battle))
+				{
+					Id = battle.MatchId,
+					Enabled = showingAvailableMatches
+						? battle != null
+						: battle?.HasBothSidesAdded == true,
+					Tapped = MatchButton_Tapped
+				};
+				matchesPanel.Components.Add(matchButton);
 			}
 		}
 
