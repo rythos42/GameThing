@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GameThing.UI
 {
-	public class FadingTextPanel : ElasticPanel
+	public class FadingTextPanel : Panel
 	{
 		private SpriteFont font;
 

@@ -41,21 +41,21 @@ namespace GameThing.Screens
 
 		private readonly Button endTurnButton;
 		private readonly Button winGameNowButton;
-		private readonly FadingTextPanel statusPanel = new FadingTextPanel() { PlaceFromRight = true };
-		private readonly ElasticPanel playerSidePanel = new ElasticPanel();
+		private readonly FadingTextPanel statusPanel = new FadingTextPanel() { HorizontalAlignment = HorizontalAlignment.Right };
+		private readonly Panel playerSidePanel = new Panel();
 		private readonly Text playerSideText = new Text();
 
-		private readonly ElasticPanel gameLogPanel = new ElasticPanel();
+		private readonly Panel gameLogPanel = new Panel();
 		private bool showGameLogEntryPanel;
-		private readonly ElasticPanel heldGameLogEntryPanel = new ElasticPanel();
+		private readonly Panel heldGameLogEntryPanel = new Panel();
 		private readonly Text heldGameLogSource = new Text();
 		private readonly Text heldGameLogTarget = new Text();
 		private readonly Text heldGameLogActionText = new Text();
 
 		private bool showAppliedConditionDetailsPanel;
-		private readonly ElasticPanel appliedConditionDetailsPanel = new ElasticPanel();
+		private readonly Panel appliedConditionDetailsPanel = new Panel();
 		private readonly Text appliedConditionDetailsText = new Text();
-		private readonly ElasticPanel selectedPlayerStatsPanel = new ElasticPanel();
+		private readonly Panel selectedPlayerStatsPanel = new Panel();
 		private readonly Text sideText = new Text();
 		private readonly Text playerClassText = new Text();
 		private readonly Text healthText = new Text();

@@ -22,9 +22,9 @@ namespace GameThing.Screens
 		private readonly Button myMatches;
 		private readonly Button help;
 		private ScreenComponent screenComponent;
-		private readonly ElasticPanel matchesPanel;
-		private readonly ElasticPanel helpPanel;
-		private readonly FadingTextPanel statusPanel = new FadingTextPanel { PlaceFromRight = true };
+		private readonly Panel matchesPanel;
+		private readonly Panel helpPanel;
+		private readonly FadingTextPanel statusPanel = new FadingTextPanel { HorizontalAlignment = HorizontalAlignment.Right };
 		private Texture2D backgroundLine;
 
 		private readonly TeamManager teamManager = TeamManager.Instance;
@@ -45,8 +45,8 @@ namespace GameThing.Screens
 			myMatches = new Button("My Matches") { Tapped = myMatches_Tapped };
 			help = new Button("Help") { Tapped = help_Tapped };
 
-			matchesPanel = new ElasticPanel();
-			helpPanel = new ElasticPanel() { ExtendedPadding = true };
+			matchesPanel = new Panel();
+			helpPanel = new Panel() { ExtendedPadding = true };
 
 			BattleManager.Instance.DataUpdated += BattleManager_DataUpdated;
 		}

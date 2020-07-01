@@ -3,14 +3,14 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GameThing.UI
 {
-	public class ElasticPanel : UIContainer
+	public class Panel : UIContainer
 	{
-		public ElasticPanel()
+		public Panel()
 		{
 			AutoDrawChildren = true;
 		}
 
-		public bool PlaceFromRight { get; set; }
+		public HorizontalAlignment HorizontalAlignment { get; set; }
 		public Texture2D Background { get; set; }
 
 		private Vector2 MeasureContent()
@@ -28,7 +28,7 @@ namespace GameThing.UI
 
 		protected virtual Vector2 GetDrawingPosition(GraphicsDevice graphicsDevice, float x, float y)
 		{
-			if (PlaceFromRight)
+			if (HorizontalAlignment == HorizontalAlignment.Right)
 			{
 				var width = MeasureContent().X + x;
 				return new Vector2(graphicsDevice.PresentationParameters.BackBufferWidth - width - MARGIN, y);

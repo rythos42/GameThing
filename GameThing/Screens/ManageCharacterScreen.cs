@@ -10,8 +10,8 @@ namespace GameThing.Screens
 	{
 		private ScreenComponent screenComponent;
 		private readonly Button backButton;
-		private readonly ElasticPanel categoryPanel = new ElasticPanel();
-		private readonly ElasticPanel contentPanel = new ElasticPanel { ShowBorder = true };
+		private readonly Panel categoryPanel = new Panel();
+		private readonly Panel contentPanel = new Panel { ShowBorder = true };
 
 		private Character character;
 

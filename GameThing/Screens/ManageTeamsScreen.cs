@@ -18,7 +18,7 @@ namespace GameThing.Screens
 		private readonly Button createTeamButton;
 		private readonly Button deleteTeamButton;
 		private readonly Button backButton;
-		private readonly ElasticPanel teamPanel = new ElasticPanel();
+		private readonly Panel teamPanel = new Panel();
 		private Texture2D backgroundLine;
 
 		private TeamData team;
