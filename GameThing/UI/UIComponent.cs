@@ -8,8 +8,6 @@ namespace GameThing.UI
 	{
 		protected const int BOX_SHADOW_X = 5;
 		protected const int BOX_SHADOW_Y = 5;
-		public const int MARGIN = 16;
-		public const int PADDING = 16;
 
 		public UIComponentTappedEventHandler Tapped;
 		public UIComponentHeldEventHandler Held;
@@ -23,6 +21,8 @@ namespace GameThing.UI
 		public Vector2 Dimensions { get => new Vector2(Width, Height); set { Width = (int) value.X; Height = (int) value.Y; } }
 		public float X { get; set; }
 		public float Y { get; set; }
+		public int Padding { get; set; } = 8;
+		public int Margin { get; set; } = 8;
 		public Vector2 Position { get => new Vector2(X, Y); set { X = value.X; Y = value.Y; } }
 		public bool HasContentLoaded { get; protected set; }
 		public bool Enabled { get; set; } = true;

@@ -20,6 +20,7 @@ namespace GameThing.UI
 		public Button(string text)
 		{
 			Text = text;
+			Padding = 16;
 		}
 
 		public bool IsHighlighted { get; set; }
@@ -36,9 +37,9 @@ namespace GameThing.UI
 				void updateUiFromText()
 				{
 					var textSize = font.MeasureString(text);
-					var minimumTextWidth = (int) textSize.X + (PADDING * 2);
+					var minimumTextWidth = (int) textSize.X + (Padding * 2);
 					Width = UseMinimumButtonSize ? MathHelper.Max(minimumTextWidth, MINIMUM_BUTTON_WIDTH) : minimumTextWidth;
-					Height = (int) textSize.Y + (PADDING * 2);
+					Height = (int) textSize.Y + (Padding * 2);
 
 					// remove self from event
 					ContentLoaded -= updateUiFromText;
@@ -76,7 +77,7 @@ namespace GameThing.UI
 			spriteBatch.Draw(Enabled ? buttonLeft : buttonLeftDisabled, new Rectangle((int) X, (int) Y, buttonLeft.Width, Height), Color.White);
 			spriteBatch.Draw(Enabled ? buttonRight : buttonRightDisabled, new Rectangle((int) X + Width - buttonRight.Width, (int) Y, buttonRight.Width, Height), Color.White);
 
-			spriteBatch.DrawString(font, Text, new Vector2(X + PADDING, Y + PADDING), Enabled ? Color.Black : new Color(140, 140, 140));
+			spriteBatch.DrawString(font, Text, new Vector2(X + Padding, Y + Padding), Enabled ? Color.Black : new Color(140, 140, 140));
 		}
 	}
 }

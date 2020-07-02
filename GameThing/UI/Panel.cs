@@ -11,7 +11,6 @@ namespace GameThing.UI
 		}
 
 		public SizingMode SizingMode { get; set; }
-		public Texture2D Background { get; set; }
 
 		public Vector2 MeasureContent()
 		{
@@ -19,11 +18,11 @@ namespace GameThing.UI
 			var height = 0;
 			Components.ForEach(component =>
 			{
-				width = MathHelper.Max(width, component.Width);
-				height += component.Height + MARGIN;
+				width = MathHelper.Max(width, component.Width + (component.Margin * 2));
+				height += component.Height + (component.Margin * 2);
 			});
 
-			return new Vector2(width, height - MARGIN); // we add one extra margin in the loop above, remove it
+			return new Vector2(width, height);
 		}
 
 		protected override void DrawComponent(SpriteBatch spriteBatch)
@@ -31,12 +30,9 @@ namespace GameThing.UI
 			if (SizingMode == SizingMode.FitContent)
 			{
 				var contentSize = MeasureContent();
-				Width = (int) contentSize.X + (PADDING * 2) + (ExtendedPadding ? 64 : 0);
-				Height = (int) contentSize.Y + (PADDING * 2) + (ExtendedPadding ? 64 : 0);
+				Width = (int) contentSize.X + (Padding * 2);
+				Height = (int) contentSize.Y + (Padding * 2);
 			}
-
-			if (Background != null)
-				spriteBatch.Draw(Background, new Rectangle((int) X, (int) Y, Width, Height), Color.White);
 
 			base.DrawComponent(spriteBatch);
 		}

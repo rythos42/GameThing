@@ -12,8 +12,9 @@ namespace GameThing.UI
 
 		public ComponentList Components { get; set; } = new ComponentList();
 		public bool AutoDrawChildren { get; set; } = false;
-		public bool ExtendedPadding { get; set; } = false;
 		public bool ShowBorder { get; set; } = false;
+
+		public Texture2D Background { get; set; }
 
 		protected UIComponent GetComponentAt(Vector2 position)
 		{
@@ -66,8 +67,8 @@ namespace GameThing.UI
 
 		protected override void DrawComponent(SpriteBatch spriteBatch)
 		{
-			if (!AutoDrawChildren)
-				return;
+			if (Background != null)
+				spriteBatch.Draw(Background, new Rectangle((int) X, (int) Y, Width, Height), Color.White);
 
 			if (ShowBorder)
 			{
@@ -78,14 +79,17 @@ namespace GameThing.UI
 				spriteBatch.Draw(borderTexture, new Rectangle((int) X + Width, (int) Y, borderWidth, Height), Color.White);   // Right
 			}
 
-			var drawX = X + MARGIN + (ExtendedPadding ? 32 : 0);
-			var drawY = Y + MARGIN + (ExtendedPadding ? 32 : 0);
+			if (!AutoDrawChildren)
+				return;
+
+			var drawX = X + Margin + Padding;
+			var drawY = Y + Margin + Padding;
 			Components.ForEach(component =>
 			{
 				component.X = drawX;
 				component.Y = drawY;
 				component.Draw(spriteBatch);
-				drawY += MARGIN + component.Height;
+				drawY += (2 * Margin) + component.Height;
 			});
 		}
 	}

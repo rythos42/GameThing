@@ -22,7 +22,7 @@ namespace GameThing.Screens
 		private ScreenComponent screenComponent;
 		private readonly Panel matchesPanel;
 		private readonly Panel helpPanel;
-		private readonly FadingTextPanel statusPanel = new FadingTextPanel { Y = UIComponent.MARGIN * 4 };
+		private readonly FadingTextPanel statusPanel = new FadingTextPanel { Y = 200 };
 		private Texture2D backgroundLine;
 
 		private readonly TeamManager teamManager = TeamManager.Instance;
@@ -43,7 +43,7 @@ namespace GameThing.Screens
 			help = new Button("Help") { Tapped = Help_Tapped, X = 450, Y = 800 };
 
 			matchesPanel = new Panel { X = 1100, Y = 168 };
-			helpPanel = new Panel() { ExtendedPadding = true, X = 400, Y = 300, IsVisible = false };
+			helpPanel = new Panel() { Padding = 32, X = 400, Y = 300, IsVisible = false };
 
 			BattleManager.Instance.DataUpdated += BattleManager_DataUpdated;
 			teamManager.OnTeamLoad += TeamManager_OnTeamLoad;
@@ -238,7 +238,7 @@ namespace GameThing.Screens
 			matchesPanel.Draw(spriteBatch);
 			helpPanel.Draw(spriteBatch);
 
-			statusPanel.X = graphicsDevice.PresentationParameters.BackBufferWidth - (statusPanel.MeasureContent().X + (UIComponent.MARGIN * 20)) - UIComponent.MARGIN;  // draw from right
+			statusPanel.X = graphicsDevice.PresentationParameters.BackBufferWidth - statusPanel.MeasureContent().X - 336;  // draw from right, offset by the background image container
 			statusPanel.Draw(spriteBatch);
 
 			spriteBatch.End();

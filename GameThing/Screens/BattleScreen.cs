@@ -21,6 +21,7 @@ namespace GameThing.Screens
 	public class BattleScreen
 	{
 		private const int gameLogEntryCount = 10;
+		private const int gridSpacing = 16;
 
 		private TiledMapRenderer mapRenderer;
 		private Camera<Vector2> camera;
@@ -41,11 +42,11 @@ namespace GameThing.Screens
 
 		private readonly Button endTurnButton;
 		private readonly Button winGameNowButton;
-		private readonly FadingTextPanel statusPanel = new FadingTextPanel { Y = UIComponent.MARGIN };
-		private readonly Panel playerSidePanel = new Panel { X = UIComponent.MARGIN, Y = UIComponent.MARGIN };
+		private readonly FadingTextPanel statusPanel = new FadingTextPanel { Y = gridSpacing };
+		private readonly Panel playerSidePanel = new Panel { X = gridSpacing, Y = gridSpacing };
 		private readonly Text playerSideText = new Text();
 
-		private readonly Panel gameLogPanel = new Panel { X = UIComponent.MARGIN };
+		private readonly Panel gameLogPanel = new Panel { X = gridSpacing };
 		private bool showGameLogEntryPanel;
 		private readonly Panel heldGameLogEntryPanel = new Panel();
 		private readonly Text heldGameLogSource = new Text();
@@ -77,8 +78,8 @@ namespace GameThing.Screens
 
 		public BattleScreen()
 		{
-			endTurnButton = new Button("End Turn") { UseMinimumButtonSize = false, Tapped = EndTurnButton_Tapped, Y = UIComponent.MARGIN };
-			winGameNowButton = new Button("Win Game") { UseMinimumButtonSize = false, Tapped = WinGameNowButton_Tapped, Y = UIComponent.MARGIN };
+			endTurnButton = new Button("End Turn") { UseMinimumButtonSize = false, Tapped = EndTurnButton_Tapped, Y = gridSpacing };
+			winGameNowButton = new Button("Win Game") { UseMinimumButtonSize = false, Tapped = WinGameNowButton_Tapped, Y = gridSpacing };
 			appliedConditionRow = new AppliedConditionRow { Held = AppliedConditionRow_Held };
 
 			BattleManager.Instance.DataUpdated += BattleManager_DataUpdated;
@@ -431,25 +432,25 @@ namespace GameThing.Screens
 			spriteBatch.Begin();
 			if (IsMyTurn)
 			{
-				endTurnButton.X = playerSidePanel.Width + (2 * UIComponent.MARGIN);
+				endTurnButton.X = playerSidePanel.Width + (2 * gridSpacing);
 				endTurnButton.Draw(spriteBatch);
 			}
-			statusPanel.X = graphicsDevice.PresentationParameters.BackBufferWidth - statusPanel.MeasureContent().X - (2 * UIComponent.MARGIN);
+			statusPanel.X = graphicsDevice.PresentationParameters.BackBufferWidth - statusPanel.MeasureContent().X - (2 * gridSpacing);
 			statusPanel.Draw(spriteBatch);
 			playerSidePanel.Draw(spriteBatch);
 
 			if (data.IsTestMode)
 			{
-				winGameNowButton.X = endTurnButton.Width + playerSidePanel.Width + (3 * UIComponent.MARGIN);
+				winGameNowButton.X = endTurnButton.Width + playerSidePanel.Width + (3 * gridSpacing);
 				winGameNowButton.Draw(spriteBatch);
 			}
 
-			gameLogPanel.Y = endTurnButton.Height + (2 * UIComponent.MARGIN);
+			gameLogPanel.Y = endTurnButton.Height + (2 * gridSpacing);
 			gameLogPanel.Draw(spriteBatch);
 
 			if (selectedCharacter != null)
 			{
-				selectedPlayerStatsPanel.X = gameLogPanel.Width + (2 * UIComponent.MARGIN); selectedPlayerStatsPanel.Y = endTurnButton.Height + (2 * UIComponent.MARGIN);
+				selectedPlayerStatsPanel.X = gameLogPanel.Width + (2 * gridSpacing); selectedPlayerStatsPanel.Y = endTurnButton.Height + (2 * gridSpacing);
 				selectedPlayerStatsPanel.Draw(spriteBatch);
 			}
 
