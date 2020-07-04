@@ -11,7 +11,7 @@ namespace GameThing.UI
 		private Texture2D borderTexture;
 
 		public ComponentList Components { get; set; } = new ComponentList();
-		public bool AutoDrawChildren { get; set; } = false;
+		public bool AutoDrawChildren { get; set; } = true;
 		public bool ShowBorder { get; set; } = false;
 
 		public Texture2D Background { get; set; }

@@ -41,7 +41,7 @@ namespace GameThing.Screens
 
 		public void LoadContent(Content content, GraphicsDevice graphicsDevice)
 		{
-			screenComponent = new ScreenComponent() { Background = content.MainBackground };
+			screenComponent = new ScreenComponent() { Background = content.MainBackground, AutoDrawChildren = false };
 			screenComponent.Components.Add(createTeamButton);
 			screenComponent.Components.Add(deleteTeamButton);
 			screenComponent.Components.Add(backButton);

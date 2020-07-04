@@ -196,7 +196,7 @@ namespace GameThing.Screens
 			appliedConditionDetailsPanel.Components.Add(appliedConditionDetailsText);
 
 			statusPanel.Background = content.PanelBackground;
-			screenComponent = new ScreenComponent();
+			screenComponent = new ScreenComponent { AutoDrawChildren = false };
 			screenComponent.GestureRead += ScreenComponent_GestureRead;
 			screenComponent.Components.Add(endTurnButton);
 			screenComponent.Components.Add(winGameNowButton);
