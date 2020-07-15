@@ -17,7 +17,7 @@ namespace GameThing.Screens
 
 		public ManageCharacterScreen()
 		{
-			backButton = new Button("Back") { Tapped = BackButton_Tapped, X = 200, Y = 100 };
+			backButton = new Button { Text = "Back", OnTapped = BackButton_Tapped, X = 200, Y = 100 };
 		}
 
 		public Character Character
@@ -46,11 +46,11 @@ namespace GameThing.Screens
 
 		public void LoadContent(Content content, GraphicsDevice graphicsDevice)
 		{
-			screenComponent = new ScreenComponent() { Background = content.MainBackground, AutoDrawChildren = false };
+			screenComponent = new ScreenComponent() { Background = content.MainBackground };
 			screenComponent.Components.Add(backButton);
 			screenComponent.Components.Add(contentPanel);
 			//screenComponent.Components.Add(categoryPanel);
-			screenComponent.LoadContent(content, graphicsDevice);
+			screenComponent.LoadContent(content.ContentManager, graphicsDevice);
 		}
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Part of public API")]

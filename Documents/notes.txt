@@ -2,6 +2,7 @@ MVP vNext:
 	Refactor UI
 		Build UI for manage character screen
 		Keeping in mind how to refactor existing screens
+		- difference between AutoDraw and AutoLayout children
 
 	- character being drawn under trees near the bottom
 	- Add all the new cards
@@ -11,6 +12,8 @@ MVP vNext:
 	- release notes
 	
 Nice to have:
+	- condition icon not shown immediately after applying (have to re-select character)
+	- condition icons have a little too much space around them
 	- consider whether hotseat can merge battle data or not
 	- show name on character panel in battle
 	- "Remove" effect not currently able to be used on anything other than health

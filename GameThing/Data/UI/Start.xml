@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScreenComponent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<UIComponent xsi:type="Panel" >
+		<UIComponent xsi:type="Button" X="450" Y="200" ComponentTapped="StartHotSeat_Tapped">Hot Seat</UIComponent>
+		<UIComponent xsi:type="Button" X="450" Y="320" ComponentTapped="Teams_Tapped">Teams</UIComponent>
+		<UIComponent xsi:type="Button" X="450" Y="450" ComponentTapped="CreateMatch_Tapped">Create Match</UIComponent>
+		<UIComponent xsi:type="Button" X="450" Y="560" ComponentTapped="JoinMatch_Tapped" Enabled="false">Join Match</UIComponent>
+		<UIComponent xsi:type="Button" X="450" Y="680" ComponentTapped="MyMatches_Tapped">My Matches</UIComponent>
+		<UIComponent xsi:type="Button" X="450" Y="800" ComponentTapped="Help_Tapped">Help</UIComponent>
+	</UIComponent>
+</ScreenComponent>

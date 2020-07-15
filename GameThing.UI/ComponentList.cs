@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using GameThing.Entities;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GameThing.UI
@@ -10,7 +10,7 @@ namespace GameThing.UI
 	{
 		private readonly List<UIComponent> components = new List<UIComponent>();
 
-		public Content Content { get; set; }
+		public ContentManager ContentManager { get; set; }
 		public GraphicsDevice GraphicsDevice { get; set; }
 
 		public UIComponent this[int index] { get => components[index]; set => components[index] = value; }
@@ -21,8 +21,8 @@ namespace GameThing.UI
 
 		public void Add(UIComponent item)
 		{
-			if (Content != null && GraphicsDevice != null && !item.HasContentLoaded)
-				item.LoadContent(Content, GraphicsDevice);
+			if (ContentManager != null && GraphicsDevice != null && !item.HasContentLoaded)
+				item.LoadContent(ContentManager, GraphicsDevice);
 
 			components.Add(item);
 		}

@@ -1,17 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using GameThing.Contract;
 using GameThing.Entities;
 using GameThing.Events;
 using GameThing.Manager;
 using GameThing.UI;
+using GameThing.UI.Config;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
 
 namespace GameThing.Screens
 {
-	public class StartScreen
+	public class StartScreen : BaseScreen
 	{
 		private readonly Button startAsTester;
 		private readonly Button teams;
@@ -33,14 +35,14 @@ namespace GameThing.Screens
 
 		public StartBattleEventHandler StartBattle;
 
-		public StartScreen()
+		public StartScreen(string embeddedXmlName) : base(() => new EmbeddedResourceConfigurationLoader(Assembly.GetAssembly(typeof(StartScreen))).Load(embeddedXmlName))
 		{
-			startAsTester = new Button("Hot Seat") { Tapped = StartHotSeat_Tapped, X = 450, Y = 200 };
-			teams = new Button("Teams") { Tapped = Teams_Tapped, X = 450, Y = 320 };
-			createMatch = new Button("Create Match") { Tapped = CreateMatch_Tapped, X = 450, Y = 450 };
-			joinMatch = new Button("Join Match") { Tapped = JoinMatch_Tapped, Enabled = false, X = 450, Y = 560 };
-			myMatches = new Button("My Matches") { Tapped = MyMatches_Tapped, X = 450, Y = 680 };
-			help = new Button("Help") { Tapped = Help_Tapped, X = 450, Y = 800 };
+			startAsTester = new Button { Text = "Hot Seat", OnTapped = StartHotSeat_Tapped, X = 450, Y = 200 };
+			teams = new Button { Text = "Teams", OnTapped = Teams_Tapped, X = 450, Y = 320 };
+			createMatch = new Button { Text = "Create Match", OnTapped = CreateMatch_Tapped, X = 450, Y = 450 };
+			joinMatch = new Button { Text = "Join Match", OnTapped = JoinMatch_Tapped, Enabled = false, X = 450, Y = 560 };
+			myMatches = new Button { Text = "My Matches", OnTapped = MyMatches_Tapped, X = 450, Y = 680 };
+			help = new Button { Text = "Help", OnTapped = Help_Tapped, X = 450, Y = 800 };
 
 			matchesPanel = new Panel { X = 1100, Y = 168 };
 			helpPanel = new Panel() { Padding = 32, X = 400, Y = 300, IsVisible = false };
@@ -113,7 +115,7 @@ namespace GameThing.Screens
 		public void LoadContent(Content content, GraphicsDevice graphicsDevice)
 		{
 			statusPanel.Background = content.PanelBackground;
-			screenComponent = new ScreenComponent() { Background = content.MainBackground, AutoDrawChildren = false };
+			screenComponent = new ScreenComponent() { Background = content.MainBackground };
 			screenComponent.Components.Add(startAsTester);
 			screenComponent.Components.Add(teams);
 			screenComponent.Components.Add(createMatch);
@@ -134,8 +136,8 @@ namespace GameThing.Screens
 			helpPanel.Components.Add(new Text { Value = "After one side looses all characters, the other side wins!" });
 			helpPanel.Components.Add(new Text { Value = "The MVP only has play versus another person and is turn-based." });
 
-			screenComponent.GestureRead += ScreenComponent_GestureRead;
-			screenComponent.LoadContent(content, graphicsDevice);
+			screenComponent.OnGestureRead += ScreenComponent_GestureRead;
+			screenComponent.LoadContent(content.ContentManager, graphicsDevice);
 
 			battleManager.GetAvailableBattles().ContinueWith(task =>
 			{
@@ -160,13 +162,14 @@ namespace GameThing.Screens
 			for (var i = 0; i < count; i++)
 			{
 				var battle = showingAvailableMatches ? availableBattles[i] : myBattles[i];
-				var matchButton = new Button(GetBattleName(battle))
+				var matchButton = new Button
 				{
+					Text = GetBattleName(battle),
 					Id = battle.MatchId,
 					Enabled = showingAvailableMatches
 						? battle != null
 						: battle?.HasBothSidesAdded == true,
-					Tapped = MatchButton_Tapped
+					OnTapped = MatchButton_Tapped
 				};
 				matchesPanel.Components.Add(matchButton);
 			}

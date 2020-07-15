@@ -29,9 +29,9 @@ namespace GameThing.Screens
 
 		public ManageTeamScreen()
 		{
-			createTeamButton = new Button("Create Team") { Tapped = CreateTeamButton_Tapped, X = 450, Y = 200 };
-			deleteTeamButton = new Button("Delete Team") { Tapped = DeleteTeamButton_Tapped, X = 450, Y = 200 };
-			backButton = new Button("Back") { Tapped = BackButton_Tapped, X = 450, Y = 320 };
+			createTeamButton = new Button { Text = "Create Team", OnTapped = CreateTeamButton_Tapped, X = 450, Y = 200 };
+			deleteTeamButton = new Button { Text = "Delete Team", OnTapped = DeleteTeamButton_Tapped, X = 450, Y = 200 };
+			backButton = new Button { Text = "Back", OnTapped = BackButton_Tapped, X = 450, Y = 320 };
 
 			if (teamManager.Team == null)
 				teamManager.OnTeamLoad += SetTeam;
@@ -41,12 +41,12 @@ namespace GameThing.Screens
 
 		public void LoadContent(Content content, GraphicsDevice graphicsDevice)
 		{
-			screenComponent = new ScreenComponent() { Background = content.MainBackground, AutoDrawChildren = false };
+			screenComponent = new ScreenComponent() { Background = content.MainBackground };
 			screenComponent.Components.Add(createTeamButton);
 			screenComponent.Components.Add(deleteTeamButton);
 			screenComponent.Components.Add(backButton);
 			screenComponent.Components.Add(teamPanel);
-			screenComponent.LoadContent(content, graphicsDevice);
+			screenComponent.LoadContent(content.ContentManager, graphicsDevice);
 
 			backgroundLine = content.BackgroundLine;
 		}
@@ -63,7 +63,7 @@ namespace GameThing.Screens
 			for (var i = 0; i < characterCount; i++)
 			{
 				var character = team.Characters[i];
-				teamPanel.Components.Add(new Button(character.Name) { Tapped = CharacterButton_Tapped, Id = character.Id.ToString() });
+				teamPanel.Components.Add(new Button { Text = character.Name, OnTapped = CharacterButton_Tapped, Id = character.Id.ToString() });
 			}
 		}
 

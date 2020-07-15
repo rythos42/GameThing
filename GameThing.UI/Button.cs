@@ -1,5 +1,6 @@
-﻿using GameThing.Entities;
+﻿using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GameThing.UI
@@ -17,16 +18,18 @@ namespace GameThing.UI
 		private string text;
 		protected const int MINIMUM_BUTTON_WIDTH = 300;
 
-		public Button(string text)
+		public Button()
 		{
-			Text = text;
 			Padding = 16;
 		}
 
+		[XmlIgnore]
 		public bool IsHighlighted { get; set; }
 
+		[XmlAttribute]
 		public bool UseMinimumButtonSize { get; set; } = true;
 
+		[XmlText]
 		public string Text
 		{
 			get => text;
@@ -42,27 +45,27 @@ namespace GameThing.UI
 					Height = (int) textSize.Y + (Padding * 2);
 
 					// remove self from event
-					ContentLoaded -= updateUiFromText;
+					OnContentLoaded -= updateUiFromText;
 				}
 
 				// If we haven't loaded content yet, set an event to update after we do so.
 				if (!HasContentLoaded)
-					ContentLoaded += updateUiFromText;
+					OnContentLoaded += updateUiFromText;
 				else
 					updateUiFromText();
 			}
 		}
 
-		protected override void LoadComponentContent(Content content, GraphicsDevice graphicsDevice)
+		protected override void LoadComponentContent(ContentManager contentManager, GraphicsDevice graphicsDevice)
 		{
-			buttonLeft = content.ButtonLeft;
-			buttonRight = content.ButtonRight;
-			buttonTopBottom = content.ButtonTopBottom;
-			buttonLeftDisabled = content.ButtonLeftDisabled;
-			buttonRightDisabled = content.ButtonRightDisabled;
-			buttonTopBottomDisabled = content.ButtonTopBottomDisabled;
+			buttonLeft = contentManager.Load<Texture2D>("sprites/ui/button_left"); ;
+			buttonRight = contentManager.Load<Texture2D>("sprites/ui/button_right");
+			buttonTopBottom = contentManager.Load<Texture2D>("sprites/ui/button_top_bottom");
+			buttonLeftDisabled = contentManager.Load<Texture2D>("sprites/ui/button_left_disabled");
+			buttonRightDisabled = contentManager.Load<Texture2D>("sprites/ui/button_right_disabled");
+			buttonTopBottomDisabled = contentManager.Load<Texture2D>("sprites/ui/button_top_bottom_disabled");
 
-			font = content.PatrickHandSc;
+			font = contentManager.Load<SpriteFont>("fonts/PatrickHandSC-Regular");
 		}
 
 		protected override void DrawComponent(SpriteBatch spriteBatch)

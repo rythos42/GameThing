@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using GameThing.Contract;
 using GameThing.Entities;
 using GameThing.Entities.Cards;
+using GameThing.Entities.Cards.Conditions;
 using GameThing.Entities.Cards.Requirements;
 using GameThing.Manager;
 using GameThing.UI;
@@ -14,13 +15,13 @@ using Microsoft.Xna.Framework.Input.Touch;
 using MonoGame.Extended;
 using MonoGame.Extended.Tiled;
 using MonoGame.Extended.Tiled.Renderers;
+using Effect = Microsoft.Xna.Framework.Graphics.Effect;
 using IDrawable = GameThing.Entities.IDrawable;
 
 namespace GameThing.Screens
 {
 	public class BattleScreen
 	{
-		private const int gameLogEntryCount = 10;
 		private const int gridSpacing = 16;
 
 		private TiledMapRenderer mapRenderer;
@@ -46,7 +47,7 @@ namespace GameThing.Screens
 		private readonly Panel playerSidePanel = new Panel { X = gridSpacing, Y = gridSpacing };
 		private readonly Text playerSideText = new Text();
 
-		private readonly Panel gameLogPanel = new Panel { X = gridSpacing };
+		private readonly Panel gameLogPanel = new Panel { X = gridSpacing, SizingMode = SizingMode.Explicit, Width = 100, Height = 900, Padding = 0, Margin = 0 };
 		private bool showGameLogEntryPanel;
 		private readonly Panel heldGameLogEntryPanel = new Panel();
 		private readonly Text heldGameLogSource = new Text();
@@ -56,21 +57,27 @@ namespace GameThing.Screens
 		private bool showAppliedConditionDetailsPanel;
 		private readonly Panel appliedConditionDetailsPanel = new Panel();
 		private readonly Text appliedConditionDetailsText = new Text();
-		private readonly Panel selectedPlayerStatsPanel = new Panel();
-		private readonly Text sideText = new Text();
-		private readonly Text playerClassText = new Text();
-		private readonly Text healthText = new Text();
-		private readonly Text strAgiText = new Text();
-		private readonly Text intStaText = new Text();
-		private readonly Text evdDefText = new Text();
-		private readonly Text deckText = new Text();
-		private readonly Text playsMovesText = new Text();
-		private readonly AppliedConditionRow appliedConditionRow;
+		private readonly Panel selectedPlayerStatsPanel = new Panel { Padding = 16 };
+		private readonly Text sideText = new Text { Margin = 0, Padding = 0 };
+		private readonly Text playerClassText = new Text { Margin = 0, Padding = 0 };
+		private readonly Text healthText = new Text { Margin = 0, Padding = 0 };
+		private readonly Text strAgiText = new Text { Margin = 0, Padding = 0 };
+		private readonly Text intStaText = new Text { Margin = 0, Padding = 0 };
+		private readonly Text evdDefText = new Text { Margin = 0, Padding = 0 };
+		private readonly Text deckText = new Text { Margin = 0, Padding = 0 };
+		private readonly Text playsMovesText = new Text { Margin = 0, Padding = 0 };
+		private readonly Panel appliedConditionRow;
 
 		private Rectangle spaghettiDeployment;
 		private Rectangle unicornDeployment;
 
 		private Content content;
+		private List<Texture2D> conditionIcons;
+		private Texture2D spaghettiHatIcon;
+		private Texture2D unicornHatIcon;
+		private Texture2D moveIcon;
+		private Texture2D cardIcon;
+
 		private readonly Random random = new Random();
 
 		public event BattleGameOverEventHandler GameOver;
@@ -78,9 +85,9 @@ namespace GameThing.Screens
 
 		public BattleScreen()
 		{
-			endTurnButton = new Button("End Turn") { UseMinimumButtonSize = false, Tapped = EndTurnButton_Tapped, Y = gridSpacing };
-			winGameNowButton = new Button("Win Game") { UseMinimumButtonSize = false, Tapped = WinGameNowButton_Tapped, Y = gridSpacing };
-			appliedConditionRow = new AppliedConditionRow { Held = AppliedConditionRow_Held };
+			endTurnButton = new Button { Text = "End Turn", UseMinimumButtonSize = false, OnTapped = EndTurnButton_Tapped, Y = gridSpacing };
+			winGameNowButton = new Button { Text = "Win Game", UseMinimumButtonSize = false, OnTapped = WinGameNowButton_Tapped, Y = gridSpacing };
+			appliedConditionRow = new Panel { OnHeld = AppliedConditionRow_Held, LayoutDirection = LayoutDirection.Horizontal, Padding = 0, Margin = 0 };
 
 			BattleManager.Instance.DataUpdated += BattleManager_DataUpdated;
 		}
@@ -120,9 +127,36 @@ namespace GameThing.Screens
 
 		private void SetGameLogEntryRows()
 		{
+			gameLogPanel.Components.Clear();
+
 			// Set game log entries from data into the UI in reverse order
-			for (int i = data.GameLog.Count - 1, j = 0; i >= 0 && j < gameLogPanel.Components.Count; i--, j++)
-				((GameLogEntryRow) gameLogPanel.Components[j]).GameLogEntry = data.GameLog[i];
+			for (var i = data.GameLog.Count - 1; i >= 0; i--)
+			{
+				var gameLogEntry = data.GameLog[i];
+				var gameLogEntryPanel = new Panel { OnHeld = GameLogEntryRow_Held, LayoutMode = LayoutMode.Relative, Width = cardIcon.Width, Height = spaghettiHatIcon.Height, Id = i.ToString(), Padding = 0, Margin = 8 };
+				gameLogPanel.Components.Add(gameLogEntryPanel);
+
+				var sourceIcon = GetIconForSide(gameLogEntry.SourceCharacterSide);
+				var smallIconWidth = sourceIcon.Width / 2;
+				var smallIconHeight = sourceIcon.Height / 2;
+
+				if (gameLogEntry.MovedTo != null)
+				{
+					gameLogEntryPanel.Components.Add(new Image { Texture = moveIcon, X = 2, Y = 10 });
+				}
+				else
+				{
+					var targetIcon = GetIconForSide(gameLogEntry.TargetCharacterSide);
+					gameLogEntryPanel.Components.Add(new Image { Texture = cardIcon, X = 2, Y = 10 });
+					gameLogEntryPanel.Components.Add(new Image { Texture = targetIcon, X = smallIconWidth, Y = (float) (cardIcon.Height * 0.75), Width = smallIconWidth, Height = smallIconHeight });
+				}
+				gameLogEntryPanel.Components.Add(new Image { Texture = sourceIcon, Width = smallIconWidth, Height = smallIconHeight });
+			}
+		}
+
+		private Texture2D GetIconForSide(CharacterSide side)
+		{
+			return side == CharacterSide.Spaghetti ? spaghettiHatIcon : unicornHatIcon;
 		}
 
 		private void PlaceCharacterOnMap(Character character, List<MapPoint> otherPlacements, CharacterSide side)
@@ -178,15 +212,18 @@ namespace GameThing.Screens
 			selectedPlayerStatsPanel.Components.Add(deckText);
 			selectedPlayerStatsPanel.Components.Add(playsMovesText);
 			selectedPlayerStatsPanel.Components.Add(appliedConditionRow);
+			conditionIcons = content.ConditionIcons;
 			SelectedCharacterChange += UpdateSelectedCharacterPanel;
 
 			playerSidePanel.Background = content.PanelBackground;
 			playerSidePanel.Components.Add(playerSideText);
 
 			gameLogPanel.Background = content.PanelBackground;
-			for (var i = 0; i < gameLogEntryCount; i++)
-				gameLogPanel.Components.Add(new GameLogEntryRow { Held = GameLogEntryRow_Held });
 
+			spaghettiHatIcon = content.SpaghettiHatIcon;
+			unicornHatIcon = content.UnicornHatIcon;
+			moveIcon = content.MoveIcon;
+			cardIcon = content.CardIcon;
 			heldGameLogEntryPanel.Background = content.PanelBackground;
 			heldGameLogEntryPanel.Components.Add(heldGameLogSource);
 			heldGameLogEntryPanel.Components.Add(heldGameLogTarget);
@@ -196,8 +233,8 @@ namespace GameThing.Screens
 			appliedConditionDetailsPanel.Components.Add(appliedConditionDetailsText);
 
 			statusPanel.Background = content.PanelBackground;
-			screenComponent = new ScreenComponent { AutoDrawChildren = false };
-			screenComponent.GestureRead += ScreenComponent_GestureRead;
+			screenComponent = new ScreenComponent();
+			screenComponent.OnGestureRead += ScreenComponent_GestureRead;
 			screenComponent.Components.Add(endTurnButton);
 			screenComponent.Components.Add(winGameNowButton);
 			screenComponent.Components.Add(selectedPlayerStatsPanel);
@@ -206,7 +243,7 @@ namespace GameThing.Screens
 			screenComponent.Components.Add(heldGameLogEntryPanel);
 			screenComponent.Components.Add(appliedConditionDetailsPanel);
 			screenComponent.Components.Add(statusPanel);
-			screenComponent.LoadContent(content, graphicsDevice);
+			screenComponent.LoadContent(content.ContentManager, graphicsDevice);
 
 			this.content = content;
 			handOfCards.Content = content;
@@ -227,7 +264,15 @@ namespace GameThing.Screens
 			evdDefText.Value = $"Evd: {selectedCharacter.GetCurrentAbilityScore(AbilityScore.Evade).ToString("0.00")} / Def: {selectedCharacter.GetCurrentAbilityScore(AbilityScore.Defense).ToString("0.00")}";
 			deckText.Value = $"Deck: {selectedCharacter.CardsInDeckCount} / Discard: {selectedCharacter.CardsInDiscardCount}";
 			playsMovesText.Value = $"Moves: {selectedCharacter.RemainingMoves} / Plays: {selectedCharacter.RemainingPlayableCards}";
-			appliedConditionRow.SelectedCharacter = newCharacter;
+
+			appliedConditionRow.Components.Clear();
+			foreach (var appliedCondition in selectedCharacter?.Conditions ?? new List<AppliedCondition>())
+			{
+				appliedConditionRow.Components.Add(new Image
+				{
+					Texture = conditionIcons.SingleOrDefault(conditionIcon => conditionIcon.Name == appliedCondition.Condition.IconName),
+				});
+			}
 		}
 
 		public void StartGame(BattleData data)
@@ -450,7 +495,8 @@ namespace GameThing.Screens
 
 			if (selectedCharacter != null)
 			{
-				selectedPlayerStatsPanel.X = gameLogPanel.Width + (2 * gridSpacing); selectedPlayerStatsPanel.Y = endTurnButton.Height + (2 * gridSpacing);
+				selectedPlayerStatsPanel.X = gameLogPanel.Width + (2 * gridSpacing);
+				selectedPlayerStatsPanel.Y = endTurnButton.Height + (2 * gridSpacing);
 				selectedPlayerStatsPanel.Draw(spriteBatch);
 			}
 
@@ -487,13 +533,10 @@ namespace GameThing.Screens
 
 		public void GameLogEntryRow_Held(UIComponent component, GestureSample gesture)
 		{
-			if (!(component is GameLogEntryRow heldLogEntryRow))
-				return;
-
 			showGameLogEntryPanel = true;
 			heldGameLogEntryPanel.Position = gesture.Position;
 
-			var entry = heldLogEntryRow.GameLogEntry;
+			var entry = data.GameLog[System.Convert.ToInt32(component.Id)];
 			heldGameLogSource.Value = $"Source: {entry.SourceCharacterColour} on {entry.SourceCharacterSide}";
 
 			if (entry.MovedTo != null)

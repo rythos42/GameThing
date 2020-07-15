@@ -1,5 +1,6 @@
-﻿using GameThing.Entities;
+﻿using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GameThing.UI
@@ -9,6 +10,7 @@ namespace GameThing.UI
 		private SpriteFont font;
 		private string value;
 
+		[XmlText]
 		public string Value
 		{
 			get => value;
@@ -24,9 +26,9 @@ namespace GameThing.UI
 			Dimensions = Value == null || font == null ? Vector2.Zero : font.MeasureString(Value);
 		}
 
-		protected override void LoadComponentContent(Content content, GraphicsDevice graphicsDevice)
+		protected override void LoadComponentContent(ContentManager contentManager, GraphicsDevice graphicsDevice)
 		{
-			font = content.Font;
+			font = contentManager.Load<SpriteFont>("fonts/Carlito-Regular");
 			SetDimensions();
 		}
 

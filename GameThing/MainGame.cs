@@ -19,7 +19,7 @@ namespace GameThing
 		private SpriteBatch spriteBatch;
 
 		private readonly BattleScreen battleScreen = new BattleScreen();
-		private readonly StartScreen startScreen = new StartScreen();
+		private readonly StartScreen startScreen = new StartScreen("GameThing.Data.UI.Start.xml");
 		private readonly GameOverScreen gameOverScreen = new GameOverScreen();
 		private readonly ManageTeamScreen manageTeamScreen = new ManageTeamScreen();
 		private readonly ManageCharacterScreen manageCharacterScreen = new ManageCharacterScreen();

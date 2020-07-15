@@ -13,6 +13,8 @@ namespace GameThing.Entities
 	{
 		public Content(ContentManager contentManager, GraphicsDevice graphicsDevice)
 		{
+			ContentManager = contentManager;
+
 			Font = contentManager.Load<SpriteFont>("fonts/Carlito-Regular");
 			PatrickHandSc = contentManager.Load<SpriteFont>("fonts/PatrickHandSC-Regular");
 
@@ -37,12 +39,6 @@ namespace GameThing.Entities
 			ConditionIcons.Add(contentManager.Load<Texture2D>("sprites/icons/taunt"));
 			ConditionIcons.Add(contentManager.Load<Texture2D>("sprites/icons/run"));
 
-			ButtonLeft = contentManager.Load<Texture2D>("sprites/ui/button_left");
-			ButtonRight = contentManager.Load<Texture2D>("sprites/ui/button_right");
-			ButtonTopBottom = contentManager.Load<Texture2D>("sprites/ui/button_top_bottom");
-			ButtonLeftDisabled = contentManager.Load<Texture2D>("sprites/ui/button_left_disabled");
-			ButtonRightDisabled = contentManager.Load<Texture2D>("sprites/ui/button_right_disabled");
-			ButtonTopBottomDisabled = contentManager.Load<Texture2D>("sprites/ui/button_top_bottom_disabled");
 			PanelBackground = contentManager.Load<Texture2D>("sprites/ui/panel");
 
 			Highlight = contentManager.Load<Effect>("effects/highlight");
@@ -64,6 +60,8 @@ namespace GameThing.Entities
 			BlackTexture.SetData(new Color[] { Color.Black });
 		}
 
+		public ContentManager ContentManager { get; private set; }
+
 		private SpriteSheetAnimationFactory CreateAnimationFactory(ContentManager contentManager, CharacterSide side)
 		{
 			var sideString = side.ToString().ToLower();
@@ -72,7 +70,7 @@ namespace GameThing.Entities
 			var atlas = new TextureAtlas("character", texture, map);
 			var factory = new SpriteSheetAnimationFactory(atlas);
 
-			int start = -1;
+			var start = -1;
 			factory.Add(GetSpriteTag(CharacterColour.Blue, CharacterFacing.East), new SpriteSheetAnimationData(Next6(ref start)));
 			factory.Add(GetSpriteTag(CharacterColour.Blue, CharacterFacing.North), new SpriteSheetAnimationData(Next6(ref start)));
 			factory.Add(GetSpriteTag(CharacterColour.Blue, CharacterFacing.South), new SpriteSheetAnimationData(Next6(ref start)));
@@ -139,12 +137,6 @@ namespace GameThing.Entities
 		public Texture2D CardIcon { get; private set; }
 		public List<Texture2D> ConditionIcons { get; private set; } = new List<Texture2D>();
 
-		public Texture2D ButtonLeft { get; private set; }
-		public Texture2D ButtonRight { get; private set; }
-		public Texture2D ButtonTopBottom { get; private set; }
-		public Texture2D ButtonLeftDisabled { get; private set; }
-		public Texture2D ButtonRightDisabled { get; private set; }
-		public Texture2D ButtonTopBottomDisabled { get; private set; }
 		public Texture2D PanelBackground { get; private set; }
 
 		public Effect Highlight { get; private set; }

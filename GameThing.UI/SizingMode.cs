@@ -3,6 +3,7 @@
 	public enum SizingMode
 	{
 		FitContent,
-		FillParent
+		FillParent,
+		Explicit
 	}
 }
